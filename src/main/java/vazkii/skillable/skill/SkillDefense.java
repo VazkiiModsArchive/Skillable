@@ -8,4 +8,10 @@ public class SkillDefense extends Skill {
 		super("defense", 3, Blocks.QUARTZ_BLOCK);
 	}
 
+	@Override
+	public void initUnlockables() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

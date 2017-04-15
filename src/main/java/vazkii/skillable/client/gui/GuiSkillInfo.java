@@ -1,7 +1,8 @@
 package vazkii.skillable.client.gui;
 
-import java.awt.TextField;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,8 +16,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.client.model.b3d.B3DModel.Texture;
 import vazkii.arl.network.NetworkHandler;
+import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
@@ -25,7 +26,7 @@ import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.network.MessageLevelUp;
 import vazkii.skillable.skill.Skill;
-import vazkii.skillable.skill.Skills;
+import vazkii.skillable.skill.base.Unlockable;
 
 public class GuiSkillInfo extends GuiScreen {
 
@@ -37,6 +38,7 @@ public class GuiSkillInfo extends GuiScreen {
 	TextureAtlasSprite sprite;
 	
 	GuiButtonLevelUp levelUpButton;
+	Unlockable hoveredUnlockable;
 	
 	public GuiSkillInfo(Skill skill) {
 		this.skill = skill;
@@ -98,7 +100,38 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		drawCenteredString(mc.fontRendererObj, costStr, left + 138, top + 13, 0xAFFF02);
 		
+		hoveredUnlockable = null;
+		for(Unlockable u : skill.unlockables)
+			drawUnlockable(data, u, mouseX, mouseY);
+		
 		super.drawScreen(mouseX, mouseY, partialTicks);
+		
+		if(hoveredUnlockable != null) {
+			List<String> tooltip = new ArrayList();
+			TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
+			tooltip.add(tf + hoveredUnlockable.getName());
+			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
+		}
+	}
+	
+	private void drawUnlockable(PlayerData data, Unlockable unlockable, int mx, int my) {
+		int x = width / 2 - guiWidth / 2 + 20 + unlockable.x * 28;
+		int y = height / 2 - guiHeight / 2 + 37 + unlockable.y * 28;
+		mc.renderEngine.bindTexture(SKILL_INFO_RES);
+		
+		int u = 0;
+		int v = guiHeight;
+		if(unlockable.hasSpikes())
+			u += 26;
+	
+		GlStateManager.color(1F, 1F, 1F);
+		drawTexturedModalRect(x, y, u, v, 26, 26);
+		
+		mc.renderEngine.bindTexture(unlockable.getIcon());
+		drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 16, 16, 16, 16);
+		
+		if(mx >= x && my >= y && mx < x + 26 && my < y + 26)
+			hoveredUnlockable = unlockable;
 	}
 	
 	@Override

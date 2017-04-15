@@ -7,5 +7,11 @@ public class SkillBuilding extends Skill {
 	public SkillBuilding() {
 		super("building", 4, Blocks.BRICK_BLOCK);
 	}
+
+	@Override
+	public void initUnlockables() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

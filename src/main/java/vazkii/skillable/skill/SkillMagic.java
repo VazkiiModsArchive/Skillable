@@ -7,5 +7,11 @@ public class SkillMagic extends Skill {
 	public SkillMagic() {
 		super("magic", 7, Blocks.END_STONE);
 	}
+
+	@Override
+	public void initUnlockables() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

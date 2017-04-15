@@ -13,6 +13,11 @@ skillable.skill.farming=Farming
 skillable.skill.agility=Agility
 skillable.skill.magic=Magic
 
+# UNLOCKABLE NAMES
+skillable.unlock.obsidian_smasher=Obsidian Smasher
+skillable.unlock.fossil_digger=Fossil Digger
+skillable.unlock.ore_cascade=Ore Cascade
+
 # RANK NAMES
 skillable.rank.0=Beginner
 skillable.rank.1=Fledgling
