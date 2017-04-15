@@ -26,7 +26,7 @@ public class GuiButtonLevelUp extends GuiButton {
 	
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		enabled = mc.player.experienceLevel >= cost;
+		enabled = mc.player.experienceLevel >= cost || mc.player.isCreative();
 		
 		if(enabled) {
 			GlStateManager.color(1F, 1F, 1F);

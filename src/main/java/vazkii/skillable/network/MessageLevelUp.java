@@ -29,8 +29,9 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 		
 		if(!info.isCapped()) {
 			int cost = info.getLevelUpCost();
-			if(player.experienceLevel >= cost) {
-				player.removeExperienceLevel(cost);
+			if(player.experienceLevel >= cost || player.isCreative()) {
+				if(!player.isCreative())
+					player.removeExperienceLevel(cost);
 				info.levelUp();
 				data.save();
 				data.sync();

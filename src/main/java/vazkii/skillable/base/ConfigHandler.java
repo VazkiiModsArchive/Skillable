@@ -31,6 +31,9 @@ public class ConfigHandler {
 		baseXPCost = loadPropInt("Base XP Cost", "", baseXPCost);
 		xpIncrease = loadPropInt("XP Increase Per Level", "", 1);
 		
+		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, "");
+		LevelLockHandler.loadFromConfig(locks);
+		
 		if(config.hasChanged())
 			config.save();
 	}

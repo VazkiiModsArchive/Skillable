@@ -11,7 +11,7 @@ public class PlayerSkillInfo {
 	
 	public final Skill skill;
 	
-	int level;
+	private int level;
 	
 	public PlayerSkillInfo(Skill skill) {
 		this.skill = skill;

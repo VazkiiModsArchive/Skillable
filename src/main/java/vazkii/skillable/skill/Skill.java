@@ -3,7 +3,7 @@ package vazkii.skillable.skill;
 import net.minecraft.block.Block;
 import net.minecraft.util.text.translation.I18n;
 
-public class Skill {
+public class Skill implements Comparable<Skill> {
 
 	private final String name;
 	private final int index;
@@ -29,6 +29,11 @@ public class Skill {
 	
 	public Block getBackground() {
 		return background;
+	}
+
+	@Override
+	public int compareTo(Skill o) {
+		return getIndex() - o.getIndex();
 	}
 	
 }

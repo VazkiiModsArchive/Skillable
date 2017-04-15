@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import vazkii.skillable.base.CommonProxy;
+import vazkii.skillable.base.LevelLockHandler;
 import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 
 public class ClientProxy extends CommonProxy {
@@ -15,6 +16,7 @@ public class ClientProxy extends CommonProxy {
 		
 		MinecraftForge.EVENT_BUS.register(ClientTickHandler.class);
 		MinecraftForge.EVENT_BUS.register(InventoryTabHandler.class);
+		MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
 	}
 	
 	@Override
