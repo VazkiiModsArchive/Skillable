@@ -29,6 +29,9 @@ public class PlayerSkillInfo {
 	}
 	
 	public int getLevel() {
+		if(level <= 0)
+			level = 1;
+			
 		return level;
 	}
 	

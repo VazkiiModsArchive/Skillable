@@ -1,7 +1,13 @@
 package vazkii.skillable.client.gui;
 
+import java.io.IOException;
+
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import vazkii.skillable.base.PlayerData;
+import vazkii.skillable.base.PlayerDataHandler;
+import vazkii.skillable.base.PlayerSkillInfo;
 import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
@@ -12,6 +18,7 @@ public class GuiSkills extends GuiScreen {
 	public static final ResourceLocation SKILLS_RES = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skills.png");
 	
 	int guiWidth, guiHeight;
+	Skill hoveredSkill;
 	
 	@Override
 	public void initGui() {
@@ -31,8 +38,13 @@ public class GuiSkills extends GuiScreen {
 		int top = height / 2 - guiHeight / 2;
 		drawTexturedModalRect(left, top, 0, 0, guiWidth, guiHeight);
 		
+		PlayerData data = PlayerDataHandler.get(mc.player);
+		
+		hoveredSkill = null;
 		for(String s : Skills.ALL_SKILLS.keySet()) {
 			Skill skill = Skills.ALL_SKILLS.get(s);
+			PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
+
 			int i = skill.getIndex();
 			int w = 79;
 			int h = 32;
@@ -41,17 +53,32 @@ public class GuiSkills extends GuiScreen {
 			int u = 0;
 			int v = guiHeight;
 			
-			if(mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h)
+			if(mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h) {
 				u += w;
+				hoveredSkill = skill;
+			}
 			// TODO move if capped
 			
 			mc.renderEngine.bindTexture(SKILLS_RES);
+			GlStateManager.color(1F, 1F, 1F);
 			drawTexturedModalRect(x, y, u, v, w, h);
 			
 			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
+			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL, x + 26, y + 17, 0x888888);
+
 		}
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		
+		if(mouseButton == 0 && hoveredSkill != null) {
+			GuiSkillInfo gui = new GuiSkillInfo(hoveredSkill);
+			mc.displayGuiScreen(gui);
+		}
 	}
 	
 	@Override

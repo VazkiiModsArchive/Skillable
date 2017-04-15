@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.actors.threadpool.Arrays;
 import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.client.gui.GuiAbilities;
+import vazkii.skillable.client.gui.GuiSkillInfo;
 import vazkii.skillable.client.gui.GuiSkills;
 import vazkii.skillable.client.gui.button.GuiButtonInventoryTab;
 import vazkii.skillable.client.gui.button.GuiButtonInventoryTab.TabType;
@@ -35,7 +36,7 @@ public class InventoryTabHandler {
 		}
 		
 		buttonList.add(new GuiButtonInventoryTab(82931, x, y, TabType.INVENTORY, (gui) -> gui instanceof GuiInventory || gui instanceof GuiContainerCreative));
-		buttonList.add(new GuiButtonInventoryTab(82932, x, y + 29, TabType.SKILLS, (gui) -> gui instanceof GuiSkills));
+		buttonList.add(new GuiButtonInventoryTab(82932, x, y + 29, TabType.SKILLS, (gui) -> gui instanceof GuiSkills || gui instanceof GuiSkillInfo));
 		buttonList.add(new GuiButtonInventoryTab(82933, x, y + 58, TabType.ABILITIES, (gui) -> gui instanceof GuiAbilities));
 	}
 	
