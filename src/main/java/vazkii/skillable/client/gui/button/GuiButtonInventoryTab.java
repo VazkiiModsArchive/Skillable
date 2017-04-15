@@ -51,7 +51,7 @@ public class GuiButtonInventoryTab extends GuiButton {
 			}
 			
 			drawTexturedModalRect(x, y, u, v, w, h);
-			drawTexturedModalRect(x + 8, y + 6, 176 + type.iconIndex * 16, 56, 16, 16);
+			drawTexturedModalRect(x + 8, y + 6, 176 + type.iconIndex * 16, 28, 16, 16);
 			
 			if(mouseX > xPosition && mouseY > yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
 				InventoryTabHandler.tooltip = I18n.translateToLocal("skillable.tab." + type.name().toLowerCase());
