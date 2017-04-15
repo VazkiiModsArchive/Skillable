@@ -1,6 +1,5 @@
 package vazkii.skillable.base;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -89,54 +88,6 @@ public class PlayerDataHandler {
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
 			}
 		}
-	}
-
-	public static class PlayerData {
-
-		public WeakReference<EntityPlayer> playerWR;
-		private final boolean client;		
-		
-		public PlayerData(EntityPlayer player) {
-			playerWR = new WeakReference(player);
-			client = player.getEntityWorld().isRemote;
-
-			load();
-		}
-
-		public void tick() {
-
-		}
-
-		public void load() {
-			if(!client) {
-				EntityPlayer player = playerWR.get();
-
-				if(player != null) {
-					NBTTagCompound cmp = getDataCompoundForPlayer(player);
-					loadFromNBT(cmp);
-				}
-			}
-		}
-
-		public void save() {
-			if(!client) {
-				EntityPlayer player = playerWR.get();
-
-				if(player != null) {
-					NBTTagCompound cmp = getDataCompoundForPlayer(player);
-					saveToNBT(cmp);
-				}
-			}
-		}
-
-		public void loadFromNBT(NBTTagCompound cmp) {
-
-		}
-
-		public void saveToNBT(NBTTagCompound cmp) {
-
-		}
-
 	}
 
 }

@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.network.NetworkMessage;
 import vazkii.skillable.Skillable;
+import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
-import vazkii.skillable.base.PlayerDataHandler.PlayerData;
 import vazkii.skillable.client.base.ClientTickHandler;
 
 public class MessageDataSync extends NetworkMessage {
