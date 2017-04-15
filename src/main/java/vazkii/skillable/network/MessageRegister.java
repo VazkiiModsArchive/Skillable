@@ -8,6 +8,7 @@ public class MessageRegister {
 	public static void init() {
 		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);
 		NetworkHandler.register(MessageLevelUp.class, Side.SERVER);
+		NetworkHandler.register(MessageUnlockUnlockable.class, Side.SERVER);
 	}
 
 }

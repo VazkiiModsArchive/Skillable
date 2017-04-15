@@ -101,13 +101,7 @@ public class LevelLockHandler {
 			return true;
 
 		PlayerData data = PlayerDataHandler.get(player);
-		for(Skill skill : lock.keySet()) {
-			PlayerSkillInfo info = data.getSkillInfo(skill);
-			if(info.getLevel() < lock.get(skill))
-				return false;
-		}
-
-		return true;
+		return data.matchStats(lock);
 	}
 
 	@SubscribeEvent

@@ -9,35 +9,32 @@ import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
+import vazkii.skillable.skill.base.Unlockable;
 
-public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
+public class MessageUnlockUnlockable extends NetworkMessage<MessageUnlockUnlockable> {
 
-	public String skill;
+	public String skill, unlockable;
 	
-	public MessageLevelUp() { }
+	public MessageUnlockUnlockable() { }
 	
-	public MessageLevelUp(String skill) {
+	public MessageUnlockUnlockable(String skill, String unlockable) {
 		this.skill = skill;
+		this.unlockable = unlockable;
 	}
 	
 	@Override
 	public IMessage handleMessage(MessageContext context) {
 		EntityPlayer player = context.getServerHandler().playerEntity;
 		Skill skill = Skills.ALL_SKILLS.get(this.skill);
+		Unlockable unlockable = Skills.ALL_UNLOCKABLES.get(this.unlockable);
 		PlayerData data = PlayerDataHandler.get(player);
 		PlayerSkillInfo info = data.getSkillInfo(skill);
 		
-		if(!info.isCapped()) {
-			int cost = info.getLevelUpCost();
-			if(player.experienceLevel >= cost || player.isCreative()) {
-				if(!player.isCreative())
-					player.removeExperienceLevel(cost);
-				info.levelUp();
-				data.saveAndSync();
-			}
+		if(!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.cost && data.matchStats(unlockable.getRequirements())) {
+			info.unlock(unlockable);
+			data.saveAndSync();
 		}
 		
 		return null;
 	}
-	
 }

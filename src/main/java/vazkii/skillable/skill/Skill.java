@@ -13,7 +13,7 @@ public abstract class Skill implements Comparable<Skill> {
 	private final int index;
 	private final Block background;
 	
-	public final List<Unlockable> unlockables = new ArrayList();
+	private final List<Unlockable> unlockables = new ArrayList();
 	
 	public Skill(String name, int index, Block background) {
 		this.name = name;
@@ -22,6 +22,15 @@ public abstract class Skill implements Comparable<Skill> {
 	}
 	
 	public abstract void initUnlockables();
+	
+	protected void addUnlockable(Unlockable u) {
+		unlockables.add(u);
+		u.setParentSkill(this);
+	}
+	
+	public List<Unlockable> getUnlockables() {
+		return unlockables;
+	}
 	
 	public String getKey() {
 		return name;

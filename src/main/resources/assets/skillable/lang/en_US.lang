@@ -4,6 +4,7 @@ skillable.misc.skills=Skills
 skillable.misc.skillLock=Requirements:
 skillable.misc.skillPoints=%d Skill Points
 skillable.misc.holdShift=Hold SHIFT for description
+skillable.misc.unlocked=Unlocked!
 
 # SKILL NAMES
 skillable.skill.mining=Mining

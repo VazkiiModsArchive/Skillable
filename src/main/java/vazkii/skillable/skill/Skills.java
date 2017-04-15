@@ -2,10 +2,13 @@ package vazkii.skillable.skill;
 
 import java.util.HashMap;
 
+import vazkii.skillable.skill.base.Unlockable;
+
 public final class Skills {
 	
 	public static final HashMap<String, Skill> ALL_SKILLS = new HashMap();
-
+	public static final HashMap<String, Unlockable> ALL_UNLOCKABLES = new HashMap();
+	
 	public static Skill mining;
 	public static Skill gathering;
 	public static Skill attack;

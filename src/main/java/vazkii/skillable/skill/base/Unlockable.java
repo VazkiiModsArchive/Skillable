@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
+import vazkii.skillable.skill.Skills;
 
 public abstract class Unlockable {
 
@@ -15,6 +16,7 @@ public abstract class Unlockable {
 	private final ResourceLocation icon;
 	
 	private Map<Skill, Integer> requirements = new TreeMap();
+	private Skill parentSkill;
 	
 	public Unlockable(String name, int x, int y, int cost) {
 		this.name = name;
@@ -22,6 +24,15 @@ public abstract class Unlockable {
 		this.y = y;
 		this.cost = cost;
 		icon = new ResourceLocation(LibMisc.MOD_ID, "textures/skills/" + name + ".png");
+		Skills.ALL_UNLOCKABLES.put(name, this);
+	}
+	
+	public void setParentSkill(Skill parentSkill) {
+		this.parentSkill = parentSkill;
+	}
+	
+	public Skill getParentSkill() {
+		return parentSkill;
 	}
 	
 	public Map<Skill, Integer> getRequirements() {

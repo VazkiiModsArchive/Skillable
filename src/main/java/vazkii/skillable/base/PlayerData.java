@@ -2,6 +2,7 @@ package vazkii.skillable.base;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,14 +39,18 @@ public class PlayerData {
 		return skillInfo.get(s);
 	}
 
-	public void levelUp(Skill s) {
-		skillInfo.get(s).levelUp();;
-		save();
-		sync();
-	}
-
 	public boolean hasAnyAbilities() {
 		return false; //TODO
+	}
+	
+	public boolean matchStats(Map<Skill, Integer> stats) {
+		for(Skill s : stats.keySet()) {
+			PlayerSkillInfo info = getSkillInfo(s);
+			if(info.getLevel() < stats.get(s))
+				return false;
+		}
+			
+		return true;
 	}
 	
 	public void load() {
@@ -79,6 +84,11 @@ public class PlayerData {
 				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
 			}
 		}
+	}
+	
+	public void saveAndSync() {
+		save();
+		sync();
 	}
 
 	public void loadFromNBT(NBTTagCompound cmp) {

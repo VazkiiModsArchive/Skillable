@@ -13,10 +13,10 @@ public class SkillMining extends Skill {
 
 	@Override
 	public void initUnlockables() {
-		unlockables.add(new TraitFossilDigger());
-		unlockables.add(new TraitObsidianSmasher());
+		addUnlockable(new TraitFossilDigger());
+		addUnlockable(new TraitObsidianSmasher());
 		
-		unlockables.add(new AbilityOreCascade());
+		addUnlockable(new AbilityOreCascade());
 	}
 	
 }

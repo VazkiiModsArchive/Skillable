@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.LevelLockHandler;
@@ -27,6 +26,7 @@ import vazkii.skillable.client.gui.button.GuiButtonLevelUp;
 import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.network.MessageLevelUp;
+import vazkii.skillable.network.MessageUnlockUnlockable;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.base.Unlockable;
 
@@ -41,6 +41,7 @@ public class GuiSkillInfo extends GuiScreen {
 	
 	GuiButtonLevelUp levelUpButton;
 	Unlockable hoveredUnlockable;
+	boolean canPurchase;
 	
 	public GuiSkillInfo(Skill skill) {
 		this.skill = skill;
@@ -105,24 +106,27 @@ public class GuiSkillInfo extends GuiScreen {
 		drawCenteredString(mc.fontRendererObj, costStr, left + 138, top + 13, 0xAFFF02);
 		
 		hoveredUnlockable = null;
-		for(Unlockable u : skill.unlockables)
-			drawUnlockable(data, u, mouseX, mouseY);
+		for(Unlockable u : skill.getUnlockables())
+			drawUnlockable(data, skillInfo, u, mouseX, mouseY);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
 		if(hoveredUnlockable != null)
-			makeUnlockableTooltip(data, mouseX, mouseY);
+			makeUnlockableTooltip(data, skillInfo, mouseX, mouseY);
 	}
 	
-	private void drawUnlockable(PlayerData data, Unlockable unlockable, int mx, int my) {
+	private void drawUnlockable(PlayerData data, PlayerSkillInfo info, Unlockable unlockable, int mx, int my) {
 		int x = width / 2 - guiWidth / 2 + 20 + unlockable.x * 28;
 		int y = height / 2 - guiHeight / 2 + 37 + unlockable.y * 28;
 		mc.renderEngine.bindTexture(SKILL_INFO_RES);
+		boolean unlocked = info.isUnlocked(unlockable);
 		
 		int u = 0;
 		int v = guiHeight;
 		if(unlockable.hasSpikes())
 			u += 26;
+		if(unlocked)
+			v += 26;
 	
 		GlStateManager.color(1F, 1F, 1F);
 		drawTexturedModalRect(x, y, u, v, 26, 26);
@@ -130,11 +134,13 @@ public class GuiSkillInfo extends GuiScreen {
 		mc.renderEngine.bindTexture(unlockable.getIcon());
 		drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 16, 16, 16, 16);
 		
-		if(mx >= x && my >= y && mx < x + 26 && my < y + 26)
+		if(mx >= x && my >= y && mx < x + 26 && my < y + 26) {
+			canPurchase = !unlocked && info.getSkillPoints() >= unlockable.cost;
 			hoveredUnlockable = unlockable;
+		}
 	}
 	
-	private void makeUnlockableTooltip(PlayerData data, int mouseX, int mouseY) {
+	private void makeUnlockableTooltip(PlayerData data, PlayerSkillInfo info, int mouseX, int mouseY) {
 		List<String> tooltip = new ArrayList();
 		TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
 		
@@ -142,9 +148,14 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		if(isShiftKeyDown())
 			addLongStringToTooltip(tooltip, hoveredUnlockable.getDescription(), guiWidth);
-		else tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("skillable.misc.holdShift"));
+		else {
+			tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("skillable.misc.holdShift"));
+			tooltip.add("");
+		}
 		
-		LevelLockHandler.addRequirementsToTooltip(data, hoveredUnlockable.getRequirements(), tooltip);
+		if(!info.isUnlocked(hoveredUnlockable))
+			LevelLockHandler.addRequirementsToTooltip(data, hoveredUnlockable.getRequirements(), tooltip);
+		else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
 		tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
 		
 		RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
@@ -173,6 +184,17 @@ public class GuiSkillInfo extends GuiScreen {
 			MessageLevelUp message = new MessageLevelUp(skill.getKey());
 			NetworkHandler.INSTANCE.sendToServer(message);
 		}
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		
+		if(mouseButton == 0 && hoveredUnlockable != null && canPurchase) {
+			MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getKey(), hoveredUnlockable.getKey());
+			NetworkHandler.INSTANCE.sendToServer(message);
+		} else if(mouseButton == 1 || mouseButton == 3)
+			mc.displayGuiScreen(new GuiSkills());
 	}
 	
 	@Override
