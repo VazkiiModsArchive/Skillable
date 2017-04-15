@@ -83,10 +83,7 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public void onPlayerLogin(PlayerLoggedInEvent event) {
-			if(event.player instanceof EntityPlayerMP) {
-				MessageDataSync message = new MessageDataSync(get(event.player));
-				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) event.player);
-			}
+			PlayerDataHandler.get(event.player).sync();
 		}
 	}
 
