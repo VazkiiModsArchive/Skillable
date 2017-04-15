@@ -6,9 +6,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.skillable.network.MessageDataSync;
 import vazkii.skillable.network.MessageRegister;
 import vazkii.skillable.skill.Skills;
 
@@ -17,6 +14,8 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		Skills.init();
 		
+		ConfigHandler.init(event.getSuggestedConfigurationFile());
+
 		MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
 		
 		MessageRegister.init();

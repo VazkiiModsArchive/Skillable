@@ -9,10 +9,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.model.b3d.B3DModel.Texture;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
+import vazkii.skillable.client.gui.button.GuiButtonLevelUp;
 import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
@@ -27,6 +29,8 @@ public class GuiSkillInfo extends GuiScreen {
 	int guiWidth, guiHeight;
 	TextureAtlasSprite sprite;
 	
+	GuiButtonLevelUp levelUpButton;
+	
 	public GuiSkillInfo(Skill skill) {
 		this.skill = skill;
 	}
@@ -36,7 +40,11 @@ public class GuiSkillInfo extends GuiScreen {
 		guiWidth = 176;
 		guiHeight = 166;
 		
+		int left = width / 2 - guiWidth / 2;
+		int top = height / 2 - guiHeight / 2;
+		
 		buttonList.clear();
+		buttonList.add(levelUpButton = new GuiButtonLevelUp(left + 147, top + 10));
 		InventoryTabHandler.addTabs(this, buttonList);
 		sprite = getTexture(skill.getBackground());
 	}
@@ -69,6 +77,15 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		mc.fontRendererObj.drawString(skill.getName(), left + 42, top + 8, 4210752);
 		mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL + "", left + 42, top + 18, 4210752);
+
+		int cost = skillInfo.getLevelUpCost();
+		String costStr = Integer.toString(cost);
+		if(skillInfo.isCapped())
+			costStr = I18n.translateToLocal("skillable.misc.capped");
+		
+		levelUpButton.setCost(cost);
+		
+		drawCenteredString(mc.fontRendererObj, costStr, left + 138, top + 13, 0xAFFF02);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}

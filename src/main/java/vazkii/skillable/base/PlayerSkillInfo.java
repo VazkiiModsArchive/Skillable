@@ -6,13 +6,12 @@ import vazkii.skillable.skill.Skill;
 public class PlayerSkillInfo {
 
 	private static final String TAG_LEVEL = "level";
-	private static final String TAG_RANK = "rank";
 	
 	public static final int MAX_LEVEL = 32;
 	
 	public final Skill skill;
 	
-	int level, rank;
+	int level;
 	
 	public PlayerSkillInfo(Skill skill) {
 		this.skill = skill;
@@ -20,12 +19,10 @@ public class PlayerSkillInfo {
 	
 	public void loadFromNBT(NBTTagCompound cmp) {
 		level = cmp.getInteger(TAG_LEVEL);
-		rank = cmp.getInteger(TAG_RANK);
 	}
 	
 	public void saveToNBT(NBTTagCompound cmp) {
 		cmp.setInteger(TAG_LEVEL, level);
-		cmp.setInteger(TAG_RANK, rank);
 	}
 	
 	public int getLevel() {
@@ -36,19 +33,15 @@ public class PlayerSkillInfo {
 	}
 	
 	public int getRank() {
-		return rank;
-	}
-	
-	public int getMaxLevel() {
-		return (rank + 1) * (MAX_LEVEL / 4);
+		return level / (MAX_LEVEL / 4);
 	}
 	
 	public boolean isCapped() {
 		return level == MAX_LEVEL;
 	}
 	
-	public void rankUp() {
-		rank++;
+	public int getLevelUpCost() {
+		return ConfigHandler.baseXPCost + level * ConfigHandler.xpIncrease;
 	}
 	
 	public void levelUp() {

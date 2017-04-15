@@ -1,3 +1,6 @@
+# MISC
+skillable.misc.capped=MAX
+
 # SKILL NAMES
 skillable.skill.mining=Mining
 skillable.skill.gathering=Gathering
