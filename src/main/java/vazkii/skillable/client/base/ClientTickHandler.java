@@ -20,20 +20,20 @@ public class ClientTickHandler {
 	public static float delta = 0;
 	public static float total = 0;
 
-	private void calcDelta() {
+	private static void calcDelta() {
 		float oldTotal = total;
 		total = ticksInGame + partialTicks;
 		delta = total - oldTotal;
 	}
 
 	@SubscribeEvent
-	public void renderTick(RenderTickEvent event) {
+	public static void renderTick(RenderTickEvent event) {
 		if(event.phase == Phase.START)
 			partialTicks = event.renderTickTime;
 	}
 
 	@SubscribeEvent
-	public void clientTickEnd(ClientTickEvent event) {
+	public static void clientTickEnd(ClientTickEvent event) {
 		if(event.phase == Phase.END) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.world == null)

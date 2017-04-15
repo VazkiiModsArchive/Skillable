@@ -67,13 +67,13 @@ public class PlayerDataHandler {
 	public static class EventHandler {
 
 		@SubscribeEvent
-		public void onServerTick(ServerTickEvent event) {
+		public static void onServerTick(ServerTickEvent event) {
 			if(event.phase == Phase.END)
 				PlayerDataHandler.cleanup();
 		}
 
 		@SubscribeEvent
-		public void onPlayerTick(LivingUpdateEvent event) {
+		public static void onPlayerTick(LivingUpdateEvent event) {
 			if(event.getEntityLiving() instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 
@@ -82,7 +82,7 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public void onPlayerLogin(PlayerLoggedInEvent event) {
+		public static void onPlayerLogin(PlayerLoggedInEvent event) {
 			PlayerDataHandler.get(event.player).sync();
 		}
 	}

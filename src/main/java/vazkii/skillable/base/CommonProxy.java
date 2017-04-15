@@ -17,7 +17,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		Skills.init();
 		
-		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());
+		MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
 		
 		MessageRegister.init();
 	}

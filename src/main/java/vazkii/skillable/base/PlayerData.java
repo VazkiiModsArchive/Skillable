@@ -44,6 +44,10 @@ public class PlayerData {
 		sync();
 	}
 
+	public boolean hasAnyAbilities() {
+		return false; //TODO
+	}
+	
 	public void load() {
 		if(!client) {
 			EntityPlayer player = playerWR.get();
