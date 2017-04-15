@@ -11,6 +11,13 @@ skillable.skill.farming=Farming
 skillable.skill.agility=Agility
 skillable.skill.magic=Magic
 
+# RANK NAMES
+skillable.rank.0=Beginner
+skillable.rank.1=Fledgling
+skillable.rank.2=Skilled
+skillable.rank.3=Adept
+skillable.rank.4=Master
+
 # TAB NAMES
 skillable.tab.inventory=Inventory
 skillable.tab.skills=Skills

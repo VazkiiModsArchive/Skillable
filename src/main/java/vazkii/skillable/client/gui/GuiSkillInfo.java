@@ -1,22 +1,29 @@
 package vazkii.skillable.client.gui;
 
+import java.awt.TextField;
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.model.b3d.B3DModel.Texture;
+import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
 import vazkii.skillable.client.gui.button.GuiButtonLevelUp;
 import vazkii.skillable.client.gui.handler.InventoryTabHandler;
 import vazkii.skillable.lib.LibMisc;
+import vazkii.skillable.network.MessageLevelUp;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
@@ -75,8 +82,12 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		drawTexturedModalRect(left, top, 0, 0, guiWidth, guiHeight);
 		
-		mc.fontRendererObj.drawString(skill.getName(), left + 42, top + 8, 4210752);
-		mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL + "", left + 42, top + 18, 4210752);
+		mc.renderEngine.bindTexture(GuiSkills.SKILLS_RES);
+		drawTexturedModalRect(left + 15, top + 9, width, 45 + skill.getIndex() * 16, 16, 16);
+		
+		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), PlayerSkillInfo.MAX_LEVEL , I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
+		mc.fontRendererObj.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
+		mc.fontRendererObj.drawString(levelStr, left + 37, top + 18, 4210752);
 
 		int cost = skillInfo.getLevelUpCost();
 		String costStr = Integer.toString(cost);
@@ -88,6 +99,14 @@ public class GuiSkillInfo extends GuiScreen {
 		drawCenteredString(mc.fontRendererObj, costStr, left + 138, top + 13, 0xAFFF02);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+	
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		if(button == levelUpButton) {
+			MessageLevelUp message = new MessageLevelUp(skill.getKey());
+			NetworkHandler.INSTANCE.sendToServer(message);
+		}
 	}
 	
 	@Override

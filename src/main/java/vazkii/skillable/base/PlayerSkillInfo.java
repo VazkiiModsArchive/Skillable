@@ -28,6 +28,8 @@ public class PlayerSkillInfo {
 	public int getLevel() {
 		if(level <= 0)
 			level = 1;
+		if(level > MAX_LEVEL)
+			level = MAX_LEVEL;
 			
 		return level;
 	}

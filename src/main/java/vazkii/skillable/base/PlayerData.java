@@ -87,20 +87,19 @@ public class PlayerData {
 			String key = info.skill.getKey();
 			if(skillsCmp.hasKey(key)) {
 				NBTTagCompound infoCmp = skillsCmp.getCompoundTag(key);
-				info.loadFromNBT(cmp);
+				info.loadFromNBT(infoCmp);
 			}
 		}
 	}
 
 	public void saveToNBT(NBTTagCompound cmp) {
 		NBTTagCompound skillsCmp = new NBTTagCompound();
+		
 		for(PlayerSkillInfo info : skillInfo.values()) {
 			String key = info.skill.getKey();
-			if(skillsCmp.hasKey(key)) {
-				NBTTagCompound infoCmp = new NBTTagCompound();
-				info.saveToNBT(cmp);
-				skillsCmp.setTag(key, infoCmp);
-			}
+			NBTTagCompound infoCmp = new NBTTagCompound();
+			info.saveToNBT(infoCmp);
+			skillsCmp.setTag(key, infoCmp);
 		}
 
 		cmp.setTag(TAG_SKILLS_CMP, skillsCmp);

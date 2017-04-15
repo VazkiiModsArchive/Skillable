@@ -21,7 +21,7 @@ public class GuiButtonInventoryTab extends GuiButton {
 	private final Predicate<GuiScreen> selectedPred;
 	
 	public GuiButtonInventoryTab(int id, int x, int y, TabType type, Predicate<GuiScreen> selectedPred) {
-		super(id, x, y, 30, 28, "");
+		super(id, x, y, 32, 28, "");
 		this.type = type;
 		this.selectedPred = selectedPred;
 	}
@@ -46,9 +46,8 @@ public class GuiButtonInventoryTab extends GuiButton {
 			int h = height;
 			
 			if(isSelected()) {
-				x += 2;
-				u += 30;
-				w += 2;
+				x += 4;
+				u += w;
 			}
 			
 			drawTexturedModalRect(x, y, u, v, w, h);

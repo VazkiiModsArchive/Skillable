@@ -27,7 +27,7 @@ public class InventoryTabHandler {
 	public static int mx, my;
 	
 	public static void addTabs(GuiScreen currScreen, List<GuiButton> buttonList) {
-		int x = currScreen.width / 2 - 118;
+		int x = currScreen.width / 2 - 120;
 		int y = currScreen.height / 2 - 76;
 		
 		if(currScreen instanceof GuiContainerCreative) {
