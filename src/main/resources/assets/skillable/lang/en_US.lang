@@ -1,5 +1,6 @@
 # MISC
 skillable.misc.capped=MAX
+skillable.misc.skills=Skills
 
 # SKILL NAMES
 skillable.skill.mining=Mining

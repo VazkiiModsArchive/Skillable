@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
@@ -49,7 +50,7 @@ public class GuiSkills extends GuiScreen {
 			int w = 79;
 			int h = 32;
 			int x = left + (i % 2) * (w + 3) + 8;
-			int y = top + (i / 2) * (h + 3) + 8;
+			int y = top + (i / 2) * (h + 3) + 18;
 			int u = 0;
 			int v = guiHeight;
 			
@@ -67,8 +68,10 @@ public class GuiSkills extends GuiScreen {
 			
 			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
 			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL, x + 26, y + 17, 0x888888);
-
 		}
+		
+		String skillsStr = I18n.translateToLocal("skillable.misc.skills");
+		fontRendererObj.drawString(skillsStr, width / 2 - fontRendererObj.getStringWidth(skillsStr) / 2, top + 6, 4210752);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
