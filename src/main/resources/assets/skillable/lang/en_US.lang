@@ -1,3 +1,14 @@
+# SKILL NAMES
+skillable.skill.mining=Mining
+skillable.skill.gathering=Gathering
+skillable.skill.attack=Attack
+skillable.skill.defense=Defense
+skillable.skill.building=Building
+skillable.skill.farming=Farming
+skillable.skill.agility=Agility
+skillable.skill.magic=Magic
+
+
 # TAB NAMES
 skillable.tab.inventory=Inventory
 skillable.tab.skills=Skills

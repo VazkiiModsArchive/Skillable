@@ -3,7 +3,7 @@ package vazkii.skillable.skill;
 public class SkillAttack extends Skill {
 
 	public SkillAttack() {
-		super("attack");
+		super("attack", 2);
 	}
 	
 }

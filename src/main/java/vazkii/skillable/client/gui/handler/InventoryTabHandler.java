@@ -42,7 +42,6 @@ public class InventoryTabHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void initGui(GuiScreenEvent.InitGuiEvent.Post event) {
-		System.out.println("do");
 		if(event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiContainerCreative)
 			addTabs(event.getGui(), event.getButtonList());
 	}

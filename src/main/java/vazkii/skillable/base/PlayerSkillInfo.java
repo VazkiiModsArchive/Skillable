@@ -8,6 +8,8 @@ public class PlayerSkillInfo {
 	private static final String TAG_LEVEL = "level";
 	private static final String TAG_RANK = "rank";
 	
+	public static final int MAX_LEVEL = 32;
+	
 	public final Skill skill;
 	
 	int level, rank;
@@ -35,7 +37,11 @@ public class PlayerSkillInfo {
 	}
 	
 	public int getMaxLevel() {
-		return (rank + 1) * 8;
+		return (rank + 1) * (MAX_LEVEL / 4);
+	}
+	
+	public boolean isCapped() {
+		return level == MAX_LEVEL;
 	}
 	
 	public void rankUp() {
