@@ -17,6 +17,7 @@ public class CommonProxy {
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
 		MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
+		MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
 		
 		MessageRegister.init();
 	}
