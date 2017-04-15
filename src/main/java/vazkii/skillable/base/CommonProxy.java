@@ -9,13 +9,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.network.MessageDataSync;
+import vazkii.skillable.network.MessageRegister;
 
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new PlayerDataHandler.EventHandler());
 		
-		NetworkHandler.register(MessageDataSync.class, Side.CLIENT);
+		MessageRegister.init();
 	}
 
 	public void init(FMLInitializationEvent event) {
