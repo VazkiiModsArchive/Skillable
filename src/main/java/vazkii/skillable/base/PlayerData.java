@@ -18,14 +18,14 @@ public class PlayerData {
 	public WeakReference<EntityPlayer> playerWR;
 	private final boolean client;
 
-	private HashMap<Skill, Integer> skillLevels = new HashMap();
+	private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap();
 
 	public PlayerData(EntityPlayer player) {
 		playerWR = new WeakReference(player);
 		client = player.getEntityWorld().isRemote;
 
 		for(Skill s : Skills.ALL_SKILLS.values())
-			skillLevels.put(s, 1);
+			skillInfo.put(s, new PlayerSkillInfo(s));
 
 		load();
 	}
@@ -34,13 +34,12 @@ public class PlayerData {
 
 	}
 
-	public int getSkillLevel(Skill s) {
-		return skillLevels.get(s);
+	public PlayerSkillInfo getSkillInfo(Skill s) {
+		return skillInfo.get(s);
 	}
 
 	public void levelUp(Skill s) {
-		int curr = skillLevels.get(s);
-		skillLevels.put(s, curr++);
+		skillInfo.get(s).levelUp();;
 		save();
 		sync();
 	}
@@ -80,18 +79,24 @@ public class PlayerData {
 
 	public void loadFromNBT(NBTTagCompound cmp) {
 		NBTTagCompound skillsCmp = cmp.getCompoundTag(TAG_SKILLS_CMP);
-		for(Skill s : skillLevels.keySet()) {
-			String key = s.getKey();
-			if(skillsCmp.hasKey(key))
-				skillLevels.put(s, skillsCmp.getInteger(key));
+		for(PlayerSkillInfo info : skillInfo.values()) {
+			String key = info.skill.getKey();
+			if(skillsCmp.hasKey(key)) {
+				NBTTagCompound infoCmp = skillsCmp.getCompoundTag(key);
+				info.loadFromNBT(cmp);
+			}
 		}
 	}
 
 	public void saveToNBT(NBTTagCompound cmp) {
 		NBTTagCompound skillsCmp = new NBTTagCompound();
-		for(Skill s : skillLevels.keySet()) {
-			String key = s.getKey();
-			cmp.setInteger(key, skillLevels.get(s));
+		for(PlayerSkillInfo info : skillInfo.values()) {
+			String key = info.skill.getKey();
+			if(skillsCmp.hasKey(key)) {
+				NBTTagCompound infoCmp = new NBTTagCompound();
+				info.saveToNBT(cmp);
+				skillsCmp.setTag(key, infoCmp);
+			}
 		}
 
 		cmp.setTag(TAG_SKILLS_CMP, skillsCmp);
