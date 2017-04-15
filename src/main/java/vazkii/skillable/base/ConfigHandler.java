@@ -15,6 +15,7 @@ public class ConfigHandler {
 
 	public static int baseXPCost = 4;
 	public static int xpIncrease = 1;
+	public static int skillPointInterval = 2;
 	
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
@@ -30,6 +31,7 @@ public class ConfigHandler {
 
 		baseXPCost = loadPropInt("Base XP Cost", "", baseXPCost);
 		xpIncrease = loadPropInt("XP Increase Per Level", "", 1);
+		skillPointInterval = loadPropInt("Levels per Skill Point", "", skillPointInterval);
 		
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, "");
 		LevelLockHandler.loadFromConfig(locks);

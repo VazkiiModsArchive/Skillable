@@ -1,6 +1,7 @@
 package vazkii.skillable.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -166,19 +167,24 @@ public class LevelLockHandler {
 	@SideOnly(Side.CLIENT)
 	public static void onTooltip(ItemTooltipEvent event) {
 		Map<Skill, Integer> lock = getSkillLock(event.getItemStack());
-		if(lock != null) {
-			PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
+		PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
+		addRequirementsToTooltip(data, lock, event.getToolTip());
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void addRequirementsToTooltip(PlayerData data, Map<Skill, Integer> lock, List<String> tooltip) {
+		if(lock == null || lock.isEmpty())
+			return;
+		
+		tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
+		for(Skill s : lock.keySet()) {
+			PlayerSkillInfo info = data.getSkillInfo(s);
+			TextFormatting color = TextFormatting.GREEN;
+			int req = lock.get(s);
+			if(info.getLevel() < req)
+				color = TextFormatting.RED;
 
-			event.getToolTip().add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
-			for(Skill s : lock.keySet()) {
-				PlayerSkillInfo info = data.getSkillInfo(s);
-				TextFormatting color = TextFormatting.GREEN;
-				int req = lock.get(s);
-				if(info.getLevel() < req)
-					color = TextFormatting.RED;
-
-				event.getToolTip().add(String.format("%s - %d %s", color, req, s.getName()));
-			}
+			tooltip.add(String.format(TextFormatting.GRAY + " - %s%d %s", color, req, s.getName()));
 		}
 	}
 

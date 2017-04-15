@@ -19,7 +19,6 @@ public abstract class Skill implements Comparable<Skill> {
 		this.name = name;
 		this.index = index;
 		this.background = background;
-		initUnlockables();
 	}
 	
 	public abstract void initUnlockables();

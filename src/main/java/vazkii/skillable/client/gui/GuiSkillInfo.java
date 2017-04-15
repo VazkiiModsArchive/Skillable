@@ -16,8 +16,10 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
+import vazkii.skillable.base.LevelLockHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
@@ -90,7 +92,9 @@ public class GuiSkillInfo extends GuiScreen {
 		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), PlayerSkillInfo.MAX_LEVEL , I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
 		mc.fontRendererObj.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
 		mc.fontRendererObj.drawString(levelStr, left + 37, top + 18, 4210752);
-
+		
+		mc.fontRendererObj.drawString(String.format(I18n.translateToLocal("skillable.misc.skillPoints"), skillInfo.getSkillPoints()), left + 15, top + 154, 4210752);
+		
 		int cost = skillInfo.getLevelUpCost();
 		String costStr = Integer.toString(cost);
 		if(skillInfo.isCapped())
@@ -106,12 +110,8 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		
-		if(hoveredUnlockable != null) {
-			List<String> tooltip = new ArrayList();
-			TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
-			tooltip.add(tf + hoveredUnlockable.getName());
-			RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
-		}
+		if(hoveredUnlockable != null)
+			makeUnlockableTooltip(data, mouseX, mouseY);
 	}
 	
 	private void drawUnlockable(PlayerData data, Unlockable unlockable, int mx, int my) {
@@ -132,6 +132,39 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		if(mx >= x && my >= y && mx < x + 26 && my < y + 26)
 			hoveredUnlockable = unlockable;
+	}
+	
+	private void makeUnlockableTooltip(PlayerData data, int mouseX, int mouseY) {
+		List<String> tooltip = new ArrayList();
+		TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
+		
+		tooltip.add(tf + hoveredUnlockable.getName());
+		
+		if(isShiftKeyDown())
+			addLongStringToTooltip(tooltip, hoveredUnlockable.getDescription(), guiWidth);
+		else tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("skillable.misc.holdShift"));
+		
+		LevelLockHandler.addRequirementsToTooltip(data, hoveredUnlockable.getRequirements(), tooltip);
+		tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
+		
+		RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
+	}
+	
+	private void addLongStringToTooltip(List<String> tooltip, String longStr, int maxLen) {
+		String[] tokens = longStr.split(" ");
+		String curr = TextFormatting.GRAY.toString();
+		int i = 0;
+
+		while(i < tokens.length) {
+			while(fontRendererObj.getStringWidth(curr) < maxLen && i < tokens.length) {
+				curr = curr + tokens[i] + " ";
+				i++;
+			}
+			tooltip.add(curr);
+			curr = TextFormatting.GRAY.toString();
+		}
+		
+		tooltip.add(curr);
 	}
 	
 	@Override

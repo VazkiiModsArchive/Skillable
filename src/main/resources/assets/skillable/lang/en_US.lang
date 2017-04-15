@@ -2,6 +2,8 @@
 skillable.misc.capped=MAX
 skillable.misc.skills=Skills
 skillable.misc.skillLock=Requirements:
+skillable.misc.skillPoints=%d Skill Points
+skillable.misc.holdShift=Hold SHIFT for description
 
 # SKILL NAMES
 skillable.skill.mining=Mining
@@ -15,8 +17,11 @@ skillable.skill.magic=Magic
 
 # UNLOCKABLE NAMES
 skillable.unlock.obsidian_smasher=Obsidian Smasher
+skillable.unlock.obsidian_smasher.desc=Highly increases the speed of Obsidian mining while using a Diamond Pickaxe
 skillable.unlock.fossil_digger=Fossil Digger
+skillable.unlock.fossil_digger.desc=Adds a small chance to mine two Coal per ore rather than one when mining with an Iron Pickaxe or above (without Silk Touch)
 skillable.unlock.ore_cascade=Ore Cascade
+skillable.unlock.ore_cascade.desc=Toggled Ability: Mining an Ore Block will cause the entire vein to be mined out instead, at the cost of 1 Redstone or Glowstone per block
 
 # RANK NAMES
 skillable.rank.0=Beginner

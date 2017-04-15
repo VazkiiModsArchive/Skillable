@@ -24,6 +24,8 @@ public final class Skills {
 		farming = addSkill(new SkillFarming());
 		agility = addSkill(new SkillAgility());
 		magic = addSkill(new SkillMagic());
+		
+		ALL_SKILLS.values().forEach((skill) -> skill.initUnlockables());
 	}
 	
 	private static Skill addSkill(Skill s) {
