@@ -43,6 +43,7 @@ public class GuiSkills extends GuiScreen {
 			
 			if(mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h)
 				u += w;
+			// TODO move if capped
 			
 			mc.renderEngine.bindTexture(SKILLS_RES);
 			drawTexturedModalRect(x, y, u, v, w, h);
