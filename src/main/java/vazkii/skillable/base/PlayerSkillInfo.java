@@ -2,10 +2,12 @@ package vazkii.skillable.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
+import vazkii.skillable.skill.base.Ability;
 import vazkii.skillable.skill.base.Unlockable;
 
 public class PlayerSkillInfo {
@@ -76,6 +78,12 @@ public class PlayerSkillInfo {
 	
 	public boolean isUnlocked(Unlockable u) {
 		return unlockables.contains(u);
+	}
+	
+	public void addAbilities(Set<Ability> abilities) {
+		for(Unlockable u : unlockables)
+			if(u instanceof Ability)
+				abilities.add((Ability) u);
 	}
 	
 	public void levelUp() {

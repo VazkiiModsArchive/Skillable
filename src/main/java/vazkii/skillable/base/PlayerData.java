@@ -1,8 +1,12 @@
 package vazkii.skillable.base;
 
 import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,6 +15,7 @@ import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.network.MessageDataSync;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
+import vazkii.skillable.skill.base.Ability;
 
 public class PlayerData {
 
@@ -40,7 +45,17 @@ public class PlayerData {
 	}
 
 	public boolean hasAnyAbilities() {
-		return false; //TODO
+		return !getAllAbilities().isEmpty();
+	}
+	
+	public Set<Ability> getAllAbilities() {
+		Set<Ability> set = new TreeSet();
+		for(Skill skill : Skills.ALL_SKILLS.values()) {
+			PlayerSkillInfo info = getSkillInfo(skill);
+			info.addAbilities(set);
+		}
+		
+		return set;
 	}
 	
 	public boolean matchStats(Map<Skill, Integer> stats) {

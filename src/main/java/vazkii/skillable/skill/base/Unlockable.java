@@ -9,7 +9,7 @@ import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
-public abstract class Unlockable {
+public abstract class Unlockable implements Comparable<Unlockable> {
 
 	public final int x, y, cost;
 	private final String name;
@@ -61,6 +61,15 @@ public abstract class Unlockable {
 	
 	public boolean hasSpikes() {
 		return false;
+	}
+	
+	@Override
+	public int compareTo(Unlockable o) {
+		int skillCmp = getParentSkill().compareTo(o.getParentSkill());
+		if(skillCmp == 0)
+			return getName().compareTo(o.getName());
+		
+		return skillCmp;
 	}
 	
 }
