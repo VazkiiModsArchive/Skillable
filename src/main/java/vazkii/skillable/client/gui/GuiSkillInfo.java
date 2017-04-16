@@ -8,11 +8,13 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -191,6 +193,7 @@ public class GuiSkillInfo extends GuiScreen {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		
 		if(mouseButton == 0 && hoveredUnlockable != null && canPurchase) {
+			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 			MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getKey(), hoveredUnlockable.getKey());
 			NetworkHandler.INSTANCE.sendToServer(message);
 		} else if(mouseButton == 1 || mouseButton == 3)

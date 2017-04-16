@@ -2,8 +2,10 @@ package vazkii.skillable.client.gui;
 
 import java.io.IOException;
 
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.skillable.base.PlayerData;
@@ -81,6 +83,7 @@ public class GuiSkills extends GuiScreen {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		
 		if(mouseButton == 0 && hoveredSkill != null) {
+			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 			GuiSkillInfo gui = new GuiSkillInfo(hoveredSkill);
 			mc.displayGuiScreen(gui);
 		}
