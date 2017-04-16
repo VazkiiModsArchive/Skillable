@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import vazkii.skillable.base.CommonProxy;
 import vazkii.skillable.lib.LibMisc;
 
-@Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES)
+@Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, guiFactory = LibMisc.GUI_FACTORY, dependencies = LibMisc.DEPENDENCIES)
 public class Skillable {
 
 	@Instance(LibMisc.MOD_ID)
