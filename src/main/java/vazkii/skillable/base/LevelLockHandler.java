@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,11 +35,45 @@ public class LevelLockHandler {
 			"minecraft:iron_sword=attack:5",
 			"minecraft:iron_pickaxe=mining:5",
 			"minecraft:iron_hoe=farming:5",
-			"minecraft:shears=farming:5",
 			"minecraft:iron_helmet=defense:5",
 			"minecraft:iron_chestplate=defense:5",
 			"minecraft:iron_leggings=defense:5",
 			"minecraft:iron_boots=defense:5",
+			"minecraft:golden_shovel=gathering:5,magic:5",
+			"minecraft:golden_axe=gathering:5,magic:5",
+			"minecraft:golden_sword=attack:5,magic:5",
+			"minecraft:golden_pickaxe=mining:5,magic:5",
+			"minecraft:golden_hoe=farming:5,magic:5",
+			"minecraft:golden_helmet=defense:5,magic:5",
+			"minecraft:golden_chestplate=defense:5,magic:5",
+			"minecraft:golden_leggings=defense:5,magic:5",
+			"minecraft:golden_boots=defense:5,magic:5",
+			"minecraft:diamond_shovel=gathering:16",
+			"minecraft:diamond_axe=gathering:16",
+			"minecraft:diamond_sword=attack:16",
+			"minecraft:diamond_pickaxe=mining:16",
+			"minecraft:diamond_hoe=farming:16",
+			"minecraft:diamond_helmet=defense:16",
+			"minecraft:diamond_chestplate=defense:16",
+			"minecraft:diamond_leggings=defense:16",
+			"minecraft:diamond_boots=defense:16",
+			"minecraft:shears=farming:5,gathering:5",
+			"minecraft:fishing_rod=gathering:8",
+			"minecraft:shield=defense:8",
+			"minecraft:bow=attack:8",
+			"minecraft:ender_pearl=magic:8",
+			"minecraft:ender_eye=magic:16,building:8",
+			"minecraft:elytra=defense:16,agility:24,magic:16",
+			"minecraft:lead=farming:5",
+			"minecraft:end_crystal=building:24,magic:32",
+			"minecraft:iron_horse_armor=defense:5,agility:5",
+			"minecraft:golden_horse_armor=defense:5,magic:5,agility:5",
+			"minecraft:diamond_horse_armor=defense:16,agility:16",
+			"minecraft:fireworks=agility:24",
+			"minecraft:dye:15=farming:12",
+			"minecraft:saddle=agility:8",
+			"minecraft:redstone=building:5",
+			"minecraft:redstone_torch=building:5"
 	};
 
 	public static void loadFromConfig(String[] configValues) {
@@ -62,6 +97,7 @@ public class LevelLockHandler {
 							Skill skill = Skills.ALL_SKILLS.get(skillStr);
 							if(skill != null && level > 1)
 								lock.put(skill, level);
+							else FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
 						} catch(NumberFormatException e) { }
 					}
 				}
