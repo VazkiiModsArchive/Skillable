@@ -6,11 +6,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -182,6 +186,12 @@ public class LevelLockHandler {
 					event.player.inventory.armorInventory.set(i, ItemStack.EMPTY);
 				}
 			}
+	}
+	
+	@SubscribeEvent
+	public static void onEntityDrops(LivingDropsEvent event) {
+		if(ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep)
+			event.getDrops().removeIf((e) -> e.getEntityItem().getItem() == Item.getItemFromBlock(Blocks.WOOL));
 	}
 
 	private static void enforce(PlayerInteractEvent event) {

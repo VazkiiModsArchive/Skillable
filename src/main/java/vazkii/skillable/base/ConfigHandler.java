@@ -16,6 +16,7 @@ public class ConfigHandler {
 	public static int baseXPCost = 4;
 	public static int xpIncrease = 1;
 	public static int skillPointInterval = 2;
+	public static boolean disableSheepWool = true;
 	
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
@@ -32,7 +33,8 @@ public class ConfigHandler {
 		baseXPCost = loadPropInt("Base XP Cost", "", baseXPCost);
 		xpIncrease = loadPropInt("XP Increase Per Level", "", 1);
 		skillPointInterval = loadPropInt("Levels per Skill Point", "", skillPointInterval);
-		
+		disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
+
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, "");
 		LevelLockHandler.loadFromConfig(locks);
 		

@@ -66,7 +66,7 @@ public class GuiSkills extends GuiScreen {
 			mc.renderEngine.bindTexture(SKILLS_RES);
 			GlStateManager.color(1F, 1F, 1F);
 			drawTexturedModalRect(x, y, u, v, w, h);
-			drawTexturedModalRect(x + 5, y + 9, width, 45 + skill.getIndex() * 16, 16, 16);
+			drawTexturedModalRect(x + 5, y + 9, width + 20, 45 + skill.getIndex() * 16, 16, 16);
 			
 			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
 			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL, x + 26, y + 17, 0x888888);
