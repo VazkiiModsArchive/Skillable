@@ -32,6 +32,8 @@ minecraft {
     version = "${config.mc_version}-${config.forge_version}"
     runDir = "eclipse/assets"
 
+    coreMod = "vazkii.skillable.base.asm.LoadingPlugin"
+
     mappings = config.mc_mappings
     replace 'GRADLE:BUILD', config.build_number
     replace 'GRADLE:VERSION', config.version
@@ -47,6 +49,10 @@ jar {
     exclude "**/*.psd"
     exclude "**/*.exe"
     exclude "**/unused"
+
+    manifest {
+        attributes("FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "vazkii.skillable.base.asm.LoadingPlugin")
+    }
 }
 
 processResources {
