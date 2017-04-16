@@ -4,16 +4,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.network.MessageDataSync;
+import vazkii.skillable.skill.Skills;
 
 public class PlayerDataHandler {
 
@@ -22,6 +27,9 @@ public class PlayerDataHandler {
 	private static final String DATA_TAG = "SkillableData";
 
 	public static PlayerData get(EntityPlayer player) {
+		if(player == null)
+			return null;
+		
 		int key = getKey(player);
 		if(!playerData.containsKey(key))
 			playerData.put(key, new PlayerData(player));
@@ -49,7 +57,7 @@ public class PlayerDataHandler {
 	}
 
 	private static int getKey(EntityPlayer player) {
-		return player.hashCode() << 1 + (player.getEntityWorld().isRemote ? 1 : 0);
+		return player == null ? 0 : player.hashCode() << 1 + (player.getEntityWorld().isRemote ? 1 : 0);
 	}
 
 	public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
@@ -73,18 +81,35 @@ public class PlayerDataHandler {
 		}
 
 		@SubscribeEvent
-		public static void onPlayerTick(LivingUpdateEvent event) {
-			if(event.getEntityLiving() instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-
-				PlayerDataHandler.get(player).tick();
+		public static void onPlayerLogin(PlayerLoggedInEvent event) {
+			PlayerData data = PlayerDataHandler.get(event.player);
+			if(data != null)
+				data.sync();
+		}
+		
+		@SubscribeEvent
+		public static void onPlayerTick(PlayerTickEvent event) {
+			if(event.phase == Phase.END) {
+				PlayerData data = PlayerDataHandler.get(event.player);
+				if(data != null)
+					data.tickPlayer(event);
 			}
 		}
 
 		@SubscribeEvent
-		public static void onPlayerLogin(PlayerLoggedInEvent event) {
-			PlayerDataHandler.get(event.player).sync();
+		public static void onBlockDrops(HarvestDropsEvent event) {
+			PlayerData data = PlayerDataHandler.get(event.getHarvester());
+			if(data != null)
+				data.blockDrops(event);
 		}
+		
+		@SubscribeEvent
+		public static void onGetBreakSpeed(BreakSpeed event) {
+			PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
+			if(data != null)
+				data.breakSpeed(event);
+		}
+		
 	}
 
 }

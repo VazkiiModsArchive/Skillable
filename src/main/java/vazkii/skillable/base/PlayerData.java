@@ -1,21 +1,24 @@
 package vazkii.skillable.base;
 
 import java.lang.ref.WeakReference;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.network.MessageDataSync;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 import vazkii.skillable.skill.base.Ability;
+import vazkii.skillable.skill.base.IAbilityEventHandler;
 
 public class PlayerData {
 
@@ -35,11 +38,7 @@ public class PlayerData {
 
 		load();
 	}
-
-	public void tick() {
-
-	}
-
+	
 	public PlayerSkillInfo getSkillInfo(Skill s) {
 		return skillInfo.get(s);
 	}
@@ -50,10 +49,8 @@ public class PlayerData {
 	
 	public Set<Ability> getAllAbilities() {
 		Set<Ability> set = new TreeSet();
-		for(Skill skill : Skills.ALL_SKILLS.values()) {
-			PlayerSkillInfo info = getSkillInfo(skill);
+		for(PlayerSkillInfo info : skillInfo.values())
 			info.addAbilities(set);
-		}
 		
 		return set;
 	}
@@ -128,6 +125,24 @@ public class PlayerData {
 		}
 
 		cmp.setTag(TAG_SKILLS_CMP, skillsCmp);
+	}
+	
+	// Event Handlers
+	
+	public void tickPlayer(PlayerTickEvent event) {
+		forEachEventHandler((h) -> h.onPlayerTick(event));
+	}
+	
+	public void blockDrops(HarvestDropsEvent event) {
+		forEachEventHandler((h) -> h.onBlockDrops(event));
+	}
+	
+	public void breakSpeed(BreakSpeed event) {
+		forEachEventHandler((h) -> h.getBreakSpeed(event));
+	}
+	
+	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
+		skillInfo.values().forEach((info) -> info.forEachEventHandler(consumer));
 	}
 
 }

@@ -3,11 +3,13 @@ package vazkii.skillable.base;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 import vazkii.skillable.skill.base.Ability;
+import vazkii.skillable.skill.base.IAbilityEventHandler;
 import vazkii.skillable.skill.base.Unlockable;
 
 public class PlayerSkillInfo {
@@ -100,6 +102,13 @@ public class PlayerSkillInfo {
 	public void respec() {
 		unlockables.clear();
 		skillPoints = level / ConfigHandler.skillPointInterval;
+	}
+	
+	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
+		unlockables.forEach((u) -> {
+			if(u instanceof IAbilityEventHandler)
+				consumer.accept((IAbilityEventHandler) u);
+		});
 	}
 	
 }
