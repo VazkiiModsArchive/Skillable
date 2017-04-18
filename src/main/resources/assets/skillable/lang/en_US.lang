@@ -39,6 +39,8 @@ skillable.unlock.more_wheat=Wheat-a-Plenty
 skillable.unlock.more_wheat.desc=Adds a small chance to gather a second piece of Wheat when harvesting fully grown Wheat crops. 
 skillable.unlock.green_thumb=Green Thumb
 skillable.unlock.green_thumb.desc=Plants around players with this ability will grow faster
+skillable.unlock.roadwalk=Roadwalk
+skillable.unlock.roadwalk.desc=Increases your movement speed while on a Grass Path
  
 # RANK NAMES
 skillable.rank.0=Beginner
