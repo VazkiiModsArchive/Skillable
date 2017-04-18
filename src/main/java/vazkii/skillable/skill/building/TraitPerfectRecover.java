@@ -15,24 +15,20 @@ public class TraitPerfectRecover extends Trait {
 		addRequirement(Skills.gathering, 6);
 		addRequirement(Skills.mining, 6);
 	}
-	
+
 	@Override
 	public void onBlockDrops(HarvestDropsEvent event) { 
 		if(event.getState().getBlock() == Blocks.GLOWSTONE) {
-			for(ItemStack stack : event.getDrops())
-				if(stack.getItem() == Items.GLOWSTONE_DUST && stack.getCount() < 4)
-					stack.setCount(4);
+			event.getDrops().removeIf((s) -> s.getItem() == Items.GLOWSTONE_DUST);
+			event.getDrops().add(new ItemStack(Items.GLOWSTONE_DUST, 4));
 		}
 		else if(event.getState().getBlock() == Blocks.SEA_LANTERN) {
-			for(ItemStack stack : event.getDrops())
-				if(stack.getItem() == Items.PRISMARINE_CRYSTALS && stack.getCount() < 5) {
-					stack.setCount(5);
-					event.getDrops().add(new ItemStack(Items.PRISMARINE_SHARD, 4));
-					break;
-				}
+			event.getDrops().removeIf((s) -> s.getItem() == Items.PRISMARINE_CRYSTALS);
+			event.getDrops().add(new ItemStack(Items.PRISMARINE_CRYSTALS, 5));
+			event.getDrops().add(new ItemStack(Items.PRISMARINE_SHARD, 4));
 		} else for(ItemStack stack : event.getDrops())
 			if(stack.getItem().getRegistryName().toString().equals("quark:glass_shards") && stack.getCount() < 4)
 				stack.setCount(4);
 	}
-	
+
 }
