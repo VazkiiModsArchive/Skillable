@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -16,8 +14,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.skillable.network.MessageDataSync;
 import vazkii.skillable.skill.Skills;
 
 public class PlayerDataHandler {
@@ -108,6 +104,15 @@ public class PlayerDataHandler {
 			PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
 			if(data != null)
 				data.breakSpeed(event);
+		}
+		
+		@SubscribeEvent
+		public static void onMobDrops(LivingDropsEvent event) {
+			if(event.getSource().getEntity() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
+				if(data != null)
+					data.mobDrops(event);
+			}
 		}
 		
 	}

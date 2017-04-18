@@ -1,6 +1,8 @@
 package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
+import vazkii.skillable.skill.gathering.TraitDropGuarantee;
+import vazkii.skillable.skill.gathering.TraitLuckyFisherman;
 
 public class SkillGathering extends Skill {
 
@@ -10,8 +12,8 @@ public class SkillGathering extends Skill {
 
 	@Override
 	public void initUnlockables() {
-		// TODO Auto-generated method stub
-		
+		addUnlockable(new TraitLuckyFisherman());
+		addUnlockable(new TraitDropGuarantee());
 	}
 	
 }

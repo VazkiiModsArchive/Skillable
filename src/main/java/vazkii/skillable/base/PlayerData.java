@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -135,6 +136,10 @@ public class PlayerData {
 	
 	public void blockDrops(HarvestDropsEvent event) {
 		forEachEventHandler((h) -> h.onBlockDrops(event));
+	}
+
+	public void mobDrops(LivingDropsEvent event) {
+		forEachEventHandler((h) -> h.onMobDrops(event));
 	}
 	
 	public void breakSpeed(BreakSpeed event) {

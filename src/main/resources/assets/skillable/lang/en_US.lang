@@ -23,6 +23,10 @@ skillable.unlock.fossil_digger=Fossil Digger
 skillable.unlock.fossil_digger.desc=Adds a small chance to mine two Coal per ore rather than one when mining with an Iron Pickaxe or above (without Silk Touch)
 skillable.unlock.ore_cascade=Ore Cascade
 skillable.unlock.ore_cascade.desc=Toggled Ability: Mining an Ore Block will cause the entire vein to be mined out instead. The Pickaxe will take double durability damage
+skillable.unlock.lucky_fisherman=Lucky Fisherman
+skillable.unlock.lucky_fisherman.desc=Luck increased while fishing
+skillable.unlock.drop_guarantee=Drop Guarantee
+skillable.unlock.drop_guarantee.desc=Enemy mobs will always drop at least one item (if aplicable)
 
 # RANK NAMES
 skillable.rank.0=Beginner
