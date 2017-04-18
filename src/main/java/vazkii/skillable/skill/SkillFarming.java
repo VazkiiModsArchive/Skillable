@@ -1,6 +1,7 @@
 package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
+import vazkii.skillable.skill.farming.TraitMoreWheat;
 
 public class SkillFarming extends Skill {
 
@@ -10,8 +11,7 @@ public class SkillFarming extends Skill {
 
 	@Override
 	public void initUnlockables() {
-		// TODO Auto-generated method stub
-		
+		addUnlockable(new TraitMoreWheat());
 	}
 	
 }
