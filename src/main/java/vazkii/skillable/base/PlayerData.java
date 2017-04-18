@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import vazkii.arl.network.NetworkHandler;
@@ -153,6 +154,10 @@ public class PlayerData {
 	
 	public void hurt(LivingHurtEvent event) {
 		forEachEventHandler((h) -> h.onHurt(event));
+	}
+	
+	public void rightClickBlock(RightClickBlock event) {
+		forEachEventHandler((h) -> h.onRightClickBlock(event));
 	}
 	
 	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {

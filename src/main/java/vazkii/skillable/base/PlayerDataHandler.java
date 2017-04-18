@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -128,6 +129,13 @@ public class PlayerDataHandler {
 				if(data != null)
 					data.attackMob(event);
 			}
+		}
+		
+		@SubscribeEvent
+		public static void onRightClickBlock(RightClickBlock event) {
+			PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
+			if(data != null)
+				data.rightClickBlock(event);
 		}
 
 	}
