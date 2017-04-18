@@ -15,12 +15,15 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import vazkii.skillable.skill.Skills;
 import vazkii.skillable.skill.base.Trait;
 
 public class TraitDropGuarantee extends Trait {
 
 	public TraitDropGuarantee() {
 		super("drop_guarantee", 1, 1, 8);
+		addRequirement(Skills.gathering, 20);
+		addRequirement(Skills.attack, 8);
 	}
 
 	@Override
@@ -55,3 +58,4 @@ public class TraitDropGuarantee extends Trait {
 	}
 
 }
+
