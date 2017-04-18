@@ -2,6 +2,7 @@ package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
 import vazkii.skillable.skill.building.TraitChorusTransmutation;
+import vazkii.skillable.skill.building.TraitPerfectRecover;
 
 public class SkillBuilding extends Skill {
 
@@ -12,6 +13,7 @@ public class SkillBuilding extends Skill {
 	@Override
 	public void initUnlockables() {
 		addUnlockable(new TraitChorusTransmutation());
+		addUnlockable(new TraitPerfectRecover());
 	}
 	
 }

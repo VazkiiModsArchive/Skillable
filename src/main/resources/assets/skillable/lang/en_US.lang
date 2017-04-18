@@ -33,6 +33,8 @@ skillable.unlock.undershirt=Undershirt
 skillable.unlock.undershirt.desc=Every 10 seconds, taking a fatal blow when your health is above 3 hearts will reduce to you half a heart instead of killing you
 skillable.unlock.chorus_transmute=Chorus Transmutation
 skillable.unlock.chorus_transmute.desc=Unlocks the ability for Chorus Fruit to be used as a block Transmutation agent, which will transform some blocks into others
+skillable.unlock.perfect_recover=Perfect Recover
+skillable.unlock.perfect_recover.desc=Blocks that drop their components, such as Glowstone, will always drop enough to rebuild them
 
 # RANK NAMES
 skillable.rank.0=Beginner
