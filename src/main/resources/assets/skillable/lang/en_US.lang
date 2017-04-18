@@ -29,6 +29,8 @@ skillable.unlock.drop_guarantee=Drop Guarantee
 skillable.unlock.drop_guarantee.desc=Enemy mobs will always drop at least one item (if aplicable)
 skillable.unlock.neutralissse=DefuSSse
 skillable.unlock.neutralissse.desc=Landing a blow on a Creeper just after it starts igniting will neutralize it for a few seconds
+skillable.unlock.undershirt=Undershirt
+skillable.unlock.undershirt.desc=Every 10 seconds, taking a fatal blow when your health is above 3 hearts will reduce to you half a heart instead of killing you
 
 # RANK NAMES
 skillable.rank.0=Beginner

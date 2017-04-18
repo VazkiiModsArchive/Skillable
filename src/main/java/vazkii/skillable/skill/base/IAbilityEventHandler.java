@@ -13,5 +13,6 @@ public interface IAbilityEventHandler {
 	public default void getBreakSpeed(BreakSpeed event) { }
 	public default void onMobDrops(LivingDropsEvent event) { }
 	public default void onAttackMob(LivingHurtEvent event) { }
+	public default void onHurt(LivingHurtEvent event) { }
 
 }

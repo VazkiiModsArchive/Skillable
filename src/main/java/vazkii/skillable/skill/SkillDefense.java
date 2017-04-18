@@ -1,6 +1,7 @@
 package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
+import vazkii.skillable.skill.defense.TraitUndershirt;
 
 public class SkillDefense extends Skill {
 
@@ -10,8 +11,7 @@ public class SkillDefense extends Skill {
 
 	@Override
 	public void initUnlockables() {
-		// TODO Auto-generated method stub
-		
+		addUnlockable(new TraitUndershirt());
 	}
 
 }

@@ -151,6 +151,10 @@ public class PlayerData {
 		forEachEventHandler((h) -> h.onAttackMob(event));
 	}
 	
+	public void hurt(LivingHurtEvent event) {
+		forEachEventHandler((h) -> h.onHurt(event));
+	}
+	
 	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
 		skillInfo.values().forEach((info) -> info.forEachEventHandler(consumer));
 	}

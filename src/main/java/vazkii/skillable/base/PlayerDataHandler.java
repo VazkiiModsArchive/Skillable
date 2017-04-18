@@ -26,7 +26,7 @@ public class PlayerDataHandler {
 	public static PlayerData get(EntityPlayer player) {
 		if(player == null)
 			return null;
-		
+
 		int key = getKey(player);
 		if(!playerData.containsKey(key))
 			playerData.put(key, new PlayerData(player));
@@ -68,7 +68,7 @@ public class PlayerDataHandler {
 
 		return persistentData.getCompoundTag(DATA_TAG);
 	}
-	
+
 	public static class EventHandler {
 
 		@SubscribeEvent
@@ -83,7 +83,7 @@ public class PlayerDataHandler {
 			if(data != null)
 				data.sync();
 		}
-		
+
 		@SubscribeEvent
 		public static void onPlayerTick(PlayerTickEvent event) {
 			if(event.phase == Phase.END) {
@@ -99,14 +99,14 @@ public class PlayerDataHandler {
 			if(data != null)
 				data.blockDrops(event);
 		}
-		
+
 		@SubscribeEvent
 		public static void onGetBreakSpeed(BreakSpeed event) {
 			PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
 			if(data != null)
 				data.breakSpeed(event);
 		}
-		
+
 		@SubscribeEvent
 		public static void onMobDrops(LivingDropsEvent event) {
 			if(event.getSource().getEntity() instanceof EntityPlayer) {
@@ -115,16 +115,21 @@ public class PlayerDataHandler {
 					data.mobDrops(event);
 			}
 		}
-		
+
 		@SubscribeEvent
-		public static void onAttackMob(LivingHurtEvent event) {
+		public static void onHurt(LivingHurtEvent event) {
+			if(event.getEntity() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getEntity());
+				if(data != null)
+					data.hurt(event);
+			}
 			if(event.getSource().getEntity() instanceof EntityPlayer) {
 				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
 				if(data != null)
 					data.attackMob(event);
 			}
 		}
-		
+
 	}
 
 }
