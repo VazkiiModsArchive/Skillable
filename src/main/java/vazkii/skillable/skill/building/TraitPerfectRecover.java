@@ -23,7 +23,14 @@ public class TraitPerfectRecover extends Trait {
 				if(stack.getItem() == Items.GLOWSTONE_DUST && stack.getCount() < 4)
 					stack.setCount(4);
 		}
-		else for(ItemStack stack : event.getDrops())
+		else if(event.getState().getBlock() == Blocks.SEA_LANTERN) {
+			for(ItemStack stack : event.getDrops())
+				if(stack.getItem() == Items.PRISMARINE_CRYSTALS && stack.getCount() < 5) {
+					stack.setCount(5);
+					event.getDrops().add(new ItemStack(Items.PRISMARINE_SHARD, 4));
+					break;
+				}
+		} else for(ItemStack stack : event.getDrops())
 			if(stack.getItem().getRegistryName().toString().equals("quark:glass_shards") && stack.getCount() < 4)
 				stack.setCount(4);
 	}
