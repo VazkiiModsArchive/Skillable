@@ -16,7 +16,7 @@ public class SkillMining extends Skill {
 		addUnlockable(new TraitFossilDigger());
 		addUnlockable(new TraitObsidianSmasher());
 		
-		addUnlockable(new AbilityOreCascade());
+//		addUnlockable(new AbilityOreCascade());
 	}
 	
 }
