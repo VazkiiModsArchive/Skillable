@@ -16,8 +16,8 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitMoreWheat extends Trait {
 
 	public TraitMoreWheat() {
-		super("more_wheat", 1, 2, 8);
-		addRequirement(Skills.farming, 16);
+		super("more_wheat", 1, 2, 6);
+		addRequirement(Skills.farming, 12);
 	}
 	
 	@Override

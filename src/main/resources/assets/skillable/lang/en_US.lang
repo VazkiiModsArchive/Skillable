@@ -26,7 +26,7 @@ skillable.unlock.ore_cascade.desc=Toggled Ability: Mining an Ore Block will caus
 skillable.unlock.lucky_fisherman=Lucky Fisherman
 skillable.unlock.lucky_fisherman.desc=Luck increased while fishing
 skillable.unlock.drop_guarantee=Drop Guarantee
-skillable.unlock.drop_guarantee.desc=Enemy mobs will always drop at least one item (if aplicable)
+skillable.unlock.drop_guarantee.desc=Enemy mobs will always drop at least one item (if applicable)
 skillable.unlock.neutralissse=DefuSSse
 skillable.unlock.neutralissse.desc=Landing a blow on a Creeper just after it starts igniting will neutralize it for a few seconds
 skillable.unlock.undershirt=Undershirt
@@ -37,7 +37,9 @@ skillable.unlock.perfect_recover=Perfect Recover
 skillable.unlock.perfect_recover.desc=Blocks that drop their components, such as Glowstone, will always drop enough to rebuild them
 skillable.unlock.more_wheat=Wheat-a-Plenty
 skillable.unlock.more_wheat.desc=Adds a small chance to gather a second piece of Wheat when harvesting fully grown Wheat crops. 
-
+skillable.unlock.green_thumb=Green Thumb
+skillable.unlock.green_thumb.desc=Plants around players with this ability will grow faster
+ 
 # RANK NAMES
 skillable.rank.0=Beginner
 skillable.rank.1=Fledgling
