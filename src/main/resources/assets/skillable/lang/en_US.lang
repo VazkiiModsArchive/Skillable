@@ -27,6 +27,8 @@ skillable.unlock.lucky_fisherman=Lucky Fisherman
 skillable.unlock.lucky_fisherman.desc=Luck increased while fishing
 skillable.unlock.drop_guarantee=Drop Guarantee
 skillable.unlock.drop_guarantee.desc=Enemy mobs will always drop at least one item (if aplicable)
+skillable.unlock.neutralissse=DefuSSse
+skillable.unlock.neutralissse.desc=Landing a blow on a Creeper just after it starts igniting will neutralize it for a few seconds
 
 # RANK NAMES
 skillable.rank.0=Beginner

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -112,6 +113,15 @@ public class PlayerDataHandler {
 				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
 				if(data != null)
 					data.mobDrops(event);
+			}
+		}
+		
+		@SubscribeEvent
+		public static void onAttackMob(LivingHurtEvent event) {
+			if(event.getSource().getEntity() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
+				if(data != null)
+					data.attackMob(event);
 			}
 		}
 		

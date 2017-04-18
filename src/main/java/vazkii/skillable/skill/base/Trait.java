@@ -8,9 +8,4 @@ public class Trait extends Unlockable implements IAbilityEventHandler {
 		super(name, x, y, cost);
 	}
 	
-	@Override
-	public void onMobDrops(LivingDropsEvent event) { 
-		
-	}
-	
 }
