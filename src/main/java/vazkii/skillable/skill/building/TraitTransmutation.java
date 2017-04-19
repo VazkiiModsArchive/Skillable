@@ -39,6 +39,8 @@ public abstract class TraitTransmutation extends Trait {
 					for(int i = 0; i < 20; i++)
 						event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(), pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0);
 				}
+				
+				stack.shrink(1);
 			}
 		}
 	}
