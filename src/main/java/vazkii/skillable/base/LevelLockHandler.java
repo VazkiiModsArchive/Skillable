@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -156,6 +157,15 @@ public class LevelLockHandler {
 	@SubscribeEvent
 	public static void leftClick(LeftClickBlock event) {
 		enforce(event);
+		
+		if(!event.isCanceled()) {
+			EntityPlayer player = event.getEntityPlayer();
+			IBlockState state = event.getWorld().getBlockState(event.getPos());
+			int meta = state.getBlock().getMetaFromState(state);
+			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+			if(!player.isCreative() && !canPlayerUseItem(player, stack))
+				event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
