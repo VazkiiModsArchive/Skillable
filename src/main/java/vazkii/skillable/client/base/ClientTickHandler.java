@@ -47,6 +47,7 @@ public class ClientTickHandler {
 			if(gui == null || !gui.doesGuiPauseGame()) {
 				ticksInGame++;
 				partialTicks = 0;
+				HUDHandler.tick();
 			}
 
 			calcDelta();

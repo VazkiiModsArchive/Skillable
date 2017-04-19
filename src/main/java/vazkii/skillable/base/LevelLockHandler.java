@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.arl.network.NetworkHandler;
+import vazkii.skillable.network.MessageLockedItem;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
@@ -149,8 +152,11 @@ public class LevelLockHandler {
 	public static void hurtEvent(LivingAttackEvent event) {
 		if(event.getSource().getEntity() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
-			if(!player.isCreative() && !canPlayerUseItem(player, player.getHeldItemMainhand()))
+			ItemStack stack = player.getHeldItemMainhand();
+			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+				tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
 				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -163,8 +169,10 @@ public class LevelLockHandler {
 			IBlockState state = event.getWorld().getBlockState(event.getPos());
 			int meta = state.getBlock().getMetaFromState(state);
 			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
-			if(!player.isCreative() && !canPlayerUseItem(player, stack))
+			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_LOCKED);
 				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -205,14 +213,24 @@ public class LevelLockHandler {
 	}
 
 	private static void enforce(PlayerInteractEvent event) {
-		if(event.getEntityPlayer().isCreative())
+		EntityPlayer player = event.getEntityPlayer();
+		if(player.isCreative())
 			return;
 
 		ItemStack stack = event.getItemStack();
-		if(!canPlayerUseItem(event.getEntityPlayer(), stack))
+		if(!canPlayerUseItem(player, stack)) {
+			tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
 			event.setCanceled(true);
+		}
 	}
 
+	public static void tellPlayer(EntityPlayer player, ItemStack stack, String msg) {
+		if(player instanceof EntityPlayerMP) {
+			MessageLockedItem message = new MessageLockedItem(stack, msg);
+			NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
+		}
+	}
+	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onTooltip(ItemTooltipEvent event) {

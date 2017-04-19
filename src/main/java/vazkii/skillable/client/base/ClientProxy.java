@@ -16,6 +16,7 @@ public class ClientProxy extends CommonProxy {
 		
 		MinecraftForge.EVENT_BUS.register(ClientTickHandler.class);
 		MinecraftForge.EVENT_BUS.register(InventoryTabHandler.class);
+		MinecraftForge.EVENT_BUS.register(HUDHandler.class);
 	}
 	
 	@Override
