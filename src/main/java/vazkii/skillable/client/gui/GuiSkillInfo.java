@@ -89,8 +89,7 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		drawTexturedModalRect(left, top, 0, 0, guiWidth, guiHeight);
 		
-		mc.renderEngine.bindTexture(GuiSkills.SKILLS_RES);
-		drawTexturedModalRect(left + 15, top + 9, guiWidth + 16, 45 + skill.getIndex() * 16, 16, 16);
+		GuiSkills.drawSkill(left + 15, top + 9, skill);
 		
 		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), PlayerSkillInfo.MAX_LEVEL , I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
 		mc.fontRendererObj.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);

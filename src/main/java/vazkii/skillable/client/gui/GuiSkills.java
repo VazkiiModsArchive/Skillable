@@ -2,12 +2,14 @@ package vazkii.skillable.client.gui;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
@@ -66,8 +68,8 @@ public class GuiSkills extends GuiScreen {
 			mc.renderEngine.bindTexture(SKILLS_RES);
 			GlStateManager.color(1F, 1F, 1F);
 			drawTexturedModalRect(x, y, u, v, w, h);
-			drawTexturedModalRect(x + 5, y + 9, guiWidth + 16, 45 + skill.getIndex() * 16, 16, 16);
-			
+			drawSkill(x + 5, y + 9, skill);
+
 			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
 			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL, x + 26, y + 17, 0x888888);
 		}
@@ -92,6 +94,13 @@ public class GuiSkills extends GuiScreen {
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
+	}
+	
+	public static void drawSkill(int x, int y, Skill skill) {
+		Minecraft mc = Minecraft.getMinecraft();
+		mc.renderEngine.bindTexture(SKILLS_RES);
+		int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
+		RenderHelper.drawTexturedModalRect(x, y, 1, 176 + Math.min(rank, 3) * 16, 44 + skill.getIndex() * 16, 16, 16);
 	}
 	
 }
