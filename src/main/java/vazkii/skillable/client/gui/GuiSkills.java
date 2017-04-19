@@ -41,6 +41,7 @@ public class GuiSkills extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 		mc.renderEngine.bindTexture(SKILLS_RES);
+		GlStateManager.color(1F, 1F, 1F);
 		
 		int left = width / 2 - guiWidth / 2;
 		int top = height / 2 - guiHeight / 2;
