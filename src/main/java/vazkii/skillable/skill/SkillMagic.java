@@ -1,6 +1,7 @@
 package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
+import vazkii.skillable.skill.magic.TraitGoldenOsmosis;
 
 public class SkillMagic extends Skill {
 
@@ -10,8 +11,7 @@ public class SkillMagic extends Skill {
 
 	@Override
 	public void initUnlockables() {
-		// TODO Auto-generated method stub
-		
+		addUnlockable(new TraitGoldenOsmosis());
 	}
 	
 }

@@ -41,6 +41,8 @@ skillable.unlock.green_thumb=Green Thumb
 skillable.unlock.green_thumb.desc=Plants around players with this ability will grow faster
 skillable.unlock.roadwalk=Roadwalk
 skillable.unlock.roadwalk.desc=Increases your movement speed while on a Grass Path
+skillable.unlock.golden_osmosis=Golden Osmosis
+skillable.unlock.golden_osmosis.desc=Golden tools, while being held, will extract XP from the user to repair themselves at a fast rate
  
 # RANK NAMES
 skillable.rank.0=Beginner
