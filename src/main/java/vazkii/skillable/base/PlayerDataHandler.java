@@ -1,7 +1,9 @@
 package vazkii.skillable.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +18,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import vazkii.skillable.skill.Skills;
 
 public class PlayerDataHandler {
 
@@ -43,15 +44,19 @@ public class PlayerDataHandler {
 
 		return data;
 	}
-
+	
 	public static void cleanup() {
+		List<Integer> removals = new ArrayList();
 		Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
 		while(it.hasNext()) {
 			Entry<Integer, PlayerData> item = it.next();
 			PlayerData d = item.getValue();
 			if(d != null && d.playerWR.get() == null)
-				it.remove();
+				removals.add(item.getKey());
 		}
+
+		for(int i : removals)
+			playerData.remove(i);
 	}
 
 	private static int getKey(EntityPlayer player) {
