@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.ConfigHandler;
@@ -77,6 +79,15 @@ public class GuiSkills extends GuiScreen {
 		
 		String skillsStr = I18n.translateToLocal("skillable.misc.skills");
 		fontRendererObj.drawString(skillsStr, width / 2 - fontRendererObj.getStringWidth(skillsStr) / 2, top + 6, 4210752);
+		
+		if(LibMisc.IS_MODOFF) {
+			int x = width / 2;
+			int y = top - 40;
+			FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
+			
+			for(int i = 0; i < LibMisc.MODOFF_MESSAGES.length; i++)
+				drawCenteredString(font, LibMisc.MODOFF_MESSAGES[i], x, y + i * 10, 0xFFFFFF);
+		}
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
