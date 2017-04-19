@@ -18,8 +18,6 @@ public class PlayerSkillInfo {
 	private static final String TAG_SKILL_POINTS = "skillPoints";
 	private static final String TAG_UNLOCKABLES = "unlockables";
 	
-	public static final int MAX_LEVEL = 32;
-	
 	public final Skill skill;
 	
 	private int level;
@@ -56,14 +54,14 @@ public class PlayerSkillInfo {
 	public int getLevel() {
 		if(level <= 0)
 			level = 1;
-		if(level > MAX_LEVEL)
-			level = MAX_LEVEL;
+		if(level > ConfigHandler.levelCap)
+			level = ConfigHandler.levelCap;
 			
 		return level;
 	}
 	
 	public int getRank() {
-		return level / (MAX_LEVEL / 4);
+		return level / (ConfigHandler.levelCap / 4);
 	}
 	
 	public int getSkillPoints() {
@@ -71,7 +69,7 @@ public class PlayerSkillInfo {
 	}
 	
 	public boolean isCapped() {
-		return level == MAX_LEVEL;
+		return level == ConfigHandler.levelCap;
 	}
 	
 	public int getLevelUpCost() {

@@ -10,6 +10,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.arl.util.RenderHelper;
+import vazkii.skillable.base.ConfigHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.PlayerSkillInfo;
@@ -71,7 +72,7 @@ public class GuiSkills extends GuiScreen {
 			drawSkill(x + 5, y + 9, skill);
 
 			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
-			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + PlayerSkillInfo.MAX_LEVEL, x + 26, y + 17, 0x888888);
+			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
 		}
 		
 		String skillsStr = I18n.translateToLocal("skillable.misc.skills");

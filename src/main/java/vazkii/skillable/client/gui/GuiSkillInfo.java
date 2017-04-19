@@ -20,6 +20,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.arl.util.RenderHelper;
+import vazkii.skillable.base.ConfigHandler;
 import vazkii.skillable.base.LevelLockHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
@@ -91,7 +92,7 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		GuiSkills.drawSkill(left + 15, top + 9, skill);
 		
-		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), PlayerSkillInfo.MAX_LEVEL , I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
+		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), ConfigHandler.levelCap, I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
 		mc.fontRendererObj.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
 		mc.fontRendererObj.drawString(levelStr, left + 37, top + 18, 4210752);
 		
