@@ -170,7 +170,7 @@ public class LevelLockHandler {
 			int meta = state.getBlock().getMetaFromState(state);
 			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
 			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
-				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_LOCKED);
+				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
 				event.setCanceled(true);
 			}
 		}
@@ -183,8 +183,19 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void rightClickBlock(RightClickBlock event) {
-		if(!event.getEntityPlayer().isSneaking())
+		if(!event.getEntityPlayer().isSneaking()) {
 			enforce(event);
+			if(!event.isCanceled()) {
+				EntityPlayer player = event.getEntityPlayer();
+				IBlockState state = event.getWorld().getBlockState(event.getPos());
+				int meta = state.getBlock().getMetaFromState(state);
+				ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+				if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+					tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
+					event.setCanceled(true);
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent

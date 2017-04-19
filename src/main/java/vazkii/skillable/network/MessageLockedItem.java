@@ -15,7 +15,8 @@ import vazkii.skillable.client.base.HUDHandler;
 public class MessageLockedItem extends NetworkMessage {
 	
 	public static final String MSG_ITEM_LOCKED = "skillable.misc.itemLocked";
-	public static final String MSG_BLOCK_LOCKED = "skillable.misc.blockLocked";
+	public static final String MSG_BLOCK_BREAK_LOCKED = "skillable.misc.blockBreakLocked";
+	public static final String MSG_BLOCK_USE_LOCKED = "skillable.misc.blockUseLocked";
 	
 	public ItemStack stack;
 	public String msg;
