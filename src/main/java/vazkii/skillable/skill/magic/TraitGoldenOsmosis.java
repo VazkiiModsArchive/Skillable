@@ -22,7 +22,7 @@ public class TraitGoldenOsmosis extends Trait {
 	@Override
 	public void onPlayerTick(PlayerTickEvent event) {
 		ItemStack stack = event.player.getHeldItemMainhand();
-		if(ImmutableSet.of(Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD).contains(stack.getItem()) && stack.getMetadata() > 3) {
+		if(!event.player.world.isRemote && ImmutableSet.of(Items.GOLDEN_PICKAXE, Items.GOLDEN_AXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD).contains(stack.getItem()) && stack.getMetadata() > 3) {
 			int xp = ExperienceHelper.getPlayerXP(event.player);
 			if(xp > 0) {
 				ExperienceHelper.drainPlayerXP(event.player, 1);
