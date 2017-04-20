@@ -18,6 +18,7 @@ public class ConfigHandler {
 	public static int skillPointInterval = 2;
 	public static int levelCap = 32;
 	public static boolean disableSheepWool = true;
+	public static boolean forceNormal = false;
 	
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
@@ -37,7 +38,14 @@ public class ConfigHandler {
 		levelCap = loadPropInt("Level Cap", "", levelCap);
 		disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
 
+		if(LibMisc.IS_MODOFF)
+			forceNormal = loadPropBool("Force Non-Modoff", "Disable the Modoff only rules, these being non functional skill locking and text in the skill GUI.\n"
+					+ "Please note that Skilable is not ready for public use yet. You can use it, but it's not advised.\n"
+					+ "Do not put it in a modpack lest you want your users to hate you when everything explodes.", false);
+		
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, "");
+		if(LibMisc.IS_MODOFF && !forceNormal)
+			locks = LevelLockHandler.MODOFF_SKILL_LOCKS;
 		LevelLockHandler.loadFromConfig(locks);
 		
 		if(config.hasChanged())

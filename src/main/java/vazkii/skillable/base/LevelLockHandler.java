@@ -84,6 +84,11 @@ public class LevelLockHandler {
 			"minecraft:redstone_torch=building:5"
 	};
 
+	public static final String[] MODOFF_SKILL_LOCKS = new String[] {
+		"minecraft:ender_pearl=magic:16",
+		"minecraft:pink_shulker_box=building:24"
+	};
+	
 	public static void loadFromConfig(String[] configValues) {
 		skillLocks.clear();
 		for(String s : configValues) {

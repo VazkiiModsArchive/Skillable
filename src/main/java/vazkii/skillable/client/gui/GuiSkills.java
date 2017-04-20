@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.ConfigHandler;
@@ -81,7 +80,7 @@ public class GuiSkills extends GuiScreen {
 		String skillsStr = I18n.translateToLocal("skillable.misc.skills");
 		fontRendererObj.drawString(skillsStr, width / 2 - fontRendererObj.getStringWidth(skillsStr) / 2, top + 6, 4210752);
 		
-		if(LibMisc.IS_MODOFF) {
+		if(LibMisc.IS_MODOFF && !ConfigHandler.forceNormal) {
 			int x = width / 2;
 			int y = top - 40;
 			FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
