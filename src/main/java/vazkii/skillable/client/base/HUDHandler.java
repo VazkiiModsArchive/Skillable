@@ -83,7 +83,7 @@ public class HUDHandler {
                 
                 GlStateManager.color(1F, 1F, 1F, transparency);
 				RenderHelper.drawTexturedModalRect(xp - 3, y + 17, 0, u, 202, 26, 26);
-                GlStateManager.disableLighting(); //Forge: Make sure Lighting is disabled. Fixes MC-33065
+                GlStateManager.disableLighting();
                 GlStateManager.enableCull();
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
                 mc.getRenderItem().renderItemAndEffectIntoGUI(a.theItemStack, xp + 2, y + 22);
