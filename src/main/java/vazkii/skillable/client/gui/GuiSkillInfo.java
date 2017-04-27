@@ -156,7 +156,7 @@ public class GuiSkillInfo extends GuiScreen {
 		}
 		
 		if(!info.isUnlocked(hoveredUnlockable))
-			LevelLockHandler.addRequirementsToTooltip(data, hoveredUnlockable.getRequirements(), tooltip);
+			hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
 		else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
 		tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
 		

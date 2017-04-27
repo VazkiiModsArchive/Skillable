@@ -9,9 +9,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitRoadwalk extends Trait {
 
 	public TraitRoadwalk() {
-		super("roadwalk", 1, 1, 6);
-		addRequirement(Skills.agility, 12);
-		addRequirement(Skills.building, 8);
+		super("roadwalk", 1, 1, 6, "agility:12,building:8");
 	}
 	
 	@Override

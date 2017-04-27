@@ -16,9 +16,7 @@ import vazkii.skillable.skill.Skills;
 public class TraitChorusTransmutation extends TraitTransmutation {
 
 	public TraitChorusTransmutation() {
-		super("chorus_transmute", 3, 2, 8, new ItemStack(Items.CHORUS_FRUIT), makeMap());
-		addRequirement(Skills.building, 16);
-		addRequirement(Skills.magic, 16);
+		super("chorus_transmute", 3, 2, 8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "building:16,magic:16");
 	}
 
 	private static Map<IBlockState, IBlockState> makeMap() {

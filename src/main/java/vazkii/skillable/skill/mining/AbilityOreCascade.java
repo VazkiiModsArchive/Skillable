@@ -6,8 +6,7 @@ import vazkii.skillable.skill.base.Ability;
 public class AbilityOreCascade extends Ability {
 
 	public AbilityOreCascade() {
-		super("ore_cascade", 0, 3, 6);
-		addRequirement(Skills.mining, 12);
+		super("ore_cascade", 0, 3, 6, "mining:12");
 	}
 
 }

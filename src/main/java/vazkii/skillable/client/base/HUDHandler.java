@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.skillable.base.LevelLockHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
+import vazkii.skillable.base.RequirementHolder;
 import vazkii.skillable.client.gui.GuiSkills;
 import vazkii.skillable.skill.Skill;
 
@@ -51,11 +52,11 @@ public class HUDHandler {
 			mc.fontRendererObj.drawStringWithShadow(msg, res.getScaledWidth() / 2 - len / 2, y, color);
 			
 			PlayerData data = PlayerDataHandler.get(mc.player);
-			Map<Skill, Integer> reqs = LevelLockHandler.getSkillLock(lockedItem);
-			int left = res.getScaledWidth() / 2 - (reqs.size() * 24) / 2;
+			RequirementHolder reqs = LevelLockHandler.getSkillLock(lockedItem);
+			int left = res.getScaledWidth() / 2 - (reqs.getRestrictionLength() * 24) / 2;
 			int i = 0;
-			for(Skill s : reqs.keySet()) {
-				int reqLevel = reqs.get(s);
+			for(Skill s : reqs.skillLevels.keySet()) {
+				int reqLevel = reqs.skillLevels.get(s);
 				int x = left + i * 24;
 				GlStateManager.color(1F, 1F, 1F, transparency);
 				GuiSkills.drawSkill(x, y + 18, s);

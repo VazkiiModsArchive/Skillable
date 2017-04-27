@@ -80,15 +80,6 @@ public class GuiSkills extends GuiScreen {
 		String skillsStr = I18n.translateToLocal("skillable.misc.skills");
 		fontRendererObj.drawString(skillsStr, width / 2 - fontRendererObj.getStringWidth(skillsStr) / 2, top + 6, 4210752);
 		
-		if(LibMisc.IS_MODOFF && !ConfigHandler.forceNormal) {
-			int x = width / 2;
-			int y = top - 40;
-			FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
-			
-			for(int i = 0; i < LibMisc.MODOFF_MESSAGES.length; i++)
-				drawCenteredString(font, LibMisc.MODOFF_MESSAGES[i], x, y + i * 10, 0xFFFFFF);
-		}
-		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 	

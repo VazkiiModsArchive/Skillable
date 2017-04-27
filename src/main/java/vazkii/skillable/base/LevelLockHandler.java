@@ -1,9 +1,7 @@
 package vazkii.skillable.base;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -23,20 +19,18 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.arl.network.NetworkHandler;
 import vazkii.skillable.network.MessageLockedItem;
-import vazkii.skillable.skill.Skill;
-import vazkii.skillable.skill.Skills;
 
 public class LevelLockHandler {
 
-	private static final Map<String, Map<Skill, Integer>> skillLocks = new HashMap();
-
+	private static final Map<String, RequirementHolder> locks = new HashMap();
+	public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
+	
 	public static final String[] DEFAULT_SKILL_LOCKS = new String[] {
 			"minecraft:iron_shovel=gathering:5",
 			"minecraft:iron_axe=gathering:5",
@@ -83,69 +77,47 @@ public class LevelLockHandler {
 			"minecraft:redstone=building:5",
 			"minecraft:redstone_torch=building:5"
 	};
-
-	public static final String[] MODOFF_SKILL_LOCKS = new String[] {
-		"minecraft:ender_pearl=magic:16",
-		"minecraft:pink_shulker_box=building:24"
-	};
 	
 	public static void loadFromConfig(String[] configValues) {
-		skillLocks.clear();
+		locks.clear();
 		for(String s : configValues) {
 			String[] tokens = s.split("=");
 			if(tokens.length == 2) {
-				String key = tokens[0];
-				String skills = tokens[1];
-				tokens = skills.split(",");
-
-				Map<Skill, Integer> lock = new TreeMap();
-				for(String s1 : tokens) {
-					String[] kv = s1.split(":");
-					if(kv.length == 2) {
-						String skillStr = kv[0];
-						String levelStr = kv[1];
-
-						try {
-							int level = Integer.parseInt(levelStr);
-							Skill skill = Skills.ALL_SKILLS.get(skillStr);
-							if(skill != null && level > 1)
-								lock.put(skill, level);
-							else FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
-						} catch(NumberFormatException e) { }
-					}
-				}
-
-				skillLocks.put(key, lock);
+				RequirementHolder h = RequirementHolder.fromString(tokens[1]);
+				locks.put(tokens[0].toLowerCase(), h);
 			}
 		}
 	}
 
-	public static Map<Skill, Integer> getSkillLock(ItemStack stack) {
+	public static RequirementHolder getSkillLock(ItemStack stack) {
 		if(stack == null || stack.isEmpty())
-			return null;
+			return EMPTY_LOCK;
 
 		String itemName = stack.getItem().getRegistryName().toString();
 		String metaName = itemName + ":" + stack.getMetadata();
-		Map<Skill, Integer> lock = getSkillLock(metaName);
-		if(lock != null)
+		RequirementHolder lock = getSkillLock(metaName);
+		if(lock != EMPTY_LOCK)
 			return lock;
 
 		lock = getSkillLock(itemName);
 		return lock;
 	}
 
-	public static Map<Skill, Integer> getSkillLock(String key) {
-		if(skillLocks.containsKey(key))
-			return skillLocks.get(key);
+	public static RequirementHolder getSkillLock(String key) {
+		if(locks.containsKey(key)) {
+			RequirementHolder lock = locks.get(key);
+			if(lock.isRealLock())
+				return lock;
+		}
 
-		return null;
+		return EMPTY_LOCK;
 	}
 
 	public static boolean canPlayerUseItem(EntityPlayer player, ItemStack stack) {
 		if(stack.isEmpty())
 			return true;
 
-		Map<Skill, Integer> lock = getSkillLock(stack);
+		RequirementHolder lock = getSkillLock(stack);
 		if(lock == null)
 			return true;
 
@@ -250,26 +222,9 @@ public class LevelLockHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onTooltip(ItemTooltipEvent event) {
-		Map<Skill, Integer> lock = getSkillLock(event.getItemStack());
+		RequirementHolder lock = getSkillLock(event.getItemStack());
 		PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
-		addRequirementsToTooltip(data, lock, event.getToolTip());
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public static void addRequirementsToTooltip(PlayerData data, Map<Skill, Integer> lock, List<String> tooltip) {
-		if(lock == null || lock.isEmpty())
-			return;
-		
-		tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
-		for(Skill s : lock.keySet()) {
-			PlayerSkillInfo info = data.getSkillInfo(s);
-			TextFormatting color = TextFormatting.GREEN;
-			int req = lock.get(s);
-			if(info.getLevel() < req)
-				color = TextFormatting.RED;
-
-			tooltip.add(String.format(TextFormatting.GRAY + " - %s%d %s", color, req, s.getName()));
-		}
+		lock.addRequirementsToTooltip(data, event.getToolTip());
 	}
 
 }

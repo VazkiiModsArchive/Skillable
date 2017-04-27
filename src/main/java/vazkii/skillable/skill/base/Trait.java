@@ -7,8 +7,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class Trait extends Unlockable implements IAbilityEventHandler {
 
-	public Trait(String name, int x, int y, int cost) {
-		super(name, x, y, cost);
+	public Trait(String name, int x, int y, int cost, String reqs) {
+		super(name, x, y, cost, reqs);
 	}
 	
 }

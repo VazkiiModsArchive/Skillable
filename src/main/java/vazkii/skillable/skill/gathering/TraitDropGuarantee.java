@@ -21,9 +21,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitDropGuarantee extends Trait {
 
 	public TraitDropGuarantee() {
-		super("drop_guarantee", 1, 1, 8);
-		addRequirement(Skills.gathering, 20);
-		addRequirement(Skills.attack, 8);
+		super("drop_guarantee", 1, 1, 8, "gathering:20,attack:8");
 	}
 
 	@Override

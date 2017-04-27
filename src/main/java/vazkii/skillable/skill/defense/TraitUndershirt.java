@@ -11,9 +11,7 @@ public class TraitUndershirt extends Trait {
 	private static final String TAG_COOLDOWN = "skillable:UndershirtCD";
 	
 	public TraitUndershirt() {
-		super("undershirt", 1, 2, 6);
-		addRequirement(Skills.defense, 12);
-		addRequirement(Skills.agility, 4);
+		super("undershirt", 1, 2, 6, "defense:12,agility:4");
 	}
 	
 	@Override

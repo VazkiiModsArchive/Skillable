@@ -20,9 +20,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitGreenThumb extends Trait {
 
 	public TraitGreenThumb() {
-		super("green_thumb", 3, 1, 8);
-		addRequirement(Skills.farming, 16);
-		addRequirement(Skills.magic, 16);
+		super("green_thumb", 3, 1, 8, "farming:16,magic:16");
 	}
 	
 	@Override

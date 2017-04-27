@@ -12,11 +12,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitGoldenOsmosis extends Trait {
 
 	public TraitGoldenOsmosis() {
-		super("golden_osmosis", 3, 2, 10);
-		addRequirement(Skills.magic, 20);
-		addRequirement(Skills.mining, 6);
-		addRequirement(Skills.gathering, 6);
-		addRequirement(Skills.attack, 6);
+		super("golden_osmosis", 3, 2, 10, "magic:20,mining:6,gathering:6,attack:6");
 	}
 	
 	@Override

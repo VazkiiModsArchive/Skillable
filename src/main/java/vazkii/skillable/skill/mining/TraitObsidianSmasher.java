@@ -15,8 +15,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitObsidianSmasher extends Trait {
 
 	public TraitObsidianSmasher() {
-		super("obsidian_smasher", 1, 2, 4);
-		addRequirement(Skills.mining, 16);
+		super("obsidian_smasher", 1, 2, 4, "mining:16");
 	}
 	
 	@Override

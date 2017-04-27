@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import vazkii.skillable.base.RequirementHolder;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
@@ -14,15 +15,16 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 	public final int x, y, cost;
 	private final String name;
 	private final ResourceLocation icon;
+	private final RequirementHolder requirements;
 	
-	private Map<Skill, Integer> requirements = new TreeMap();
 	private Skill parentSkill;
 	
-	public Unlockable(String name, int x, int y, int cost) {
+	public Unlockable(String name, int x, int y, int cost, String reqs) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.cost = cost;
+		this.requirements = RequirementHolder.fromString(reqs);
 		icon = new ResourceLocation(LibMisc.MOD_ID, "textures/skills/" + name + ".png");
 		Skills.ALL_UNLOCKABLES.put(name, this);
 	}
@@ -35,12 +37,8 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 		return parentSkill;
 	}
 	
-	public Map<Skill, Integer> getRequirements() {
+	public RequirementHolder getRequirements() {
 		return requirements;
-	}
-	
-	protected void addRequirement(Skill s, int lvl) {
-		requirements.put(s, lvl);
 	}
 	
 	public String getKey() {

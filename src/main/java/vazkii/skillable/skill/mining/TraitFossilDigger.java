@@ -16,8 +16,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitFossilDigger extends Trait {
 
 	public TraitFossilDigger() {
-		super("fossil_digger", 2, 1, 2);
-		addRequirement(Skills.mining, 6);
+		super("fossil_digger", 2, 1, 2, "mining:6");
 	}
 
 	@Override

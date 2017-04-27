@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.Achievement;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
@@ -58,12 +59,20 @@ public class PlayerData {
 		return set;
 	}
 	
-	public boolean matchStats(Map<Skill, Integer> stats) {
-		for(Skill s : stats.keySet()) {
+	public boolean matchStats(RequirementHolder holder) {
+		EntityPlayer player = playerWR.get();
+		if(player == null)
+			return false;
+		
+		for(Skill s : holder.skillLevels.keySet()) {
 			PlayerSkillInfo info = getSkillInfo(s);
-			if(info.getLevel() < stats.get(s))
+			if(info.getLevel() < holder.skillLevels.get(s))
 				return false;
 		}
+		
+		for(Achievement e : holder.achievements)
+			if(!player.hasAchievement(e))
+				return false;
 			
 		return true;
 	}

@@ -16,8 +16,8 @@ public abstract class TraitTransmutation extends Trait {
 	private final ItemStack reagent;
 	private final Map<IBlockState, IBlockState> stateMap;
 
-	public TraitTransmutation(String name, int x, int y, int cost, ItemStack reagent, Map<IBlockState, IBlockState> stateMap) {
-		super(name, x, y, cost);
+	public TraitTransmutation(String name, int x, int y, int cost, ItemStack reagent, Map<IBlockState, IBlockState> stateMap, String reqs) {
+		super(name, x, y, cost, reqs);
 		this.reagent = reagent;
 		this.stateMap = stateMap;
 	}

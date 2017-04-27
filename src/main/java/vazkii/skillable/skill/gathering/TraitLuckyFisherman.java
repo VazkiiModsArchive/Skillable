@@ -10,9 +10,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitLuckyFisherman extends Trait {
 
 	public TraitLuckyFisherman() {
-		super("lucky_fisherman", 3, 2, 6);
-		addRequirement(Skills.gathering, 12);
-		addRequirement(Skills.magic, 4);
+		super("lucky_fisherman", 3, 2, 6, "gathering:12,magic:4");
 	}
 	
 	@Override

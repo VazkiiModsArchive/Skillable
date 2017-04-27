@@ -10,10 +10,7 @@ import vazkii.skillable.skill.base.Trait;
 public class TraitPerfectRecover extends Trait {
 
 	public TraitPerfectRecover() {
-		super("perfect_recover", 1, 1, 4);
-		addRequirement(Skills.building, 8);
-		addRequirement(Skills.gathering, 6);
-		addRequirement(Skills.mining, 6);
+		super("perfect_recover", 1, 1, 4, "building:8,gathering:4,mining:6");
 	}
 
 	@Override
