@@ -74,9 +74,10 @@ public class LevelLockHandler {
 			"minecraft:diamond_horse_armor=defense:16,agility:16",
 			"minecraft:fireworks=agility:24",
 			"minecraft:dye:15=farming:12",
-			"minecraft:saddle=agility:8",
+			"minecraft:saddle=agility:12",
 			"minecraft:redstone=building:5",
-			"minecraft:redstone_torch=building:5"
+			"minecraft:redstone_torch=building:5",
+			"minecraft:skull:1=building:20,attack:20,defense:20"
 	};
 	
 	public static void loadFromConfig(String[] configValues) {
