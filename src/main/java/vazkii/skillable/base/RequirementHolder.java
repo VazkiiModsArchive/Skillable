@@ -51,13 +51,8 @@ public class RequirementHolder {
 
 		EntityPlayer p = data.playerWR.get();
 		if(p != null)
-			for(Achievement e : achievements) {
-				TextFormatting color = TextFormatting.GREEN;
-				if(!p.hasAchievement(e))
-					color = TextFormatting.RED;
-
-				tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.achievementFormat", color, e.getStatName().getUnformattedText()));
-			}
+			for(Achievement e : achievements)
+				tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.achievementFormat", e.getStatName().getUnformattedText()));
 	}
 
 	public static RequirementHolder fromString(String s) {

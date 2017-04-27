@@ -10,8 +10,8 @@ skillable.misc.blockBreakLocked=You don't meet the requirements to break this bl
 skillable.misc.blockUseLocked=You don't meet the requirements to use this block
 
 # FORMATS
-skillable.misc.skillFormat=%s%d %d
-skillable.misc.achievementFormat=%sAchievement: %s 
+skillable.misc.skillFormat=%s%d %s
+skillable.misc.achievementFormat=Achievement: %s 
 
 # SKILL NAMES
 skillable.skill.mining=Mining

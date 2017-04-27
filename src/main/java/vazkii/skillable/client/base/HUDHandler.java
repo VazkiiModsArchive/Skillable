@@ -4,12 +4,16 @@ import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.LevelLockHandler;
 import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
@@ -53,18 +57,37 @@ public class HUDHandler {
 			
 			PlayerData data = PlayerDataHandler.get(mc.player);
 			RequirementHolder reqs = LevelLockHandler.getSkillLock(lockedItem);
-			int left = res.getScaledWidth() / 2 - (reqs.getRestrictionLength() * 24) / 2;
-			int i = 0;
+			int pad = 26;
+			int left = res.getScaledWidth() / 2 - (reqs.getRestrictionLength() * pad) / 2;
+			int xp = left;
+			
 			for(Skill s : reqs.skillLevels.keySet()) {
 				int reqLevel = reqs.skillLevels.get(s);
-				int x = left + i * 24;
 				GlStateManager.color(1F, 1F, 1F, transparency);
-				GuiSkills.drawSkill(x, y + 18, s);
+				GuiSkills.drawSkill(xp, y + 18, s);
 				int level = data.getSkillInfo(s).getLevel();
 				color = (level < reqLevel ? 0xFF3940 : 0x39FF8D) + transparencyInt;
 				
-				mc.fontRendererObj.drawStringWithShadow(Integer.toString(reqLevel), x + 8, y + 32, color);
-				i++;
+				mc.fontRendererObj.drawStringWithShadow(Integer.toString(reqLevel), xp + 8, y + 32, color);
+				xp += pad;
+			}
+			
+			for(Achievement a : reqs.achievements) {
+                mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/achievement/achievement_background.png"));
+                int u = 0;
+                if(a.getSpecial())
+                	u = 26;
+                
+                GlStateManager.color(1F, 1F, 1F);
+				RenderHelper.drawTexturedModalRect(xp - 3, y + 17, 0, u, 202, 26, 26);
+                GlStateManager.disableLighting(); //Forge: Make sure Lighting is disabled. Fixes MC-33065
+                GlStateManager.enableCull();
+                net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+                mc.getRenderItem().renderItemAndEffectIntoGUI(a.theItemStack, xp + 2, y + 22);
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                GlStateManager.disableLighting();
+
+				xp += pad;
 			}
 			
 			GlStateManager.popMatrix();
