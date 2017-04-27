@@ -19,6 +19,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -160,17 +161,19 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void rightClickBlock(RightClickBlock event) {
-		if(!event.getEntityPlayer().isSneaking()) {
-			enforce(event);
-			if(!event.isCanceled()) {
-				EntityPlayer player = event.getEntityPlayer();
-				IBlockState state = event.getWorld().getBlockState(event.getPos());
-				int meta = state.getBlock().getMetaFromState(state);
-				ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
-				if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
-					tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
-					event.setCanceled(true);
-				}
+		enforce(event);
+		if(event.isCanceled()) {
+			event.setCanceled(false);
+			event.setUseItem(Result.DENY);
+		} else {
+			EntityPlayer player = event.getEntityPlayer();
+			IBlockState state = event.getWorld().getBlockState(event.getPos());
+			int meta = state.getBlock().getMetaFromState(state);
+			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
+				event.setUseBlock(Result.DENY);
+				event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
 			}
 		}
 	}
@@ -202,6 +205,9 @@ public class LevelLockHandler {
 	}
 
 	private static void enforce(PlayerInteractEvent event) {
+		if(event.isCanceled())
+			return;
+		
 		EntityPlayer player = event.getEntityPlayer();
 		if(player.isCreative())
 			return;
