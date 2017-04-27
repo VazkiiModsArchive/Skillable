@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -38,21 +39,24 @@ public class RequirementHolder {
 		if(!isRealLock())
 			return;
 
-		tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
-		for(Skill s : skillLevels.keySet()) {
-			PlayerSkillInfo info = data.getSkillInfo(s);
-			TextFormatting color = TextFormatting.GREEN;
-			int req = skillLevels.get(s);
-			if(info.getLevel() < req)
-				color = TextFormatting.RED;
+		if(GuiScreen.isShiftKeyDown()) {
+			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
+			
+			for(Skill s : skillLevels.keySet()) {
+				PlayerSkillInfo info = data.getSkillInfo(s);
+				TextFormatting color = TextFormatting.GREEN;
+				int req = skillLevels.get(s);
+				if(info.getLevel() < req)
+					color = TextFormatting.RED;
 
-			tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.skillFormat", color, req, s.getName()));
-		}
+				tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.skillFormat", color, req, s.getName()));
+			}
 
-		EntityPlayer p = data.playerWR.get();
-		if(p != null)
-			for(Achievement e : achievements)
-				tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.achievementFormat", e.getStatName().getUnformattedText()));
+			EntityPlayer p = data.playerWR.get();
+			if(p != null)
+				for(Achievement e : achievements)
+					tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted("skillable.misc.achievementFormat", e.getStatName().getUnformattedText()));
+		} else tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
 	}
 
 	public static RequirementHolder fromString(String s) {
@@ -65,7 +69,6 @@ public class RequirementHolder {
 				String keyStr = kv[0];
 				String valStr = kv[1];
 
-				System.out.println(keyStr);
 				if(keyStr.equals("ach")) {
 					StatBase stat = StatList.getOneShotStat(valStr);
 					if(stat == null)
@@ -76,7 +79,6 @@ public class RequirementHolder {
 				} else try {
 					int level = Integer.parseInt(valStr);
 					Skill skill = Skills.ALL_SKILLS.get(keyStr.toLowerCase());
-					System.out.println("locking " + skill.getName() + " " + level);
 					if(skill != null && level > 1) 
 						holder.skillLevels.put(skill, level);
 					else FMLLog.warning("[Skillable] Invalid Level Lock: " + s);

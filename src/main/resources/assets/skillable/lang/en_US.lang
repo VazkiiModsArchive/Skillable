@@ -2,6 +2,7 @@
 skillable.misc.capped=MAX
 skillable.misc.skills=Skills
 skillable.misc.skillLock=Requirements:
+skillable.misc.skillLockShift=Hold SHIFT for requirements
 skillable.misc.skillPoints=%d Skill Points
 skillable.misc.holdShift=Hold SHIFT for description
 skillable.misc.unlocked=Unlocked!
