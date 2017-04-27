@@ -2,7 +2,10 @@ package vazkii.skillable.client.base;
 
 import java.util.Map;
 
+import org.lwjgl.opengl.GLSync;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,31 +41,41 @@ public class HUDHandler {
 	public static void renderHUD(RenderGameOverlayEvent event) {
 		if(lockTime > 0 && event.getType() == ElementType.ALL) {
 			GlStateManager.pushMatrix();
-			GlStateManager.disableAlpha();
 			GlStateManager.enableBlend();
+			GlStateManager.disableAlpha();
 			float transparency = 1F;
 			if(lockTime < 10)
-				transparency = 1F / (10 - lockTime + ClientTickHandler.partialTicks);
+				transparency = Math.max(0.05F, (lockTime - ClientTickHandler.partialTicks) / 10F);
 			
 			Minecraft mc = Minecraft.getMinecraft();
 			ScaledResolution res = event.getResolution();
 			
-			int y = res.getScaledHeight() / 2 - 80;
+			int width = res.getScaledWidth();
+			int height = res.getScaledHeight();
+			int y = height / 2 - 80;
 			if(lockMessage.equals(MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED))
 				y -= 30;
 			
 			int transparencyInt = (int) (0xFF * transparency) << 24;
-			int color = 0xFF3940 + transparencyInt; 
+			int color = (int) (0x11 * transparency) << 24; 
 			
 			String msg = I18n.translateToLocal(lockMessage);
 			int len = mc.fontRendererObj.getStringWidth(msg);
-			mc.fontRendererObj.drawStringWithShadow(msg, res.getScaledWidth() / 2 - len / 2, y, color);
 			
 			PlayerData data = PlayerDataHandler.get(mc.player);
 			RequirementHolder reqs = LevelLockHandler.getSkillLock(lockedItem);
 			int pad = 26;
-			int left = res.getScaledWidth() / 2 - (reqs.getRestrictionLength() * pad) / 2;
+			int left = width / 2 - (reqs.getRestrictionLength() * pad) / 2;
 			int xp = left;
+			
+			int boxWidth = Math.max(pad * reqs.getRestrictionLength(), len) + 20;
+			int boxHeight = 52 + reqs.achievements.size() * 10;
+			Gui.drawRect(width / 2 - boxWidth / 2, y - 10, width / 2 + boxWidth / 2, y + boxHeight, color);
+			Gui.drawRect(width / 2 - boxWidth / 2 - 2, y - 12, width / 2 + boxWidth / 2 + 2, y + boxHeight + 2, color);
+
+			GlStateManager.enableBlend();
+			color = 0xFF3940 + transparencyInt;
+			mc.fontRendererObj.drawStringWithShadow(msg, res.getScaledWidth() / 2 - len / 2, y, color);
 			
 			for(Skill s : reqs.skillLevels.keySet()) {
 				int reqLevel = reqs.skillLevels.get(s);
@@ -75,6 +88,10 @@ public class HUDHandler {
 				xp += pad;
 			}
 			
+			int textLeft = xp;
+			int textY = y + 48;
+			color = 0xFFFFFF + transparencyInt;
+
 			for(Achievement a : reqs.achievements) {
                 mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/achievement/achievement_background.png"));
                 int u = 0;
@@ -86,11 +103,18 @@ public class HUDHandler {
                 GlStateManager.disableLighting();
                 GlStateManager.enableCull();
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
-                mc.getRenderItem().renderItemAndEffectIntoGUI(a.theItemStack, xp + 2, y + 22);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(xp + 2, y + 22, 0);
+                GlStateManager.scale(1, transparency, 1);
+                mc.getRenderItem().renderItemAndEffectIntoGUI(a.theItemStack, 0, 0);
+                GlStateManager.popMatrix();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 GlStateManager.disableLighting();
 
+				mc.fontRendererObj.drawStringWithShadow(a.getStatName().getUnformattedText(), textLeft, textY, color);
+                
 				xp += pad;
+				textY += 11;
 			}
 			
 			GlStateManager.popMatrix();
