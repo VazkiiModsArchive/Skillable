@@ -5,6 +5,8 @@ import java.util.TreeMap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.config.Configuration;
+import vazkii.skillable.base.ConfigHandler;
 import vazkii.skillable.base.RequirementHolder;
 import vazkii.skillable.lib.LibMisc;
 import vazkii.skillable.skill.Skill;
@@ -13,6 +15,8 @@ import vazkii.skillable.skill.Skills;
 public abstract class Unlockable implements Comparable<Unlockable> {
 
 	public final int x, y, cost;
+	public final boolean enabled;
+	
 	private final String name;
 	private final ResourceLocation icon;
 	private final RequirementHolder requirements;
@@ -23,10 +27,16 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		this.cost = cost;
-		this.requirements = RequirementHolder.fromString(reqs);
+		
+		String category = "traits." + name;
+		enabled = ConfigHandler.config.get(category, "Enabled", true).getBoolean();
+		this.cost = ConfigHandler.config.get(category, "Skill Points", cost).getInt();
+		this.requirements = RequirementHolder.fromString(ConfigHandler.config.get(category, "Requirements", reqs).getString());
+		
 		icon = new ResourceLocation(LibMisc.MOD_ID, "textures/skills/" + name + ".png");
-		Skills.ALL_UNLOCKABLES.put(name, this);
+		
+		if(enabled)
+			Skills.ALL_UNLOCKABLES.put(name, this);
 	}
 	
 	public void setParentSkill(Skill parentSkill) {

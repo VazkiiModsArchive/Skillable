@@ -24,8 +24,10 @@ public abstract class Skill implements Comparable<Skill> {
 	public abstract void initUnlockables();
 	
 	protected void addUnlockable(Unlockable u) {
-		unlockables.add(u);
-		u.setParentSkill(this);
+		if(u.enabled) {
+			unlockables.add(u);
+			u.setParentSkill(this);
+		}
 	}
 	
 	public List<Unlockable> getUnlockables() {

@@ -8,6 +8,7 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.skillable.lib.LibMisc;
+import vazkii.skillable.skill.Skills;
 
 public class ConfigHandler {
 
@@ -39,6 +40,12 @@ public class ConfigHandler {
 
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, "");
 		LevelLockHandler.loadFromConfig(locks);
+		
+		Skills.ALL_UNLOCKABLES.clear();
+		Skills.ALL_SKILLS.values().forEach((skill) -> {
+			skill.getUnlockables().clear();
+			skill.initUnlockables();	
+		});
 		
 		if(config.hasChanged())
 			config.save();
