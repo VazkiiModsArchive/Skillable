@@ -190,6 +190,7 @@ public class LevelLockHandler {
 					if(!event.player.inventory.addItemStackToInventory(copy))
 						event.player.dropItem(copy, false);
 					event.player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+					tellPlayer(event.player, stack, MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED);
 				}
 			}
 	}

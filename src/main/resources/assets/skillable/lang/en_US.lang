@@ -8,6 +8,7 @@ skillable.misc.unlocked=Unlocked!
 skillable.misc.itemLocked=You don't meet the requirements to use this item
 skillable.misc.blockBreakLocked=You don't meet the requirements to break this block
 skillable.misc.blockUseLocked=You don't meet the requirements to use this block
+skillable.misc.armorEquipLocked=You don't meet the requirements to wear this armor
 
 # FORMATS
 skillable.misc.skillFormat=%s%d %s

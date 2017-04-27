@@ -19,6 +19,7 @@ import vazkii.skillable.base.PlayerData;
 import vazkii.skillable.base.PlayerDataHandler;
 import vazkii.skillable.base.RequirementHolder;
 import vazkii.skillable.client.gui.GuiSkills;
+import vazkii.skillable.network.MessageLockedItem;
 import vazkii.skillable.skill.Skill;
 
 public class HUDHandler {
@@ -47,6 +48,8 @@ public class HUDHandler {
 			ScaledResolution res = event.getResolution();
 			
 			int y = res.getScaledHeight() / 2 - 80;
+			if(lockMessage.equals(MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED))
+				y -= 30;
 			
 			int transparencyInt = (int) (0xFF * transparency) << 24;
 			int color = 0xFF3940 + transparencyInt; 
@@ -78,7 +81,7 @@ public class HUDHandler {
                 if(a.getSpecial())
                 	u = 26;
                 
-                GlStateManager.color(1F, 1F, 1F);
+                GlStateManager.color(1F, 1F, 1F, transparency);
 				RenderHelper.drawTexturedModalRect(xp - 3, y + 17, 0, u, 202, 26, 26);
                 GlStateManager.disableLighting(); //Forge: Make sure Lighting is disabled. Fixes MC-33065
                 GlStateManager.enableCull();
