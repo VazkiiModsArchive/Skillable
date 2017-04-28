@@ -15,7 +15,7 @@ public class TraitNeutralissse extends Trait {
 	private static final String TAG_DEFUSED = "skillable:defuse";
 	
 	public TraitNeutralissse() {
-		super("neutralissse", 2, 1, 10, "attack:24,agility:8");
+		super("neutralissse", 1, 2, 10, "attack:24,agility:8");
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	

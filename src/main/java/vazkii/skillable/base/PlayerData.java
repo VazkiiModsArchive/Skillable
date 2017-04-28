@@ -2,7 +2,6 @@ package vazkii.skillable.base;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Consumer;
@@ -12,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
@@ -174,6 +174,9 @@ public class PlayerData {
 		forEachEventHandler((h) -> h.onEnderTeleport(event));
 	}
 	
+	public void killMob(LivingDeathEvent event) {
+		forEachEventHandler((h) -> h.onKillMob(event));
+	}
 	
 	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
 		skillInfo.values().forEach((info) -> info.forEachEventHandler(consumer));

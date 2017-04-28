@@ -1,6 +1,7 @@
 package vazkii.skillable.skill.base;
 
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
@@ -18,5 +19,6 @@ public interface IAbilityEventHandler {
 	public default void onHurt(LivingHurtEvent event) { }
 	public default void onRightClickBlock(RightClickBlock event) { }
 	public default void onEnderTeleport(EnderTeleportEvent event) { }
+	public default void onKillMob(LivingDeathEvent event) { }
 
 }
