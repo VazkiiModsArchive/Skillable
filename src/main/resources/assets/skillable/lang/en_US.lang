@@ -54,6 +54,8 @@ skillable.unlock.golden_osmosis=Golden Osmosis
 skillable.unlock.golden_osmosis.desc=Golden tools, while being held, will extract XP from the user to repair themselves at a fast rate
 skillable.unlock.sidestep=Sidestep
 skillable.unlock.sidestep.desc=Double tapping the "Strafe Left" or "Strafe Right" keys while moving backwards will have you sidestep in that direction, with a small cooldown 
+skillable.unlock.safe_port=Safe Port
+skillable.unlock.safe_port.desc=Teleporting with an Ender Pearl will no longer hurt you
  
 # RANK NAMES
 skillable.rank.0=Beginner
