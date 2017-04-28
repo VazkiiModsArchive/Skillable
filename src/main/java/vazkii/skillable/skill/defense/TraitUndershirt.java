@@ -17,7 +17,7 @@ public class TraitUndershirt extends Trait {
 	@Override
 	public void onHurt(LivingHurtEvent event) { 
 		EntityLivingBase e = event.getEntityLiving();
-		if(e.getEntityData().getInteger(TAG_COOLDOWN) == 0 && e.getHealth() >= 6 && event.getAmount() >= e.getHealth()) {
+		if(e.getEntityData().getInteger(TAG_COOLDOWN) == 0 && e.getHealth() >= 6 && event.getAmount() >= e.getHealth() && !event.getSource().isUnblockable()) {
 			event.setAmount(e.getHealth() - 1);
 			e.getEntityData().setInteger(TAG_COOLDOWN, 200);
 		}

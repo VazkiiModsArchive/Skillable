@@ -10,6 +10,7 @@ public class MessageRegister {
 		NetworkHandler.register(MessageLevelUp.class, Side.SERVER);
 		NetworkHandler.register(MessageUnlockUnlockable.class, Side.SERVER);
 		NetworkHandler.register(MessageLockedItem.class, Side.CLIENT);
+		NetworkHandler.register(MessageDodge.class, Side.SERVER);
 	}
 
 }

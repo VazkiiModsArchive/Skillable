@@ -2,6 +2,7 @@ package vazkii.skillable.skill;
 
 import net.minecraft.init.Blocks;
 import vazkii.skillable.skill.agility.TraitRoadwalk;
+import vazkii.skillable.skill.agility.TraitSidestep;
 
 public class SkillAgility extends Skill {
 
@@ -12,6 +13,7 @@ public class SkillAgility extends Skill {
 	@Override
 	public void initUnlockables() {
 		addUnlockable(new TraitRoadwalk());
+		addUnlockable(new TraitSidestep());
 	}
 	
 }

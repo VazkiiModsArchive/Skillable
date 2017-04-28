@@ -52,6 +52,8 @@ skillable.unlock.roadwalk=Roadwalk
 skillable.unlock.roadwalk.desc=Increases your movement speed while on a Grass Path
 skillable.unlock.golden_osmosis=Golden Osmosis
 skillable.unlock.golden_osmosis.desc=Golden tools, while being held, will extract XP from the user to repair themselves at a fast rate
+skillable.unlock.sidestep=Sidestep
+skillable.unlock.sidestep.desc=Double tapping the "Strafe Left" or "Strafe Right" keys while moving backwards will have you sidestep in that direction, with a small cooldown 
  
 # RANK NAMES
 skillable.rank.0=Beginner
