@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
@@ -168,6 +169,11 @@ public class PlayerData {
 	public void rightClickBlock(RightClickBlock event) {
 		forEachEventHandler((h) -> h.onRightClickBlock(event));
 	}
+	
+	public void enderTeleport(EnderTeleportEvent event) {
+		forEachEventHandler((h) -> h.onEnderTeleport(event));
+	}
+	
 	
 	public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
 		skillInfo.values().forEach((info) -> info.forEachEventHandler(consumer));

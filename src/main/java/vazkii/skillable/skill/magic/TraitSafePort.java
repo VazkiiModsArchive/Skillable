@@ -3,6 +3,7 @@ package vazkii.skillable.skill.magic;
 import it.unimi.dsi.fastutil.Stack;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import vazkii.skillable.skill.base.Trait;
 
@@ -13,13 +14,8 @@ public class TraitSafePort extends Trait {
 	}
 	
 	@Override
-	public void onHurt(LivingHurtEvent event) { 
-		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-		for(StackTraceElement el : trace) // don't hurt me cpw
-			if(el.getClassName().equals(EntityEnderPearl.class.getName())) {
-				event.setCanceled(true);
-				return;
-			}
+	public void onEnderTeleport(EnderTeleportEvent event) { 
+		event.setAttackDamage(0);
 	}
 
 }

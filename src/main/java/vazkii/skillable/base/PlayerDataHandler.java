@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
@@ -141,6 +142,16 @@ public class PlayerDataHandler {
 			PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
 			if(data != null)
 				data.rightClickBlock(event);
+		}
+		
+		@SubscribeEvent
+		public static void onEnderTeleport(EnderTeleportEvent event) {
+			if(event.getEntity() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getEntity());
+				if(data != null)
+					data.enderTeleport(event);
+			}
+
 		}
 
 	}
