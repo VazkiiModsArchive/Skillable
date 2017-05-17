@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -72,7 +73,7 @@ public class TraitSidestep extends Trait {
 
 	@SideOnly(Side.CLIENT)
 	public void dodge(EntityPlayer player, boolean left) {
-		if(player.capabilities.isFlying || !player.onGround || player.moveForward >= 0)
+		if(player.capabilities.isFlying || !player.onGround || player.moveForward >= 0 || !GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSprint))
 			return;
 
 		float yaw = player.rotationYaw;
