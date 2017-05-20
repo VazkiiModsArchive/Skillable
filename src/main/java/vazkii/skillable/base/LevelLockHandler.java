@@ -80,9 +80,18 @@ public class LevelLockHandler {
 			"minecraft:skull:1=building:20,attack:20,defense:20"
 	};
 	
+	private static String[] configLocks;
+	
 	public static void loadFromConfig(String[] configValues) {
+		configLocks = configValues;
+	}
+	
+	public static void setupLocks() {
 		locks.clear();
-		for(String s : configValues) {
+		if(configLocks == null)
+			return;
+		
+		for(String s : configLocks) {
 			String[] tokens = s.split("=");
 			if(tokens.length == 2) {
 				RequirementHolder h = RequirementHolder.fromString(tokens[1]);

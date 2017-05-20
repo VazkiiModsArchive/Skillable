@@ -27,7 +27,7 @@ public class CommonProxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-
+		LevelLockHandler.setupLocks();
 	}
 	
 	public void serverStarting(FMLServerStartingEvent event) {

@@ -14,6 +14,7 @@ public class ConfigHandler {
 
 	public static Configuration config;
 
+	private static boolean firstLoad;
 	public static int baseXPCost = 4;
 	public static int xpIncrease = 1;
 	public static int skillPointInterval = 2;
@@ -23,6 +24,7 @@ public class ConfigHandler {
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
 
+		firstLoad = true;
 		config.load();
 		load();
 
@@ -49,7 +51,10 @@ public class ConfigHandler {
 				+ "Locks defined here apply to all the following cases: Right clicking an item, placing a block, breaking a block, using a block that's placed,\n"
 				+ "left clicking an item, using an item to break any block, and equipping an armor item.\n";
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
+		
 		LevelLockHandler.loadFromConfig(locks);
+		if(!firstLoad)
+			LevelLockHandler.setupLocks();
 		
 		Skills.ALL_UNLOCKABLES.clear();
 		Skills.ALL_SKILLS.values().forEach((skill) -> {
@@ -59,6 +64,8 @@ public class ConfigHandler {
 		
 		if(config.hasChanged())
 			config.save();
+		
+		firstLoad = false;
 	}
 
 	public static int loadPropInt(String propName, String desc, int default_) {

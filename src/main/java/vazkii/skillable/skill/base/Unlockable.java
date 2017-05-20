@@ -19,7 +19,8 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 	
 	private final String name;
 	private final ResourceLocation icon;
-	private final RequirementHolder requirements;
+	private RequirementHolder requirements;
+	private final String configRequirements;
 	
 	private Skill parentSkill;
 	
@@ -31,7 +32,10 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 		String category = "traits." + name;
 		enabled = ConfigHandler.config.get(category, "Enabled", true).getBoolean();
 		this.cost = ConfigHandler.config.get(category, "Skill Points", cost).getInt();
-		this.requirements = RequirementHolder.fromString(ConfigHandler.config.get(category, "Requirements", reqs).getString());
+		
+		configRequirements = ConfigHandler.config.get(category, "Requirements", reqs).getString();
+		this.requirements = null;
+		
 		
 		icon = new ResourceLocation(LibMisc.MOD_ID, "textures/skills/" + name + ".png");
 		
@@ -48,6 +52,9 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 	}
 	
 	public RequirementHolder getRequirements() {
+		if(requirements == null)
+			requirements = RequirementHolder.fromString(configRequirements);
+		
 		return requirements;
 	}
 	
