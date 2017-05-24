@@ -79,36 +79,39 @@ public class PlayerData {
 	}
 	
 	public void load() {
-		if(!client) {
-			EntityPlayer player = playerWR.get();
+		if (client)
+			return;
 
-			if(player != null) {
-				NBTTagCompound cmp = PlayerDataHandler.getDataCompoundForPlayer(player);
-				loadFromNBT(cmp);
-			}
+		EntityPlayer player = playerWR.get();
+
+		if (player != null) {
+			NBTTagCompound cmp = PlayerDataHandler.getDataCompoundForPlayer(player);
+			loadFromNBT(cmp);
 		}
 	}
 
 	public void save() {
-		if(!client) {
-			EntityPlayer player = playerWR.get();
+		if (client)
+			return;
 
-			if(player != null) {
-				NBTTagCompound cmp = PlayerDataHandler.getDataCompoundForPlayer(player);
-				saveToNBT(cmp);
-			}
+		EntityPlayer player = playerWR.get();
+
+		if (player != null) {
+			NBTTagCompound cmp = PlayerDataHandler.getDataCompoundForPlayer(player);
+			saveToNBT(cmp);
 		}
 	}
 
 	public void sync() {
-		if(!client) {
-			EntityPlayer player = playerWR.get();
+        if (client)
+            return;
 
-			if(player != null && player instanceof EntityPlayerMP) {
-				MessageDataSync message = new MessageDataSync(this);
-				NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
-			}
-		}
+        EntityPlayer player = playerWR.get();
+
+        if (player != null && player instanceof EntityPlayerMP) {
+            MessageDataSync message = new MessageDataSync(this);
+            NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
+        }
 	}
 	
 	public void saveAndSync() {
