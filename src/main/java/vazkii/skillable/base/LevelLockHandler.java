@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -30,6 +31,7 @@ import vazkii.skillable.network.MessageLockedItem;
 public class LevelLockHandler {
 
 	private static final Map<String, RequirementHolder> locks = new HashMap();
+	
 	public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
 	
 	public static final String[] DEFAULT_SKILL_LOCKS = new String[] {
@@ -104,13 +106,20 @@ public class LevelLockHandler {
 		if(stack == null || stack.isEmpty())
 			return EMPTY_LOCK;
 
-		String itemName = stack.getItem().getRegistryName().toString();
+		ResourceLocation res = stack.getItem().getRegistryName();
+		
+		String modName = res.getResourceDomain();
+		String itemName = res.toString();
 		String metaName = itemName + ":" + stack.getMetadata();
 		RequirementHolder lock = getSkillLock(metaName);
 		if(lock != EMPTY_LOCK)
 			return lock;
-
+		
 		lock = getSkillLock(itemName);
+		if(lock != EMPTY_LOCK)
+			return lock;
+
+		lock = getSkillLock(modName);
 		return lock;
 	}
 
