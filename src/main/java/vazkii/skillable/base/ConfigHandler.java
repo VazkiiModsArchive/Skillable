@@ -49,7 +49,9 @@ public class ConfigHandler {
 				+ "Skill requirements and achievements can be mixed and matched, so you can make an item require both, if you want.\n"
 				+ "You can also lock placed blocks from being used or broken, in the same manner.\n\n"
 				+ "Locks defined here apply to all the following cases: Right clicking an item, placing a block, breaking a block, using a block that's placed,\n"
-				+ "left clicking an item, using an item to break any block, and equipping an armor item.\n";
+				+ "left clicking an item, using an item to break any block, and equipping an armor item.\n\n"
+				+ "You can lock entire mods by just using their name as the left argument. You can then specify specific items to not be locked,\n"
+				+ "by defining their lock in the normal way. If you want an item to not be locked in this way, use \"none\" after the =";
 		String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
 		
 		LevelLockHandler.loadFromConfig(locks);

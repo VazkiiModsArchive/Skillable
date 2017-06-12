@@ -126,7 +126,7 @@ public class LevelLockHandler {
 	public static RequirementHolder getSkillLock(String key) {
 		if(locks.containsKey(key)) {
 			RequirementHolder lock = locks.get(key);
-			if(lock.isRealLock())
+			if(lock.isRealLock() || lock.isForcedEmpty())
 				return lock;
 		}
 
