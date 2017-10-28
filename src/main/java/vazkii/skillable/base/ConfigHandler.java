@@ -22,6 +22,7 @@ public class ConfigHandler {
 	public static int skillPointInterval = 2;
 	public static int levelCap = 32;
 	public static boolean disableSheepWool = true;
+	public static boolean enforceFakePlayers = true;
 	
 	public static void init(File configFile) {
 		config = new Configuration(configFile);
@@ -40,7 +41,8 @@ public class ConfigHandler {
 		skillPointInterval = loadPropInt("Levels per Skill Point", "", skillPointInterval);
 		levelCap = loadPropInt("Level Cap", "", levelCap);
 		disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
-
+		enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
+		
 		String desc = "Set requirements for items in this list. Each entry is composed of the item key and the requirements\n"
 				+ "The item key is in the simple mod:item_id format. Optionally, it can be in mod:item_id:metadata, if you want to match metadata.\n"
 				+ "The requirements are in a comma separated list, each in a key|value format. For example, to make an iron pickaxe require 5 mining\n"

@@ -6,6 +6,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,6 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -151,7 +154,7 @@ public class LevelLockHandler {
 		if(event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 			ItemStack stack = player.getHeldItemMainhand();
-			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+			if(!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
 				tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
 				event.setCanceled(true);
 			}
@@ -160,6 +163,8 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void leftClick(LeftClickBlock event) {
+		if(isFake(event))
+			return;
 		enforce(event);
 		
 		if(!event.isCanceled()) {
@@ -180,11 +185,15 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void rightClickItem(RightClickItem event) {
-		enforce(event);
+		if(!isFake(event))
+			enforce(event);
 	}
 
 	@SubscribeEvent
 	public static void rightClickBlock(RightClickBlock event) {
+		if(isFake(event))
+			return;
+		
 		enforce(event);
 		if(event.isCanceled()) {
 			event.setCanceled(false);
@@ -208,12 +217,13 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void entityInteract(EntityInteract event) {
-		enforce(event);
+		if(!isFake(event))
+			enforce(event);
 	}
 
 	@SubscribeEvent
 	public static void tick(PlayerTickEvent event) {
-		if(!event.player.isCreative())
+		if(!event.player.isCreative() && !isFake(event.player))
 			for(int i = 0; i < event.player.inventory.armorInventory.size(); i++) {
 				ItemStack stack = event.player.inventory.armorInventory.get(i);
 				if(!stack.isEmpty() && !canPlayerUseItem(event.player, stack)) {
@@ -230,6 +240,14 @@ public class LevelLockHandler {
 	public static void onEntityDrops(LivingDropsEvent event) {
 		if(ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep)
 			event.getDrops().removeIf((e) -> e.getItem().getItem() == Item.getItemFromBlock(Blocks.WOOL));
+	}
+	
+	private static boolean isFake(EntityEvent e) {
+		return isFake(e.getEntity());
+	}
+	
+	private static boolean isFake(Entity e) {
+		return ConfigHandler.enforceFakePlayers && e instanceof FakePlayer; 
 	}
 
 	private static void enforce(PlayerInteractEvent event) {
