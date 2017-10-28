@@ -3,6 +3,7 @@ package vazkii.skillable.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntitySheep;
@@ -164,8 +165,12 @@ public class LevelLockHandler {
 		if(!event.isCanceled()) {
 			EntityPlayer player = event.getEntityPlayer();
 			IBlockState state = event.getWorld().getBlockState(event.getPos());
+			Block block = state.getBlock();
 			int meta = state.getBlock().getMetaFromState(state);
 			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+			if(stack.isEmpty())
+				stack = block.getItem(event.getWorld(), event.getPos(), state);
+			
 			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
 				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
 				event.setCanceled(true);
@@ -187,8 +192,12 @@ public class LevelLockHandler {
 		} else {
 			EntityPlayer player = event.getEntityPlayer();
 			IBlockState state = event.getWorld().getBlockState(event.getPos());
+			Block block = state.getBlock();
 			int meta = state.getBlock().getMetaFromState(state);
-			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
+			ItemStack stack = new ItemStack(block, 1, meta);
+			if(stack.isEmpty())
+				stack = block.getItem(event.getWorld(), event.getPos(), state);
+			
 			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
 				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
 				event.setUseBlock(Result.DENY);
