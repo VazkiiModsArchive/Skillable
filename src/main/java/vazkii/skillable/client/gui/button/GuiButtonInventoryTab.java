@@ -27,8 +27,8 @@ public class GuiButtonInventoryTab extends GuiButton {
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-		enabled = type.shouldRender();
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float f) {
+		enabled = type.shouldRender() && !mc.player.getRecipeBook().isGuiOpen();
 		
 		GuiScreen curr = mc.currentScreen;
 		if(curr instanceof GuiContainerCreative && ((GuiContainerCreative) curr).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex())
@@ -38,8 +38,8 @@ public class GuiButtonInventoryTab extends GuiButton {
 			GlStateManager.color(1F, 1F, 1F);
 			mc.renderEngine.bindTexture(GuiSkills.SKILLS_RES);
 			
-			int x = xPosition;
-			int y = yPosition;
+			int x = this.x;
+			int y = this.y;
 			int u = 176;
 			int v = 0;
 			int w = width;
@@ -51,9 +51,9 @@ public class GuiButtonInventoryTab extends GuiButton {
 			}
 			
 			drawTexturedModalRect(x, y, u, v, w, h);
-			drawTexturedModalRect(xPosition + 12, y + 6, 176 + type.iconIndex * 16, 28, 16, 16);
+			drawTexturedModalRect(this.x + 12, y + 6, 176 + type.iconIndex * 16, 28, 16, 16);
 			
-			if(mouseX > xPosition && mouseY > yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+			if(mouseX > this.x && mouseY > this.y && mouseX < this.x + width && mouseY < this.y + height) {
 				InventoryTabHandler.tooltip = I18n.translateToLocal("skillable.tab." + type.name().toLowerCase());
 				InventoryTabHandler.mx = mouseX;
 				InventoryTabHandler.my = mouseY;

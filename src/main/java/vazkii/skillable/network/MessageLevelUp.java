@@ -22,7 +22,7 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 	
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().playerEntity;
+		EntityPlayer player = context.getServerHandler().player;
 		Skill skill = Skills.ALL_SKILLS.get(this.skill);
 		PlayerData data = PlayerDataHandler.get(player);
 		PlayerSkillInfo info = data.getSkillInfo(skill);
@@ -31,7 +31,7 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 			int cost = info.getLevelUpCost();
 			if(player.experienceLevel >= cost || player.isCreative()) {
 				if(!player.isCreative())
-					player.removeExperienceLevel(cost);
+					player.addExperienceLevel(-cost);
 				info.levelUp();
 				data.saveAndSync();
 			}

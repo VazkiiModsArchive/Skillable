@@ -6,10 +6,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementManager;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -71,10 +75,20 @@ public class PlayerData {
 				return false;
 		}
 		
-		for(Achievement e : holder.achievements)
-			if(!player.hasAchievement(e))
-				return false;
+		if(player instanceof EntityPlayerMP) {
+			EntityPlayerMP mp = (EntityPlayerMP) player;
+			AdvancementManager manager = ((WorldServer) mp.world).getAdvancementManager();
 			
+			for(ResourceLocation res : holder.advancements) {
+				Advancement adv = manager.getAdvancement(res);
+				if(adv != null) {
+					AdvancementProgress progress = mp.getAdvancements().getProgress(adv);
+					if(!progress.isDone())
+						return false;
+				}
+			}
+		}
+				
 		return true;
 	}
 	

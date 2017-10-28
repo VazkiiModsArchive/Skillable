@@ -9,7 +9,7 @@ public class MessageDodge extends NetworkMessage {
 
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayerMP player = context.getServerHandler().playerEntity; 
+		EntityPlayerMP player = context.getServerHandler().player; 
 		player.mcServer.addScheduledTask(() -> {
 			player.addExhaustion(0.3F);
 		});

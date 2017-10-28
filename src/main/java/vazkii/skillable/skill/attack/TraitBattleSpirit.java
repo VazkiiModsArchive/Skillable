@@ -16,7 +16,7 @@ public class TraitBattleSpirit extends Trait {
 	@Override
 	public void onKillMob(LivingDeathEvent event) { 
 		if(event.getEntity() instanceof IMob)
-			((EntityPlayer) event.getSource().getEntity()).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 120, 0));
+			((EntityPlayer) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 120, 0));
 	}
 
 }

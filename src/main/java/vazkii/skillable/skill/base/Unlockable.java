@@ -33,6 +33,7 @@ public abstract class Unlockable implements Comparable<Unlockable> {
 		enabled = ConfigHandler.config.get(category, "Enabled", true).getBoolean();
 		this.cost = ConfigHandler.config.get(category, "Skill Points", cost).getInt();
 		
+		reqs = reqs.replaceAll("\\:", "|"); // backwards compatibility
 		configRequirements = ConfigHandler.config.get(category, "Requirements", reqs).getString();
 		this.requirements = null;
 		

@@ -5,23 +5,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementList;
+import net.minecraft.advancements.AdvancementManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.StatBase;
-import net.minecraft.stats.StatList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.skillable.lib.LibObfuscation;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
 public class RequirementHolder {
 
 	public final Map<Skill, Integer> skillLevels = new HashMap();
-	public final List<Achievement> achievements = new ArrayList();
+	public final List<ResourceLocation> advancements = new ArrayList();
 
 	boolean forcedEmpty = false;
 
@@ -40,7 +44,7 @@ public class RequirementHolder {
 	}
 
 	public int getRestrictionLength() {
-		return skillLevels.size() + achievements.size();
+		return skillLevels.size() + advancements.size();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -64,9 +68,12 @@ public class RequirementHolder {
 
 			EntityPlayer p = data.playerWR.get();
 			if (p != null)
-				for (Achievement e : achievements)
-					tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
-							"skillable.misc.achievementFormat", e.getStatName().getUnformattedText()));
+				for (ResourceLocation e : advancements) {
+					Advancement adv = getAdvancementList().getAdvancement(e);
+					if(adv != null)
+						tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
+							"skillable.misc.achievementFormat", adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
+				}
 		} else
 			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
 	}
@@ -79,19 +86,14 @@ public class RequirementHolder {
 		String[] tokens = s.trim().split(",");
 
 		for (String s1 : tokens) {
-			String[] kv = s1.split(":");
+			String[] kv = s1.split("\\|");
 			if (kv.length == 2) {
 				String keyStr = kv[0];
 				String valStr = kv[1];
 
-				if (keyStr.equals("ach")) {
-					StatBase stat = StatList.getOneShotStat(valStr);
-					if (stat == null)
-						stat = StatList.getOneShotStat("achievement." + valStr);
-
-					if (stat instanceof Achievement)
-						holder.achievements.add((Achievement) stat);
-				} else
+				if (keyStr.equals("adv"))
+					holder.advancements.add(new ResourceLocation(valStr));
+				else
 					try {
 						int level = Integer.parseInt(valStr);
 						Skill skill = Skills.ALL_SKILLS.get(keyStr.toLowerCase());
@@ -106,6 +108,15 @@ public class RequirementHolder {
 		}
 
 		return holder;
+	}
+	
+	private static AdvancementList advList;
+	
+	public static AdvancementList getAdvancementList() {
+		if(advList == null)
+			advList = ReflectionHelper.getPrivateValue(AdvancementManager.class, null, LibObfuscation.ADVANCEMENT_LIST);
+		
+		return advList;
 	}
 
 }

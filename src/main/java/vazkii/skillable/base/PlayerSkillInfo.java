@@ -73,7 +73,7 @@ public class PlayerSkillInfo {
 	}
 	
 	public int getLevelUpCost() {
-		return ConfigHandler.baseXPCost + level * ConfigHandler.xpIncrease;
+		return ConfigHandler.baseXPCost + (level / ConfigHandler.xpIncreaseStagger + 1) * ConfigHandler.xpIncrease;
 	}
 	
 	public boolean isUnlocked(Unlockable u) {

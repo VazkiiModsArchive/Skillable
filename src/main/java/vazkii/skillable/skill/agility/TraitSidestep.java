@@ -82,9 +82,9 @@ public class TraitSidestep extends Trait {
 		Vec3d lookVec = new Vec3d(x, 0, z);
 		Vec3d sideVec = lookVec.crossProduct(new Vec3d(0, left ? 1 : -1, 0)).scale(1.25);
 
-		player.motionX = sideVec.xCoord;
-		player.motionY = sideVec.yCoord;
-		player.motionZ = sideVec.zCoord;
+		player.motionX = sideVec.x;
+		player.motionY = sideVec.y;
+		player.motionZ = sideVec.z;
 		cd = MAX_CD;
 	}
 

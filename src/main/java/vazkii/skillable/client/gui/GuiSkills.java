@@ -73,12 +73,12 @@ public class GuiSkills extends GuiScreen {
 			drawTexturedModalRect(x, y, u, v, w, h);
 			drawSkill(x + 5, y + 9, skill);
 
-			mc.fontRendererObj.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
-			mc.fontRendererObj.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
+			mc.fontRenderer.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
+			mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
 		}
 		
 		String skillsStr = I18n.translateToLocal("skillable.misc.skills");
-		fontRendererObj.drawString(skillsStr, width / 2 - fontRendererObj.getStringWidth(skillsStr) / 2, top + 6, 4210752);
+		fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 6, 4210752);
 		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}

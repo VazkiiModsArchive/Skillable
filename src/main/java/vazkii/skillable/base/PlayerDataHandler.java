@@ -117,8 +117,8 @@ public class PlayerDataHandler {
 
 		@SubscribeEvent
 		public static void onMobDrops(LivingDropsEvent event) {
-			if(event.getSource().getEntity() instanceof EntityPlayer) {
-				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
+			if(event.getSource().getTrueSource() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
 				if(data != null)
 					data.mobDrops(event);
 			}
@@ -131,8 +131,8 @@ public class PlayerDataHandler {
 				if(data != null)
 					data.hurt(event);
 			}
-			if(event.getSource().getEntity() instanceof EntityPlayer) {
-				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
+			if(event.getSource().getTrueSource() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
 				if(data != null)
 					data.attackMob(event);
 			}
@@ -156,8 +156,8 @@ public class PlayerDataHandler {
 		
 		@SubscribeEvent
 		public static void onMobDeath(LivingDeathEvent event) {
-			if(event.getSource().getEntity() instanceof EntityPlayer) {
-				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getEntity());
+			if(event.getSource().getTrueSource() instanceof EntityPlayer) {
+				PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
 				if(data != null)
 					data.killMob(event);
 			}

@@ -32,7 +32,7 @@ public class TraitEffectTwist extends Trait {
 
 	@Override
 	public void onHurt(LivingHurtEvent event) {
-		Entity src = event.getSource().getEntity();
+		Entity src = event.getSource().getTrueSource();
 		if(src instanceof EntityLivingBase && src instanceof IMob && src.world.rand.nextBoolean()) {
 			List<PotionEffect> effects = event.getEntityLiving().getActivePotionEffects().stream().filter((p) -> badPotions.containsKey(p.getPotion())).collect(Collectors.toList());
 			if(effects.size() > 0) {

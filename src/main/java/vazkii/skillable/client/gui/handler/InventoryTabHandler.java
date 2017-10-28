@@ -80,7 +80,7 @@ public class InventoryTabHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
-		event.setCanceled(true); // TODO ASM into the render to move the potions over
+		event.setCanceled(true);
 	}
 	
 }

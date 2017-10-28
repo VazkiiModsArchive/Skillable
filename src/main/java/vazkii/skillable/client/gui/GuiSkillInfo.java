@@ -93,10 +93,10 @@ public class GuiSkillInfo extends GuiScreen {
 		GuiSkills.drawSkill(left + 15, top + 9, skill);
 		
 		String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), ConfigHandler.levelCap, I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
-		mc.fontRendererObj.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
-		mc.fontRendererObj.drawString(levelStr, left + 37, top + 18, 4210752);
+		mc.fontRenderer.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
+		mc.fontRenderer.drawString(levelStr, left + 37, top + 18, 4210752);
 		
-		mc.fontRendererObj.drawString(String.format(I18n.translateToLocal("skillable.misc.skillPoints"), skillInfo.getSkillPoints()), left + 15, top + 154, 4210752);
+		mc.fontRenderer.drawString(String.format(I18n.translateToLocal("skillable.misc.skillPoints"), skillInfo.getSkillPoints()), left + 15, top + 154, 4210752);
 		
 		int cost = skillInfo.getLevelUpCost();
 		String costStr = Integer.toString(cost);
@@ -105,7 +105,7 @@ public class GuiSkillInfo extends GuiScreen {
 		
 		levelUpButton.setCost(cost);
 		
-		drawCenteredString(mc.fontRendererObj, costStr, left + 138, top + 13, 0xAFFF02);
+		drawCenteredString(mc.fontRenderer, costStr, left + 138, top + 13, 0xAFFF02);
 		
 		hoveredUnlockable = null;
 		for(Unlockable u : skill.getUnlockables())
@@ -169,7 +169,7 @@ public class GuiSkillInfo extends GuiScreen {
 		int i = 0;
 
 		while(i < tokens.length) {
-			while(fontRendererObj.getStringWidth(curr) < maxLen && i < tokens.length) {
+			while(fontRenderer.getStringWidth(curr) < maxLen && i < tokens.length) {
 				curr = curr + tokens[i] + " ";
 				i++;
 			}

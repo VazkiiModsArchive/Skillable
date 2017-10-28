@@ -24,7 +24,7 @@ public class MessageUnlockUnlockable extends NetworkMessage<MessageUnlockUnlocka
 	
 	@Override
 	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().playerEntity;
+		EntityPlayer player = context.getServerHandler().player;
 		Skill skill = Skills.ALL_SKILLS.get(this.skill);
 		Unlockable unlockable = Skills.ALL_UNLOCKABLES.get(this.unlockable);
 		PlayerData data = PlayerDataHandler.get(player);

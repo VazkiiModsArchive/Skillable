@@ -1,16 +1,12 @@
 package vazkii.skillable.client.base;
 
-import java.util.Map;
-
-import org.lwjgl.opengl.GLSync;
-
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -60,7 +56,7 @@ public class HUDHandler {
 			int color = (int) (0x11 * transparency) << 24; 
 			
 			String msg = I18n.translateToLocal(lockMessage);
-			int len = mc.fontRendererObj.getStringWidth(msg);
+			int len = mc.fontRenderer.getStringWidth(msg);
 			
 			PlayerData data = PlayerDataHandler.get(mc.player);
 			RequirementHolder reqs = LevelLockHandler.getSkillLock(lockedItem);
@@ -69,13 +65,13 @@ public class HUDHandler {
 			int xp = left;
 			
 			int boxWidth = Math.max(pad * reqs.getRestrictionLength(), len) + 20;
-			int boxHeight = 52 + reqs.achievements.size() * 10;
+			int boxHeight = 52 + reqs.advancements.size() * 10;
 			Gui.drawRect(width / 2 - boxWidth / 2, y - 10, width / 2 + boxWidth / 2, y + boxHeight, color);
 			Gui.drawRect(width / 2 - boxWidth / 2 - 2, y - 12, width / 2 + boxWidth / 2 + 2, y + boxHeight + 2, color);
 
 			GlStateManager.enableBlend();
 			color = 0xFF3940 + transparencyInt;
-			mc.fontRendererObj.drawStringWithShadow(msg, res.getScaledWidth() / 2 - len / 2, y, color);
+			mc.fontRenderer.drawStringWithShadow(msg, res.getScaledWidth() / 2 - len / 2, y, color);
 			
 			for(Skill s : reqs.skillLevels.keySet()) {
 				int reqLevel = reqs.skillLevels.get(s);
@@ -84,7 +80,7 @@ public class HUDHandler {
 				int level = data.getSkillInfo(s).getLevel();
 				color = (level < reqLevel ? 0xFF3940 : 0x39FF8D) + transparencyInt;
 				
-				mc.fontRendererObj.drawStringWithShadow(Integer.toString(reqLevel), xp + 8, y + 32, color);
+				mc.fontRenderer.drawStringWithShadow(Integer.toString(reqLevel), xp + 8, y + 32, color);
 				xp += pad;
 			}
 			
@@ -92,26 +88,30 @@ public class HUDHandler {
 			int textY = y + 48;
 			color = 0xFFFFFF + transparencyInt;
 
-			for(Achievement a : reqs.achievements) {
-                mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/achievement/achievement_background.png"));
-                int u = 0;
-                if(a.getSpecial())
-                	u = 26;
+			for(ResourceLocation advRes : reqs.advancements) {
+				Advancement adv = reqs.getAdvancementList().getAdvancement(advRes);
+				if(adv == null)
+					return;
+				
+                mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/advancements/widgets.png"));
+                DisplayInfo display = adv.getDisplay();
+                int u = display.getFrame().getIcon();
+                int v = 154;
                 
                 GlStateManager.color(1F, 1F, 1F, transparency);
-				RenderHelper.drawTexturedModalRect(xp - 3, y + 17, 0, u, 202, 26, 26);
+				RenderHelper.drawTexturedModalRect(xp - 3, y + 17, 0, u, v, 26, 26);
                 GlStateManager.disableLighting();
                 GlStateManager.enableCull();
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(xp + 2, y + 22, 0);
                 GlStateManager.scale(1, transparency, 1);
-                mc.getRenderItem().renderItemAndEffectIntoGUI(a.theItemStack, 0, 0);
+                mc.getRenderItem().renderItemAndEffectIntoGUI(display.getIcon(), 0, 0);
                 GlStateManager.popMatrix();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 GlStateManager.disableLighting();
 
-				mc.fontRendererObj.drawStringWithShadow(a.getStatName().getUnformattedText(), textLeft, textY, color);
+				mc.fontRenderer.drawStringWithShadow(adv.getDisplayText().getUnformattedText(), textLeft, textY, color);
                 
 				xp += pad;
 				textY += 11;
