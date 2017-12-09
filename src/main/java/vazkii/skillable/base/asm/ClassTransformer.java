@@ -9,6 +9,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -35,8 +36,8 @@ public class ClassTransformer implements IClassTransformer {
 						if(itrNode.getOpcode() == Opcodes.BIPUSH) {
 							IntInsnNode intNode = (IntInsnNode) itrNode;
 							if(intNode.operand == 124) {
-								LdcInsnNode ldc = new LdcInsnNode(156);
-								method.instructions.insert(intNode, ldc);
+								MethodInsnNode newNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "vazkii/skillable/client/gui/handler/InventoryTabHandler", "getPotionOffset", "()I");
+								method.instructions.insert(intNode, newNode);
 								method.instructions.remove(intNode);
 								break;
 							}

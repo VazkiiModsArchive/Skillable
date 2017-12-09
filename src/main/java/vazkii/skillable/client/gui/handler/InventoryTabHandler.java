@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.actors.threadpool.Arrays;
 import vazkii.arl.util.RenderHelper;
+import vazkii.skillable.base.ConfigHandler;
 import vazkii.skillable.client.gui.GuiAbilities;
 import vazkii.skillable.client.gui.GuiSkillInfo;
 import vazkii.skillable.client.gui.GuiSkills;
@@ -27,6 +28,9 @@ public class InventoryTabHandler {
 	public static int mx, my;
 	
 	public static void addTabs(GuiScreen currScreen, List<GuiButton> buttonList) {
+		if(!ConfigHandler.enableTabs)
+			return;
+		
 		int x = currScreen.width / 2 - 120;
 		int y = currScreen.height / 2 - 76;
 		
@@ -80,7 +84,12 @@ public class InventoryTabHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
-		event.setCanceled(true);
+		if(ConfigHandler.enableTabs)
+			event.setCanceled(true);
+	}
+	
+	public static int getPotionOffset() {
+		return ConfigHandler.enableTabs ? 156 : 124;
 	}
 	
 }
