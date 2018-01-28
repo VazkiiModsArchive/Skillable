@@ -6,14 +6,13 @@ import vazkii.skillable.skill.agility.TraitSidestep;
 
 public class SkillAgility extends Skill {
 
-	public SkillAgility() {
-		super("agility", 6, Blocks.GRAVEL);
-	}
+    public SkillAgility() {
+        super("agility", 6, Blocks.GRAVEL);
+    }
 
-	@Override
-	public void initUnlockables() {
-		addUnlockable(new TraitRoadwalk());
-		addUnlockable(new TraitSidestep());
-	}
-	
+    @Override
+    public void initUnlockables() {
+        addUnlockable(new TraitRoadwalk());
+        addUnlockable(new TraitSidestep());
+    }
 }
