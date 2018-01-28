@@ -154,7 +154,12 @@ public class LevelLockHandler {
 		if(event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 			ItemStack stack = player.getHeldItemMainhand();
-			if(!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
+
+			if (ConfigHandler.enforceFakePlayers) {
+				if (isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
+                    event.setCanceled(true);
+                }
+            } else if(!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
 				tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
 				event.setCanceled(true);
 			}
@@ -163,25 +168,29 @@ public class LevelLockHandler {
 
 	@SubscribeEvent
 	public static void leftClick(LeftClickBlock event) {
-		if(isFake(event))
+		if (isFake(event))
 			return;
 		enforce(event);
-		
-		if(!event.isCanceled()) {
+
+		if (!event.isCanceled()) {
 			EntityPlayer player = event.getEntityPlayer();
 			IBlockState state = event.getWorld().getBlockState(event.getPos());
 			Block block = state.getBlock();
 			int meta = state.getBlock().getMetaFromState(state);
 			ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
-			if(stack.isEmpty())
+			if (stack.isEmpty())
 				stack = block.getItem(event.getWorld(), event.getPos(), state);
-			
-			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
-				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
-				event.setCanceled(true);
+
+				if (ConfigHandler.enforceFakePlayers) {
+					if (isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
+						event.setCanceled(true);
+					}
+				} else if (!player.isCreative() && !canPlayerUseItem(player, stack) && !isFake(player)) {
+					tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
+					event.setCanceled(true);
+				}
 			}
 		}
-	}
 
 	@SubscribeEvent
 	public static void rightClickItem(RightClickItem event) {
@@ -206,8 +215,13 @@ public class LevelLockHandler {
 			ItemStack stack = new ItemStack(block, 1, meta);
 			if(stack.isEmpty())
 				stack = block.getItem(event.getWorld(), event.getPos(), state);
-			
-			if(!player.isCreative() && !canPlayerUseItem(player, stack)) {
+
+            if (ConfigHandler.enforceFakePlayers) {
+                if (isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
+                    event.setUseBlock(Result.DENY);
+                    event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
+                }
+            } else if(!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
 				tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
 				event.setUseBlock(Result.DENY);
 				event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
