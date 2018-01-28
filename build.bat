@@ -1,2 +1,2 @@
-sh gradlew
+gradlew setupDecompWorkspace IDEA Build
 pause
