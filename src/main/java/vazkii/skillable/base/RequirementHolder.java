@@ -1,14 +1,8 @@
 package vazkii.skillable.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.advancements.AdvancementManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -22,101 +16,104 @@ import vazkii.skillable.lib.LibObfuscation;
 import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class RequirementHolder {
 
-	public final Map<Skill, Integer> skillLevels = new HashMap();
-	public final List<ResourceLocation> advancements = new ArrayList();
+    private static AdvancementList advList;
+    public final Map<Skill, Integer> skillLevels = new HashMap();
+    public final List<ResourceLocation> advancements = new ArrayList();
+    boolean forcedEmpty = false;
 
-	boolean forcedEmpty = false;
+    public static RequirementHolder realEmpty() {
+        RequirementHolder h = new RequirementHolder();
+        h.forcedEmpty = true;
+        return h;
+    }
 
-	public static RequirementHolder realEmpty() {
-		RequirementHolder h = new RequirementHolder();
-		h.forcedEmpty = true;
-		return h;
-	}
+    public static RequirementHolder fromString(String s) {
+        if (s.matches("(?i)^(none|null|nil)$"))
+            return RequirementHolder.realEmpty();
 
-	public boolean isRealLock() {
-		return getRestrictionLength() > 0 && !forcedEmpty;
-	}
+        RequirementHolder holder = new RequirementHolder();
+        String[] tokens = s.trim().split(",");
 
-	public boolean isForcedEmpty() {
-		return forcedEmpty;
-	}
+        for (String s1 : tokens) {
+            String[] kv = s1.split("\\|");
+            if (kv.length == 2) {
+                String keyStr = kv[0];
+                String valStr = kv[1];
 
-	public int getRestrictionLength() {
-		return skillLevels.size() + advancements.size();
-	}
+                if (keyStr.equals("adv"))
+                    holder.advancements.add(new ResourceLocation(valStr));
+                else
+                    try {
+                        int level = Integer.parseInt(valStr);
+                        Skill skill = Skills.SKILLS.get(keyStr.toLowerCase());
+                        if (skill != null && level > 1)
+                            holder.skillLevels.put(skill, level);
+                        else
+                            FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
+                    } catch (NumberFormatException e) {
+                        FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
+                    }
+            }
+        }
 
-	@SideOnly(Side.CLIENT)
-	public void addRequirementsToTooltip(PlayerData data, List<String> tooltip) {
-		if (!isRealLock())
-			return;
+        return holder;
+    }
 
-		if (GuiScreen.isShiftKeyDown()) {
-			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
+    public static AdvancementList getAdvancementList() {
+        if (advList == null)
+            advList = ReflectionHelper.getPrivateValue(AdvancementManager.class, null, LibObfuscation.ADVANCEMENT_LIST);
 
-			for (Skill s : skillLevels.keySet()) {
-				PlayerSkillInfo info = data.getSkillInfo(s);
-				TextFormatting color = TextFormatting.GREEN;
-				int req = skillLevels.get(s);
-				if (info.getLevel() < req)
-					color = TextFormatting.RED;
+        return advList;
+    }
 
-				tooltip.add(TextFormatting.GRAY + " - "
-						+ I18n.translateToLocalFormatted("skillable.misc.skillFormat", color, req, s.getName()));
-			}
+    public boolean isRealLock() {
+        return getRestrictionLength() > 0 && !forcedEmpty;
+    }
 
-			EntityPlayer p = data.playerWR.get();
-			if (p != null)
-				for (ResourceLocation e : advancements) {
-					Advancement adv = getAdvancementList().getAdvancement(e);
-					if(adv != null)
-						tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
-							"skillable.misc.achievementFormat", adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
-				}
-		} else
-			tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
-	}
+    public boolean isForcedEmpty() {
+        return forcedEmpty;
+    }
 
-	public static RequirementHolder fromString(String s) {
-		if (s.matches("(?i)^(none|null|nil)$"))
-			return RequirementHolder.realEmpty();
+    public int getRestrictionLength() {
+        return skillLevels.size() + advancements.size();
+    }
 
-		RequirementHolder holder = new RequirementHolder();
-		String[] tokens = s.trim().split(",");
+    @SideOnly(Side.CLIENT)
+    public void addRequirementsToTooltip(PlayerData data, List<String> tooltip) {
+        if (!isRealLock())
+            return;
 
-		for (String s1 : tokens) {
-			String[] kv = s1.split("\\|");
-			if (kv.length == 2) {
-				String keyStr = kv[0];
-				String valStr = kv[1];
+        if (GuiScreen.isShiftKeyDown()) {
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
 
-				if (keyStr.equals("adv"))
-					holder.advancements.add(new ResourceLocation(valStr));
-				else
-					try {
-						int level = Integer.parseInt(valStr);
-						Skill skill = Skills.ALL_SKILLS.get(keyStr.toLowerCase());
-						if (skill != null && level > 1)
-							holder.skillLevels.put(skill, level);
-						else
-							FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
-					} catch (NumberFormatException e) {
-						FMLLog.warning("[Skillable] Invalid Level Lock: " + s);
-					}
-			}
-		}
+            for (Skill s : skillLevels.keySet()) {
+                PlayerSkillInfo info = data.getSkillInfo(s);
+                TextFormatting color = TextFormatting.GREEN;
+                int req = skillLevels.get(s);
+                if (info.getLevel() < req)
+                    color = TextFormatting.RED;
 
-		return holder;
-	}
-	
-	private static AdvancementList advList;
-	
-	public static AdvancementList getAdvancementList() {
-		if(advList == null)
-			advList = ReflectionHelper.getPrivateValue(AdvancementManager.class, null, LibObfuscation.ADVANCEMENT_LIST);
-		
-		return advList;
-	}
+                tooltip.add(TextFormatting.GRAY + " - "
+                        + I18n.translateToLocalFormatted("skillable.misc.skillFormat", color, req, s.getName()));
+            }
+
+            EntityPlayer p = data.playerWR.get();
+            if (p != null)
+                for (ResourceLocation e : advancements) {
+                    Advancement adv = getAdvancementList().getAdvancement(e);
+                    if (adv != null)
+                        tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
+                                "skillable.misc.achievementFormat", adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
+                }
+        } else
+            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
+    }
 
 }

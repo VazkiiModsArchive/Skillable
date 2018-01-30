@@ -13,28 +13,29 @@ import vazkii.skillable.skill.base.Unlockable;
 
 public class MessageUnlockUnlockable extends NetworkMessage<MessageUnlockUnlockable> {
 
-	public String skill, unlockable;
-	
-	public MessageUnlockUnlockable() { }
-	
-	public MessageUnlockUnlockable(String skill, String unlockable) {
-		this.skill = skill;
-		this.unlockable = unlockable;
-	}
-	
-	@Override
-	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().player;
-		Skill skill = Skills.ALL_SKILLS.get(this.skill);
-		Unlockable unlockable = Skills.ALL_UNLOCKABLES.get(this.unlockable);
-		PlayerData data = PlayerDataHandler.get(player);
-		PlayerSkillInfo info = data.getSkillInfo(skill);
-		
-		if(!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.cost && data.matchStats(unlockable.getRequirements())) {
-			info.unlock(unlockable);
-			data.saveAndSync();
-		}
-		
-		return null;
-	}
+    public String skill, unlockable;
+
+    public MessageUnlockUnlockable() {
+    }
+
+    public MessageUnlockUnlockable(String skill, String unlockable) {
+        this.skill = skill;
+        this.unlockable = unlockable;
+    }
+
+    @Override
+    public IMessage handleMessage(MessageContext context) {
+        EntityPlayer player = context.getServerHandler().player;
+        Skill skill = Skills.SKILLS.get(this.skill);
+        Unlockable unlockable = Skills.ALL_UNLOCKABLES.get(this.unlockable);
+        PlayerData data = PlayerDataHandler.get(player);
+        PlayerSkillInfo info = data.getSkillInfo(skill);
+
+        if (!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.cost && data.matchStats(unlockable.getRequirements())) {
+            info.unlock(unlockable);
+            data.saveAndSync();
+        }
+
+        return null;
+    }
 }

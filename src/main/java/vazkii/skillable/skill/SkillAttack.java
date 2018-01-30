@@ -6,14 +6,14 @@ import vazkii.skillable.skill.attack.TraitNeutralissse;
 
 public class SkillAttack extends Skill {
 
-	public SkillAttack() {
-		super("attack", 2, Blocks.STONEBRICK);
-	}
+    public SkillAttack() {
+        super("attack", 2, Blocks.STONEBRICK);
+    }
 
-	@Override
-	public void initUnlockables() {
-		addUnlockable(new TraitNeutralissse());
-		addUnlockable(new TraitBattleSpirit());
-	}
-	
+    @Override
+    public void initUnlockables() {
+        addUnlockable(new TraitNeutralissse());
+        addUnlockable(new TraitBattleSpirit());
+    }
+
 }

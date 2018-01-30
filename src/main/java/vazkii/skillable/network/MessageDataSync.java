@@ -13,24 +13,25 @@ import vazkii.skillable.client.base.ClientTickHandler;
 
 public class MessageDataSync extends NetworkMessage {
 
-	public NBTTagCompound cmp;
+    public NBTTagCompound cmp;
 
-	public MessageDataSync() { }
+    public MessageDataSync() {
+    }
 
-	public MessageDataSync(PlayerData data) {
-		cmp = new NBTTagCompound();
-		data.saveToNBT(cmp);
-	}	
+    public MessageDataSync(PlayerData data) {
+        cmp = new NBTTagCompound();
+        data.saveToNBT(cmp);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IMessage handleMessage(MessageContext context) {
-		ClientTickHandler.scheduledActions.add(() -> {
-			PlayerData data = PlayerDataHandler.get(Skillable.proxy.getClientPlayer());
-			data.loadFromNBT(cmp);
-		});
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IMessage handleMessage(MessageContext context) {
+        ClientTickHandler.scheduledActions.add(() -> {
+            PlayerData data = PlayerDataHandler.get(Skillable.proxy.getClientPlayer());
+            data.loadFromNBT(cmp);
+        });
 
-		return null;
-	}
+        return null;
+    }
 
 }

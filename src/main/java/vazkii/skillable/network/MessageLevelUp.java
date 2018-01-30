@@ -12,32 +12,33 @@ import vazkii.skillable.skill.Skills;
 
 public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
 
-	public String skill;
-	
-	public MessageLevelUp() { }
-	
-	public MessageLevelUp(String skill) {
-		this.skill = skill;
-	}
-	
-	@Override
-	public IMessage handleMessage(MessageContext context) {
-		EntityPlayer player = context.getServerHandler().player;
-		Skill skill = Skills.ALL_SKILLS.get(this.skill);
-		PlayerData data = PlayerDataHandler.get(player);
-		PlayerSkillInfo info = data.getSkillInfo(skill);
-		
-		if(!info.isCapped()) {
-			int cost = info.getLevelUpCost();
-			if(player.experienceLevel >= cost || player.isCreative()) {
-				if(!player.isCreative())
-					player.addExperienceLevel(-cost);
-				info.levelUp();
-				data.saveAndSync();
-			}
-		}
-		
-		return null;
-	}
-	
+    public String skill;
+
+    public MessageLevelUp() {
+    }
+
+    public MessageLevelUp(String skill) {
+        this.skill = skill;
+    }
+
+    @Override
+    public IMessage handleMessage(MessageContext context) {
+        EntityPlayer player = context.getServerHandler().player;
+        Skill skill = Skills.SKILLS.get(this.skill);
+        PlayerData data = PlayerDataHandler.get(player);
+        PlayerSkillInfo info = data.getSkillInfo(skill);
+
+        if (!info.isCapped()) {
+            int cost = info.getLevelUpCost();
+            if (player.experienceLevel >= cost || player.isCreative()) {
+                if (!player.isCreative())
+                    player.addExperienceLevel(-cost);
+                info.levelUp();
+                data.saveAndSync();
+            }
+        }
+
+        return null;
+    }
+
 }
