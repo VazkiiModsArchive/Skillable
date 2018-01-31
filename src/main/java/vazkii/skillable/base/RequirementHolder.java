@@ -110,7 +110,8 @@ public class RequirementHolder {
                     Advancement adv = getAdvancementList().getAdvancement(e);
                     if (adv != null)
                         tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
-                                "skillable.misc.achievementFormat", adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
+                                "skillable.misc.achievementFormat",
+                                adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
                 }
         } else
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));

@@ -88,11 +88,11 @@ public class GuiSkillInfo extends GuiScreen {
 
         drawTexturedModalRect(left, top, 0, 0, guiWidth, guiHeight);
 
-        GuiSkills.drawSkill(left + 15, top + 9, skill);
+        GuiSkills.drawSkill(left + 4, top + 9, skill);
 
-        String levelStr = String.format("%d/%d (%s)", skillInfo.getLevel(), ConfigHandler.levelCap, I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
-        mc.fontRenderer.drawString(TextFormatting.BOLD + skill.getName(), left + 37, top + 8, 4210752);
-        mc.fontRenderer.drawString(levelStr, left + 37, top + 18, 4210752);
+        String levelStr = String.format("%d/%d [ %s ]", skillInfo.getLevel(), ConfigHandler.levelCap, I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
+        mc.fontRenderer.drawString(TextFormatting.BOLD + skill.getName(), left + 22, top + 8, 4210752);
+        mc.fontRenderer.drawString(levelStr, left + 22, top + 18, 4210752);
 
         mc.fontRenderer.drawString(String.format(I18n.translateToLocal("skillable.misc.skillPoints"), skillInfo.getSkillPoints()), left + 15, top + 154, 4210752);
 

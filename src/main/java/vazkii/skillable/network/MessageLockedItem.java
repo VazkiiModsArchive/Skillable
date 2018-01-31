@@ -30,7 +30,6 @@ public class MessageLockedItem extends NetworkMessage {
     @SideOnly(Side.CLIENT)
     public IMessage handleMessage(MessageContext context) {
         HUDHandler.setLockMessage(stack, msg);
-
         return null;
     }
 

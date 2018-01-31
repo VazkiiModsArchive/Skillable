@@ -61,7 +61,7 @@ public class PlayerSkillInfo {
     }
 
     public int getRank() {
-        return level / (ConfigHandler.levelCap / 4);
+        return level / (ConfigHandler.levelCap / 7);
     }
 
     public int getSkillPoints() {
