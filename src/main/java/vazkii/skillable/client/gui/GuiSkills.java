@@ -7,6 +7,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import sun.awt.image.OffScreenImage;
 import vazkii.arl.util.RenderHelper;
 import vazkii.skillable.base.ConfigHandler;
 import vazkii.skillable.base.PlayerData;
@@ -18,6 +21,7 @@ import vazkii.skillable.skill.Skill;
 import vazkii.skillable.skill.Skills;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GuiSkills extends GuiScreen {
 
@@ -26,11 +30,31 @@ public class GuiSkills extends GuiScreen {
     int guiWidth, guiHeight;
     Skill hoveredSkill;
 
+    int offset = 0;
+    
+    int left;
+    int top;
+    int lastY;
+    
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(SKILLS_RES);
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
         RenderHelper.drawTexturedModalRect(x, y, 1, 176 + Math.min(rank, 3) * 16, 44 + skill.getIndex() * 16, 16, 16);
+    }
+    
+    public static void drawScrollButtonsTop(int x, int y){
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.renderEngine.bindTexture(SKILLS_RES);
+        
+        RenderHelper.drawTexturedModalRect(x, y, 1, 0, 230, 80, 4);
+    }
+    
+    public static void drawScrollButtonsBottom(int x, int y){
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.renderEngine.bindTexture(SKILLS_RES);
+        
+        RenderHelper.drawTexturedModalRect(x, y, 1, 0, 235, 80, 4);
     }
 
     @Override
@@ -47,44 +71,56 @@ public class GuiSkills extends GuiScreen {
         drawDefaultBackground();
         mc.renderEngine.bindTexture(SKILLS_RES);
         GlStateManager.color(1F, 1F, 1F);
-
-        int left = width / 2 - guiWidth / 2;
-        int top = height / 2 - guiHeight / 2;
+    
+        left = width / 2 - guiWidth / 2;
+        top = height / 2 - guiHeight / 2;
         drawTexturedModalRect(left, top, 0, 0, guiWidth, guiHeight);
 
         PlayerData data = PlayerDataHandler.get(mc.player);
 
         hoveredSkill = null;
-        for (String s : Skills.SKILLS.keySet()) {
-            Skill skill = Skills.SKILLS.get(s);
+        ArrayList<String> list = new ArrayList<>(Skills.SKILLS.keySet());
+        
+        int index = 0;
+        for(int j = 0; j < list.size(); j++) {
+            if(j < offset || index > 7){
+                continue;
+            }
+            Skill skill = Skills.SKILLS.get(list.get(j));
             PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
-
-            int i = skill.getIndex();
+    
+            int i = index++;
             int w = 79;
             int h = 32;
             int x = left + (i % 2) * (w + 3) + 8;
             int y = top + (i / 2) * (h + 3) + 18;
+//            if(y > lastY) //uncomment this line to make the bottom button stay at the bottom
+            lastY = y;
             int u = 0;
             int v = guiHeight;
-
+    
             if (mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h) {
                 u += w;
                 hoveredSkill = skill;
             }
             if (skillInfo.isCapped())
                 v += h;
-
+    
             mc.renderEngine.bindTexture(SKILLS_RES);
             GlStateManager.color(1F, 1F, 1F);
             drawTexturedModalRect(x, y, u, v, w, h);
             drawSkill(x + 5, y + 9, skill);
-
+    
             mc.fontRenderer.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
             mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
         }
+        GL11.glColor4f(1,1,1,1);
+        drawScrollButtonsTop(left + ((79 + 3) + 8) /2, top + 18-4);
+        drawScrollButtonsBottom(left + ((79 + 3) + 8) /2, lastY+32);
+        
 
         String skillsStr = I18n.translateToLocal("skillable.misc.skills");
-        fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 6, 4210752);
+        fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 5, 4210752);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -98,8 +134,36 @@ public class GuiSkills extends GuiScreen {
             GuiSkillInfo gui = new GuiSkillInfo(hoveredSkill);
             mc.displayGuiScreen(gui);
         }
+        if(mouseButton == 0){
+            if(mouseX >= left + ((79 + 3) + 8) /2 && mouseX <= left + ((79 + 3) + 8) /2+79){
+                if(mouseY >= top+14 && mouseY <= top+14 +4){
+                    offset = Math.max(offset-2,0);
+                }else if(mouseY >= top+14 && mouseY <= lastY + 36){
+                    int off = 2;
+                    if(Skills.SKILLS.size()%2==1){
+                        off = 1;
+                    }
+                    offset = Math.min(offset+2, Skills.SKILLS.size()-off);
+                }
+            }
+        }
+        
     }
-
+    
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        if(Mouse.getEventDWheel()>0){
+            offset = Math.max(offset-2, 0);
+        } else if(Mouse.getEventDWheel() < 0){
+            int off = 2;
+            if(Skills.SKILLS.size()%2==1){
+                off = 1;
+            }
+            offset = Math.min(offset+2, Skills.SKILLS.size()-off);
+        }
+    }
+    
     @Override
     public boolean doesGuiPauseGame() {
         return false;
