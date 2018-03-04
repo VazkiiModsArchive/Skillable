@@ -30,7 +30,6 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
         PlayerSkillInfo info = data.getSkillInfo(skill);
         if (!info.isCapped()) {
             int cost = info.getLevelUpCost();
-            if (!ConfigHandler.useExperienceNotLevel) {
                 if (player.experienceLevel >= cost || player.isCreative()) {
                     if (!player.isCreative()) {
                         player.addExperienceLevel(-cost);
@@ -38,15 +37,6 @@ public class MessageLevelUp extends NetworkMessage<MessageLevelUp> {
                     info.levelUp();
                     data.saveAndSync();
                 }
-            } else if (ConfigHandler.useExperienceNotLevel) {
-                if (player.experience >= cost || player.isCreative()) {
-                    if (!player.isCreative()) {
-                        player.addExperience(-cost);
-                    }
-                    info.levelUp();
-                    data.saveAndSync();
-                }
-            }
         }
         return null;
     }
