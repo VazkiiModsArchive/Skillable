@@ -22,6 +22,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -223,6 +225,24 @@ public class LevelLockHandler {
                 event.setUseBlock(Result.DENY);
                 event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BreakEvent event){
+        EntityPlayer player = event.getPlayer();
+        IBlockState state = event.getWorld().getBlockState(event.getPos());
+        Block block = state.getBlock();
+        int meta = state.getBlock().getMetaFromState(state);
+        ItemStack stack = new ItemStack(block, 1, meta);
+
+        if (ConfigHandler.enforceFakePlayers){
+            if (isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)){
+                event.setCanceled(true);
+            }
+        } else if (!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)){
+            tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
+            event.setCanceled(true);
         }
     }
 

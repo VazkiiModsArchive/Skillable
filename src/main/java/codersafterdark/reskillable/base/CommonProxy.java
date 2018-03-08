@@ -13,16 +13,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(RegisterUnlockablesEvent.class);
         Skills.init();
-        ConfigHandler.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
-        MinecraftForge.EVENT_BUS.register(RegisterUnlockablesEvent.class);
+        ConfigHandler.init(event.getSuggestedConfigurationFile());
         MessageRegister.init();
     }
 
     public void init(FMLInitializationEvent event) {
-
     }
 
     public void postInit(FMLPostInitializationEvent event) {

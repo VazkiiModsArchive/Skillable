@@ -33,4 +33,8 @@ public class MessageLockedItem extends NetworkMessage {
         return null;
     }
 
+    @Override
+    public IMessage onMessage(IMessage message, MessageContext ctx) {
+        return null;
+    }
 }
