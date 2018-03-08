@@ -12,6 +12,8 @@ public abstract class Skill implements Comparable<Skill> {
     private final String name;
     private final int index;
     private final Block background;
+    
+    private int cap;
 
     private final List<Unlockable> unlockables = new ArrayList();
 
@@ -49,7 +51,15 @@ public abstract class Skill implements Comparable<Skill> {
     public Block getBackground() {
         return background;
     }
-
+    
+    public int getCap() {
+        return cap;
+    }
+    
+    public void setCap(int cap) {
+        this.cap = cap;
+    }
+    
     @Override
     public int compareTo(Skill o) {
         return getIndex() - o.getIndex();

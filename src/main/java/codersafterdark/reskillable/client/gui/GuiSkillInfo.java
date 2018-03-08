@@ -90,7 +90,7 @@ public class GuiSkillInfo extends GuiScreen {
 
         GuiSkills.drawSkill(left + 4, top + 9, skill);
 
-        String levelStr = String.format("%d/%d [ %s ]", skillInfo.getLevel(), ConfigHandler.levelCap, I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
+        String levelStr = String.format("%d/%d [ %s ]", skillInfo.getLevel(), skill.getCap(), I18n.translateToLocal("skillable.rank." + skillInfo.getRank()));
         mc.fontRenderer.drawString(TextFormatting.BOLD + skill.getName(), left + 22, top + 8, 4210752);
         mc.fontRenderer.drawString(levelStr, left + 22, top + 18, 4210752);
 

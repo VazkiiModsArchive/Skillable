@@ -54,14 +54,14 @@ public class PlayerSkillInfo {
     public int getLevel() {
         if (level <= 0)
             level = 1;
-        if (level > ConfigHandler.levelCap)
-            level = ConfigHandler.levelCap;
+        if (level > skill.getCap())
+            level = skill.getCap();
 
         return level;
     }
 
     public int getRank() {
-        return level / (ConfigHandler.levelCap / 7);
+        return level / (skill.getCap() / 7);
     }
 
     public int getSkillPoints() {
@@ -69,7 +69,7 @@ public class PlayerSkillInfo {
     }
 
     public boolean isCapped() {
-        return level == ConfigHandler.levelCap;
+        return level == skill.getCap();
     }
 
     public int getLevelUpCost() {
