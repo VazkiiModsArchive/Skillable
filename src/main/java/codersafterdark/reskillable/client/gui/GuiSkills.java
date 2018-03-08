@@ -111,7 +111,7 @@ public class GuiSkills extends GuiScreen {
             drawSkill(x + 5, y + 9, skill);
 
             mc.fontRenderer.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
-            mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
+            mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + skill.getCap(), x + 26, y + 17, 0x888888);
         }
         GL11.glColor4f(1, 1, 1, 1);
         drawScrollButtonsTop(left + ((79 + 3) + 8) / 2, top + 18 - 4);

@@ -17,7 +17,6 @@ public class ConfigHandler {
     public static int xpIncrease = 1;
     public static int xpIncreaseStagger = 1;
     public static int skillPointInterval = 2;
-    public static int levelCap = 32;
     public static boolean useExperienceNotLevel = false;
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
@@ -37,7 +36,6 @@ public class ConfigHandler {
         xpIncrease = loadPropInt("XP Increase Per Level", "", 1);
         xpIncreaseStagger = loadPropInt("XP Increase Stagger", "Between how many levels should XP costs increase?\nDefault is 1, which means it increases cost every level. 3 would make the cost increase every 3 levels.", 1);
         skillPointInterval = loadPropInt("Levels per Skill Point", "", skillPointInterval);
-        levelCap = loadPropInt("Level Cap", "", levelCap);
         useExperienceNotLevel = loadPropBool("Should Reskillable use Experience Points instead of Levels?", "", false);
         disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
         enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
@@ -58,6 +56,13 @@ public class ConfigHandler {
                 + "You can lock entire mods by just using their name as the left argument. You can then specify specific items to not be locked,\n"
                 + "by defining their lock in the normal way. If you want an item to not be locked in this way, use \"none\" after the =";
         String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
+    
+        String[] defaultCaps = new String[Skills.SKILLS.size()];
+        int counter = 0;
+        for(String s : Skills.SKILLS.keySet()) {
+            defaultCaps[counter++] = s + "|32";
+        }
+        String[] caps = config.getStringList("Skill Caps", Configuration.CATEGORY_GENERAL, defaultCaps, "Individual skill caps");
 
         LevelLockHandler.loadFromConfig(locks);
         if (!firstLoad)
@@ -68,7 +73,11 @@ public class ConfigHandler {
             skill.getUnlockables().clear();
             skill.initUnlockables();
         });
-
+    
+        for(String cap : caps) {
+            Skills.SKILLS.get(cap.split("\\|")[0]).setCap(Integer.parseInt(cap.split("\\|")[1]));
+        }
+        
         if (config.hasChanged())
             config.save();
 
