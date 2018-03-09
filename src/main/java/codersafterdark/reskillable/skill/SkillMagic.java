@@ -3,11 +3,12 @@ package codersafterdark.reskillable.skill;
 import codersafterdark.reskillable.skill.magic.TraitGoldenOsmosis;
 import codersafterdark.reskillable.skill.magic.TraitSafePort;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SkillMagic extends Skill {
 
     public SkillMagic() {
-        super("magic", 7, Blocks.END_STONE);
+        super("magic", 7, new ResourceLocation("textures/blocks/end_stone.png"));
     }
 
     @Override

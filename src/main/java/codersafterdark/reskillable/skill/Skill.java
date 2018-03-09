@@ -2,6 +2,7 @@ package codersafterdark.reskillable.skill;
 
 import codersafterdark.reskillable.skill.base.Unlockable;
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
@@ -11,13 +12,13 @@ public abstract class Skill implements Comparable<Skill> {
 
     private final String name;
     private final int index;
-    private final Block background;
+    private final ResourceLocation background;
     
     private int cap;
 
     private final List<Unlockable> unlockables = new ArrayList();
 
-    public Skill(String name, int index, Block background) {
+    public Skill(String name, int index, ResourceLocation background) {
         this.name = name;
         this.index = index;
         this.background = background;
@@ -48,7 +49,7 @@ public abstract class Skill implements Comparable<Skill> {
         return index;
     }
 
-    public Block getBackground() {
+    public ResourceLocation getBackground() {
         return background;
     }
     
