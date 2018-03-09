@@ -3,11 +3,12 @@ package codersafterdark.reskillable.skill;
 import codersafterdark.reskillable.skill.gathering.TraitDropGuarantee;
 import codersafterdark.reskillable.skill.gathering.TraitLuckyFisherman;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SkillGathering extends Skill {
 
     public SkillGathering() {
-        super("gathering", 1, Blocks.LOG);
+        super("gathering", 1, new ResourceLocation("textures/blocks/log_oak.png"));
     }
 
     @Override

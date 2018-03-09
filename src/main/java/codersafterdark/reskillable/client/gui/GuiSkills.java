@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import vazkii.arl.util.RenderHelper;
@@ -37,9 +38,10 @@ public class GuiSkills extends GuiScreen {
 
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
+        mc.renderEngine.bindTexture(skill.getSpriteLocation());
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
-        RenderHelper.drawTexturedModalRect(x, y, 1, 176 + Math.min(rank, 3) * 16, 44 + skill.getIndex() * 16, 16, 16);
+        Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
+        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {

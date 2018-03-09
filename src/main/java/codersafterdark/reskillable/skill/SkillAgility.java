@@ -3,11 +3,12 @@ package codersafterdark.reskillable.skill;
 import codersafterdark.reskillable.skill.agility.TraitRoadwalk;
 import codersafterdark.reskillable.skill.agility.TraitSidestep;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SkillAgility extends Skill {
 
     public SkillAgility() {
-        super("agility", 6, Blocks.GRAVEL);
+        super("agility", 6, new ResourceLocation("textures/blocks/gravel.png"));
     }
 
     @Override

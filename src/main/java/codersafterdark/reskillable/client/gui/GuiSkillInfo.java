@@ -14,11 +14,11 @@ import codersafterdark.reskillable.skill.base.Unlockable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -38,7 +38,7 @@ public class GuiSkillInfo extends GuiScreen {
     private final Skill skill;
 
     int guiWidth, guiHeight;
-    TextureAtlasSprite sprite;
+    ResourceLocation sprite;
 
     GuiButtonLevelUp levelUpButton;
     Unlockable hoveredUnlockable;
@@ -59,7 +59,8 @@ public class GuiSkillInfo extends GuiScreen {
         buttonList.clear();
         buttonList.add(levelUpButton = new GuiButtonLevelUp(left + 147, top + 10));
         InventoryTabHandler.addTabs(this, buttonList);
-        sprite = getTexture(skill.getBackground());
+        sprite = skill.getBackground();
+        
     }
 
     @Override
@@ -72,13 +73,16 @@ public class GuiSkillInfo extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
         PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
-        mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        
+        mc.renderEngine.bindTexture(sprite);
         GlStateManager.color(0.5F, 0.5F, 0.5F);
         for (int i = 0; i < 9; i++)
             for (int j = 0; j < 8; j++) {
                 int x = left + 16 + i * 16;
                 int y = top + 33 + j * 16;
-                drawTexturedModalRect(x, y, sprite, 16, 16);
+                int width = 16;
+                int height = 16;
+                drawTexturedRec(x,y,width,height);
             }
 
         GlStateManager.color(1F, 1F, 1F);
@@ -114,6 +118,17 @@ public class GuiSkillInfo extends GuiScreen {
         if (hoveredUnlockable != null) {
             makeUnlockableTooltip(data, skillInfo, mouseX, mouseY);
         }
+    }
+    
+    public void drawTexturedRec(int x, int y, int width, int height){
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        bufferbuilder.pos((double)(x), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1,1).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)(y), (double)this.zLevel).tex(1, 0).endVertex();
+        bufferbuilder.pos((double)(x), (double)(y), (double)this.zLevel).tex(0, 0).endVertex();
+        tessellator.draw();
     }
 
     private void drawUnlockable(PlayerData data, PlayerSkillInfo info, Unlockable unlockable, int mx, int my) {
@@ -205,6 +220,10 @@ public class GuiSkillInfo extends GuiScreen {
 
     private TextureAtlasSprite getTexture(Block blockIn) {
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
+    }
+    
+    private TextureAtlasSprite getTexture(ResourceLocation resource) {
+        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(resource.toString());//getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
     }
 
 }
