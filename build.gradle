@@ -43,6 +43,29 @@ minecraft {
 
     makeObfSourceJar = false
 }
+repositories{
+    maven{
+        name 'CraftTweaker'
+        url 'http://maven.blamejared.com'
+    }
+    maven{
+        name 'JEI'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name = 'Waila'
+        url 'https://tehnut.info/maven'
+    }
+}
+
+dependencies {
+    deobfCompile "mezz.jei:jei_1.12.2:4.8.5.144"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.21-B36_1.12"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.0.387"
+    deobfCompile "CraftTweaker2:CraftTweaker2-API:1.12-4.1.0.387"
+    deobfCompile "CraftTweaker2:ZenScript:1.12-4.1.0.387"
+}
+
 
 jar {
     exclude "**/*.bat"
