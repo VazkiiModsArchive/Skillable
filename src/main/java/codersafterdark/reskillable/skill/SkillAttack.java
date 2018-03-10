@@ -3,11 +3,12 @@ package codersafterdark.reskillable.skill;
 import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
 import codersafterdark.reskillable.skill.attack.TraitNeutralissse;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SkillAttack extends Skill {
 
     public SkillAttack() {
-        super("attack", 2, Blocks.STONEBRICK);
+        super("attack", 2, new ResourceLocation("textures/blocks/stonebrick.png"));
     }
 
     @Override

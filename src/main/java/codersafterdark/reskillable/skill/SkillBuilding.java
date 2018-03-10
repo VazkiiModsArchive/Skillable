@@ -3,11 +3,12 @@ package codersafterdark.reskillable.skill;
 import codersafterdark.reskillable.skill.building.TraitChorusTransmutation;
 import codersafterdark.reskillable.skill.building.TraitPerfectRecover;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SkillBuilding extends Skill {
 
     public SkillBuilding() {
-        super("building", 4, Blocks.BRICK_BLOCK);
+        super("building", 4, new ResourceLocation("textures/blocks/brick.png"));
     }
 
     @Override
