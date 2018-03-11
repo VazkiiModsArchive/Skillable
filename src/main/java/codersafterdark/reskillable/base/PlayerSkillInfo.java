@@ -21,7 +21,7 @@ public class PlayerSkillInfo {
 
     private int level;
     private int skillPoints;
-    private List<Unlockable> unlockables = new ArrayList();
+    private List<Unlockable> unlockables = new ArrayList<>();
 
     public PlayerSkillInfo(Skill skill) {
         this.skill = skill;
@@ -35,9 +35,11 @@ public class PlayerSkillInfo {
 
         unlockables.clear();
         NBTTagCompound unlockablesCmp = cmp.getCompoundTag(TAG_UNLOCKABLES);
+        /* TODO UNLOCKABLE LOADING
         for (String s : unlockablesCmp.getKeySet())
             if (Skills.ALL_UNLOCKABLES.containsKey(s))
                 unlockables.add(Skills.ALL_UNLOCKABLES.get(s));
+        */
     }
 
     public void saveToNBT(NBTTagCompound cmp) {
@@ -92,7 +94,7 @@ public class PlayerSkillInfo {
     }
 
     public void unlock(Unlockable u) {
-        skillPoints -= u.cost;
+        skillPoints -= u.getCost();
         unlockables.add(u);
     }
 

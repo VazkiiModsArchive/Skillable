@@ -1,6 +1,8 @@
 package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Trait;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +19,10 @@ public class ReskillableRegistryHandler {
         new RegistryBuilder<Skill>()
                 .setName(new ResourceLocation(MOD_ID, "skill"))
                 .setType(Skill.class)
+                .create();
+        new RegistryBuilder<Unlockable>()
+                .setName(new ResourceLocation(MOD_ID, "unlockable"))
+                .setType(Unlockable.class)
                 .create();
     }
 

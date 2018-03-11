@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.base;
 
+import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.network.PacketHandler;
@@ -33,13 +34,13 @@ public class PlayerData {
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
     public WeakReference<EntityPlayer> playerWR;
-    private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap();
+    private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap<>();
 
     public PlayerData(EntityPlayer player) {
-        playerWR = new WeakReference(player);
+        playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
 
-        for (Skill s : Skills.SKILLS.values())
+        for (Skill s : ReskillableRegistries.SKILLS.getValuesCollection())
             skillInfo.put(s, new PlayerSkillInfo(s));
 
         load();
@@ -54,7 +55,7 @@ public class PlayerData {
     }
 
     public Set<Ability> getAllAbilities() {
-        Set<Ability> set = new TreeSet();
+        Set<Ability> set = new TreeSet<>();
         for (PlayerSkillInfo info : skillInfo.values())
             info.addAbilities(set);
 

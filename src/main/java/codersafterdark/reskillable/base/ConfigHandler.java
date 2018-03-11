@@ -55,9 +55,11 @@ public class ConfigHandler {
                 + "You can lock entire mods by just using their name as the left argument. You can then specify specific items to not be locked,\n"
                 + "by defining their lock in the normal way. If you want an item to not be locked in this way, use \"none\" after the =";
         String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
-    
+
+        /* TODO CONFIG STUFF
         String[] defaultCaps = new String[Skills.SKILLS.size()];
         int counter = 0;
+
         for(String s : Skills.SKILLS.keySet()) {
             defaultCaps[counter++] = s + "|32";
         }
@@ -75,7 +77,7 @@ public class ConfigHandler {
     
         for(String cap : caps) {
             Skills.SKILLS.get(cap.split("\\|")[0]).setCap(Integer.parseInt(cap.split("\\|")[1]));
-        }
+        }*/
         
         if (config.hasChanged())
             config.save();

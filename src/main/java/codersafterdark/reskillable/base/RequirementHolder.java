@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.base;
 
+import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.advancements.Advancement;
@@ -51,7 +52,7 @@ public class RequirementHolder {
                 else
                     try {
                         int level = Integer.parseInt(valStr);
-                        Skill skill = Skills.SKILLS.get(keyStr.toLowerCase());
+                        Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(keyStr.toLowerCase()));
                         if (skill != null && level > 1)
                             holder.skillLevels.put(skill, level);
                         else

@@ -153,13 +153,14 @@ public class GuiSkillInfo extends GuiScreen {
         drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 16, 16, 16, 16);
 
         if (mx >= x && my >= y && mx < x + 26 && my < y + 26) {
-            canPurchase = !unlocked && info.getSkillPoints() >= unlockable.cost;
+            //TODO Fix Unlockable Cost
+            canPurchase = !unlocked && info.getSkillPoints() >= 0;
             hoveredUnlockable = unlockable;
         }
     }
 
     private void makeUnlockableTooltip(PlayerData data, PlayerSkillInfo info, int mouseX, int mouseY) {
-        List<String> tooltip = new ArrayList();
+        List<String> tooltip = new ArrayList<>();
         TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
 
         tooltip.add(tf + hoveredUnlockable.getName());
@@ -174,7 +175,7 @@ public class GuiSkillInfo extends GuiScreen {
         if (!info.isUnlocked(hoveredUnlockable))
             hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
         else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
-        tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
+        tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.getCost()));
 
         renderTooltip(mouseX, mouseY, tooltip);
     }
