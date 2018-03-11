@@ -1,9 +1,9 @@
 package codersafterdark.reskillable.client.gui;
 
-import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.base.PlayerData;
 import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.skill.Skill;
@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import vazkii.arl.util.RenderHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,9 +37,10 @@ public class GuiSkills extends GuiScreen {
 
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
+        mc.renderEngine.bindTexture(skill.getSpriteLocation());
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
-        RenderHelper.drawTexturedModalRect(x, y, 1, 176 + Math.min(rank, 3) * 16, 44 + skill.getIndex() * 16, 16, 16);
+        Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
+        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
@@ -111,7 +112,7 @@ public class GuiSkills extends GuiScreen {
             drawSkill(x + 5, y + 9, skill);
 
             mc.fontRenderer.drawString(skill.getName(), x + 26, y + 6, 0xFFFFFF);
-            mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + ConfigHandler.levelCap, x + 26, y + 17, 0x888888);
+            mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + skill.getCap(), x + 26, y + 17, 0x888888);
         }
         GL11.glColor4f(1, 1, 1, 1);
         drawScrollButtonsTop(left + ((79 + 3) + 8) / 2, top + 18 - 4);
