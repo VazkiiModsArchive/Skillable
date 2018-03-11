@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.event.RegisterUnlockablesEvent;
-import codersafterdark.reskillable.network.MessageRegister;
+import codersafterdark.reskillable.network.PacketHandler;
 import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,7 +18,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
         ConfigHandler.init(event.getSuggestedConfigurationFile());
-        MessageRegister.init();
+        PacketHandler.preInit();
     }
 
     public void init(FMLInitializationEvent event) {

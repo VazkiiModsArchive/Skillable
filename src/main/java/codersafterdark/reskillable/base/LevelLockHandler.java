@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.base;
 
-import codersafterdark.reskillable.network.MessageLockedItem;
+import codersafterdark.reskillable.network.*;
+import mcp.mobius.waila.handlers.NetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -19,7 +20,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.*;
-import vazkii.arl.network.NetworkHandler;
 
 import java.util.*;
 
@@ -245,7 +245,7 @@ public class LevelLockHandler {
     public static void tellPlayer(EntityPlayer player, ItemStack stack, String msg) {
         if(player instanceof EntityPlayerMP) {
             MessageLockedItem message = new MessageLockedItem(stack, msg);
-            NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
+            PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
         }
     }
     

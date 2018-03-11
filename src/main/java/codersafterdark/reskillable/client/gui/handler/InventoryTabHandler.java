@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.client.gui.handler;
 
 import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.GuiAbilities;
 import codersafterdark.reskillable.client.gui.GuiSkillInfo;
 import codersafterdark.reskillable.client.gui.GuiSkills;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.actors.threadpool.Arrays;
-import vazkii.arl.util.RenderHelper;
 
 import java.util.List;
 

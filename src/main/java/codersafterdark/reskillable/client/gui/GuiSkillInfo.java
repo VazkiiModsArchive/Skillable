@@ -1,14 +1,12 @@
 package codersafterdark.reskillable.client.gui;
 
-import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.base.PlayerData;
 import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.PlayerSkillInfo;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.network.MessageLevelUp;
-import codersafterdark.reskillable.network.MessageUnlockUnlockable;
+import codersafterdark.reskillable.network.*;
 import codersafterdark.reskillable.skill.Skill;
 import codersafterdark.reskillable.skill.base.Unlockable;
 import net.minecraft.block.Block;
@@ -17,19 +15,18 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
-import vazkii.arl.network.NetworkHandler;
-import vazkii.arl.util.RenderHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static codersafterdark.reskillable.client.base.RenderHelper.renderTooltip;
 
 public class GuiSkillInfo extends GuiScreen {
 
@@ -173,8 +170,8 @@ public class GuiSkillInfo extends GuiScreen {
             hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
         else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
         tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
-
-        RenderHelper.renderTooltip(mouseX, mouseY, tooltip);
+    
+        renderTooltip(mouseX, mouseY, tooltip);
     }
 
     private void addLongStringToTooltip(List<String> tooltip, String longStr, int maxLen) {
@@ -197,7 +194,7 @@ public class GuiSkillInfo extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button == levelUpButton) {
             MessageLevelUp message = new MessageLevelUp(skill.getKey());
-            NetworkHandler.INSTANCE.sendToServer(message);
+            PacketHandler.INSTANCE.sendToServer(message);
         }
     }
 
@@ -208,7 +205,7 @@ public class GuiSkillInfo extends GuiScreen {
         if (mouseButton == 0 && hoveredUnlockable != null && canPurchase) {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getKey(), hoveredUnlockable.getKey());
-            NetworkHandler.INSTANCE.sendToServer(message);
+            PacketHandler.INSTANCE.sendToServer(message);
         } else if (mouseButton == 1 || mouseButton == 3)
             mc.displayGuiScreen(new GuiSkills());
     }
