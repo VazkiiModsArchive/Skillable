@@ -1,10 +1,11 @@
 package codersafterdark.reskillable.base;
 
-import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.network.*;
 import codersafterdark.reskillable.skill.Skill;
 import codersafterdark.reskillable.skill.Skills;
 import codersafterdark.reskillable.skill.base.Ability;
 import codersafterdark.reskillable.skill.base.IAbilityEventHandler;
+import mcp.mobius.waila.handlers.NetworkHandler;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;
@@ -21,7 +22,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import vazkii.arl.network.NetworkHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -118,7 +118,7 @@ public class PlayerData {
 
             if (player != null && player instanceof EntityPlayerMP) {
                 MessageDataSync message = new MessageDataSync(this);
-                NetworkHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
+                PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
             }
         }
     }
