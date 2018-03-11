@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.skill.defense;
 
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;

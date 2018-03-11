@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.client.gui;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.base.PlayerData;
 import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.PlayerSkillInfo;
@@ -8,13 +9,16 @@ import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.network.MessageLevelUp;
 import codersafterdark.reskillable.network.MessageUnlockUnlockable;
-import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.base.Unlockable;
+import codersafterdark.reskillable.network.PacketHandler;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
@@ -58,7 +62,7 @@ public class GuiSkillInfo extends GuiScreen {
         buttonList.add(levelUpButton = new GuiButtonLevelUp(left + 147, top + 10));
         InventoryTabHandler.addTabs(this, buttonList);
         sprite = skill.getBackground();
-        
+
     }
 
     @Override
@@ -71,7 +75,7 @@ public class GuiSkillInfo extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
         PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
-        
+
         mc.renderEngine.bindTexture(sprite);
         GlStateManager.color(0.5F, 0.5F, 0.5F);
         for (int i = 0; i < 9; i++)
@@ -80,7 +84,7 @@ public class GuiSkillInfo extends GuiScreen {
                 int y = top + 33 + j * 16;
                 int width = 16;
                 int height = 16;
-                drawTexturedRec(x,y,width,height);
+                drawTexturedRec(x, y, width, height);
             }
 
         GlStateManager.color(1F, 1F, 1F);
@@ -117,15 +121,15 @@ public class GuiSkillInfo extends GuiScreen {
             makeUnlockableTooltip(data, skillInfo, mouseX, mouseY);
         }
     }
-    
-    public void drawTexturedRec(int x, int y, int width, int height){
+
+    public void drawTexturedRec(int x, int y, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos((double)(x), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1,1).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y), (double)this.zLevel).tex(1, 0).endVertex();
-        bufferbuilder.pos((double)(x), (double)(y), (double)this.zLevel).tex(0, 0).endVertex();
+        bufferbuilder.pos((double) (x), (double) (y + height), (double) this.zLevel).tex(0, 1).endVertex();
+        bufferbuilder.pos((double) (x + width), (double) (y + height), (double) this.zLevel).tex(1, 1).endVertex();
+        bufferbuilder.pos((double) (x + width), (double) (y), (double) this.zLevel).tex(1, 0).endVertex();
+        bufferbuilder.pos((double) (x), (double) (y), (double) this.zLevel).tex(0, 0).endVertex();
         tessellator.draw();
     }
 
@@ -171,7 +175,7 @@ public class GuiSkillInfo extends GuiScreen {
             hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
         else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
         tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
-    
+
         renderTooltip(mouseX, mouseY, tooltip);
     }
 
@@ -219,7 +223,7 @@ public class GuiSkillInfo extends GuiScreen {
     private TextureAtlasSprite getTexture(Block blockIn) {
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
     }
-    
+
     private TextureAtlasSprite getTexture(ResourceLocation resource) {
         return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(resource.toString());//getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
     }

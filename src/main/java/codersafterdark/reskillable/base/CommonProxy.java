@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.base;
 
-import codersafterdark.reskillable.network.MessageRegister;
+import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

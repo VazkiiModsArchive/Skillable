@@ -2,10 +2,9 @@ package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
-import codersafterdark.reskillable.skill.base.Ability;
-import codersafterdark.reskillable.skill.base.IAbilityEventHandler;
-import mcp.mobius.waila.handlers.NetworkHandler;
+import codersafterdark.reskillable.network.PacketHandler;
+import codersafterdark.reskillable.api.unlockable.Ability;
+import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;

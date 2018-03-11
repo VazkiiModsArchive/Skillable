@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.skill.magic;
 
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class TraitSafePort extends Trait {

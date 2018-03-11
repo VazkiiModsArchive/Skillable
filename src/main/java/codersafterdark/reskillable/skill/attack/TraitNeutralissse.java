@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.skill.attack;
 
 import codersafterdark.reskillable.lib.LibObfuscation;
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;

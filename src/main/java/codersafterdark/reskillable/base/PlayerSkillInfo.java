@@ -1,10 +1,9 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
-import codersafterdark.reskillable.skill.base.Ability;
-import codersafterdark.reskillable.skill.base.IAbilityEventHandler;
-import codersafterdark.reskillable.skill.base.Unlockable;
+import codersafterdark.reskillable.api.unlockable.Ability;
+import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;

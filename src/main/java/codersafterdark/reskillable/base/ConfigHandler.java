@@ -1,7 +1,6 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.skill.Skills;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;

@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.skill.mining;
 
-import codersafterdark.reskillable.skill.base.Ability;
+import codersafterdark.reskillable.api.unlockable.Ability;
 
 public class AbilityOreCascade extends Ability {
 

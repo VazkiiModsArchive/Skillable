@@ -2,7 +2,6 @@ package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.lib.LibObfuscation;
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.advancements.AdvancementManager;
@@ -24,8 +23,8 @@ import java.util.Map;
 public class RequirementHolder {
 
     private static AdvancementList advList;
-    public final Map<Skill, Integer> skillLevels = new HashMap();
-    public final List<ResourceLocation> advancements = new ArrayList();
+    public final Map<Skill, Integer> skillLevels = new HashMap<>();
+    public final List<ResourceLocation> advancements = new ArrayList<>();
     boolean forcedEmpty = false;
 
     public static RequirementHolder realEmpty() {

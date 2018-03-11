@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.skill.mining;
 
 import codersafterdark.reskillable.base.ConditionHelper;
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
