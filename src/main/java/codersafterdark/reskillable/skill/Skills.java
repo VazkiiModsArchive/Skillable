@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.base.Unlockable;
 
 import java.util.HashMap;

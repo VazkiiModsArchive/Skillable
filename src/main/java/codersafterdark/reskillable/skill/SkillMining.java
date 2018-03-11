@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.mining.TraitFossilDigger;
 import codersafterdark.reskillable.skill.mining.TraitObsidianSmasher;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillMining extends Skill {

@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.event;
 
-import codersafterdark.reskillable.skill.Skill;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.base.Unlockable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 

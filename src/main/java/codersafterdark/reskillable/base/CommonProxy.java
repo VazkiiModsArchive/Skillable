@@ -1,8 +1,6 @@
 package codersafterdark.reskillable.base;
 
-import codersafterdark.reskillable.event.RegisterUnlockablesEvent;
-import codersafterdark.reskillable.network.PacketHandler;
-import codersafterdark.reskillable.skill.Skills;
+import codersafterdark.reskillable.network.MessageRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,8 +11,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(RegisterUnlockablesEvent.class);
-        Skills.init();
         MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
         ConfigHandler.init(event.getSuggestedConfigurationFile());

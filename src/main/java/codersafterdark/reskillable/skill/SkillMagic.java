@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.magic.TraitGoldenOsmosis;
 import codersafterdark.reskillable.skill.magic.TraitSafePort;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillMagic extends Skill {

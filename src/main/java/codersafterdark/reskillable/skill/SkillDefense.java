@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.defense.TraitEffectTwist;
 import codersafterdark.reskillable.skill.defense.TraitUndershirt;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillDefense extends Skill {

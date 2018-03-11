@@ -3,7 +3,7 @@ package codersafterdark.reskillable.skill.base;
 import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.base.RequirementHolder;
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.skill.Skill;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;

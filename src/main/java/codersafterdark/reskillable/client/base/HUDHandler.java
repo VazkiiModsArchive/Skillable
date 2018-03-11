@@ -6,7 +6,7 @@ import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.RequirementHolder;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.network.MessageLockedItem;
-import codersafterdark.reskillable.skill.Skill;
+import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.Minecraft;

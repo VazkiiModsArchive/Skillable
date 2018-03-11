@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.building.TraitChorusTransmutation;
 import codersafterdark.reskillable.skill.building.TraitPerfectRecover;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillBuilding extends Skill {

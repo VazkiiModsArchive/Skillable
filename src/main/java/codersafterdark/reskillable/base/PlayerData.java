@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.base;
 
-import codersafterdark.reskillable.network.*;
-import codersafterdark.reskillable.skill.Skill;
+import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.Skills;
 import codersafterdark.reskillable.skill.base.Ability;
 import codersafterdark.reskillable.skill.base.IAbilityEventHandler;

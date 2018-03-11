@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
 import codersafterdark.reskillable.skill.attack.TraitNeutralissse;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillAttack extends Skill {

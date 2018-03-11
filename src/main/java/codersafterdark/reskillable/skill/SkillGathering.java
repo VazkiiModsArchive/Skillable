@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.skill;
 
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.gathering.TraitDropGuarantee;
 import codersafterdark.reskillable.skill.gathering.TraitLuckyFisherman;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 public class SkillGathering extends Skill {

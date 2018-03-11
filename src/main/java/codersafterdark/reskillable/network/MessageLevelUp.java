@@ -1,8 +1,10 @@
 package codersafterdark.reskillable.network;
 
-import codersafterdark.reskillable.base.*;
-import codersafterdark.reskillable.skill.*;
-import io.netty.buffer.ByteBuf;
+import codersafterdark.reskillable.base.PlayerData;
+import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;

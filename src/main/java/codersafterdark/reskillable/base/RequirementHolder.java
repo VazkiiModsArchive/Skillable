@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.lib.LibObfuscation;
-import codersafterdark.reskillable.skill.Skill;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
