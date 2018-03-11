@@ -1,9 +1,9 @@
 package codersafterdark.reskillable.client.gui;
 
-import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.base.PlayerData;
 import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.skill.Skill;
@@ -18,7 +18,6 @@ import net.minecraft.util.text.translation.I18n;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import vazkii.arl.util.RenderHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
