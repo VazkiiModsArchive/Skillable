@@ -5,9 +5,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-public class TraitRoadwalk extends Trait {
+public class TraitRoadWalk extends Trait {
 
-    public TraitRoadwalk() {
+    public TraitRoadWalk() {
         super("roadwalk", 1, 1, 6, "agility:12,building:8");
     }
 

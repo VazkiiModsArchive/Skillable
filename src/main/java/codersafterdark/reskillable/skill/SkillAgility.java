@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.skill;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.agility.TraitRoadwalk;
+import codersafterdark.reskillable.skill.agility.TraitRoadWalk;
 import codersafterdark.reskillable.skill.agility.TraitSidestep;
 import net.minecraft.util.ResourceLocation;
 
@@ -13,7 +13,7 @@ public class SkillAgility extends Skill {
 
     @Override
     public void initUnlockables() {
-        addUnlockable(new TraitRoadwalk());
+        addUnlockable(new TraitRoadWalk());
         addUnlockable(new TraitSidestep());
     }
 }

@@ -4,6 +4,22 @@ import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
+import codersafterdark.reskillable.skill.agility.TraitRoadWalk;
+import codersafterdark.reskillable.skill.agility.TraitSidestep;
+import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
+import codersafterdark.reskillable.skill.attack.TraitNeutralissse;
+import codersafterdark.reskillable.skill.building.TraitChorusTransmutation;
+import codersafterdark.reskillable.skill.building.TraitPerfectRecover;
+import codersafterdark.reskillable.skill.defense.TraitEffectTwist;
+import codersafterdark.reskillable.skill.defense.TraitUndershirt;
+import codersafterdark.reskillable.skill.farming.TraitGreenThumb;
+import codersafterdark.reskillable.skill.farming.TraitMoreWheat;
+import codersafterdark.reskillable.skill.gathering.TraitDropGuarantee;
+import codersafterdark.reskillable.skill.gathering.TraitLuckyFisherman;
+import codersafterdark.reskillable.skill.magic.TraitGoldenOsmosis;
+import codersafterdark.reskillable.skill.magic.TraitSafePort;
+import codersafterdark.reskillable.skill.mining.TraitFossilDigger;
+import codersafterdark.reskillable.skill.mining.TraitObsidianSmasher;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +53,28 @@ public class ReskillableRegistryHandler {
                 new SkillFarming(),
                 new SkillAgility(),
                 new SkillMagic()
+        );
+    }
+
+    @SubscribeEvent
+    public static void registerTraits(RegistryEvent.Register<Unlockable> unlockablesRegister) {
+        unlockablesRegister.getRegistry().registerAll(
+                new TraitRoadWalk(),
+                new TraitSidestep(),
+                new TraitNeutralissse(),
+                new TraitBattleSpirit(),
+                new TraitChorusTransmutation(),
+                new TraitPerfectRecover(),
+                new TraitUndershirt(),
+                new TraitEffectTwist(),
+                new TraitMoreWheat(),
+                new TraitGreenThumb(),
+                new TraitLuckyFisherman(),
+                new TraitDropGuarantee(),
+                new TraitGoldenOsmosis(),
+                new TraitSafePort(),
+                new TraitFossilDigger(),
+                new TraitObsidianSmasher()
         );
     }
 }
