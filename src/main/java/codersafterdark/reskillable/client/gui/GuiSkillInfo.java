@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.client.gui;
 
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.base.PlayerData;
 import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.base.PlayerSkillInfo;
@@ -10,7 +11,6 @@ import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.network.MessageLevelUp;
 import codersafterdark.reskillable.network.MessageUnlockUnlockable;
 import codersafterdark.reskillable.network.PacketHandler;
-import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -30,7 +30,6 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static codersafterdark.reskillable.client.base.RenderHelper.renderTooltip;
 
@@ -142,10 +141,12 @@ public class GuiSkillInfo extends GuiScreen {
 
         int u = 0;
         int v = guiHeight;
-        if (unlockable.hasSpikes())
+        if (unlockable.hasSpikes()) {
             u += 26;
-        if (unlocked)
+        }
+        if (unlocked) {
             v += 26;
+        }
 
         GlStateManager.color(1F, 1F, 1F);
         drawTexturedModalRect(x, y, u, v, 26, 26);
@@ -155,7 +156,7 @@ public class GuiSkillInfo extends GuiScreen {
 
         if (mx >= x && my >= y && mx < x + 26 && my < y + 26) {
             //TODO Fix Unlockable Cost
-            canPurchase = !unlocked && info.getSkillPoints() >= 0;
+            canPurchase = !unlocked && info.getSkillPoints() >= unlockable.getCost();
             hoveredUnlockable = unlockable;
         }
     }
@@ -166,16 +167,19 @@ public class GuiSkillInfo extends GuiScreen {
 
         tooltip.add(tf + hoveredUnlockable.getName());
 
-        if (isShiftKeyDown())
+        if (isShiftKeyDown()) {
             addLongStringToTooltip(tooltip, hoveredUnlockable.getDescription(), guiWidth);
-        else {
+        } else {
             tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("skillable.misc.holdShift"));
             tooltip.add("");
         }
 
-        if (!info.isUnlocked(hoveredUnlockable))
+        if (!info.isUnlocked(hoveredUnlockable)) {
             hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
-        else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
+        } else {
+            tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
+        }
+
         tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.getCost()));
 
         renderTooltip(mouseX, mouseY, tooltip);
@@ -211,7 +215,7 @@ public class GuiSkillInfo extends GuiScreen {
 
         if (mouseButton == 0 && hoveredUnlockable != null && canPurchase) {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getKey(), hoveredUnlockable.getKey());
+            MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getRegistryName(), hoveredUnlockable.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
         } else if (mouseButton == 1 || mouseButton == 3)
             mc.displayGuiScreen(new GuiSkills());

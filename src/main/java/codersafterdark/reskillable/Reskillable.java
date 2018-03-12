@@ -2,6 +2,7 @@ package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.RegistryBuilder;
+
+import java.util.Optional;
 
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
@@ -34,6 +37,9 @@ public class Reskillable {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        ReskillableRegistries.UNLOCKABLES.getValuesCollection().parallelStream()
+                .forEach(Unlockable::getParentSkill);
+
         proxy.init(event);
     }
 

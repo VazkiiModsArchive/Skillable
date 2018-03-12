@@ -17,26 +17,27 @@ import java.util.Objects;
 
 public class MessageUnlockUnlockable implements IMessage, IMessageHandler<MessageUnlockUnlockable, IMessage> {
     
-    public String skill, unlockable;
+    private ResourceLocation skill;
+    private ResourceLocation unlockable;
     
     public MessageUnlockUnlockable() {
     }
     
-    public MessageUnlockUnlockable(String skill, String unlockable) {
+    public MessageUnlockUnlockable(ResourceLocation skill, ResourceLocation unlockable) {
         this.skill = skill;
         this.unlockable = unlockable;
     }
     
     @Override
     public void fromBytes(ByteBuf buf) {
-        skill = ByteBufUtils.readUTF8String(buf);
-        unlockable = ByteBufUtils.readUTF8String(buf);
+        skill = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+        unlockable = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
     }
     
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, skill);
-        ByteBufUtils.writeUTF8String(buf, unlockable);
+        ByteBufUtils.writeUTF8String(buf, skill.toString());
+        ByteBufUtils.writeUTF8String(buf, unlockable.toString());
     
     }
     
@@ -48,8 +49,8 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
     
     public IMessage handleMessage(MessageUnlockUnlockable message, MessageContext context) {
         EntityPlayer player = context.getServerHandler().player;
-        Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(message.skill));
-        Unlockable unlockable = Objects.requireNonNull(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(message.unlockable)));
+        Skill skill = ReskillableRegistries.SKILLS.getValue(message.skill);
+        Unlockable unlockable = Objects.requireNonNull(ReskillableRegistries.UNLOCKABLES.getValue(message.unlockable));
         PlayerData data = PlayerDataHandler.get(player);
         PlayerSkillInfo info = data.getSkillInfo(skill);
 

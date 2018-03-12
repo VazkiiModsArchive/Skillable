@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 public class PlayerDataHandler {
 
     private static final String DATA_TAG = "SkillableData";
-    private static HashMap<Integer, PlayerData> playerData = new HashMap();
+    private static HashMap<Integer, PlayerData> playerData = new HashMap<>();
 
     public static PlayerData get(EntityPlayer player) {
         if (player == null)

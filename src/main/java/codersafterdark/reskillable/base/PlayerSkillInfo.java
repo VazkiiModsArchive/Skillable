@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -39,7 +40,8 @@ public class PlayerSkillInfo {
         NBTTagCompound unlockablesCmp = cmp.getCompoundTag(TAG_UNLOCKABLES);
 
         for (String s : unlockablesCmp.getKeySet()) {
-            unlockables.add(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s)));
+            Optional.ofNullable(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s)))
+                    .ifPresent(unlockables::add);
         }
     }
 
@@ -55,10 +57,12 @@ public class PlayerSkillInfo {
     }
 
     public int getLevel() {
-        if (level <= 0)
+        if (level <= 0) {
             level = 1;
-        if (level > skill.getCap())
+        }
+        if (level > skill.getCap()) {
             level = skill.getCap();
+        }
 
         return level;
     }
