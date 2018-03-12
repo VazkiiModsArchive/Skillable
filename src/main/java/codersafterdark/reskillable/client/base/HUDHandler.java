@@ -88,9 +88,10 @@ public class HUDHandler {
             color = 0xFFFFFF + transparencyInt;
 
             for (ResourceLocation advRes : reqs.advancements) {
-                Advancement adv = reqs.getAdvancementList().getAdvancement(advRes);
-                if (adv == null)
-                    return;
+                Advancement adv = RequirementHolder.getAdvancementList().getAdvancement(advRes);
+                if (adv == null) {
+                    continue;
+                }
 
                 mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/advancements/widgets.png"));
                 DisplayInfo display = adv.getDisplay();
