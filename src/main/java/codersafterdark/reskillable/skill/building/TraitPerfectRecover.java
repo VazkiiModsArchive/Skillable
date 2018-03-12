@@ -9,12 +9,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitPerfectRecover extends Trait {
     private Item glowstone;
     private Item lantern;
 
     public TraitPerfectRecover() {
-        super("perfect_recover", 1, 1, 4, "building:8,gathering:4,mining:6");
+        super(new ResourceLocation(MOD_ID, "perfect_recover"), 1, 1, new ResourceLocation(MOD_ID, "building"),4, "building:8,gathering:4,mining:6");
     }
 
     @Override

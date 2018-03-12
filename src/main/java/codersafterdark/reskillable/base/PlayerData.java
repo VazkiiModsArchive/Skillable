@@ -1,19 +1,15 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.network.PacketHandler;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
-import net.minecraft.advancements.AdvancementProgress;
+import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -40,8 +36,9 @@ public class PlayerData {
         playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
 
-        for (Skill s : ReskillableRegistries.SKILLS.getValuesCollection())
+        for (Skill s : ReskillableRegistries.SKILLS.getValuesCollection()) {
             skillInfo.put(s, new PlayerSkillInfo(s));
+        }
 
         load();
     }
@@ -56,37 +53,23 @@ public class PlayerData {
 
     public Set<Ability> getAllAbilities() {
         Set<Ability> set = new TreeSet<>();
-        for (PlayerSkillInfo info : skillInfo.values())
+        for (PlayerSkillInfo info : skillInfo.values()) {
             info.addAbilities(set);
+        }
 
         return set;
     }
 
     public boolean matchStats(RequirementHolder holder) {
         EntityPlayer player = playerWR.get();
-        if (player == null)
-            return false;
-
-        for (Skill s : holder.skillLevels.keySet()) {
-            PlayerSkillInfo info = getSkillInfo(s);
-            if (info.getLevel() < holder.skillLevels.get(s))
-                return false;
-        }
-
         if (player instanceof EntityPlayerMP) {
-            EntityPlayerMP mp = (EntityPlayerMP) player;
-            AdvancementManager manager = ((WorldServer) mp.world).getAdvancementManager();
-
-            for (ResourceLocation res : holder.advancements) {
-                Advancement adv = manager.getAdvancement(res);
-                if (adv != null) {
-                    AdvancementProgress progress = mp.getAdvancements().getProgress(adv);
-                    if (!progress.isDone())
-                        return false;
+            EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+            for (Requirement requirement : holder.getRequirements()) {
+                if (!requirement.achievedByPlayer(entityPlayerMP)) {
+                    return false;
                 }
             }
         }
-
         return true;
     }
 

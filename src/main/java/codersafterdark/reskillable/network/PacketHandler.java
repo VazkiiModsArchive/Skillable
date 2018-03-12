@@ -14,7 +14,5 @@ public class PacketHandler {
         INSTANCE.registerMessage(MessageLevelUp.class, MessageLevelUp.class, ID++, Side.SERVER);
         INSTANCE.registerMessage(MessageLockedItem.class, MessageLockedItem.class, ID++, Side.CLIENT);
         INSTANCE.registerMessage(MessageUnlockUnlockable.class, MessageUnlockUnlockable.class, ID++, Side.SERVER);
-    
-    
     }
 }

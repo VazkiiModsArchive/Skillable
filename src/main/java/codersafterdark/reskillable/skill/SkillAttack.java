@@ -10,11 +10,4 @@ public class SkillAttack extends Skill {
     public SkillAttack() {
         super("attack", 2, new ResourceLocation("textures/blocks/stonebrick.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitNeutralissse());
-        addUnlockable(new TraitBattleSpirit());
-    }
-
 }

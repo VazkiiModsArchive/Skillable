@@ -1,12 +1,15 @@
 package codersafterdark.reskillable.skill.magic;
 
 import codersafterdark.reskillable.api.unlockable.Trait;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitSafePort extends Trait {
 
     public TraitSafePort() {
-        super("safe_port", 1, 1, 6, "magic:20,agility:16,defense:16");
+        super(new ResourceLocation(MOD_ID,"safe_port"), 1, 1, new ResourceLocation(MOD_ID,"magic"),6, "magic:20,agility:16,defense:16");
     }
 
     @Override

@@ -1,10 +1,12 @@
 package codersafterdark.reskillable.base;
 
+import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +37,10 @@ public class PlayerSkillInfo {
 
         unlockables.clear();
         NBTTagCompound unlockablesCmp = cmp.getCompoundTag(TAG_UNLOCKABLES);
-        /* TODO UNLOCKABLE LOADING
-        for (String s : unlockablesCmp.getKeySet())
-            if (Skills.ALL_UNLOCKABLES.containsKey(s))
-                unlockables.add(Skills.ALL_UNLOCKABLES.get(s));
-        */
+
+        for (String s : unlockablesCmp.getKeySet()) {
+            unlockables.add(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s)));
+        }
     }
 
     public void saveToNBT(NBTTagCompound cmp) {
@@ -47,8 +48,9 @@ public class PlayerSkillInfo {
         cmp.setInteger(TAG_SKILL_POINTS, skillPoints);
 
         NBTTagCompound unlockablesCmp = new NBTTagCompound();
-        for (Unlockable u : unlockables)
+        for (Unlockable u : unlockables) {
             unlockablesCmp.setBoolean(u.getKey(), true);
+        }
         cmp.setTag(TAG_UNLOCKABLES, unlockablesCmp);
     }
 
@@ -70,7 +72,7 @@ public class PlayerSkillInfo {
     }
 
     public boolean isCapped() {
-        return level == skill.getCap();
+        return level >= skill.getCap();
     }
 
     public int getLevelUpCost() {
@@ -82,9 +84,11 @@ public class PlayerSkillInfo {
     }
 
     public void addAbilities(Set<Ability> abilities) {
-        for (Unlockable u : unlockables)
-            if (u instanceof Ability)
+        for (Unlockable u : unlockables) {
+            if (u instanceof Ability) {
                 abilities.add((Ability) u);
+            }
+        }
     }
 
     public void levelUp() {
@@ -105,8 +109,9 @@ public class PlayerSkillInfo {
 
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
         unlockables.forEach((u) -> {
-            if (u instanceof IAbilityEventHandler)
+            if (u instanceof IAbilityEventHandler) {
                 consumer.accept((IAbilityEventHandler) u);
+            }
         });
     }
 

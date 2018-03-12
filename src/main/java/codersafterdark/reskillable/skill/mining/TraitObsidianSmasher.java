@@ -6,12 +6,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitObsidianSmasher extends Trait {
 
     public TraitObsidianSmasher() {
-        super("obsidian_smasher", 1, 2, 4, "mining:16");
+        super(new ResourceLocation(MOD_ID, "obsidian_smasher"), 1, 2, new ResourceLocation(MOD_ID, "mining"),4, "mining:16");
     }
 
     @Override

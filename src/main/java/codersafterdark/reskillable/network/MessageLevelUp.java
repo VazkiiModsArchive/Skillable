@@ -12,25 +12,27 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.*;
 
+import javax.annotation.Resource;
+
 public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp, IMessage> {
     
-    public String skill;
+    public ResourceLocation skillName;
     
     public MessageLevelUp() {
     }
     
-    public MessageLevelUp(String skill) {
-        this.skill = skill;
+    public MessageLevelUp(ResourceLocation skillName) {
+        this.skillName = skillName;
     }
     
     @Override
     public void fromBytes(ByteBuf buf) {
-        skill = ByteBufUtils.readUTF8String(buf);
+        skillName = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
     }
     
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, skill);
+        ByteBufUtils.writeUTF8String(buf, skillName.toString());
     }
     
     @Override
@@ -41,7 +43,7 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
     
     public IMessage handleMessage(MessageLevelUp message, MessageContext context) {
         EntityPlayer player = context.getServerHandler().player;
-        Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(message.skill));
+        Skill skill = ReskillableRegistries.SKILLS.getValue(message.skillName);
         PlayerData data = PlayerDataHandler.get(player);
         PlayerSkillInfo info = data.getSkillInfo(skill);
         if(!info.isCapped()) {

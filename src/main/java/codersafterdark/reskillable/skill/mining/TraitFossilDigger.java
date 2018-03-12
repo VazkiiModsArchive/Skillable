@@ -10,12 +10,15 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitFossilDigger extends Trait {
 
     public TraitFossilDigger() {
-        super("fossil_digger", 2, 1, 2, "mining:6");
+        super(new ResourceLocation(MOD_ID,"fossil_digger"), 2, 1, new ResourceLocation(MOD_ID, "mining"), 2, "mining:6");
     }
 
     @Override

@@ -6,12 +6,15 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitDropGuarantee extends Trait {
 
     public TraitDropGuarantee() {
-        super("drop_guarantee", 1, 1, 8, "gathering:20,attack:8");
+        super(new ResourceLocation(MOD_ID,"drop_guarantee"), 1, 1, new ResourceLocation(MOD_ID,"gathering"),8, "gathering:20,attack:8");
     }
 
     @Override

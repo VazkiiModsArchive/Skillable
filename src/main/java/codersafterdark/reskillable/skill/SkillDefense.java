@@ -10,11 +10,4 @@ public class SkillDefense extends Skill {
     public SkillDefense() {
         super("defense", 3, new ResourceLocation("textures/blocks/quartz_block_side.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitUndershirt());
-        addUnlockable(new TraitEffectTwist());
-    }
-
 }

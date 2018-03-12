@@ -11,10 +11,4 @@ public class SkillBuilding extends Skill {
         super("building", 4, new ResourceLocation("textures/blocks/brick.png"));
     }
 
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitChorusTransmutation());
-        addUnlockable(new TraitPerfectRecover());
-    }
-
 }

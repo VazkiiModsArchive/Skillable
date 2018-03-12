@@ -10,11 +10,4 @@ public class SkillFarming extends Skill {
     public SkillFarming() {
         super("farming", 5, new ResourceLocation("textures/blocks/dirt.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitMoreWheat());
-        addUnlockable(new TraitGreenThumb());
-    }
-
 }

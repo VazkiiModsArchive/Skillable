@@ -10,11 +10,4 @@ public class SkillGathering extends Skill {
     public SkillGathering() {
         super("gathering", 1, new ResourceLocation("textures/blocks/log_oak.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitLuckyFisherman());
-        addUnlockable(new TraitDropGuarantee());
-    }
-
 }

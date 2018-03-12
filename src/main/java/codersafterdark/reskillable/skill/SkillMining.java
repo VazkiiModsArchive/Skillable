@@ -10,12 +10,4 @@ public class SkillMining extends Skill {
     public SkillMining() {
         super("mining", 0, new ResourceLocation("textures/blocks/stone.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitFossilDigger());
-        addUnlockable(new TraitObsidianSmasher());
-
-    }
-
 }

@@ -30,6 +30,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static codersafterdark.reskillable.client.base.RenderHelper.renderTooltip;
 
@@ -199,7 +200,7 @@ public class GuiSkillInfo extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button == levelUpButton) {
-            MessageLevelUp message = new MessageLevelUp(skill.getKey());
+            MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
         }
     }

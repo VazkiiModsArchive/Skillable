@@ -1,8 +1,12 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.api.ReskillableRegistries;
+import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
+import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.SkillRequirement;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import codersafterdark.reskillable.api.skill.Skill;
+import com.google.common.collect.Lists;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.advancements.AdvancementManager;
@@ -24,21 +28,28 @@ import java.util.Map;
 public class RequirementHolder {
 
     private static AdvancementList advList;
-    public final Map<Skill, Integer> skillLevels = new HashMap<>();
-    public final List<ResourceLocation> advancements = new ArrayList<>();
-    boolean forcedEmpty = false;
+    private final List<Requirement> requirements;
+    private final boolean forcedEmpty;
+
+    public RequirementHolder() {
+        this.requirements = Lists.newArrayList();
+        this.forcedEmpty = true;
+    }
+
+    public RequirementHolder(List<Requirement> requirements) {
+        this.requirements = requirements;
+        this.forcedEmpty = false;
+    }
 
     public static RequirementHolder realEmpty() {
-        RequirementHolder h = new RequirementHolder();
-        h.forcedEmpty = true;
-        return h;
+        return new RequirementHolder();
     }
 
     public static RequirementHolder fromString(String s) {
         if (s.matches("(?i)^(none|null|nil)$"))
             return RequirementHolder.realEmpty();
 
-        RequirementHolder holder = new RequirementHolder();
+        List<Requirement> requirements = new ArrayList<>();
         String[] tokens = s.trim().split(",");
 
         for (String s1 : tokens) {
@@ -48,13 +59,13 @@ public class RequirementHolder {
                 String valStr = kv[1];
 
                 if (keyStr.equals("adv"))
-                    holder.advancements.add(new ResourceLocation(valStr));
+                    requirements.add(new AdvancementRequirement(new ResourceLocation(valStr)));
                 else
                     try {
                         int level = Integer.parseInt(valStr);
                         Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(keyStr.toLowerCase()));
                         if (skill != null && level > 1)
-                            holder.skillLevels.put(skill, level);
+                            requirements.add(new SkillRequirement(skill, level));
                         else
                             FMLLog.warning("[Reskillable] Invalid Level Lock: " + s);
                     } catch (NumberFormatException e) {
@@ -62,7 +73,7 @@ public class RequirementHolder {
                     }
             }
         }
-        return holder;
+        return new RequirementHolder(requirements);
     }
 
     public static AdvancementList getAdvancementList() {
@@ -81,7 +92,7 @@ public class RequirementHolder {
     }
 
     public int getRestrictionLength() {
-        return skillLevels.size() + advancements.size();
+        return requirements.size();
     }
 
     @SideOnly(Side.CLIENT)
@@ -91,29 +102,15 @@ public class RequirementHolder {
 
         if (GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
-
-            for (Skill s : skillLevels.keySet()) {
-                PlayerSkillInfo info = data.getSkillInfo(s);
-                TextFormatting color = TextFormatting.GREEN;
-                int req = skillLevels.get(s);
-                if (info.getLevel() < req)
-                    color = TextFormatting.RED;
-
-                tooltip.add(TextFormatting.GRAY + " - "
-                        + I18n.translateToLocalFormatted("skillable.misc.skillFormat", color, req, s.getName()));
+            for (Requirement requirement : requirements) {
+                tooltip.add(requirement.getToolTip(data));
             }
-
-            EntityPlayer p = data.playerWR.get();
-            if (p != null)
-                for (ResourceLocation e : advancements) {
-                    Advancement adv = getAdvancementList().getAdvancement(e);
-                    if (adv != null)
-                        tooltip.add(TextFormatting.GRAY + " - " + I18n.translateToLocalFormatted(
-                                "skillable.misc.achievementFormat",
-                                adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", "")));
-                }
-        } else
+        } else {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
+        }
     }
 
+    public List<Requirement> getRequirements() {
+        return requirements;
+    }
 }

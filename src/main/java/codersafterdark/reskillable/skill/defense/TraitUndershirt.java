@@ -2,15 +2,18 @@ package codersafterdark.reskillable.skill.defense;
 
 import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitUndershirt extends Trait {
 
     private static final String TAG_COOLDOWN = "skillable:UndershirtCD";
 
     public TraitUndershirt() {
-        super("undershirt", 1, 2, 6, "defense:12,agility:4");
+        super(new ResourceLocation(MOD_ID, "undershirt"), 1, 2, new ResourceLocation(MOD_ID, "defense"),6, "defense:12,agility:4");
     }
 
     @Override
