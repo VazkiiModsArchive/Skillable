@@ -10,7 +10,7 @@ public class LoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{"vazkii.skillable.base.asm.ClassTransformer"};
+        return new String[]{"codersafterdark.reskillable.base.asm.ClassTransformer"};
     }
 
     @Override
