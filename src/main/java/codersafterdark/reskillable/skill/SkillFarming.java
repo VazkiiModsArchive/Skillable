@@ -1,8 +1,6 @@
 package codersafterdark.reskillable.skill;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.farming.TraitGreenThumb;
-import codersafterdark.reskillable.skill.farming.TraitMoreWheat;
 import net.minecraft.util.ResourceLocation;
 
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;

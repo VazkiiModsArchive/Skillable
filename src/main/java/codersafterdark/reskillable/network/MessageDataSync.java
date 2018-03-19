@@ -1,14 +1,18 @@
 package codersafterdark.reskillable.network;
 
 import codersafterdark.reskillable.Reskillable;
-import codersafterdark.reskillable.base.*;
+import codersafterdark.reskillable.base.PlayerData;
+import codersafterdark.reskillable.base.PlayerDataHandler;
 import codersafterdark.reskillable.client.base.ClientTickHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.*;
-import net.minecraftforge.fml.relauncher.*;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageDataSync implements IMessage, IMessageHandler<MessageDataSync, IMessage> {
     

@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.skill.magic;
 
-import codersafterdark.reskillable.base.ExperienceHelper;
 import codersafterdark.reskillable.api.unlockable.Trait;
+import codersafterdark.reskillable.base.ExperienceHelper;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

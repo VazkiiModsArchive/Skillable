@@ -1,7 +1,6 @@
 package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
 import codersafterdark.reskillable.skill.agility.TraitRoadWalk;

@@ -10,7 +10,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 public abstract class TraitTransmutation extends Trait {

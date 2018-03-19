@@ -1,8 +1,6 @@
 package codersafterdark.reskillable.skill;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
-import codersafterdark.reskillable.skill.attack.TraitNeutralissse;
 import net.minecraft.util.ResourceLocation;
 
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;

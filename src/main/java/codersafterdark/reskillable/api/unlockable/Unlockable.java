@@ -2,21 +2,14 @@ package codersafterdark.reskillable.api.unlockable;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.base.RequirementHolder;
-import codersafterdark.reskillable.lib.LibMisc;
-import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
-
 import java.util.Objects;
-
-import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> implements Comparable<Unlockable> {
 

@@ -1,12 +1,15 @@
 package codersafterdark.reskillable.compat.crafttweaker;
 
-import codersafterdark.reskillable.base.*;
-import crafttweaker.*;
+import codersafterdark.reskillable.base.LevelLockHandler;
+import codersafterdark.reskillable.base.RequirementHolder;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.reskillable.Requirement")
 @ZenRegister
@@ -26,7 +29,6 @@ public class RequirementTweaker {
                     return;
                 }
                 ItemStack realItem = CraftTweakerMC.getItemStack(item);
-    
                 RequirementHolder h = RequirementHolder.fromString(locked);
                 LevelLockHandler.craftTweakerLocks.put(realItem, h);
             }
