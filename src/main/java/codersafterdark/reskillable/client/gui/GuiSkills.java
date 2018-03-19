@@ -10,7 +10,7 @@ import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
@@ -48,7 +48,7 @@ public class GuiSkills extends GuiScreen {
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
         Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
-        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16);
+        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16,1f/64,1f/64);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
