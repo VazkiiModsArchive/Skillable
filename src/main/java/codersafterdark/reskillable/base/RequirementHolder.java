@@ -6,6 +6,9 @@ import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.SkillRequirement;
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Ability;
+import codersafterdark.reskillable.api.requirement.TraitRequirement;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -21,10 +24,12 @@ import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class RequirementHolder {
 
     private static AdvancementList advList;
+    private static PlayerData playerData;
     private final List<Requirement> requirements;
     private final boolean forcedEmpty;
 
@@ -57,6 +62,8 @@ public class RequirementHolder {
 
                     if (keyStr.equals("adv")) {
                         requirements.add(new AdvancementRequirement(new ResourceLocation(valStr)));
+                    } else if (keyStr.equals("trait")) {
+                        requirements.add(new TraitRequirement(new ResourceLocation(valStr)));
                     } else {
                         try {
                             int level = Integer.parseInt(valStr);
@@ -94,7 +101,6 @@ public class RequirementHolder {
         if (advList == null) {
             advList = ReflectionHelper.getPrivateValue(AdvancementManager.class, null, LibObfuscation.ADVANCEMENT_LIST);
         }
-
         return advList;
     }
 
@@ -128,4 +134,5 @@ public class RequirementHolder {
     public List<Requirement> getRequirements() {
         return requirements;
     }
+
 }
