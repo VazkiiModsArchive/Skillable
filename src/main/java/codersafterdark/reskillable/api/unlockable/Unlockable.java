@@ -3,7 +3,7 @@ package codersafterdark.reskillable.api.unlockable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.base.RequirementHolder;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.registries.IForgeRegistryEntry;

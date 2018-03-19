@@ -1,8 +1,8 @@
 package codersafterdark.reskillable.network;
 
 import codersafterdark.reskillable.Reskillable;
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.client.base.ClientTickHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

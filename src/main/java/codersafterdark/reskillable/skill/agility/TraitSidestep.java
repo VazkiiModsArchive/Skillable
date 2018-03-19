@@ -1,7 +1,6 @@
 package codersafterdark.reskillable.skill.agility;
 
-import codersafterdark.reskillable.api.unlockable.Trait;
-import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.client.base.ClientTickHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
