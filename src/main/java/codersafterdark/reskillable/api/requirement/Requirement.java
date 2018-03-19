@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.api.requirement;
 
-import codersafterdark.reskillable.base.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

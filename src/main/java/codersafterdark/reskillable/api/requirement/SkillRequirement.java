@@ -1,9 +1,9 @@
 package codersafterdark.reskillable.api.requirement;
 
 import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.PlayerDataHandler;
-import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextFormatting;

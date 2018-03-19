@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.api.unlockable;
 
-import codersafterdark.reskillable.base.RequirementHolder;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 
 public class UnlockableConfig {
     private boolean enabled = true;

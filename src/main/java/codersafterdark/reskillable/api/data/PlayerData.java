@@ -1,5 +1,6 @@
-package codersafterdark.reskillable.base;
+package codersafterdark.reskillable.api.data;
 
+import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.skill.Skill;
@@ -98,11 +99,7 @@ public class PlayerData {
     public void sync() {
         if (!client) {
             EntityPlayer player = playerWR.get();
-
-            if (player != null && player instanceof EntityPlayerMP) {
-                MessageDataSync message = new MessageDataSync(this);
-                PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
-            }
+            ReskillableAPI.getInstance().syncPlayerData(player, this);
         }
     }
 

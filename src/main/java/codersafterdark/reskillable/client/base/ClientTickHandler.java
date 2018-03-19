@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.client.base;
 
-import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

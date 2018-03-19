@@ -1,10 +1,15 @@
 package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.IModAccess;
+import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
 import codersafterdark.reskillable.base.ConfigHandler;
-import codersafterdark.reskillable.base.RequirementHolder;
+import codersafterdark.reskillable.api.data.RequirementHolder;
+import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -34,5 +39,13 @@ public class ReskillableModAccess implements IModAccess {
         unlockableConfig.setCost(ConfigHandler.config.get(categoryName, "Skill Point Cost", cost).getInt());
         unlockableConfig.setRequirementHolder(RequirementHolder.fromStringList(ConfigHandler.config.get(categoryName, "Requirements", defaultRequirements).getStringList()));
         return unlockableConfig;
+    }
+
+    @Override
+    public void syncPlayerData(EntityPlayer entityPlayer, PlayerData playerData) {
+        if (entityPlayer != null && entityPlayer instanceof EntityPlayerMP) {
+            MessageDataSync message = new MessageDataSync(playerData);
+            PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) entityPlayer);
+        }
     }
 }

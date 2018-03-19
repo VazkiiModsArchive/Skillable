@@ -1,4 +1,4 @@
-package codersafterdark.reskillable.base;
+package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableRegistries;

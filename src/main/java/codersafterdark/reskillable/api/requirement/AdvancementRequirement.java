@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.api.requirement;
 
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.RequirementHolder;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;

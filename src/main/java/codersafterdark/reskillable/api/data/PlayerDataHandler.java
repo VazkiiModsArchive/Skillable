@@ -1,4 +1,4 @@
-package codersafterdark.reskillable.base;
+package codersafterdark.reskillable.api.data;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -47,13 +46,12 @@ public class PlayerDataHandler {
     }
 
     public static void cleanup() {
-        List<Integer> removals = new ArrayList();
-        Iterator<Entry<Integer, PlayerData>> it = playerData.entrySet().iterator();
-        while (it.hasNext()) {
-            Entry<Integer, PlayerData> item = it.next();
+        List<Integer> removals = new ArrayList<>();
+        for (Entry<Integer, PlayerData> item : playerData.entrySet()) {
             PlayerData d = item.getValue();
-            if (d != null && d.playerWR.get() == null)
+            if (d != null && d.playerWR.get() == null) {
                 removals.add(item.getKey());
+            }
         }
 
         for (int i : removals)
