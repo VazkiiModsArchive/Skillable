@@ -14,8 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
@@ -47,14 +46,13 @@ public class LevelLockHandler {
 
     public static void setupLocks() {
         locks.clear();
-        if(configLocks == null)
-            return;
-
-        for(String s : configLocks) {
-            String[] tokens = s.split("=");
-            if(tokens.length == 2) {
-                RequirementHolder h = RequirementHolder.fromString(tokens[1]);
-                locks.put(new ItemStack(Item.getByNameOrId(tokens[0].toLowerCase())), h);
+        if(configLocks != null) {
+            for(String s : configLocks) {
+                String[] tokens = s.split("=");
+                if(tokens.length == 2) {
+                    RequirementHolder h = RequirementHolder.fromString(tokens[1]);
+                    locks.put(new ItemStack(Item.getByNameOrId(tokens[0].toLowerCase())), h);
+                }
             }
         }
         locks.putAll(craftTweakerLocks);
@@ -63,7 +61,6 @@ public class LevelLockHandler {
     public static RequirementHolder getSkillLock(ItemStack stack) {
         if(stack == null || stack.isEmpty())
             return EMPTY_LOCK;
-
         for(ItemStack itemStack : locks.keySet()) {
             if(compareItem(itemStack, stack)) {
                 return locks.get(itemStack);
