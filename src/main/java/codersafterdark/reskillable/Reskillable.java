@@ -42,6 +42,7 @@ public class Reskillable {
             ConfigHandler.config.save();
         }
         ReskillableRegistries.UNLOCKABLES.getValuesCollection().parallelStream()
+                .filter(Unlockable::isEnabled)
                 .forEach(Unlockable::getParentSkill);
 
         proxy.init(event);

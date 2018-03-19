@@ -78,7 +78,7 @@ public class GuiSkillInfo extends GuiScreen {
 
         mc.renderEngine.bindTexture(sprite);
         GlStateManager.color(0.5F, 0.5F, 0.5F);
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 8; j++) {
                 int x = left + 16 + i * 16;
                 int y = top + 33 + j * 16;
@@ -86,6 +86,7 @@ public class GuiSkillInfo extends GuiScreen {
                 int height = 16;
                 drawTexturedRec(x, y, width, height);
             }
+        }
 
         GlStateManager.color(1F, 1F, 1F);
         GlStateManager.enableBlend();
@@ -201,7 +202,7 @@ public class GuiSkillInfo extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(GuiButton button) {
         if (button == levelUpButton) {
             MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
@@ -216,21 +217,13 @@ public class GuiSkillInfo extends GuiScreen {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getRegistryName(), hoveredUnlockable.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
-        } else if (mouseButton == 1 || mouseButton == 3)
+        } else if (mouseButton == 1 || mouseButton == 3) {
             mc.displayGuiScreen(new GuiSkills());
+        }
     }
 
     @Override
     public boolean doesGuiPauseGame() {
         return false;
     }
-
-    private TextureAtlasSprite getTexture(Block blockIn) {
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
-    }
-
-    private TextureAtlasSprite getTexture(ResourceLocation resource) {
-        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(resource.toString());//getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
-    }
-
 }
