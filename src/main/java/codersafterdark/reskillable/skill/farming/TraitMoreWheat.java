@@ -14,7 +14,8 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class TraitMoreWheat extends Trait {
 
     public TraitMoreWheat() {
-        super(new ResourceLocation(MOD_ID, "more_wheat"), 1, 2, new ResourceLocation(MOD_ID, "farming"),6, "farming:12");
+        super(new ResourceLocation(MOD_ID, "more_wheat"), 1, 2, new ResourceLocation(MOD_ID, "farming"),
+                6, "reskillable:farming|12");
     }
 
     @Override

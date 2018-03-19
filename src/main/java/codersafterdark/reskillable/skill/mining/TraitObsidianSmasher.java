@@ -14,7 +14,8 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class TraitObsidianSmasher extends Trait {
 
     public TraitObsidianSmasher() {
-        super(new ResourceLocation(MOD_ID, "obsidian_smasher"), 1, 2, new ResourceLocation(MOD_ID, "mining"),4, "mining:16");
+        super(new ResourceLocation(MOD_ID, "obsidian_smasher"), 1, 2, new ResourceLocation(MOD_ID, "mining"),
+                4, "reskillable:mining|16");
     }
 
     @Override

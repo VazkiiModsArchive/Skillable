@@ -80,7 +80,7 @@ public class PlayerSkillInfo {
     }
 
     public int getLevelUpCost() {
-        return ConfigHandler.baseXPCost + Math.max(0, (level - 1) / ConfigHandler.xpIncreaseStagger) * ConfigHandler.xpIncrease;
+        return skill.getBaseXPCost() + Math.max(0, (level - 1) / skill.getXpIncreaseStagger()) * skill.getXpIncrease();
     }
 
     public boolean isUnlocked(Unlockable u) {
@@ -97,8 +97,9 @@ public class PlayerSkillInfo {
 
     public void levelUp() {
         level++;
-        if (level % ConfigHandler.skillPointInterval == 0)
+        if (level % skill.getSkillPointInterval() == 0) {
             skillPoints++;
+        }
     }
 
     public void unlock(Unlockable u) {
@@ -108,7 +109,7 @@ public class PlayerSkillInfo {
 
     public void respec() {
         unlockables.clear();
-        skillPoints = level / ConfigHandler.skillPointInterval;
+        skillPoints = level / skill.getSkillPointInterval();
     }
 
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {

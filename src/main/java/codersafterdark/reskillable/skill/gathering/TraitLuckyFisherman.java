@@ -11,7 +11,8 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class TraitLuckyFisherman extends Trait {
 
     public TraitLuckyFisherman() {
-        super(new ResourceLocation(MOD_ID,"lucky_fisherman"), 3, 2, new ResourceLocation(MOD_ID,"gathering"), 6, "gathering:12,magic:4");
+        super(new ResourceLocation(MOD_ID,"lucky_fisherman"), 3, 2, new ResourceLocation(MOD_ID,"gathering"),
+                6, "reskillable:gathering|12", "reskillable:magic|4");
     }
 
     @Override

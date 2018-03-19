@@ -8,7 +8,8 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class AbilityOreCascade extends Ability {
 
     public AbilityOreCascade() {
-        super(new ResourceLocation(MOD_ID,"ore_cascade"), 0, 3, new ResourceLocation(MOD_ID, "mining"), 6, "mining:12");
+        super(new ResourceLocation(MOD_ID,"ore_cascade"), 0, 3, new ResourceLocation(MOD_ID, "mining"),
+                6, "reskillable:mining|12");
     }
 
 }

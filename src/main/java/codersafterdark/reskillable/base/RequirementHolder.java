@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.base;
 
+import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,40 +47,58 @@ public class RequirementHolder {
         return new RequirementHolder();
     }
 
-    public static RequirementHolder fromString(String s) {
-        if (s.matches("(?i)^(none|null|nil)$"))
-            return RequirementHolder.realEmpty();
+    public static RequirementHolder fromStringList(String[] list) {
+        RequirementHolder requirementHolder;
 
-        List<Requirement> requirements = new ArrayList<>();
-        String[] tokens = s.trim().split(",");
+        if (list.length == 0) {
+            requirementHolder = RequirementHolder.realEmpty();
+        } else {
+            List<Requirement> requirements = new ArrayList<>();
+            for (String s1 : list) {
+                String[] kv = s1.split("\\|");
+                if (kv.length == 2) {
+                    String keyStr = kv[0];
+                    String valStr = kv[1];
 
-        for (String s1 : tokens) {
-            String[] kv = s1.split("\\|");
-            if (kv.length == 2) {
-                String keyStr = kv[0];
-                String valStr = kv[1];
-
-                if (keyStr.equals("adv"))
-                    requirements.add(new AdvancementRequirement(new ResourceLocation(valStr)));
-                else
-                    try {
-                        int level = Integer.parseInt(valStr);
-                        Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(keyStr.toLowerCase()));
-                        if (skill != null && level > 1)
-                            requirements.add(new SkillRequirement(skill, level));
-                        else
-                            FMLLog.warning("[Reskillable] Invalid Level Lock: " + s);
-                    } catch (NumberFormatException e) {
-                        FMLLog.warning("[Reskillable] Invalid Level Lock: " + s);
+                    if (keyStr.equals("adv")) {
+                        requirements.add(new AdvancementRequirement(new ResourceLocation(valStr)));
+                    } else {
+                        try {
+                            int level = Integer.parseInt(valStr);
+                            Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(keyStr.toLowerCase()));
+                            if (skill != null && level > 1) {
+                                requirements.add(new SkillRequirement(skill, level));
+                            } else {
+                                Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
+                            }
+                        } catch (NumberFormatException e) {
+                            Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
+                        }
                     }
+                } else {
+                    Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
+                }
             }
+            requirementHolder = new RequirementHolder(requirements);
         }
-        return new RequirementHolder(requirements);
+        return requirementHolder;
+    }
+
+    public static RequirementHolder fromString(String s) {
+        RequirementHolder requirementHolder;
+        if (s.matches("(?i)^(none|null|nil)$")) {
+            requirementHolder = RequirementHolder.realEmpty();
+        } else {
+            requirementHolder = fromStringList(s.split(","));
+        }
+
+        return requirementHolder;
     }
 
     public static AdvancementList getAdvancementList() {
-        if (advList == null)
+        if (advList == null) {
             advList = ReflectionHelper.getPrivateValue(AdvancementManager.class, null, LibObfuscation.ADVANCEMENT_LIST);
+        }
 
         return advList;
     }

@@ -106,10 +106,10 @@ public class HUDHandler {
             int textY = y + 48;
             color = 0xFFFFFF + transparencyInt;
 
-            for (ResourceLocation advRes : reqs.advancements) {
-                Advancement adv = RequirementHolder.getAdvancementList().getAdvancement(advRes);
+            for (AdvancementRequirement advancementRequirement : advancementRequirements) {
+                Advancement adv = advancementRequirement.getAdvancement();
                 if (adv == null) {
-                    continue;
+                    return;
                 }
 
                 mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/advancements/widgets.png"));
@@ -124,7 +124,7 @@ public class HUDHandler {
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(xp + 2, y + 22, 0);
-                if(transparency>0.5)
+                if (transparency > 0.5)
                     mc.getRenderItem().renderItemAndEffectIntoGUI(display.getIcon(), 0, 0);
                 GlStateManager.popMatrix();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

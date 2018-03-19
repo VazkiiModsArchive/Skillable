@@ -17,7 +17,8 @@ public class TraitNeutralissse extends Trait {
     private static final String TAG_DEFUSED = "skillable:defuse";
 
     public TraitNeutralissse() {
-        super(new ResourceLocation(MOD_ID, "neutralissse"), 1, 2, new ResourceLocation(MOD_ID, "attack"), 10, "attack:24,agility:8");
+        super(new ResourceLocation(MOD_ID, "neutralissse"), 1, 2, new ResourceLocation(MOD_ID, "attack"),
+                10, "reskillable:attack|24", "reskillable:agility|8");
         MinecraftForge.EVENT_BUS.register(this);
     }
 

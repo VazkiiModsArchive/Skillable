@@ -31,7 +31,8 @@ public class TraitSidestep extends Trait {
     private int leftDown, rightDown, cd;
 
     public TraitSidestep() {
-        super(new ResourceLocation(MOD_ID, "sidestep"), 3, 1, new ResourceLocation(MOD_ID, "agility"),10, "agility:26,defense:20");
+        super(new ResourceLocation(MOD_ID, "sidestep"), 3, 1, new ResourceLocation(MOD_ID, "agility"),
+                10, "reskillable:agility|26", "reskillable:defense|20");
 
         if (FMLCommonHandler.instance().getSide().isClient())
             MinecraftForge.EVENT_BUS.register(this);

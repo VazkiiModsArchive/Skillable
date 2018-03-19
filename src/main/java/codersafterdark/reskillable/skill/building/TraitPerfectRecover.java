@@ -16,7 +16,8 @@ public class TraitPerfectRecover extends Trait {
     private Item lantern;
 
     public TraitPerfectRecover() {
-        super(new ResourceLocation(MOD_ID, "perfect_recover"), 1, 1, new ResourceLocation(MOD_ID, "building"),4, "building:8,gathering:4,mining:6");
+        super(new ResourceLocation(MOD_ID, "perfect_recover"), 1, 1, new ResourceLocation(MOD_ID, "building"),
+                4, "reskillable:building|8", "reskillable:gathering|4", "reskillable:mining|6");
     }
 
     @Override

@@ -155,7 +155,6 @@ public class GuiSkillInfo extends GuiScreen {
         drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 16, 16, 16, 16);
 
         if (mx >= x && my >= y && mx < x + 26 && my < y + 26) {
-            //TODO Fix Unlockable Cost
             canPurchase = !unlocked && info.getSkillPoints() >= unlockable.getCost();
             hoveredUnlockable = unlockable;
         }

@@ -13,7 +13,8 @@ public class TraitUndershirt extends Trait {
     private static final String TAG_COOLDOWN = "skillable:UndershirtCD";
 
     public TraitUndershirt() {
-        super(new ResourceLocation(MOD_ID, "undershirt"), 1, 2, new ResourceLocation(MOD_ID, "defense"),6, "defense:12,agility:4");
+        super(new ResourceLocation(MOD_ID, "undershirt"), 1, 2, new ResourceLocation(MOD_ID, "defense"),
+                6, "reskillable:defense|12", "reskillable:agility|4");
     }
 
     @Override
