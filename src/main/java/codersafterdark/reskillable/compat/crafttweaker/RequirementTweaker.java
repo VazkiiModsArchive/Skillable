@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.compat.crafttweaker;
 
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.base.LevelLockHandler;
-import codersafterdark.reskillable.base.RequirementHolder;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;

@@ -105,6 +105,7 @@ public class PlayerSkillInfo {
     public void unlock(Unlockable u) {
         skillPoints -= u.getCost();
         unlockables.add(u);
+        u.onUnlock();
     }
 
     public void respec() {
