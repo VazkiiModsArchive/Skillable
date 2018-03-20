@@ -8,11 +8,18 @@ import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
+import javafx.util.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import scala.Int;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class ReskillableModAccess implements IModAccess {
     @Override
@@ -22,11 +29,18 @@ public class ReskillableModAccess implements IModAccess {
         String categoryName = "skill." + name.toString();
         skillConfig.setEnabled(ConfigHandler.config.get(categoryName, "Enabled", skillConfig.isEnabled()).getBoolean());
         skillConfig.setLevelCap(ConfigHandler.config.get(categoryName, "Level Cap", skillConfig.getLevelCap()).getInt());
-        skillConfig.setBaseXPCost(ConfigHandler.config.get(categoryName, "Base XP Cost", skillConfig.getBaseXPCost()).getInt());
+        skillConfig.setBaseLevelCost(ConfigHandler.config.get(categoryName, "Base Level Cost", skillConfig.getBaseLevelCost()).getInt());
         skillConfig.setSkillPointInterval(ConfigHandler.config.get(categoryName, "Skill Point Interval", skillConfig.getSkillPointInterval()).getInt());
-        skillConfig.setXpIncrease(ConfigHandler.config.get(categoryName, "XP Increase", skillConfig.getXpIncrease()).getInt());
-        skillConfig.setXpIncreaseStagger(ConfigHandler.config.get(categoryName, "XP Level Stagger", skillConfig.getXpIncreaseStagger()).getInt());
+        String[] levelMapping = ConfigHandler.config.get(categoryName, "Level Staggering", new String[] {"1|1"}).getStringList();
+        TreeMap<Integer, Integer> levelStaggering = new TreeMap<>();
+        Arrays.stream(levelMapping)
+                .map(string -> string.split("\\|"))
+                .filter(array -> array.length != 2)
+                .map(array -> new Pair<>(array[0], array[1]))
+                .map(pair -> new Pair<>(Integer.parseInt(pair.getKey()), Integer.parseInt(pair.getValue())))
+                .forEach(pair -> levelStaggering.put(pair.getKey(), pair.getValue()));
 
+        skillConfig.setLevelStaggering(levelStaggering);
         return skillConfig;
     }
 

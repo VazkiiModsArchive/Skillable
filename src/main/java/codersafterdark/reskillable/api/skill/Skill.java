@@ -11,6 +11,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements Comparable<Skill> {
     private final ResourceLocation background;
@@ -74,15 +77,12 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
         return skillConfig.getSkillPointInterval();
     }
 
-    public int getBaseXPCost() {
-        return skillConfig.getBaseXPCost();
-    }
-
-    public int getXpIncreaseStagger() {
-        return skillConfig.getXpIncreaseStagger();
-    }
-
-    public int getXpIncrease() {
-        return skillConfig.getXpIncrease();
+    public int getLevelUpCost(int level) {
+        return this.skillConfig.getLevelStaggering()
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey() < level + 1)
+                .mapToInt(Map.Entry::getValue)
+                .sum() + this.skillConfig.getBaseLevelCost();
     }
 }
