@@ -57,7 +57,7 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
         PlayerSkillInfo info = data.getSkillInfo(skill);
 
         if(!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.getCost() && data.matchStats(unlockable.getRequirements())) {
-            info.unlock(unlockable);
+            info.unlock(unlockable, player);
             data.saveAndSync();
         }
         

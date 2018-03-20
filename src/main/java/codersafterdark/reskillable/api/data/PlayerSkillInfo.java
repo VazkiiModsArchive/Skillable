@@ -5,9 +5,11 @@ import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -102,10 +104,10 @@ public class PlayerSkillInfo {
         }
     }
 
-    public void unlock(Unlockable u) {
+    public void unlock(Unlockable u, EntityPlayer p) {
         skillPoints -= u.getCost();
         unlockables.add(u);
-        u.onUnlock();
+        u.onUnlock(p);
     }
 
     public void respec() {
