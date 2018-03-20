@@ -1,14 +1,15 @@
 package codersafterdark.reskillable.skill.agility;
 
-import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.client.base.ClientTickHandler;
-import codersafterdark.reskillable.skill.base.Trait;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -22,13 +23,16 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitSidestep extends Trait {
 
     public static final int MAX_CD = 20;
     private int leftDown, rightDown, cd;
 
     public TraitSidestep() {
-        super("sidestep", 3, 1, 10, "agility:26,defense:20");
+        super(new ResourceLocation(MOD_ID, "sidestep"), 3, 1, new ResourceLocation(MOD_ID, "agility"),
+                10, "reskillable:agility|26", "reskillable:defense|20");
 
         if (FMLCommonHandler.instance().getSide().isClient())
             MinecraftForge.EVENT_BUS.register(this);

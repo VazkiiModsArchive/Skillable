@@ -1,20 +1,14 @@
 package codersafterdark.reskillable.skill;
 
-import codersafterdark.reskillable.skill.building.TraitChorusTransmutation;
-import codersafterdark.reskillable.skill.building.TraitPerfectRecover;
-import net.minecraft.init.Blocks;
+import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.util.ResourceLocation;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class SkillBuilding extends Skill {
 
     public SkillBuilding() {
-        super("building", 4, new ResourceLocation("textures/blocks/brick.png"));
-    }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitChorusTransmutation());
-        addUnlockable(new TraitPerfectRecover());
+        super(new ResourceLocation(MOD_ID,"building"),  new ResourceLocation("textures/blocks/brick.png"));
     }
 
 }

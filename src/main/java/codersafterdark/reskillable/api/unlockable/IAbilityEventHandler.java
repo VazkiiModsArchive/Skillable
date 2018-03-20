@@ -1,4 +1,4 @@
-package codersafterdark.reskillable.skill.base;
+package codersafterdark.reskillable.api.unlockable;
 
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;

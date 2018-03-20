@@ -1,20 +1,24 @@
 package codersafterdark.reskillable.skill.attack;
 
+import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.lib.LibObfuscation;
-import codersafterdark.reskillable.skill.base.Trait;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitNeutralissse extends Trait {
 
     private static final String TAG_DEFUSED = "skillable:defuse";
 
     public TraitNeutralissse() {
-        super("neutralissse", 1, 2, 10, "attack:24,agility:8");
+        super(new ResourceLocation(MOD_ID, "neutralissse"), 1, 2, new ResourceLocation(MOD_ID, "attack"),
+                10, "reskillable:attack|24", "reskillable:agility|8");
         MinecraftForge.EVENT_BUS.register(this);
     }
 

@@ -1,20 +1,22 @@
 package codersafterdark.reskillable.client.gui;
 
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.PlayerDataHandler;
-import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.network.*;
-import codersafterdark.reskillable.skill.Skill;
-import codersafterdark.reskillable.skill.base.Unlockable;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
+import codersafterdark.reskillable.network.MessageLevelUp;
+import codersafterdark.reskillable.network.MessageUnlockUnlockable;
+import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
@@ -57,7 +59,7 @@ public class GuiSkillInfo extends GuiScreen {
         buttonList.add(levelUpButton = new GuiButtonLevelUp(left + 147, top + 10));
         InventoryTabHandler.addTabs(this, buttonList);
         sprite = skill.getBackground();
-        
+
     }
 
     @Override
@@ -70,17 +72,18 @@ public class GuiSkillInfo extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
         PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
-        
+
         mc.renderEngine.bindTexture(sprite);
         GlStateManager.color(0.5F, 0.5F, 0.5F);
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 8; j++) {
                 int x = left + 16 + i * 16;
                 int y = top + 33 + j * 16;
                 int width = 16;
                 int height = 16;
-                drawTexturedRec(x,y,width,height);
+                drawTexturedRec(x, y, width, height);
             }
+        }
 
         GlStateManager.color(1F, 1F, 1F);
         GlStateManager.enableBlend();
@@ -116,15 +119,15 @@ public class GuiSkillInfo extends GuiScreen {
             makeUnlockableTooltip(data, skillInfo, mouseX, mouseY);
         }
     }
-    
-    public void drawTexturedRec(int x, int y, int width, int height){
+
+    public void drawTexturedRec(int x, int y, int width, int height) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos((double)(x), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1,1).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y), (double)this.zLevel).tex(1, 0).endVertex();
-        bufferbuilder.pos((double)(x), (double)(y), (double)this.zLevel).tex(0, 0).endVertex();
+        bufferbuilder.pos((double) (x), (double) (y + height), (double) this.zLevel).tex(0, 1).endVertex();
+        bufferbuilder.pos((double) (x + width), (double) (y + height), (double) this.zLevel).tex(1, 1).endVertex();
+        bufferbuilder.pos((double) (x + width), (double) (y), (double) this.zLevel).tex(1, 0).endVertex();
+        bufferbuilder.pos((double) (x), (double) (y), (double) this.zLevel).tex(0, 0).endVertex();
         tessellator.draw();
     }
 
@@ -136,10 +139,12 @@ public class GuiSkillInfo extends GuiScreen {
 
         int u = 0;
         int v = guiHeight;
-        if (unlockable.hasSpikes())
+        if (unlockable.hasSpikes()) {
             u += 26;
-        if (unlocked)
+        }
+        if (unlocked) {
             v += 26;
+        }
 
         GlStateManager.color(1F, 1F, 1F);
         drawTexturedModalRect(x, y, u, v, 26, 26);
@@ -148,29 +153,32 @@ public class GuiSkillInfo extends GuiScreen {
         drawModalRectWithCustomSizedTexture(x + 5, y + 5, 0, 0, 16, 16, 16, 16);
 
         if (mx >= x && my >= y && mx < x + 26 && my < y + 26) {
-            canPurchase = !unlocked && info.getSkillPoints() >= unlockable.cost;
+            canPurchase = !unlocked && info.getSkillPoints() >= unlockable.getCost();
             hoveredUnlockable = unlockable;
         }
     }
 
     private void makeUnlockableTooltip(PlayerData data, PlayerSkillInfo info, int mouseX, int mouseY) {
-        List<String> tooltip = new ArrayList();
+        List<String> tooltip = new ArrayList<>();
         TextFormatting tf = hoveredUnlockable.hasSpikes() ? TextFormatting.AQUA : TextFormatting.YELLOW;
 
         tooltip.add(tf + hoveredUnlockable.getName());
 
-        if (isShiftKeyDown())
+        if (isShiftKeyDown()) {
             addLongStringToTooltip(tooltip, hoveredUnlockable.getDescription(), guiWidth);
-        else {
+        } else {
             tooltip.add(TextFormatting.GRAY + I18n.translateToLocal("skillable.misc.holdShift"));
             tooltip.add("");
         }
 
-        if (!info.isUnlocked(hoveredUnlockable))
+        if (!info.isUnlocked(hoveredUnlockable)) {
             hoveredUnlockable.getRequirements().addRequirementsToTooltip(data, tooltip);
-        else tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
-        tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.cost));
-    
+        } else {
+            tooltip.add(TextFormatting.GREEN + I18n.translateToLocal("skillable.misc.unlocked"));
+        }
+
+        tooltip.add(TextFormatting.GRAY + String.format(I18n.translateToLocal("skillable.misc.skillPoints"), hoveredUnlockable.getCost()));
+
         renderTooltip(mouseX, mouseY, tooltip);
     }
 
@@ -191,9 +199,9 @@ public class GuiSkillInfo extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(GuiButton button) {
         if (button == levelUpButton) {
-            MessageLevelUp message = new MessageLevelUp(skill.getKey());
+            MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
         }
     }
@@ -204,23 +212,15 @@ public class GuiSkillInfo extends GuiScreen {
 
         if (mouseButton == 0 && hoveredUnlockable != null && canPurchase) {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getKey(), hoveredUnlockable.getKey());
+            MessageUnlockUnlockable message = new MessageUnlockUnlockable(skill.getRegistryName(), hoveredUnlockable.getRegistryName());
             PacketHandler.INSTANCE.sendToServer(message);
-        } else if (mouseButton == 1 || mouseButton == 3)
+        } else if (mouseButton == 1 || mouseButton == 3) {
             mc.displayGuiScreen(new GuiSkills());
+        }
     }
 
     @Override
     public boolean doesGuiPauseGame() {
         return false;
     }
-
-    private TextureAtlasSprite getTexture(Block blockIn) {
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
-    }
-    
-    private TextureAtlasSprite getTexture(ResourceLocation resource) {
-        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(resource.toString());//getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockIn.getDefaultState());
-    }
-
 }

@@ -1,36 +1,45 @@
 package codersafterdark.reskillable.network;
 
-import codersafterdark.reskillable.base.*;
-import codersafterdark.reskillable.skill.*;
-import codersafterdark.reskillable.skill.base.Unlockable;
+import codersafterdark.reskillable.api.ReskillableRegistries;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerSkillInfo;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.*;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.util.Objects;
 
 public class MessageUnlockUnlockable implements IMessage, IMessageHandler<MessageUnlockUnlockable, IMessage> {
     
-    public String skill, unlockable;
+    private ResourceLocation skill;
+    private ResourceLocation unlockable;
     
     public MessageUnlockUnlockable() {
     }
     
-    public MessageUnlockUnlockable(String skill, String unlockable) {
+    public MessageUnlockUnlockable(ResourceLocation skill, ResourceLocation unlockable) {
         this.skill = skill;
         this.unlockable = unlockable;
     }
     
     @Override
     public void fromBytes(ByteBuf buf) {
-        skill = ByteBufUtils.readUTF8String(buf);
-        unlockable = ByteBufUtils.readUTF8String(buf);
+        skill = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+        unlockable = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
     }
     
     @Override
     public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, skill);
-        ByteBufUtils.writeUTF8String(buf, unlockable);
+        ByteBufUtils.writeUTF8String(buf, skill.toString());
+        ByteBufUtils.writeUTF8String(buf, unlockable.toString());
     
     }
     
@@ -42,12 +51,12 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
     
     public IMessage handleMessage(MessageUnlockUnlockable message, MessageContext context) {
         EntityPlayer player = context.getServerHandler().player;
-        Skill skill = Skills.SKILLS.get(message.skill);
-        Unlockable unlockable = Skills.ALL_UNLOCKABLES.get(message.unlockable);
+        Skill skill = ReskillableRegistries.SKILLS.getValue(message.skill);
+        Unlockable unlockable = Objects.requireNonNull(ReskillableRegistries.UNLOCKABLES.getValue(message.unlockable));
         PlayerData data = PlayerDataHandler.get(player);
         PlayerSkillInfo info = data.getSkillInfo(skill);
-        
-        if(!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.cost && data.matchStats(unlockable.getRequirements())) {
+
+        if(!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.getCost() && data.matchStats(unlockable.getRequirements())) {
             info.unlock(unlockable);
             data.saveAndSync();
         }

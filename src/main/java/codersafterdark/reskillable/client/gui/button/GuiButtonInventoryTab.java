@@ -1,7 +1,7 @@
 package codersafterdark.reskillable.client.gui.button;
 
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import net.minecraft.client.Minecraft;

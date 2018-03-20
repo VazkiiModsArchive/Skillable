@@ -1,14 +1,16 @@
-package codersafterdark.reskillable.base;
+package codersafterdark.reskillable.api.data;
 
-import codersafterdark.reskillable.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
-import codersafterdark.reskillable.skill.base.Ability;
-import codersafterdark.reskillable.skill.base.IAbilityEventHandler;
-import codersafterdark.reskillable.skill.base.Unlockable;
+import codersafterdark.reskillable.api.ReskillableRegistries;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Ability;
+import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
+import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -22,7 +24,7 @@ public class PlayerSkillInfo {
 
     private int level;
     private int skillPoints;
-    private List<Unlockable> unlockables = new ArrayList();
+    private List<Unlockable> unlockables = new ArrayList<>();
 
     public PlayerSkillInfo(Skill skill) {
         this.skill = skill;
@@ -36,9 +38,11 @@ public class PlayerSkillInfo {
 
         unlockables.clear();
         NBTTagCompound unlockablesCmp = cmp.getCompoundTag(TAG_UNLOCKABLES);
-        for (String s : unlockablesCmp.getKeySet())
-            if (Skills.ALL_UNLOCKABLES.containsKey(s))
-                unlockables.add(Skills.ALL_UNLOCKABLES.get(s));
+
+        for (String s : unlockablesCmp.getKeySet()) {
+            Optional.ofNullable(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s.replace(".", ":"))))
+                    .ifPresent(unlockables::add);
+        }
     }
 
     public void saveToNBT(NBTTagCompound cmp) {
@@ -46,16 +50,19 @@ public class PlayerSkillInfo {
         cmp.setInteger(TAG_SKILL_POINTS, skillPoints);
 
         NBTTagCompound unlockablesCmp = new NBTTagCompound();
-        for (Unlockable u : unlockables)
+        for (Unlockable u : unlockables) {
             unlockablesCmp.setBoolean(u.getKey(), true);
+        }
         cmp.setTag(TAG_UNLOCKABLES, unlockablesCmp);
     }
 
     public int getLevel() {
-        if (level <= 0)
+        if (level <= 0) {
             level = 1;
-        if (level > skill.getCap())
+        }
+        if (level > skill.getCap()) {
             level = skill.getCap();
+        }
 
         return level;
     }
@@ -69,11 +76,11 @@ public class PlayerSkillInfo {
     }
 
     public boolean isCapped() {
-        return level == skill.getCap();
+        return level >= skill.getCap();
     }
 
     public int getLevelUpCost() {
-        return ConfigHandler.baseXPCost + Math.max(0, (level - 1) / ConfigHandler.xpIncreaseStagger) * ConfigHandler.xpIncrease;
+        return skill.getBaseXPCost() + Math.max(0, (level - 1) / skill.getXpIncreaseStagger()) * skill.getXpIncrease();
     }
 
     public boolean isUnlocked(Unlockable u) {
@@ -81,31 +88,35 @@ public class PlayerSkillInfo {
     }
 
     public void addAbilities(Set<Ability> abilities) {
-        for (Unlockable u : unlockables)
-            if (u instanceof Ability)
+        for (Unlockable u : unlockables) {
+            if (u instanceof Ability) {
                 abilities.add((Ability) u);
+            }
+        }
     }
 
     public void levelUp() {
         level++;
-        if (level % ConfigHandler.skillPointInterval == 0)
+        if (level % skill.getSkillPointInterval() == 0) {
             skillPoints++;
+        }
     }
 
     public void unlock(Unlockable u) {
-        skillPoints -= u.cost;
+        skillPoints -= u.getCost();
         unlockables.add(u);
     }
 
     public void respec() {
         unlockables.clear();
-        skillPoints = level / ConfigHandler.skillPointInterval;
+        skillPoints = level / skill.getSkillPointInterval();
     }
 
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
         unlockables.forEach((u) -> {
-            if (u instanceof IAbilityEventHandler)
+            if (u instanceof IAbilityEventHandler) {
                 consumer.accept((IAbilityEventHandler) u);
+            }
         });
     }
 

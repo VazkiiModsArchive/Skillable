@@ -1,20 +1,13 @@
 package codersafterdark.reskillable.skill;
 
-import codersafterdark.reskillable.skill.defense.TraitEffectTwist;
-import codersafterdark.reskillable.skill.defense.TraitUndershirt;
-import net.minecraft.init.Blocks;
+import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.util.ResourceLocation;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class SkillDefense extends Skill {
 
     public SkillDefense() {
-        super("defense", 3, new ResourceLocation("textures/blocks/quartz_block_side.png"));
+        super(new ResourceLocation(MOD_ID,"defense"), new ResourceLocation("textures/blocks/quartz_block_side.png"));
     }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitUndershirt());
-        addUnlockable(new TraitEffectTwist());
-    }
-
 }

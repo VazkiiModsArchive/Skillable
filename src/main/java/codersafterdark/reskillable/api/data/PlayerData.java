@@ -1,19 +1,16 @@
-package codersafterdark.reskillable.base;
+package codersafterdark.reskillable.api.data;
 
-import codersafterdark.reskillable.network.*;
-import codersafterdark.reskillable.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
-import codersafterdark.reskillable.skill.base.Ability;
-import codersafterdark.reskillable.skill.base.IAbilityEventHandler;
-import mcp.mobius.waila.handlers.NetworkHandler;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
-import net.minecraft.advancements.AdvancementProgress;
+import codersafterdark.reskillable.api.ReskillableAPI;
+import codersafterdark.reskillable.api.ReskillableRegistries;
+import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.unlockable.Ability;
+import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
+import codersafterdark.reskillable.network.MessageDataSync;
+import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -34,14 +31,15 @@ public class PlayerData {
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
     public WeakReference<EntityPlayer> playerWR;
-    private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap();
+    private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap<>();
 
     public PlayerData(EntityPlayer player) {
-        playerWR = new WeakReference(player);
+        playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
 
-        for (Skill s : Skills.SKILLS.values())
+        for (Skill s : ReskillableRegistries.SKILLS.getValuesCollection()) {
             skillInfo.put(s, new PlayerSkillInfo(s));
+        }
 
         load();
     }
@@ -55,38 +53,24 @@ public class PlayerData {
     }
 
     public Set<Ability> getAllAbilities() {
-        Set<Ability> set = new TreeSet();
-        for (PlayerSkillInfo info : skillInfo.values())
+        Set<Ability> set = new TreeSet<>();
+        for (PlayerSkillInfo info : skillInfo.values()) {
             info.addAbilities(set);
+        }
 
         return set;
     }
 
     public boolean matchStats(RequirementHolder holder) {
         EntityPlayer player = playerWR.get();
-        if (player == null)
-            return false;
-
-        for (Skill s : holder.skillLevels.keySet()) {
-            PlayerSkillInfo info = getSkillInfo(s);
-            if (info.getLevel() < holder.skillLevels.get(s))
-                return false;
-        }
-
         if (player instanceof EntityPlayerMP) {
-            EntityPlayerMP mp = (EntityPlayerMP) player;
-            AdvancementManager manager = ((WorldServer) mp.world).getAdvancementManager();
-
-            for (ResourceLocation res : holder.advancements) {
-                Advancement adv = manager.getAdvancement(res);
-                if (adv != null) {
-                    AdvancementProgress progress = mp.getAdvancements().getProgress(adv);
-                    if (!progress.isDone())
-                        return false;
+            EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+            for (Requirement requirement : holder.getRequirements()) {
+                if (!requirement.achievedByPlayer(entityPlayerMP)) {
+                    return false;
                 }
             }
         }
-
         return true;
     }
 
@@ -115,11 +99,7 @@ public class PlayerData {
     public void sync() {
         if (!client) {
             EntityPlayer player = playerWR.get();
-
-            if (player != null && player instanceof EntityPlayerMP) {
-                MessageDataSync message = new MessageDataSync(this);
-                PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
-            }
+            ReskillableAPI.getInstance().syncPlayerData(player, this);
         }
     }
 

@@ -8,18 +8,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitChorusTransmutation extends TraitTransmutation {
 
     public TraitChorusTransmutation() {
-        super("chorus_transmute", 3, 2, 8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "building:16,magic:16");
+        super(new ResourceLocation(MOD_ID, "chorus_transmute"), 3, 2, new ResourceLocation(MOD_ID, "building"),
+                8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "reskillable:building|16" , "reskillable:magic|16");
     }
 
     private static Map<IBlockState, IBlockState> makeMap() {
-        Map<IBlockState, IBlockState> map = new HashMap();
+        Map<IBlockState, IBlockState> map = new HashMap<>();
         map.put(Blocks.STONE.getDefaultState(), Blocks.END_STONE.getDefaultState());
 
         for (EnumFacing face : EnumFacing.HORIZONTALS)

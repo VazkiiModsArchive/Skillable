@@ -1,19 +1,23 @@
 package codersafterdark.reskillable.skill.farming;
 
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitGreenThumb extends Trait {
 
     public TraitGreenThumb() {
-        super("green_thumb", 3, 1, 8, "farming:16,magic:16");
+        super(new ResourceLocation(MOD_ID,"green_thumb"), 3, 1, new ResourceLocation(MOD_ID, "farming"),
+                8, "reskillable:farming|16", "reskillable:magic|16");
     }
 
     @Override

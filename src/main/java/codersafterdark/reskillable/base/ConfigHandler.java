@@ -1,7 +1,6 @@
 package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.skill.Skills;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -13,30 +12,19 @@ import java.io.File;
 public class ConfigHandler {
 
     public static Configuration config;
-    public static int baseXPCost = 4;
-    public static int xpIncrease = 1;
-    public static int xpIncreaseStagger = 1;
-    public static int skillPointInterval = 2;
-    public static boolean useExperienceNotLevel = false;
+
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
     public static boolean enableTabs = true;
-    private static boolean firstLoad;
 
     public static void init(File configFile) {
         config = new Configuration(configFile);
-        firstLoad = true;
         config.load();
         load();
         MinecraftForge.EVENT_BUS.register(ChangeListener.class);
     }
 
     public static void load() {
-        baseXPCost = loadPropInt("Base XP Cost", "", baseXPCost);
-        xpIncrease = loadPropInt("XP Increase Per Level", "", 1);
-        xpIncreaseStagger = loadPropInt("XP Increase Stagger", "Between how many levels should XP costs increase?\nDefault is 1, which means it increases cost every level. 3 would make the cost increase every 3 levels.", 1);
-        skillPointInterval = loadPropInt("Levels per Skill Point", "", skillPointInterval);
-        useExperienceNotLevel = loadPropBool("Should Reskillable use Experience Points instead of Levels?", "", false);
         disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
         enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
         enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
@@ -57,31 +45,9 @@ public class ConfigHandler {
                 + "by defining their lock in the normal way. If you want an item to not be locked in this way, use \"none\" after the =";
         String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
     
-        String[] defaultCaps = new String[Skills.SKILLS.size()];
-        int counter = 0;
-        for(String s : Skills.SKILLS.keySet()) {
-            defaultCaps[counter++] = s + "|32";
-        }
-        String[] caps = config.getStringList("Skill Caps", Configuration.CATEGORY_GENERAL, defaultCaps, "Individual skill caps");
-
         LevelLockHandler.loadFromConfig(locks);
-        if (!firstLoad)
-            LevelLockHandler.setupLocks();
-
-        Skills.ALL_UNLOCKABLES.clear();
-        Skills.SKILLS.values().forEach((skill) -> {
-            skill.getUnlockables().clear();
-            skill.initUnlockables();
-        });
-    
-        for(String cap : caps) {
-            Skills.SKILLS.get(cap.split("\\|")[0]).setCap(Integer.parseInt(cap.split("\\|")[1]));
-        }
-        
         if (config.hasChanged())
             config.save();
-
-        firstLoad = false;
     }
 
     public static int loadPropInt(String propName, String desc, int default_) {
@@ -104,7 +70,6 @@ public class ConfigHandler {
 
         return prop.getBoolean(default_);
     }
-
 
     public static class ChangeListener {
 

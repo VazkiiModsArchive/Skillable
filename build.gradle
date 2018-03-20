@@ -30,7 +30,7 @@ archivesBaseName = config.mod_name
 
 minecraft {
     version = "${config.mc_version}-${config.forge_version}"
-    runDir = "eclipse/assets"
+    runDir = "run"
 
     coreMod = "codersafterdark.reskillable.base.asm.LoadingPlugin"
 

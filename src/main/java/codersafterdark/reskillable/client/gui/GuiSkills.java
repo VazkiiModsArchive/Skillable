@@ -1,13 +1,13 @@
 package codersafterdark.reskillable.client.gui;
 
-import codersafterdark.reskillable.base.PlayerData;
-import codersafterdark.reskillable.base.PlayerDataHandler;
-import codersafterdark.reskillable.base.PlayerSkillInfo;
+import codersafterdark.reskillable.api.ReskillableRegistries;
+import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
-import codersafterdark.reskillable.skill.Skill;
-import codersafterdark.reskillable.skill.Skills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,26 +21,33 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiSkills extends GuiScreen {
 
     public static final ResourceLocation SKILLS_RES = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skills.png");
 
-    int guiWidth, guiHeight;
-    Skill hoveredSkill;
+    private int guiWidth, guiHeight;
+    private Skill hoveredSkill;
 
-    int offset = 0;
+    private int offset = 0;
 
-    int left;
-    int top;
-    int lastY;
+    private int left;
+    private int top;
+    private int lastY;
+
+    private List<Skill> skills;
+
+    public GuiSkills() {
+        skills = new ArrayList<>(ReskillableRegistries.SKILLS.getValuesCollection());
+    }
 
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
         Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
-        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16);
+        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16,1f/64,1f/64);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
@@ -79,14 +86,14 @@ public class GuiSkills extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
 
         hoveredSkill = null;
-        ArrayList<String> list = new ArrayList<>(Skills.SKILLS.keySet());
+
 
         int index = 0;
-        for (int j = 0; j < list.size(); j++) {
+        for (int j = 0; j < skills.size(); j++) {
             if (j < offset || index > 7) {
                 continue;
             }
-            Skill skill = Skills.SKILLS.get(list.get(j));
+            Skill skill = skills.get(j);
             PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
             int i = index++;
@@ -94,7 +101,7 @@ public class GuiSkills extends GuiScreen {
             int h = 32;
             int x = left + (i % 2) * (w + 3) + 8;
             int y = top + (i / 2) * (h + 3) + 18;
-//            if(y > lastY) //uncomment this line to make the bottom button stay at the bottom
+
             lastY = y;
             int u = 0;
             int v = guiHeight;
@@ -140,10 +147,10 @@ public class GuiSkills extends GuiScreen {
                     offset = Math.max(offset - 2, 0);
                 } else if (mouseY >= top + 14 && mouseY <= lastY + 36) {
                     int off = 2;
-                    if (Skills.SKILLS.size() % 2 == 1) {
+                    if (skills.size() % 2 == 1) {
                         off = 1;
                     }
-                    offset = Math.min(offset + 2, Skills.SKILLS.size() - off);
+                    offset = Math.min(offset + 2, skills.size() - off);
                 }
             }
         }
@@ -157,10 +164,10 @@ public class GuiSkills extends GuiScreen {
             offset = Math.max(offset - 2, 0);
         } else if (Mouse.getEventDWheel() < 0) {
             int off = 2;
-            if (Skills.SKILLS.size() % 2 == 1) {
+            if (skills.size() % 2 == 1) {
                 off = 1;
             }
-            offset = Math.min(offset + 2, Skills.SKILLS.size() - off);
+            offset = Math.min(offset + 2, skills.size() - off);
         }
     }
 

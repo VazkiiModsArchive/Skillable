@@ -1,9 +1,10 @@
 package codersafterdark.reskillable.skill.building;
 
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -16,8 +17,9 @@ public abstract class TraitTransmutation extends Trait {
     private final ItemStack reagent;
     private final Map<IBlockState, IBlockState> stateMap;
 
-    public TraitTransmutation(String name, int x, int y, int cost, ItemStack reagent, Map<IBlockState, IBlockState> stateMap, String reqs) {
-        super(name, x, y, cost, reqs);
+    public TraitTransmutation(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, ItemStack reagent,
+                              Map<IBlockState, IBlockState> stateMap, String... requirements) {
+        super(name, x, y, skillName, cost, requirements);
         this.reagent = reagent;
         this.stateMap = stateMap;
     }

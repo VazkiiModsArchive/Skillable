@@ -1,16 +1,20 @@
 package codersafterdark.reskillable.skill.magic;
 
+import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.base.ExperienceHelper;
-import codersafterdark.reskillable.skill.base.Trait;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitGoldenOsmosis extends Trait {
 
     public TraitGoldenOsmosis() {
-        super("golden_osmosis", 3, 2, 10, "magic:20,mining:6,gathering:6,attack:6");
+        super(new ResourceLocation(MOD_ID, "golden_osmosis"), 3, 2, new ResourceLocation(MOD_ID, "magic"),
+                10, "reskillable:magic|20", "reskillable:mining|6", "reskillable:gathering|6", "reskillable:attack|6");
     }
 
     @Override

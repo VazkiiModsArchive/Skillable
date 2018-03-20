@@ -1,19 +1,13 @@
 package codersafterdark.reskillable.skill;
 
-import codersafterdark.reskillable.skill.agility.TraitRoadwalk;
-import codersafterdark.reskillable.skill.agility.TraitSidestep;
-import net.minecraft.init.Blocks;
+import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.util.ResourceLocation;
+
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class SkillAgility extends Skill {
 
     public SkillAgility() {
-        super("agility", 6, new ResourceLocation("textures/blocks/gravel.png"));
-    }
-
-    @Override
-    public void initUnlockables() {
-        addUnlockable(new TraitRoadwalk());
-        addUnlockable(new TraitSidestep());
+        super(new ResourceLocation(MOD_ID,"agility"),  new ResourceLocation("textures/blocks/gravel.png"));
     }
 }

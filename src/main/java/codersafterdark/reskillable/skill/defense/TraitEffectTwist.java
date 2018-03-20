@@ -1,12 +1,13 @@
 package codersafterdark.reskillable.skill.defense;
 
-import codersafterdark.reskillable.skill.base.Trait;
+import codersafterdark.reskillable.api.unlockable.Trait;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.HashMap;
@@ -14,14 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
+
 public class TraitEffectTwist extends Trait {
 
     private Map<Potion, Potion> badPotions;
 
     public TraitEffectTwist() {
-        super("effect_twist", 3, 1, 8, "defense:20,attack:16,magic:16");
+        super(new ResourceLocation(MOD_ID, "effect_twist"), 3, 1, new ResourceLocation(MOD_ID, "defense"),
+                8, "reskillable:defense|20", "reskillable:attack|16" , "reskillable:magic|16");
 
-        badPotions = new HashMap();
+        badPotions = new HashMap<>();
         badPotions.put(MobEffects.SPEED, MobEffects.SLOWNESS);
         badPotions.put(MobEffects.HASTE, MobEffects.MINING_FATIGUE);
         badPotions.put(MobEffects.STRENGTH, MobEffects.WEAKNESS);
