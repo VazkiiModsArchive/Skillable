@@ -61,6 +61,8 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         return icon;
     }
 
+    public void onUnlock() {}
+
     public boolean hasSpikes() {
         return false;
     }
