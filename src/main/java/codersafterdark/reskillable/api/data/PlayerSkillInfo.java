@@ -40,7 +40,7 @@ public class PlayerSkillInfo {
         NBTTagCompound unlockablesCmp = cmp.getCompoundTag(TAG_UNLOCKABLES);
 
         for (String s : unlockablesCmp.getKeySet()) {
-            Optional.ofNullable(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s)))
+            Optional.ofNullable(ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(s.replace(".", ":"))))
                     .ifPresent(unlockables::add);
         }
     }

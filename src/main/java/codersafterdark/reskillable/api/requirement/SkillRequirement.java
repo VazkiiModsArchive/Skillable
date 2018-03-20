@@ -22,7 +22,7 @@ public class SkillRequirement extends Requirement {
     @Override
     public boolean achievedByPlayer(EntityPlayerMP entityPlayerMP) {
         PlayerData data = PlayerDataHandler.get(entityPlayerMP);
-        return data.getSkillInfo(skill).getLevel() > level;
+        return data.getSkillInfo(skill).getLevel() >= level;
     }
 
     @Override
