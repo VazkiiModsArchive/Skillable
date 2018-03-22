@@ -15,6 +15,7 @@ buildscript {
     }
 }
 
+apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -24,7 +25,7 @@ ext.configFile = file('build.properties')
 
 ext.config = parseConfig(configFile)
 
-version = "${config.version}-${config.build_number}"
+version = "${minecraft_version}-" + getVersion()
 group = "codersafterdark.reskillable" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
@@ -43,6 +44,7 @@ minecraft {
 
     makeObfSourceJar = false
 }
+
 repositories{
     maven{
         name 'CraftTweaker'
@@ -66,6 +68,13 @@ dependencies {
     deobfCompile "CraftTweaker2:ZenScript:1.12-4.1.0.387"
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        }
+    }
+}
 
 jar {
     exclude "**/*.bat"
@@ -102,54 +111,29 @@ task deobfJar(type: Jar) {
 artifacts {
     archives deobfJar
 }
-/**
- * Increments the buildnumber in your config file, and saves it
- */
-task incrementBuildNumber {
-    config.build_number = (config.build_number.toString().toInteger()) + 1
-    configFile.withWriter {
-        config.toProperties().store(it, "")
+
+String getVersion() {
+    String version = "${mod_version}"
+    String branch = project.hasProperty("branch") ? project.branch : ""
+
+    if(branch != "") {
+        version += "-" + branch
+
+        String buildNumber = getBuildNumber()
+        if(buildNumber != "") {
+            version += "." + buildNumber
+        }
     }
+
+    return version
 }
 
-// I have no idea what I'm doing
-task wtfGradle2(type: Copy) {
-    from(jar.destinationDir)
-    into file("${config.dir_output}/wtf")
-}
-
-// Seriously, I'm desperate to make this work
-task wtfGradle1(type: Delete) {
-    dependsOn "wtfGradle2"
-    delete "${config.dir_output}/wtf/${deobfJar.archiveName}"
-}
-
-task output(type: Copy) {
-    dependsOn "wtfGradle1"
-    from(jar.destinationDir)
-    into file(config.dir_output)
-}
-
-task outputDeobf(type: Copy) {
-    dependsOn "output"
-    from(config.dir_output) {
-        include deobfJar.archiveName
+static String getBuildNumber() {
+    String buildNumber = System.getenv("BUILD_NUMBER") != null ? System.getenv("BUILD_NUMBER") : ""
+    if(buildNumber == "") {
+        buildNumber = System.getenv("bamboo_buildNumber") != null ? "." + System.getenv("bamboo_buildNumber") : ""
     }
-    into file("${config.dir_output}/deobf")
-}
-
-task sort(type: Delete) {
-    dependsOn "outputDeobf"
-    delete "${config.dir_output}/${deobfJar.archiveName}", "${config.dir_output}/wtf"
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
+    return buildNumber
 }
 
 
-defaultTasks 'clean', 'build', 'sort', 'incrementBuildNumber'
