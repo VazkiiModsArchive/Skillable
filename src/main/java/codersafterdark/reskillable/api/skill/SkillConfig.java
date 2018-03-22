@@ -6,7 +6,7 @@ public class SkillConfig {
     private boolean enabled = true;
     private int levelCap = 32;
     private int skillPointInterval = 2;
-    private int baseLevelCost = 4;
+    private int baseLevelCost = 3;
     private Map<Integer, Integer> levelStaggering;
 
     public boolean isEnabled() {

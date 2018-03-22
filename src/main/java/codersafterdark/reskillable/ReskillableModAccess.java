@@ -8,6 +8,7 @@ import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
+import com.google.common.collect.Maps;
 import javafx.util.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,13 +33,22 @@ public class ReskillableModAccess implements IModAccess {
         skillConfig.setBaseLevelCost(ConfigHandler.config.get(categoryName, "Base Level Cost", skillConfig.getBaseLevelCost()).getInt());
         skillConfig.setSkillPointInterval(ConfigHandler.config.get(categoryName, "Skill Point Interval", skillConfig.getSkillPointInterval()).getInt());
         String[] levelMapping = ConfigHandler.config.get(categoryName, "Level Staggering", new String[] {"1|1"}).getStringList();
-        TreeMap<Integer, Integer> levelStaggering = new TreeMap<>();
-        Arrays.stream(levelMapping)
+        Map<Integer, Integer> configLevelStaggering = Arrays.stream(levelMapping)
                 .map(string -> string.split("\\|"))
-                .filter(array -> array.length != 2)
+                .filter(array -> array.length == 2)
                 .map(array -> new Pair<>(array[0], array[1]))
                 .map(pair -> new Pair<>(Integer.parseInt(pair.getKey()), Integer.parseInt(pair.getValue())))
-                .forEach(pair -> levelStaggering.put(pair.getKey(), pair.getValue()));
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+
+        Map<Integer, Integer> levelStaggering = Maps.newHashMap();
+
+        int lastLevel = skillConfig.getBaseLevelCost();
+        for (int i = 1; i < skillConfig.getLevelCap(); i++) {
+            if (configLevelStaggering.containsKey(i)) {
+                lastLevel = configLevelStaggering.get(i);
+            }
+            levelStaggering.put(i, lastLevel);
+        }
 
         skillConfig.setLevelStaggering(levelStaggering);
         return skillConfig;
