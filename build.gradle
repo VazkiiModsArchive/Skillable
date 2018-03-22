@@ -25,19 +25,18 @@ ext.configFile = file('build.properties')
 
 ext.config = parseConfig(configFile)
 
-version = "${minecraft_version}-" + getVersion()
+version = "${mc_version}-" + getVersion()
 group = "codersafterdark.reskillable" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}"
+    version = "${mc_version}-${forge_version}"
     runDir = "run"
 
     coreMod = "codersafterdark.reskillable.base.asm.LoadingPlugin"
 
-    mappings = config.mc_mappings
-    replace 'GRADLE:BUILD', config.build_number
-    replace 'GRADLE:VERSION', config.version
+    mappings = ${mc_mappings}
+    replace 'GRADLE:VERSION', ${mc_version}
 
     // Scala: not even once
     replace 'scala.actors.threadpool.Arrays', 'java.util.Arrays'
