@@ -36,7 +36,7 @@ public class SkillRequirement extends Requirement {
         }
 
         return TextFormatting.GRAY + " - "
-                + I18n.format("skillable.misc.skillFormat", color, level, skill.getName());
+                + I18n.format("skillable.misc.skillFormat", color, skill.getName(), level);
     }
 
     public Skill getSkill() {
