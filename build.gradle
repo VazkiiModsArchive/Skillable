@@ -23,7 +23,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 version = "${mc_version}-" + getVersion()
 group = "codersafterdark.reskillable" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
+archivesBaseName = "${mod_name}"
 
 minecraft {
     version = "${mc_version}-${forge_version}"
@@ -31,8 +31,8 @@ minecraft {
 
     coreMod = "codersafterdark.reskillable.base.asm.LoadingPlugin"
 
-    mappings = ${mc_mappings}
-    replace 'GRADLE:VERSION', ${mc_version}
+    mappings = "${mc_mappings}"
+    replace 'GRADLE:VERSION', "${mc_version}"
 
     // Scala: not even once
     replace 'scala.actors.threadpool.Arrays', 'java.util.Arrays'
@@ -89,7 +89,7 @@ processResources {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version': project.version, 'mcversion': ${mc_version}
+        expand 'version': project.version, 'mcversion': "${mc_version}"
     }
 
     // copy everything else, thats not the mcmod.info
