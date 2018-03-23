@@ -26,7 +26,7 @@ public class ExperienceHelper {
             return 0;
 
         if (level > 0 && level < 17)
-            return (int) (level * level + 6 * level);
+            return level * level + 6 * level;
         else if (level > 16 && level < 32)
             return (int) (2.5 * level * level - 40.5 * level + 360);
         else
