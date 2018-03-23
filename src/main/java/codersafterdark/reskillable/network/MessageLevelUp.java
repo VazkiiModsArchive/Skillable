@@ -6,6 +6,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.base.ExperienceHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -53,7 +54,7 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
             if (player.experienceLevel >= cost || player.isCreative()) {
                 if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, info.getLevel() + 1))) {
                     if (!player.isCreative()) {
-                        player.addExperienceLevel(-cost);
+                        ExperienceHelper.drainPlayerXP(player, ExperienceHelper.getExperienceForLevel(cost));
                     }
                     info.levelUp();
                     MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, info.getLevel()));

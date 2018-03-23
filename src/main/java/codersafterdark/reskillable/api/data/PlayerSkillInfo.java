@@ -82,7 +82,7 @@ public class PlayerSkillInfo {
     }
 
     public int getLevelUpCost() {
-        return skill.getBaseXPCost() + Math.max(0, (level - 1) / skill.getXpIncreaseStagger()) * skill.getXpIncrease();
+        return skill.getLevelUpCost(level);
     }
 
     public boolean isUnlocked(Unlockable u) {

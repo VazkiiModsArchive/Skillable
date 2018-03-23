@@ -1,12 +1,13 @@
 package codersafterdark.reskillable.api.skill;
 
+import java.util.Map;
+
 public class SkillConfig {
     private boolean enabled = true;
     private int levelCap = 32;
     private int skillPointInterval = 2;
-    private int baseXPCost = 4;
-    private int xpIncrease = 1;
-    private int xpIncreaseStagger = 1;
+    private int baseLevelCost = 3;
+    private Map<Integer, Integer> levelStaggering;
 
     public boolean isEnabled() {
         return enabled;
@@ -32,27 +33,19 @@ public class SkillConfig {
         this.skillPointInterval = skillPointInterval;
     }
 
-    public int getBaseXPCost() {
-        return baseXPCost;
+    public int getBaseLevelCost() {
+        return baseLevelCost;
     }
 
-    public void setBaseXPCost(int baseXPCost) {
-        this.baseXPCost = baseXPCost;
+    public void setBaseLevelCost(int baseLevelCost) {
+        this.baseLevelCost = baseLevelCost;
     }
 
-    public int getXpIncrease() {
-        return xpIncrease;
+    public Map<Integer, Integer> getLevelStaggering() {
+        return levelStaggering;
     }
 
-    public void setXpIncrease(int xpIncrease) {
-        this.xpIncrease = xpIncrease;
-    }
-
-    public int getXpIncreaseStagger() {
-        return xpIncreaseStagger;
-    }
-
-    public void setXpIncreaseStagger(int xpIncreaseStagger) {
-        this.xpIncreaseStagger = xpIncreaseStagger;
+    public void setLevelStaggering(Map<Integer, Integer> levelStaggering) {
+        this.levelStaggering = levelStaggering;
     }
 }
