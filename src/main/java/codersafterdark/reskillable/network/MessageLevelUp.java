@@ -54,7 +54,7 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
             if (player.experienceLevel >= cost || player.isCreative()) {
                 if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, info.getLevel() + 1))) {
                     if (!player.isCreative()) {
-                        player.addExperience(-ExperienceHelper.getExperienceForLevel(cost));
+                        ExperienceHelper.drainPlayerXP(player, ExperienceHelper.getExperienceForLevel(cost));
                     }
                     info.levelUp();
                     MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, info.getLevel()));
