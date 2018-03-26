@@ -1,12 +1,12 @@
 package codersafterdark.reskillable.client.base;
 
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.SkillRequirement;
 import codersafterdark.reskillable.base.LevelLockHandler;
-import codersafterdark.reskillable.api.data.PlayerData;
-import codersafterdark.reskillable.api.data.PlayerDataHandler;
-import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.network.MessageLockedItem;
 import com.google.common.collect.Lists;

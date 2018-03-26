@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class PacketHandler {
     public static SimpleNetworkWrapper INSTANCE = new SimpleNetworkWrapper(LibMisc.MOD_ID);
     public static int ID = 0;
-    
+
     public static void preInit() {
         INSTANCE.registerMessage(MessageDataSync.class, MessageDataSync.class, ID++, Side.CLIENT);
         INSTANCE.registerMessage(MessageDodge.class, MessageDodge.class, ID++, Side.SERVER);

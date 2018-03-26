@@ -2,10 +2,10 @@ package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.IModAccess;
 import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
 import codersafterdark.reskillable.base.ConfigHandler;
-import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
 import com.google.common.collect.Maps;
@@ -13,13 +13,10 @@ import javafx.util.Pair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-import scala.Int;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class ReskillableModAccess implements IModAccess {
@@ -32,7 +29,7 @@ public class ReskillableModAccess implements IModAccess {
         skillConfig.setLevelCap(ConfigHandler.config.get(categoryName, "Level Cap", skillConfig.getLevelCap()).getInt());
         skillConfig.setBaseLevelCost(ConfigHandler.config.get(categoryName, "Base Level Cost", skillConfig.getBaseLevelCost()).getInt());
         skillConfig.setSkillPointInterval(ConfigHandler.config.get(categoryName, "Skill Point Interval", skillConfig.getSkillPointInterval()).getInt());
-        String[] levelMapping = ConfigHandler.config.get(categoryName, "Level Staggering", new String[] {"1|1"}).getStringList();
+        String[] levelMapping = ConfigHandler.config.get(categoryName, "Level Staggering", new String[]{"1|1"}).getStringList();
         Map<Integer, Integer> configLevelStaggering = Arrays.stream(levelMapping)
                 .map(string -> string.split("\\|"))
                 .filter(array -> array.length == 2)

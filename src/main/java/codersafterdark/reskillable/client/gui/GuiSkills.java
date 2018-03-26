@@ -1,10 +1,10 @@
 package codersafterdark.reskillable.client.gui;
 
 import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -47,7 +47,7 @@ public class GuiSkills extends GuiScreen {
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
         int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
         Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
-        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16,1f/64,1f/64);
+        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16, 1f / 64, 1f / 64);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {

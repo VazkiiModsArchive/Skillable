@@ -2,8 +2,8 @@ package codersafterdark.reskillable.api.unlockable;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.data.RequirementHolder;
+import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -62,7 +62,8 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         return icon;
     }
 
-    public void onUnlock(EntityPlayer player) {}
+    public void onUnlock(EntityPlayer player) {
+    }
 
     public boolean hasSpikes() {
         return false;

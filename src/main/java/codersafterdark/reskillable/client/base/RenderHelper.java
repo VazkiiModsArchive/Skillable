@@ -2,10 +2,10 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- *
+ * <p>
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- *
+ * <p>
  * File Created @ [Jan 19, 2014, 5:40:38 PM (GMT)]
  */
 package codersafterdark.reskillable.client.base;
@@ -25,50 +25,50 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
-    
+
     public static void renderTooltip(int x, int y, List<String> tooltipData) {
         int color = 0x505000ff;
         int color2 = 0xf0100010;
-        
+
         renderTooltip(x, y, tooltipData, color, color2);
     }
-    
+
     public static void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
-        if(lighting)
+        if (lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-        
-        if(!tooltipData.isEmpty()) {
+
+        if (!tooltipData.isEmpty()) {
             int var5 = 0;
             int var6;
             int var7;
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            for(var6 = 0; var6 < tooltipData.size(); ++var6) {
+            for (var6 = 0; var6 < tooltipData.size(); ++var6) {
                 var7 = fontRenderer.getStringWidth(tooltipData.get(var6));
-                if(var7 > var5)
+                if (var7 > var5)
                     var5 = var7;
             }
             var6 = x + 12;
             var7 = y - 12;
             int var9 = 8;
-            if(tooltipData.size() > 1)
+            if (tooltipData.size() > 1)
                 var9 += 2 + (tooltipData.size() - 1) * 10;
-            
+
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             int right = var6 + var5 + 5;
             int swidth = res.getScaledWidth();
-            if(right > swidth) {
+            if (right > swidth) {
                 int diff = right - swidth;
                 var6 -= diff;
             }
-            
+
             int bottom = var7 + var9 + 5;
             int sheight = res.getScaledHeight();
-            if(bottom > sheight) {
+            if (bottom > sheight) {
                 int diff = bottom - sheight;
                 var7 -= diff;
             }
-            
+
             float z = 300F;
             drawGradientRect(var6 - 3, var7 - 4, z, var6 + var5 + 3, var7 - 3, color2, color2);
             drawGradientRect(var6 - 3, var7 + var9 + 3, z, var6 + var5 + 3, var7 + var9 + 4, color2, color2);
@@ -80,22 +80,22 @@ public class RenderHelper {
             drawGradientRect(var6 + var5 + 2, var7 - 3 + 1, z, var6 + var5 + 3, var7 + var9 + 3 - 1, color, var12);
             drawGradientRect(var6 - 3, var7 - 3, z, var6 + var5 + 3, var7 - 3 + 1, color, color);
             drawGradientRect(var6 - 3, var7 + var9 + 2, z, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
-            
+
             GlStateManager.disableDepth();
-            for(int var13 = 0; var13 < tooltipData.size(); ++var13) {
+            for (int var13 = 0; var13 < tooltipData.size(); ++var13) {
                 String var14 = tooltipData.get(var13);
                 fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
-                if(var13 == 0)
+                if (var13 == 0)
                     var7 += 2;
                 var7 += 10;
             }
             GlStateManager.enableDepth();
         }
-        if(!lighting)
+        if (!lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         GlStateManager.color(1F, 1F, 1F, 1F);
     }
-    
+
     public static void drawGradientRect(int par1, int par2, float z, int par3, int par4, int par5, int par6) {
         float var7 = (par5 >> 24 & 255) / 255F;
         float var8 = (par5 >> 16 & 255) / 255F;
@@ -123,11 +123,11 @@ public class RenderHelper {
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
     }
-    
+
     public static void drawTexturedModalRect(int par1, int par2, float z, int par3, int par4, int par5, int par6) {
         drawTexturedModalRect(par1, par2, z, par3, par4, par5, par6, 0.00390625F, 0.00390625F);
     }
-    
+
     public static void drawTexturedModalRect(int par1, int par2, float z, int par3, int par4, int par5, int par6, float f, float f1) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buff = tessellator.getBuffer();

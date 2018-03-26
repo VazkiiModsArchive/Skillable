@@ -5,7 +5,6 @@ import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TraitRequirement extends Requirement {
     private Unlockable unlockable;
 
-    public TraitRequirement(ResourceLocation traitName){
+    public TraitRequirement(ResourceLocation traitName) {
         this.unlockable = ReskillableRegistries.UNLOCKABLES.getValue(traitName);
     }
 
@@ -33,15 +32,15 @@ public class TraitRequirement extends Requirement {
         TextFormatting color = TextFormatting.GREEN;
         String toolTip = "";
 
-        if (unlockable != null){
-            if (!data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable)){
+        if (unlockable != null) {
+            if (!data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable)) {
                 color = TextFormatting.RED;
             }
         }
         return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.traitFormat", color, unlockable.getName());
     }
 
-    public Skill getSkill(){
+    public Skill getSkill() {
         return unlockable.getParentSkill();
     }
 

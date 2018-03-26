@@ -19,7 +19,7 @@ public class TraitChorusTransmutation extends TraitTransmutation {
 
     public TraitChorusTransmutation() {
         super(new ResourceLocation(MOD_ID, "chorus_transmute"), 3, 2, new ResourceLocation(MOD_ID, "building"),
-                8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "reskillable:building|16" , "reskillable:magic|16");
+                8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "reskillable:building|16", "reskillable:magic|16");
     }
 
     private static Map<IBlockState, IBlockState> makeMap() {

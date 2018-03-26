@@ -14,7 +14,7 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class TraitDropGuarantee extends Trait {
 
     public TraitDropGuarantee() {
-        super(new ResourceLocation(MOD_ID,"drop_guarantee"), 1, 1, new ResourceLocation(MOD_ID,"gathering"),
+        super(new ResourceLocation(MOD_ID, "drop_guarantee"), 1, 1, new ResourceLocation(MOD_ID, "gathering"),
                 8, "reskillable:gathering|20", "reskillable:attack|8");
     }
 

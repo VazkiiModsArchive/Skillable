@@ -5,10 +5,8 @@ import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.SkillRequirement;
-import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.requirement.TraitRequirement;
-import codersafterdark.reskillable.api.unlockable.Unlockable;
+import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -24,7 +22,6 @@ import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class RequirementHolder {
 

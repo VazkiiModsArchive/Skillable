@@ -12,16 +12,13 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements Comparable<Skill> {
     private final ResourceLocation background;
     private final ResourceLocation spriteLocation;
     private final String name;
-    private SkillConfig skillConfig;
-
     private final List<Unlockable> unlockables = new ArrayList<>();
+    private SkillConfig skillConfig;
 
     public Skill(ResourceLocation name, ResourceLocation background) {
         this.name = name.toString().replace(":", ".");
@@ -51,7 +48,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public ResourceLocation getBackground() {
         return background;
     }
-    
+
     public int getCap() {
         return skillConfig.getLevelCap();
     }
@@ -63,9 +60,9 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public ResourceLocation getSpriteLocation() {
         return spriteLocation;
     }
-    
-    public Pair<Integer, Integer> getSpriteFromRank(int rank){
-        return new MutablePair<>(Math.min(rank, 3) * 16,0);
+
+    public Pair<Integer, Integer> getSpriteFromRank(int rank) {
+        return new MutablePair<>(Math.min(rank, 3) * 16, 0);
     }
 
     @Override

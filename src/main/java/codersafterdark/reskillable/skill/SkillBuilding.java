@@ -8,7 +8,7 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class SkillBuilding extends Skill {
 
     public SkillBuilding() {
-        super(new ResourceLocation(MOD_ID,"building"),  new ResourceLocation("textures/blocks/brick.png"));
+        super(new ResourceLocation(MOD_ID, "building"), new ResourceLocation("textures/blocks/brick.png"));
     }
 
 }

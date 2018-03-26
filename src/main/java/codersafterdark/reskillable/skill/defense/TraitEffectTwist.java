@@ -23,7 +23,7 @@ public class TraitEffectTwist extends Trait {
 
     public TraitEffectTwist() {
         super(new ResourceLocation(MOD_ID, "effect_twist"), 3, 1, new ResourceLocation(MOD_ID, "defense"),
-                8, "reskillable:defense|20", "reskillable:attack|16" , "reskillable:magic|16");
+                8, "reskillable:defense|20", "reskillable:attack|16", "reskillable:magic|16");
 
         badPotions = new HashMap<>();
         badPotions.put(MobEffects.SPEED, MobEffects.SLOWNESS);

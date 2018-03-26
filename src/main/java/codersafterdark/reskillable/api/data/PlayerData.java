@@ -6,8 +6,6 @@ import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
-import codersafterdark.reskillable.network.MessageDataSync;
-import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;

@@ -44,7 +44,7 @@ public class ConfigHandler {
                 + "You can lock entire mods by just using their name as the left argument. You can then specify specific items to not be locked,\n"
                 + "by defining their lock in the normal way. If you want an item to not be locked in this way, use \"none\" after the =";
         String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
-    
+
         LevelLockHandler.loadFromConfig(locks);
         if (config.hasChanged())
             config.save();

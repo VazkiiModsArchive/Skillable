@@ -11,7 +11,7 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class TraitRoadWalk extends Trait {
 
     public TraitRoadWalk() {
-        super(new ResourceLocation(MOD_ID,"roadwalk"), 1, 1, new ResourceLocation(MOD_ID, "agility"),
+        super(new ResourceLocation(MOD_ID, "roadwalk"), 1, 1, new ResourceLocation(MOD_ID, "agility"),
                 6, "reskillable:agility|12", "reskillable:building|8");
     }
 
