@@ -7,6 +7,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
 
 public interface IModAccess {
     SkillConfig getSkillConfig(ResourceLocation name);
@@ -16,4 +17,6 @@ public interface IModAccess {
     void syncPlayerData(EntityPlayer entityPlayer, PlayerData playerData);
 
     AdvancementProgress getAdvancementProgress(EntityPlayer entityPlayer, Advancement advancement);
+
+    void log(Level warn, String s);
 }

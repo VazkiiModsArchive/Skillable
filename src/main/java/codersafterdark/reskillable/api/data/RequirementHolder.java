@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.Reskillable;
+import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
@@ -23,8 +24,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RequirementHolder {
 
@@ -47,40 +50,15 @@ public class RequirementHolder {
         return new RequirementHolder();
     }
 
-    public static RequirementHolder fromStringList(String[] list) {
+    public static RequirementHolder fromStringList(String[] requirementStringList) {
         RequirementHolder requirementHolder;
 
-        if (list.length == 0) {
+        if (requirementStringList.length == 0) {
             requirementHolder = RequirementHolder.realEmpty();
         } else {
-            List<Requirement> requirements = new ArrayList<>();
-            for (String s1 : list) {
-                String[] kv = s1.split("\\|");
-                if (kv.length == 2) {
-                    String keyStr = kv[0];
-                    String valStr = kv[1];
-
-                    if (keyStr.equals("adv")) {
-                        requirements.add(new AdvancementRequirement(new ResourceLocation(valStr)));
-                    } else if (keyStr.equals("trait")) {
-                        requirements.add(new TraitRequirement(new ResourceLocation(valStr)));
-                    } else {
-                        try {
-                            int level = Integer.parseInt(valStr);
-                            Skill skill = ReskillableRegistries.SKILLS.getValue(new ResourceLocation(keyStr.toLowerCase()));
-                            if (skill != null && level > 1) {
-                                requirements.add(new SkillRequirement(skill, level));
-                            } else {
-                                Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
-                            }
-                        } catch (NumberFormatException e) {
-                            Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
-                        }
-                    }
-                } else {
-                    Reskillable.logger.log(Level.WARN, "Invalid Level Lock: " + s1);
-                }
-            }
+            List<Requirement> requirements = Arrays.stream(requirementStringList)
+                    .map(ReskillableAPI.getInstance().getRequirementRegistry()::getRequirement)
+                    .collect(Collectors.toList());
             requirementHolder = new RequirementHolder(requirements);
         }
         return requirementHolder;
