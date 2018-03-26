@@ -13,8 +13,8 @@ skillable.misc.armorEquipLocked=You don't meet the requirements to wear this arm
 
 # FORMATS
 skillable.misc.skillFormat=%s%s: %d
-skillable.misc.achievementFormat=- Advancement: %s
-skillable.misc.traitFormat=- Trait: %s
+skillable.misc.achievementFormat=Advancement: %s
+skillable.misc.traitFormat=Trait: %s
 
 # SKILL NAMES
 skillable.skill.reskillable.mining=Mining

@@ -14,7 +14,6 @@ import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 

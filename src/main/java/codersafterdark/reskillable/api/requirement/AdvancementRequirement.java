@@ -4,14 +4,11 @@ import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,9 +35,11 @@ public class AdvancementRequirement extends Requirement {
         Advancement adv = getAdvancement();
         String toolTip = "";
         if (adv != null) {
-            toolTip = TextFormatting.GRAY + " - " +
-                    I18n.format("skillable.misc.achievementFormat",
-                            adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", ""));
+            toolTip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + I18n.format(
+                    "skillable.misc.achievementFormat",
+                    adv.getDisplayText()
+                            .getUnformattedText()
+                            .replaceAll("[\\[\\]]", ""));
         }
         return toolTip;
     }

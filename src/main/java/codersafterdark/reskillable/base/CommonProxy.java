@@ -33,7 +33,7 @@ public class CommonProxy {
     }
 
     public AdvancementProgress getPlayerAdvancementProgress(EntityPlayer entityPlayer, Advancement advancement) {
-        return ((EntityPlayerMP)entityPlayer).getAdvancements().getProgress(advancement);
+        return ((EntityPlayerMP) entityPlayer).getAdvancements().getProgress(advancement);
     }
 
     public EntityPlayer getClientPlayer() {

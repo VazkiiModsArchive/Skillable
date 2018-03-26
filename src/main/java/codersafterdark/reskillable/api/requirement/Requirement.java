@@ -10,4 +10,5 @@ public abstract class Requirement {
 
     @SideOnly(Side.CLIENT)
     public abstract String getToolTip(PlayerData data);
+
 }
