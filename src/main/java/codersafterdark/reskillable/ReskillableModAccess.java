@@ -10,16 +10,15 @@ import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
 import com.google.common.collect.Maps;
 import javafx.util.Pair;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-import scala.Int;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class ReskillableModAccess implements IModAccess {
@@ -71,5 +70,10 @@ public class ReskillableModAccess implements IModAccess {
             MessageDataSync message = new MessageDataSync(playerData);
             PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) entityPlayer);
         }
+    }
+
+    @Override
+    public AdvancementProgress getAdvancementProgress(EntityPlayer entityPlayer, Advancement advancement) {
+        return Reskillable.proxy.getPlayerAdvancementProgress(entityPlayer, advancement);
     }
 }

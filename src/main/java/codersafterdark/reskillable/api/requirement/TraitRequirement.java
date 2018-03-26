@@ -7,6 +7,7 @@ import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -21,8 +22,8 @@ public class TraitRequirement extends Requirement {
     }
 
     @Override
-    public boolean achievedByPlayer(EntityPlayerMP entityPlayerMP) {
-        PlayerData data = PlayerDataHandler.get(entityPlayerMP);
+    public boolean achievedByPlayer(EntityPlayer entityPlayer) {
+        PlayerData data = PlayerDataHandler.get(entityPlayer);
         return data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable);
     }
 
