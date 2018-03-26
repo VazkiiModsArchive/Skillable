@@ -1,38 +1,25 @@
 package codersafterdark.reskillable.api.data;
 
-import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
-import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
-import codersafterdark.reskillable.api.requirement.SkillRequirement;
-import codersafterdark.reskillable.api.skill.Skill;
-import codersafterdark.reskillable.api.unlockable.Ability;
-import codersafterdark.reskillable.api.requirement.TraitRequirement;
-import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RequirementHolder {
 
     private static AdvancementList advList;
-    private static PlayerData playerData;
     private final List<Requirement> requirements;
     private final boolean forcedEmpty;
 
