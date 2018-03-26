@@ -1,17 +1,21 @@
 package codersafterdark.reskillable.api.requirement;
 
+import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Optional;
 
 public class AdvancementRequirement extends Requirement {
     private ResourceLocation advancementName;
@@ -21,18 +25,11 @@ public class AdvancementRequirement extends Requirement {
     }
 
     @Override
-    public boolean achievedByPlayer(EntityPlayerMP entityPlayerMP) {
-        AdvancementManager manager = ((WorldServer) entityPlayerMP.world).getAdvancementManager();
-
-        Advancement adv = manager.getAdvancement(advancementName);
-        if (adv != null) {
-            AdvancementProgress progress = entityPlayerMP.getAdvancements().getProgress(adv);
-            if (!progress.isDone()) {
-                return false;
-            }
-        }
-
-        return true;
+    public boolean achievedByPlayer(EntityPlayer entityPlayer) {
+        return Optional.ofNullable(this.getAdvancement())
+                .map(advancement -> ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, advancement))
+                .map(AdvancementProgress::isDone)
+                .orElse(false);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class AdvancementRequirement extends Requirement {
         if (adv != null) {
             toolTip = TextFormatting.GRAY + " - " +
                     I18n.format("skillable.misc.achievementFormat",
-                            adv.getDisplayText().getUnformattedText().replaceAll("\\[|\\]", ""));
+                            adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", ""));
         }
         return toolTip;
     }

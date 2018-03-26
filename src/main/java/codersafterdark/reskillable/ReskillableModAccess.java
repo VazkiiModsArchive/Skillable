@@ -9,10 +9,14 @@ import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
 import com.google.common.collect.Maps;
-import javafx.util.Pair;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -33,8 +37,8 @@ public class ReskillableModAccess implements IModAccess {
         Map<Integer, Integer> configLevelStaggering = Arrays.stream(levelMapping)
                 .map(string -> string.split("\\|"))
                 .filter(array -> array.length == 2)
-                .map(array -> new Pair<>(array[0], array[1]))
-                .map(pair -> new Pair<>(Integer.parseInt(pair.getKey()), Integer.parseInt(pair.getValue())))
+                .map(array -> Pair.of(array[0], array[1]))
+                .map(pair -> Pair.of(Integer.parseInt(pair.getKey()), Integer.parseInt(pair.getValue())))
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
         Map<Integer, Integer> levelStaggering = Maps.newHashMap();
@@ -68,5 +72,15 @@ public class ReskillableModAccess implements IModAccess {
             MessageDataSync message = new MessageDataSync(playerData);
             PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) entityPlayer);
         }
+    }
+
+    @Override
+    public AdvancementProgress getAdvancementProgress(EntityPlayer entityPlayer, Advancement advancement) {
+        return Reskillable.proxy.getPlayerAdvancementProgress(entityPlayer, advancement);
+    }
+
+    @Override
+    public void log(Level warn, String s) {
+        Reskillable.logger.log(warn, s);
     }
 }

@@ -60,11 +60,10 @@ public class PlayerData {
     }
 
     public boolean matchStats(RequirementHolder holder) {
-        EntityPlayer player = playerWR.get();
-        if (player instanceof EntityPlayerMP) {
-            EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+        EntityPlayer entityPlayer = playerWR.get();
+        if (entityPlayer != null) {
             for (Requirement requirement : holder.getRequirements()) {
-                if (!requirement.achievedByPlayer(entityPlayerMP)) {
+                if (!requirement.achievedByPlayer(entityPlayer)) {
                     return false;
                 }
             }

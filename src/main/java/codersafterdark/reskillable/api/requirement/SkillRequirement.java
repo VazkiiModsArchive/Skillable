@@ -5,6 +5,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,8 +21,8 @@ public class SkillRequirement extends Requirement {
     }
 
     @Override
-    public boolean achievedByPlayer(EntityPlayerMP entityPlayerMP) {
-        PlayerData data = PlayerDataHandler.get(entityPlayerMP);
+    public boolean achievedByPlayer(EntityPlayer entityPlayer) {
+        PlayerData data = PlayerDataHandler.get(entityPlayer);
         return data.getSkillInfo(skill).getLevel() >= level;
     }
 
