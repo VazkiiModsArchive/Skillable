@@ -74,19 +74,31 @@ public class LevelLockHandler {
     }
 
     private static boolean compareItem(ItemStack itemStack, ItemStack stack) {
-        if (itemStack.hasTagCompound() != stack.hasTagCompound()) {
+        if (itemStack.hasTagCompound() != stack.hasTagCompound()){
             return false;
         }
-        if (itemStack.getTagCompound() == null && stack.getTagCompound() == null) {
-            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
-        }
-        if (itemStack.getTagCompound().getKeySet().equals(stack.getTagCompound().getKeySet())) {
-            for (String s : itemStack.getTagCompound().getKeySet()) {
-                if (!itemStack.getTagCompound().getTag(s).equals(stack.getTagCompound().getTag(s))) {
-                    return false;
+        if (itemStack.hasTagCompound() && stack.hasTagCompound()) {
+            if (itemStack.getTagCompound().getKeySet().equals(stack.getTagCompound().getKeySet())){
+                for (String s : itemStack.getTagCompound().getKeySet()){
+                    if (!itemStack.getTagCompound().getTag(s).equals(stack.getTagCompound().getTag(s))){
+                        return false;
+                    }
                 }
             }
         }
+        if (itemStack.hasTagCompound() && !stack.hasTagCompound()){
+            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
+        }
+        if (!itemStack.hasTagCompound() && stack.hasTagCompound()){
+            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
+        }
+        if (itemStack.getTagCompound() == null && stack.getTagCompound() == null){
+            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
+        }
+        if (!itemStack.hasTagCompound() && !stack.hasTagCompound()){
+            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
+        }
+
         // if the item has nbt, then meta shouldn't be accounted for?
         return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
     }
