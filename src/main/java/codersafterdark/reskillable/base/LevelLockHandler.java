@@ -92,9 +92,6 @@ public class LevelLockHandler {
         if (!itemStack.hasTagCompound() && stack.hasTagCompound()){
             return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
         }
-        if (itemStack.getTagCompound() == null && stack.getTagCompound() == null){
-            return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
-        }
         if (!itemStack.hasTagCompound() && !stack.hasTagCompound()){
             return stack.getItem() == itemStack.getItem() && (itemStack.getMetadata() == 32767 || stack.getMetadata() == itemStack.getMetadata());
         }
