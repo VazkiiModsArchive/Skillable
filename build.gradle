@@ -15,33 +15,60 @@ buildscript {
     }
 }
 
+apply plugin: "maven"
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-ext.configFile = file('build.properties')
-
-ext.config = parseConfig(configFile)
-
-version = "${config.version}-${config.build_number}"
-group = "vazkii.skillable" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
+version = "${mc_version}-" + getVersion()
+group = "codersafterdark.reskillable" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "${mod_name}"
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}"
-    runDir = "eclipse/assets"
+    version = "${mc_version}-${forge_version}"
+    runDir = "run"
 
-    coreMod = "vazkii.skillable.base.asm.LoadingPlugin"
+    coreMod = "codersafterdark.reskillable.base.asm.LoadingPlugin"
 
-    mappings = config.mc_mappings
-    replace 'GRADLE:BUILD', config.build_number
-    replace 'GRADLE:VERSION', config.version
+    mappings = "${mc_mappings}"
+    replace 'GRADLE:VERSION', "${mc_version}"
 
     // Scala: not even once
     replace 'scala.actors.threadpool.Arrays', 'java.util.Arrays'
 
     makeObfSourceJar = false
+}
+
+repositories{
+    maven{
+        name 'CraftTweaker'
+        url 'http://maven.blamejared.com'
+    }
+    maven{
+        name 'JEI'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name = 'Waila'
+        url 'https://tehnut.info/maven'
+    }
+}
+
+dependencies {
+    deobfCompile "mezz.jei:jei_1.12.2:4.8.5.144"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.21-B36_1.12"
+    //deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.6.465"
+    //deobfCompile "CraftTweaker2:CraftTweaker2-API:1.12-4.1.6.465"
+    //deobfCompile "CraftTweaker2:ZenScript:1.12-4.1.6.465"
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://" + (System.getenv("local_maven") != null ? System.getenv("local_maven") : System.getenv("bamboo_local_maven")))
+        }
+    }
 }
 
 jar {
@@ -51,7 +78,8 @@ jar {
     exclude "**/unused"
 
     manifest {
-        attributes("FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "vazkii.skillable.base.asm.LoadingPlugin")
+        attributes("FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "codersafterdark.reskillable.base.asm.LoadingPlugin")
+        attributes "FMLAT": "reskillable_at.cfg"
     }
 
 }
@@ -62,7 +90,7 @@ processResources {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version': project.version, 'mcversion': config.mc_version
+        expand 'version': project.version, 'mcversion': "${mc_version}"
     }
 
     // copy everything else, thats not the mcmod.info
@@ -71,62 +99,37 @@ processResources {
     }
 }
 
-task deobfJar(type: Jar) {
-    from(sourceSets.main.output)
-    archiveName = "${baseName}-${version}-deobf.${extension}"
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
 }
 
 artifacts {
-    archives deobfJar
+    archives srcJar
 }
-/**
- * Increments the buildnumber in your config file, and saves it
- */
-task incrementBuildNumber {
-    config.build_number = (config.build_number.toString().toInteger()) + 1
-    configFile.withWriter {
-        config.toProperties().store(it, "")
+
+String getVersion() {
+    String version = "${mod_version}"
+    String branch = project.hasProperty("branch") ? project.branch : ""
+
+    if(branch != "") {
+        version += "-" + branch
+
+        String buildNumber = getBuildNumber()
+        if(buildNumber != "") {
+            version += "." + buildNumber
+        }
     }
+
+    return version
 }
 
-// I have no idea what I'm doing
-task wtfGradle2(type: Copy) {
-    from(jar.destinationDir)
-    into file("${config.dir_output}/wtf")
-}
-
-// Seriously, I'm desperate to make this work
-task wtfGradle1(type: Delete) {
-    dependsOn "wtfGradle2"
-    delete "${config.dir_output}/wtf/${deobfJar.archiveName}"
-}
-
-task output(type: Copy) {
-    dependsOn "wtfGradle1"
-    from(jar.destinationDir)
-    into file(config.dir_output)
-}
-
-task outputDeobf(type: Copy) {
-    dependsOn "output"
-    from(config.dir_output) {
-        include deobfJar.archiveName
+static String getBuildNumber() {
+    String buildNumber = System.getenv("BUILD_NUMBER") != null ? System.getenv("BUILD_NUMBER") : ""
+    if(buildNumber == "") {
+        buildNumber = System.getenv("bamboo_buildNumber") != null ? "." + System.getenv("bamboo_buildNumber") : ""
     }
-    into file("${config.dir_output}/deobf")
-}
-
-task sort(type: Delete) {
-    dependsOn "outputDeobf"
-    delete "${config.dir_output}/${deobfJar.archiveName}", "${config.dir_output}/wtf"
-}
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
+    return buildNumber
 }
 
 
-defaultTasks 'clean', 'build', 'sort', 'incrementBuildNumber'
