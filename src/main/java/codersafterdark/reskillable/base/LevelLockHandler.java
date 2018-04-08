@@ -268,12 +268,19 @@ public class LevelLockHandler {
         }
     }
 
+    private static ItemStack lastItem;
+    private static RequirementHolder lastLock = EMPTY_LOCK;
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onTooltip(ItemTooltipEvent event) {
-        RequirementHolder lock = getSkillLock(event.getItemStack());
+        ItemStack current = event.getItemStack();
+        if (lastItem != current) {
+            lastItem = current;
+            lastLock = getSkillLock(current);
+        }
         PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
-        lock.addRequirementsToTooltip(data, event.getToolTip());
+        lastLock.addRequirementsToTooltip(data, event.getToolTip());
     }
 
 }
