@@ -37,7 +37,7 @@ public class TraitRequirement extends Requirement {
                 color = TextFormatting.RED;
             }
         }
-        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.traitFormat", color, unlockable.getName());
+        return TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + I18n.format("skillable.misc.traitFormat", color, unlockable.getName());
     }
 
     public Skill getSkill() {

@@ -12,9 +12,9 @@ skillable.misc.blockUseLocked=You don't meet the requirements to use this block
 skillable.misc.armorEquipLocked=You don't meet the requirements to wear this armor
 
 # FORMATS
-skillable.misc.skillFormat=%s%s: %d
+skillable.misc.skillFormat=%s%s: %s%d
 skillable.misc.achievementFormat=Advancement: %s
-skillable.misc.traitFormat=Trait: %s
+skillable.misc.traitFormat=Trait: %s%s
 
 # SKILL NAMES
 skillable.skill.reskillable.mining=Mining
