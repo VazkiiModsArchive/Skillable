@@ -40,9 +40,10 @@ public class LevelLockHandler {
 
     public static final String[] DEFAULT_SKILL_LOCKS = new String[]{"minecraft:iron_shovel:*=reskillable:gathering|5", "minecraft:iron_axe:*=reskillable:gathering|5", "minecraft:iron_sword:*=reskillable:attack|5", "minecraft:iron_pickaxe:*=reskillable:mining|5", "minecraft:iron_hoe:*=reskillable:farming|5", "minecraft:iron_helmet:*=reskillable:defense|5", "minecraft:iron_chestplate:*=reskillable:defense|5", "minecraft:iron_leggings:*=reskillable:defense|5", "minecraft:iron_boots:*=reskillable:defense|5", "minecraft:golden_shovel:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_axe:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_sword:*=reskillable:attack|5,reskillable:magic|5", "minecraft:golden_pickaxe:*=reskillable:mining|5,reskillable:magic|5", "minecraft:golden_hoe:*=reskillable:farming|5,reskillable:magic|5", "minecraft:golden_helmet:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_chestplate:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_leggings:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_boots:*=reskillable:defense|5,reskillable:magic|5", "minecraft:diamond_shovel:*=reskillable:gathering|16", "minecraft:diamond_axe:*=reskillable:gathering|16", "minecraft:diamond_sword:*=reskillable:attack|16", "minecraft:diamond_pickaxe:*=reskillable:mining|16", "minecraft:diamond_hoe:*=reskillable:farming|16", "minecraft:diamond_helmet:*=reskillable:defense|16", "minecraft:diamond_chestplate:*=reskillable:defense|16", "minecraft:diamond_leggings:*=reskillable:defense|16", "minecraft:diamond_boots:*=reskillable:defense|16", "minecraft:shears:*=reskillable:farming|5,reskillable:gathering|5", "minecraft:fishing_rod:*=reskillable:gathering|8", "minecraft:shield:*=reskillable:defense|8", "minecraft:bow:*=reskillable:attack|8", "minecraft:ender_pearl=reskillable:magic|8", "minecraft:ender_eye=reskillable:magic|16,reskillable:building|8", "minecraft:elytra:*=reskillable:defense|16,reskillable:agility|24,reskillable:magic|16", "minecraft:lead=reskillable:farming|5", "minecraft:end_crystal=reskillable:building|24,reskillable:magic|32", "minecraft:iron_horse_armor:*=reskillable:defense|5,reskillable:agility|5", "minecraft:golden_horse_armor:*=reskillable:defense|5,reskillable:magic|5,reskillable:agility|5", "minecraft:diamond_horse_armor:*=reskillable:defense|16,reskillable:agility|16", "minecraft:fireworks=reskillable:agility|24", "minecraft:dye:15=reskillable:farming|12", "minecraft:saddle=reskillable:agility|12", "minecraft:redstone=reskillable:building|5", "minecraft:redstone_torch=reskillable:building|5", "minecraft:skull:1=reskillable:building|20,reskillable:attack|20,reskillable:defense|20"};
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
-    public static Map<ItemStack, RequirementHolder> craftTweakerLocks = new HashMap<>();
     private static final Map<ItemInfo, RequirementHolder> locks = new HashMap<>();
     private static Map<ItemInfo, Set<NBTTagCompound>> nbtLockInfo = new HashMap<>();
+    private static RequirementHolder lastLock = EMPTY_LOCK;
+    private static ItemStack lastItem;
     private static String[] configLocks;
 
     public static void loadFromConfig(String[] configValues) {
@@ -50,7 +51,6 @@ public class LevelLockHandler {
     }
 
     public static void setupLocks() {
-        locks.clear();
         if (configLocks != null) {
             for (String s : configLocks) {
                 String[] tokens = s.split("=");
@@ -61,40 +61,48 @@ public class LevelLockHandler {
                     if (itemParts.length > 2) {
                         String meta = itemParts[2];
                         try {
-                            if (meta.equals("*"))
+                            if (meta.equals("*")) {
                                 metadata = OreDictionary.WILDCARD_VALUE;
-                            else
+                            } else {
                                 metadata = Integer.parseInt(meta);
+                            }
                             itemName = itemParts[0] + ':' + itemParts[1];
                         } catch (NumberFormatException ignored) {
                             //Do nothing if the meta is not a valid number or wildcard (Maybe it somehow is part of the item name)
                         }
                     }
                     Item item = Item.getByNameOrId(itemName);
-                    if (item != null)
-                        addToLock(new ItemStack(item, 1, metadata), RequirementHolder.fromString(tokens[1]));
+                    if (item != null) {
+                        addLock(new ItemStack(item, 1, metadata), RequirementHolder.fromString(tokens[1]));
+                    }
                 }
             }
         }
-        craftTweakerLocks.forEach(LevelLockHandler::addToLock);
     }
 
-    public static void addToLock(ItemStack stack, RequirementHolder holder) {
+    public static void addLock(ItemStack stack, RequirementHolder holder) {
         locks.put(new ItemInfo(stack.getItem(), stack.getMetadata(), stack.getTagCompound()), holder);
         //Only bother mapping it if there is an NBT tag
-        if (stack.hasTagCompound())
+        if (stack.hasTagCompound()) {
             //Store the NBT tag in a list for the specific item
             nbtLockInfo.computeIfAbsent(new ItemInfo(stack.getItem(), stack.getMetadata()), k -> new HashSet<>()).add(stack.getTagCompound());
+        }
+
+        //Reset the tooltip cache in case the item being hovered is what changed
+        lastItem = null;
+        lastLock = EMPTY_LOCK;
     }
 
     public static RequirementHolder getSkillLock(ItemStack stack) {
-        if (stack == null || stack.isEmpty())
+        if (stack == null || stack.isEmpty()) {
             return EMPTY_LOCK;
+        }
 
         ItemInfo cleanStack = new ItemInfo(stack.getItem(), stack.getMetadata());
         //There is no NBT information so matching is not needed. OR no specific NBT locks for this item stack so the NBT tags can be ignored
-        if (!stack.hasTagCompound() || !nbtLockInfo.containsKey(cleanStack))
+        if (!stack.hasTagCompound() || !nbtLockInfo.containsKey(cleanStack)) {
             return locks.getOrDefault(cleanStack, EMPTY_LOCK);
+        }
 
         NBTTagCompound tag = stack.getTagCompound();
         Set<NBTTagCompound> nbtLookup = nbtLockInfo.get(cleanStack);
@@ -125,10 +133,12 @@ public class LevelLockHandler {
 
         @Override
         public boolean equals(Object o) {
-            if (o == this)
+            if (o == this) {
                 return true;
-            if (!(o instanceof ItemInfo))
+            }
+            if (!(o instanceof ItemInfo)) {
                 return false;
+            }
             ItemInfo other = (ItemInfo) o;
             return item == other.item && tag == other.tag &&
                     (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
@@ -308,9 +318,6 @@ public class LevelLockHandler {
             PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) player);
         }
     }
-
-    private static ItemStack lastItem;
-    private static RequirementHolder lastLock = EMPTY_LOCK;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
