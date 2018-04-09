@@ -5,6 +5,8 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
+import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -132,8 +134,8 @@ public class GuiSkillInfo extends GuiScreen {
     }
 
     private void drawUnlockable(PlayerData data, PlayerSkillInfo info, Unlockable unlockable, int mx, int my) {
-        int x = width / 2 - guiWidth / 2 + 20 + unlockable.x * 28;
-        int y = height / 2 - guiHeight / 2 + 37 + unlockable.y * 28;
+        int x = width / 2 - guiWidth / 2 + 20 + unlockable.getX() * 28;
+        int y = height / 2 - guiHeight / 2 + 37 + unlockable.getY() * 28;
         mc.renderEngine.bindTexture(SKILL_INFO_RES);
         boolean unlocked = info.isUnlocked(unlockable);
 

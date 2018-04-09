@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Level;
 public interface IModAccess {
     SkillConfig getSkillConfig(ResourceLocation name);
 
-    UnlockableConfig getUnlockableConfig(ResourceLocation name, int cost, String[] defaultRequirements);
+    UnlockableConfig getUnlockableConfig(ResourceLocation name, int x, int y, int cost, String[] defaultRequirements);
 
     void syncPlayerData(EntityPlayer entityPlayer, PlayerData playerData);
 

@@ -46,8 +46,9 @@ public class ConfigHandler {
         String[] locks = config.getStringList("Skill Locks", Configuration.CATEGORY_GENERAL, LevelLockHandler.DEFAULT_SKILL_LOCKS, desc);
 
         LevelLockHandler.loadFromConfig(locks);
-        if (config.hasChanged())
+        if (config.hasChanged()){
             config.save();
+        }
     }
 
     public static int loadPropInt(String propName, String desc, int default_) {
@@ -75,11 +76,9 @@ public class ConfigHandler {
 
         @SubscribeEvent
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-            if (eventArgs.getModID().equals(LibMisc.MOD_ID))
+            if (eventArgs.getModID().equals(LibMisc.MOD_ID)){
                 load();
+            }
         }
-
     }
-
-
 }

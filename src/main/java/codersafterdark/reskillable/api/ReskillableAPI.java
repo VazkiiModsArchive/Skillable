@@ -38,8 +38,8 @@ public class ReskillableAPI {
         return modAccess.getSkillConfig(name);
     }
 
-    public UnlockableConfig getTraitConfig(ResourceLocation name, int cost, String[] defaultRequirements) {
-        return modAccess.getUnlockableConfig(name, cost, defaultRequirements);
+    public UnlockableConfig getTraitConfig(ResourceLocation name, int x, int y, int cost, String[] defaultRequirements) {
+        return modAccess.getUnlockableConfig(name, x, y, cost, defaultRequirements);
     }
 
     public void syncPlayerData(EntityPlayer entityPlayer, PlayerData playerData) {
