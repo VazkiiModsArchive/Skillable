@@ -56,10 +56,12 @@ public class ReskillableModAccess implements IModAccess {
 
     @Override
     @Nonnull
-    public UnlockableConfig getUnlockableConfig(ResourceLocation name, int cost, String[] defaultRequirements) {
+    public UnlockableConfig getUnlockableConfig(ResourceLocation name, int x, int y, int cost, String[] defaultRequirements) {
         UnlockableConfig unlockableConfig = new UnlockableConfig();
         String categoryName = "trait." + name.toString();
         unlockableConfig.setEnabled(ConfigHandler.config.get(categoryName, "Enabled", unlockableConfig.isEnabled()).getBoolean());
+        unlockableConfig.setX(ConfigHandler.config.get(categoryName, "X-Pos [0-4]:", x).getInt());
+        unlockableConfig.setY(ConfigHandler.config.get(categoryName, "Y-Pos [0-3]:", y).getInt());
         unlockableConfig.setCost(ConfigHandler.config.get(categoryName, "Skill Point Cost", cost).getInt());
         unlockableConfig.setRequirementHolder(RequirementHolder.fromStringList(ConfigHandler.config.get(categoryName, "Requirements", defaultRequirements).getStringList()));
         return unlockableConfig;
