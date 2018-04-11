@@ -172,8 +172,9 @@ public class LevelLockHandler {
             if (ConfigHandler.enforceFakePlayers) {
                 if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
                     event.setCanceled(true);
-                    if (!isFake(player))
+                    if (!isFake(player)) {
                         tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
+                    }
                 }
             } else if (!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
                 tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
@@ -200,8 +201,9 @@ public class LevelLockHandler {
             if (ConfigHandler.enforceFakePlayers) {
                 if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
                     event.setCanceled(true);
-                    if (!isFake(player))
+                    if (!isFake(player)) {
                         tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
+                    }
                 }
             } else if (!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
                 tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
@@ -232,8 +234,9 @@ public class LevelLockHandler {
             if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
                 event.setUseBlock(Result.DENY);
                 event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
-                if (!isFake(player))
+                if (!isFake(player)) {
                     tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
+                }
             }
         } else if (!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
             tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
@@ -253,8 +256,9 @@ public class LevelLockHandler {
         if (ConfigHandler.enforceFakePlayers) {
             if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
                 event.setCanceled(true);
-                if (!isFake(player))
+                if (!isFake(player)) {
                     tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
+                }
             }
         } else if (!isFake(player) && !player.isCreative() && !canPlayerUseItem(player, stack)) {
             tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
