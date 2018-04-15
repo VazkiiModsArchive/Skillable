@@ -33,6 +33,15 @@ public class RequirementHolder {
         this.forcedEmpty = false;
     }
 
+    public RequirementHolder(RequirementHolder... others) {
+        this.forcedEmpty = false;
+        this.requirements = Lists.newArrayList();
+        //TODO find highest
+        for (RequirementHolder other : others) {
+            requirements.addAll(other.requirements);
+        }
+    }
+
     public static RequirementHolder realEmpty() {
         return new RequirementHolder();
     }
@@ -99,5 +108,4 @@ public class RequirementHolder {
     public List<Requirement> getRequirements() {
         return requirements;
     }
-
 }
