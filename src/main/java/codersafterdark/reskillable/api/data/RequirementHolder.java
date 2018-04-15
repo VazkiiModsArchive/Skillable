@@ -2,7 +2,7 @@ package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
-import codersafterdark.reskillable.api.requirement.RequirementCompare;
+import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -37,26 +37,25 @@ public class RequirementHolder {
     public RequirementHolder(RequirementHolder... others) {
         this.forcedEmpty = false;
         this.requirements = Lists.newArrayList();
-        //TODO: Try to optimize the below algorithm
         for (RequirementHolder other : others) {
             for (Requirement or : other.requirements) {
                 boolean noMatch = true;
-                Requirement toRemove = null;
-                for (Requirement r : requirements) {
-                    RequirementCompare m = r.matches(or);
-                    if (m.equals(RequirementCompare.EQUAL_TO) || m.equals(RequirementCompare.GREATER_THAN)) {
+                int toRemove = -1;
+                for (int i = 0; i < requirements.size(); i++) {
+                    RequirementComparision m = requirements.get(i).matches(or);
+                    if (m.equals(RequirementComparision.EQUAL_TO) || m.equals(RequirementComparision.GREATER_THAN)) {
                         noMatch = false;
                         break;
-                    } else if (m.equals(RequirementCompare.LESS_THAN)) {
-                        toRemove = r;
+                    } else if (m.equals(RequirementComparision.LESS_THAN)) {
+                        toRemove = i;
                         break;
                     }
                 }
+                if (toRemove >= 0) {
+                    requirements.remove(toRemove);
+                }
                 if (noMatch) {
                     requirements.add(or);
-                }
-                if (toRemove != null) {
-                    requirements.remove(toRemove);
                 }
             }
         }

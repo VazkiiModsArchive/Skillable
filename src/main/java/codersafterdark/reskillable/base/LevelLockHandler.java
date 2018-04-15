@@ -87,6 +87,10 @@ public class LevelLockHandler {
 
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
         locks.put(key, holder);
+
+        //Reset the tooltip cache in case the item being hovered is what changed
+        lastItem = null;
+        lastLock = EMPTY_LOCK;
     }
 
     public static void addModLock(String modName, RequirementHolder holder) {
@@ -101,14 +105,6 @@ public class LevelLockHandler {
             //Store the NBT tag in a list for the specific item
             nbtLockInfo.computeIfAbsent(new ItemInfo(stack.getItem(), stack.getMetadata()), k -> new HashSet<>()).add(stackKey);
         }
-
-        //Reset the tooltip cache in case the item being hovered is what changed
-        lastItem = null;
-        lastLock = EMPTY_LOCK;
-    }
-
-    public static void removeLock(ItemStack stack, RequirementHolder holder) {
-        //TODO
     }
 
     public static RequirementHolder getSkillLock(ItemStack stack) {
@@ -211,8 +207,8 @@ public class LevelLockHandler {
                 }
                 return 1;
             case Constants.NBT.TAG_LONG_ARRAY:
-                //TODO: Not sure how to get the long array object from this to actually compare them
-                return 1;
+                //Not sure how to get the long array object from this to actually compare them
+                return -1;
             default:
                 return -1;
         }

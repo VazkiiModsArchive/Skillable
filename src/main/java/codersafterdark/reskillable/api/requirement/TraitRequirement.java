@@ -30,14 +30,15 @@ public class TraitRequirement extends Requirement {
     public String getToolTip(PlayerData data) {
         Unlockable unlockable = getUnlockable();
         TextFormatting color = TextFormatting.GREEN;
-        String toolTip = "";
+        String name = "";
 
         if (unlockable != null) {
             if (!data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable)) {
                 color = TextFormatting.RED;
             }
+            name = unlockable.getName();
         }
-        return TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + I18n.format("skillable.misc.traitFormat", color, unlockable.getName());
+        return TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + I18n.format("skillable.misc.traitFormat", color, name);
     }
 
     public Skill getSkill() {
@@ -49,8 +50,14 @@ public class TraitRequirement extends Requirement {
     }
 
     @Override
-    public RequirementCompare matches(Requirement other) {
-        return other instanceof TraitRequirement && getUnlockable().getKey().equals(((TraitRequirement) other).getUnlockable().getKey()) ?
-                RequirementCompare.EQUAL_TO : RequirementCompare.NOT_EQUAL;
+    public RequirementComparision matches(Requirement other) {
+        if (other instanceof TraitRequirement) {
+            TraitRequirement t = (TraitRequirement) other;
+            if (getUnlockable() == null) {
+                return t.getUnlockable() == null ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+            }
+            return t.getUnlockable() != null && getUnlockable().getKey().equals(t.getUnlockable().getKey()) ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+        }
+        return RequirementComparision.NOT_EQUAL;
     }
 }

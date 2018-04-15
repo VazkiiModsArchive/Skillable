@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.api.requirement;
 
-public enum RequirementCompare { //TODO rename class and values
+public enum RequirementComparision {
     EQUAL_TO,
     GREATER_THAN,
     LESS_THAN,

@@ -45,16 +45,16 @@ public class SkillRequirement extends Requirement {
     }
 
     @Override
-    public RequirementCompare matches(Requirement other) {
+    public RequirementComparision matches(Requirement other) {
         if (other instanceof SkillRequirement) {
             SkillRequirement s = (SkillRequirement) other;
             if (getSkill().getKey().equals(s.getSkill().getKey())) {
                 if (getLevel() == s.getLevel()) {
-                    return RequirementCompare.EQUAL_TO;
+                    return RequirementComparision.EQUAL_TO;
                 }
-                return getLevel() > s.getLevel() ? RequirementCompare.GREATER_THAN : RequirementCompare.LESS_THAN;
+                return getLevel() > s.getLevel() ? RequirementComparision.GREATER_THAN : RequirementComparision.LESS_THAN;
             }
         }
-        return RequirementCompare.NOT_EQUAL;
+        return RequirementComparision.NOT_EQUAL;
     }
 }
