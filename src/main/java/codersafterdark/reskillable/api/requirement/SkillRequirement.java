@@ -33,7 +33,7 @@ public class SkillRequirement extends Requirement {
         if (info.getLevel() < level) {
             color = TextFormatting.RED;
         }
-        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.skillFormat", TextFormatting.DARK_AQUA , skill.getName(), color, level);
+        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(), color, level);
     }
 
     public Skill getSkill() {
@@ -42,5 +42,19 @@ public class SkillRequirement extends Requirement {
 
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public RequirementCompare matches(Requirement other) {
+        if (other instanceof SkillRequirement) {
+            SkillRequirement s = (SkillRequirement) other;
+            if (getSkill().getKey().equals(s.getSkill().getKey())) {
+                if (getLevel() == s.getLevel()) {
+                    return RequirementCompare.EQUAL_TO;
+                }
+                return getLevel() > s.getLevel() ? RequirementCompare.GREATER_THAN : RequirementCompare.LESS_THAN;
+            }
+        }
+        return RequirementCompare.NOT_EQUAL;
     }
 }

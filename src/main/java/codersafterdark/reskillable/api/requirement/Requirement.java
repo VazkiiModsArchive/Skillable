@@ -11,4 +11,7 @@ public abstract class Requirement {
     @SideOnly(Side.CLIENT)
     public abstract String getToolTip(PlayerData data);
 
+    public RequirementCompare matches(Requirement other) {
+        return equals(other) ? RequirementCompare.EQUAL_TO : RequirementCompare.NOT_EQUAL;
+    }
 }

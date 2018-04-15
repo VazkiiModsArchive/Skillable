@@ -2,6 +2,7 @@ package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementCompare;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -36,9 +37,28 @@ public class RequirementHolder {
     public RequirementHolder(RequirementHolder... others) {
         this.forcedEmpty = false;
         this.requirements = Lists.newArrayList();
-        //TODO find highest
+        //TODO: Try to optimize the below algorithm
         for (RequirementHolder other : others) {
-            requirements.addAll(other.requirements);
+            for (Requirement or : other.requirements) {
+                boolean noMatch = true;
+                Requirement toRemove = null;
+                for (Requirement r : requirements) {
+                    RequirementCompare m = r.matches(or);
+                    if (m.equals(RequirementCompare.EQUAL_TO) || m.equals(RequirementCompare.GREATER_THAN)) {
+                        noMatch = false;
+                        break;
+                    } else if (m.equals(RequirementCompare.LESS_THAN)) {
+                        toRemove = r;
+                        break;
+                    }
+                }
+                if (noMatch) {
+                    requirements.add(or);
+                }
+                if (toRemove != null) {
+                    requirements.remove(toRemove);
+                }
+            }
         }
     }
 

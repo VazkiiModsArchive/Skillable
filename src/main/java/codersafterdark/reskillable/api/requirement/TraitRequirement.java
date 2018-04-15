@@ -47,4 +47,10 @@ public class TraitRequirement extends Requirement {
     public Unlockable getUnlockable() {
         return unlockable;
     }
+
+    @Override
+    public RequirementCompare matches(Requirement other) {
+        return other instanceof TraitRequirement && getUnlockable().getKey().equals(((TraitRequirement) other).getUnlockable().getKey()) ?
+                RequirementCompare.EQUAL_TO : RequirementCompare.NOT_EQUAL;
+    }
 }

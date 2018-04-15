@@ -47,4 +47,10 @@ public class AdvancementRequirement extends Requirement {
     public Advancement getAdvancement() {
         return RequirementHolder.getAdvancementList().getAdvancement(advancementName);
     }
+
+    @Override
+    public RequirementCompare matches(Requirement other) {
+        return other instanceof AdvancementRequirement && getAdvancement().equals(((AdvancementRequirement) other).getAdvancement())
+                ? RequirementCompare.EQUAL_TO : RequirementCompare.NOT_EQUAL;
+    }
 }
