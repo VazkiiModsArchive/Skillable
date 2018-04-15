@@ -143,30 +143,7 @@ public class LevelLockHandler {
         return new RequirementHolder(partialLocks.stream().map(locks::get).filter(Objects::nonNull).toArray(RequirementHolder[]::new));
     }
 
-    private static int compareNBT(NBTTagCompound fullTag, NBTTagCompound partialTag) {//TODO Move this into compareNBTBase???
-        if (fullTag == null) {
-            return partialTag != null ? -1 : 0;
-        }
-        if (partialTag == null) {
-            return 1;
-        }
-        if (fullTag.equals(partialTag)) {
-            return 0;
-        }
-        Set<String> ptKeys = partialTag.getKeySet();
-        for (String partialKey : ptKeys) {
-            if (!fullTag.hasKey(partialKey, partialTag.getTagId(partialKey))) {
-                //One of the keys is missing OR the tags are different types
-                return -1;
-            }
-            if (compareNBTBase(fullTag.getTag(partialKey), partialTag.getTag(partialKey)) < 0) {
-                return -1;
-            }
-        }
-        return 1;
-    }
-
-    private static int compareNBTBase(NBTBase fBase, NBTBase pBase) {
+    private static int compareNBT(NBTBase fBase, NBTBase pBase) {
         if (fBase == null) {
             return pBase != null ? -1 : 0;
         }
@@ -180,24 +157,16 @@ public class LevelLockHandler {
             return 0;
         }
         switch (fBase.getId()) {
-            /*case Constants.NBT.TAG_END:
-                return 0;
-            case Constants.NBT.TAG_BYTE:
-                return ((NBTTagByte) fBase).getByte() == ((NBTTagByte) pBase).getByte() ? 0 : -1;
-            case Constants.NBT.TAG_SHORT:
-                return ((NBTTagShort) fBase).getShort() == ((NBTTagShort) pBase).getShort() ? 0 : -1;
-            case Constants.NBT.TAG_INT:
-                return ((NBTTagInt) fBase).getInt() == ((NBTTagInt) pBase).getInt() ? 0 : -1;
-            case Constants.NBT.TAG_LONG:
-                return ((NBTTagLong) fBase).getLong() == ((NBTTagLong) pBase).getLong() ? 0 : -1;
-            case Constants.NBT.TAG_FLOAT:
-                return ((NBTTagFloat) fBase).getFloat() == ((NBTTagFloat) pBase).getFloat() ? 0 : -1;
-            case Constants.NBT.TAG_DOUBLE:
-                return ((NBTTagDouble) fBase).getDouble() == ((NBTTagDouble) pBase).getDouble() ? 0 : -1;
-            case Constants.NBT.TAG_STRING:
-                return ((NBTTagString) fBase).getString().equals(((NBTTagString) pBase).getString()) ? 0 : -1;*/
             case Constants.NBT.TAG_COMPOUND:
-                return compareNBT((NBTTagCompound) fBase, (NBTTagCompound) pBase);
+                NBTTagCompound fullTag = (NBTTagCompound) fBase, partialTag = (NBTTagCompound) pBase;
+                Set<String> ptKeys = partialTag.getKeySet();
+                for (String partialKey : ptKeys) {
+                    //One of the keys is missing OR the tags are different types OR they do not match
+                    if (!fullTag.hasKey(partialKey, partialTag.getTagId(partialKey)) || compareNBT(fullTag.getTag(partialKey), partialTag.getTag(partialKey)) < 0) {
+                        return -1;
+                    }
+                }
+                return 1;
             case Constants.NBT.TAG_LIST:
                 NBTTagList fTagList = (NBTTagList) fBase;
                 NBTTagList pTagList = (NBTTagList) pBase;
@@ -208,7 +177,7 @@ public class LevelLockHandler {
                     NBTBase pTag = pTagList.get(i);
                     boolean hasTag = false;
                     for (int j = 0; j < fTagList.tagCount(); j++) {
-                        if (compareNBTBase(fTagList.get(j), pTag) >= 0) {
+                        if (compareNBT(fTagList.get(j), pTag) >= 0) {
                             hasTag = true;
                             break;
                         }
@@ -217,13 +186,13 @@ public class LevelLockHandler {
                         return -1;
                     }
                 }
-                break;
+                return 1;
             case Constants.NBT.TAG_BYTE_ARRAY:
-                byte[] fbyteArray = ((NBTTagByteArray) fBase).getByteArray(), pbyteArray = ((NBTTagByteArray) pBase).getByteArray();
-                for (byte pbyte : pbyteArray) {
+                byte[] fByteArray = ((NBTTagByteArray) fBase).getByteArray(), pByteArray = ((NBTTagByteArray) pBase).getByteArray();
+                for (byte pByte : pByteArray) {
                     boolean hasMatch = false;
-                    for (byte fbyte : fbyteArray) {
-                        if (pbyte == fbyte) {
+                    for (byte fByte : fByteArray) {
+                        if (pByte == fByte) {
                             hasMatch = true;
                             break;
                         }
@@ -232,23 +201,21 @@ public class LevelLockHandler {
                         return -1;
                     }
                 }
-                break;
+                return 1;
             case Constants.NBT.TAG_INT_ARRAY:
-                int[] fintArray = ((NBTTagIntArray) fBase).getIntArray(), pintArray = ((NBTTagIntArray) pBase).getIntArray();
-                for (int pint : pintArray) {
-                    if (IntStream.of(fintArray).noneMatch(i -> i == pint)){
+                int[] fIntArray = ((NBTTagIntArray) fBase).getIntArray(), pIntArray = ((NBTTagIntArray) pBase).getIntArray();
+                for (int pint : pIntArray) {
+                    if (IntStream.of(fIntArray).noneMatch(i -> i == pint)){
                         return -1;
                     }
                 }
-                break;
+                return 1;
             case Constants.NBT.TAG_LONG_ARRAY:
                 //TODO: Not sure how to get the long array object from this to actually compare them
-                break;
-            //case Constants.NBT.TAG_ANY_NUMERIC: //Should be handled by above cases so don't do anything
+                return 1;
             default:
                 return -1;
         }
-        return 1;
     }
 
     public static boolean canPlayerUseItem(EntityPlayer player, ItemStack stack) {
