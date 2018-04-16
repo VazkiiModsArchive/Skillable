@@ -52,11 +52,11 @@ public class TraitRequirement extends Requirement {
     @Override
     public RequirementComparision matches(Requirement other) {
         if (other instanceof TraitRequirement) {
-            TraitRequirement t = (TraitRequirement) other;
+            TraitRequirement traitRequirement = (TraitRequirement) other;
             if (getUnlockable() == null) {
-                return t.getUnlockable() == null ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+                return traitRequirement.getUnlockable() == null ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
             }
-            return t.getUnlockable() != null && getUnlockable().getKey().equals(t.getUnlockable().getKey()) ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+            return traitRequirement.getUnlockable() != null && getUnlockable().getKey().equals(traitRequirement.getUnlockable().getKey()) ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
         }
         return RequirementComparision.NOT_EQUAL;
     }

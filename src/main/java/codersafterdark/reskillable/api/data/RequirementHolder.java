@@ -38,15 +38,15 @@ public class RequirementHolder {
         this.forcedEmpty = false;
         this.requirements = Lists.newArrayList();
         for (RequirementHolder other : others) {
-            for (Requirement or : other.requirements) {
+            for (Requirement otherRequirement : other.requirements) {
                 boolean noMatch = true;
                 int toRemove = -1;
                 for (int i = 0; i < requirements.size(); i++) {
-                    RequirementComparision m = requirements.get(i).matches(or);
-                    if (m.equals(RequirementComparision.EQUAL_TO) || m.equals(RequirementComparision.GREATER_THAN)) {
+                    RequirementComparision match = requirements.get(i).matches(otherRequirement);
+                    if (match.equals(RequirementComparision.EQUAL_TO) || match.equals(RequirementComparision.GREATER_THAN)) {
                         noMatch = false;
                         break;
-                    } else if (m.equals(RequirementComparision.LESS_THAN)) {
+                    } else if (match.equals(RequirementComparision.LESS_THAN)) {
                         toRemove = i;
                         break;
                     }
@@ -55,7 +55,7 @@ public class RequirementHolder {
                     requirements.remove(toRemove);
                 }
                 if (noMatch) {
-                    requirements.add(or);
+                    requirements.add(otherRequirement);
                 }
             }
         }
