@@ -34,8 +34,13 @@ public class ItemInfo implements LockKey {
             return false;
         }
         ItemInfo other = (ItemInfo) o;
-        return item == other.item && tag == other.tag &&
-                (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        if (item != other.item) {
+            return false;
+        }
+        if (tag == null) {
+            return other.tag == null && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        }
+        return tag.equals(other.tag) && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
     }
 
     @Override
