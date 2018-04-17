@@ -47,8 +47,9 @@ public class HUDHandler {
             GlStateManager.enableBlend();
             GlStateManager.disableAlpha();
             float transparency = 1F;
-            if (lockTime < 10)
+            if (lockTime < 10) {
                 transparency = Math.max(0.05F, (lockTime - ClientTickHandler.partialTicks) / 10F);
+            }
 
             Minecraft mc = Minecraft.getMinecraft();
             ScaledResolution res = event.getResolution();
@@ -56,8 +57,9 @@ public class HUDHandler {
             int width = res.getScaledWidth();
             int height = res.getScaledHeight();
             int y = height / 2 - 80;
-            if (lockMessage.equals(MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED))
+            if (lockMessage.equals(MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED)) {
                 y -= 30;
+            }
 
             int transparencyInt = (int) (0xFF * transparency) << 24;
             int color = (int) (0x11 * transparency) << 24;
@@ -123,8 +125,9 @@ public class HUDHandler {
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(xp + 2, y + 22, 0);
-                if (transparency > 0.5)
+                if (transparency > 0.5) {
                     mc.getRenderItem().renderItemAndEffectIntoGUI(display.getIcon(), 0, 0);
+                }
                 GlStateManager.popMatrix();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 GlStateManager.disableLighting();

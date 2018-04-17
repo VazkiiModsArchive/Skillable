@@ -35,8 +35,9 @@ public class RenderHelper {
 
     public static void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
-        if (lighting)
+        if (lighting) {
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+        }
 
         if (!tooltipData.isEmpty()) {
             int var5 = 0;
@@ -45,14 +46,16 @@ public class RenderHelper {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             for (var6 = 0; var6 < tooltipData.size(); ++var6) {
                 var7 = fontRenderer.getStringWidth(tooltipData.get(var6));
-                if (var7 > var5)
+                if (var7 > var5) {
                     var5 = var7;
+                }
             }
             var6 = x + 12;
             var7 = y - 12;
             int var9 = 8;
-            if (tooltipData.size() > 1)
+            if (tooltipData.size() > 1) {
                 var9 += 2 + (tooltipData.size() - 1) * 10;
+            }
 
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             int right = var6 + var5 + 5;
@@ -85,14 +88,16 @@ public class RenderHelper {
             for (int var13 = 0; var13 < tooltipData.size(); ++var13) {
                 String var14 = tooltipData.get(var13);
                 fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
-                if (var13 == 0)
+                if (var13 == 0) {
                     var7 += 2;
+                }
                 var7 += 10;
             }
             GlStateManager.enableDepth();
         }
-        if (!lighting)
+        if (!lighting) {
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+        }
         GlStateManager.color(1F, 1F, 1F, 1F);
     }
 

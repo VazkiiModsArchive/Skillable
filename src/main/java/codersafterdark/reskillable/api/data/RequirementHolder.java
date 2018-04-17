@@ -111,8 +111,9 @@ public class RequirementHolder {
 
     @SideOnly(Side.CLIENT)
     public void addRequirementsToTooltip(PlayerData data, List<String> tooltip) {
-        if (!isRealLock())
+        if (!isRealLock()) {
             return;
+        }
 
         if (GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));

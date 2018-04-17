@@ -110,8 +110,9 @@ public class GuiSkills extends GuiScreen {
                 u += w;
                 hoveredSkill = skill;
             }
-            if (skillInfo.isCapped())
+            if (skillInfo.isCapped()) {
                 v += h;
+            }
 
             mc.renderEngine.bindTexture(SKILLS_RES);
             GlStateManager.color(1F, 1F, 1F);

@@ -40,9 +40,9 @@ import java.util.stream.IntStream;
 public class LevelLockHandler {
 
     public static final String[] DEFAULT_SKILL_LOCKS = new String[]{"minecraft:iron_shovel:*=reskillable:gathering|5", "minecraft:iron_axe:*=reskillable:gathering|5", "minecraft:iron_sword:*=reskillable:attack|5", "minecraft:iron_pickaxe:*=reskillable:mining|5", "minecraft:iron_hoe:*=reskillable:farming|5", "minecraft:iron_helmet:*=reskillable:defense|5", "minecraft:iron_chestplate:*=reskillable:defense|5", "minecraft:iron_leggings:*=reskillable:defense|5", "minecraft:iron_boots:*=reskillable:defense|5", "minecraft:golden_shovel:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_axe:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_sword:*=reskillable:attack|5,reskillable:magic|5", "minecraft:golden_pickaxe:*=reskillable:mining|5,reskillable:magic|5", "minecraft:golden_hoe:*=reskillable:farming|5,reskillable:magic|5", "minecraft:golden_helmet:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_chestplate:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_leggings:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_boots:*=reskillable:defense|5,reskillable:magic|5", "minecraft:diamond_shovel:*=reskillable:gathering|16", "minecraft:diamond_axe:*=reskillable:gathering|16", "minecraft:diamond_sword:*=reskillable:attack|16", "minecraft:diamond_pickaxe:*=reskillable:mining|16", "minecraft:diamond_hoe:*=reskillable:farming|16", "minecraft:diamond_helmet:*=reskillable:defense|16", "minecraft:diamond_chestplate:*=reskillable:defense|16", "minecraft:diamond_leggings:*=reskillable:defense|16", "minecraft:diamond_boots:*=reskillable:defense|16", "minecraft:shears:*=reskillable:farming|5,reskillable:gathering|5", "minecraft:fishing_rod:*=reskillable:gathering|8", "minecraft:shield:*=reskillable:defense|8", "minecraft:bow:*=reskillable:attack|8", "minecraft:ender_pearl=reskillable:magic|8", "minecraft:ender_eye=reskillable:magic|16,reskillable:building|8", "minecraft:elytra:*=reskillable:defense|16,reskillable:agility|24,reskillable:magic|16", "minecraft:lead=reskillable:farming|5", "minecraft:end_crystal=reskillable:building|24,reskillable:magic|32", "minecraft:iron_horse_armor:*=reskillable:defense|5,reskillable:agility|5", "minecraft:golden_horse_armor:*=reskillable:defense|5,reskillable:magic|5,reskillable:agility|5", "minecraft:diamond_horse_armor:*=reskillable:defense|16,reskillable:agility|16", "minecraft:fireworks=reskillable:agility|24", "minecraft:dye:15=reskillable:farming|12", "minecraft:saddle=reskillable:agility|12", "minecraft:redstone=reskillable:building|5", "minecraft:redstone_torch=reskillable:building|5", "minecraft:skull:1=reskillable:building|20,reskillable:attack|20,reskillable:defense|20"};
+    private static final Map<ItemInfo, RequirementHolder> locks = new HashMap<>();
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
-    private static final Map<LockKey, RequirementHolder> locks = new HashMap<>();
-    private static Map<ItemInfo, Set<ItemInfo>> nbtLockInfo = new HashMap<>();
+    private static Map<ItemInfo, Set<NBTTagCompound>> nbtLockInfo = new HashMap<>();
     private static RequirementHolder lastLock = EMPTY_LOCK;
     private static ItemStack lastItem;
     private static String[] configLocks;
@@ -215,12 +215,14 @@ public class LevelLockHandler {
     }
 
     public static boolean canPlayerUseItem(EntityPlayer player, ItemStack stack) {
-        if (stack.isEmpty())
+        if (stack.isEmpty()) {
             return true;
+        }
 
         RequirementHolder lock = getSkillLock(stack);
-        if (lock == null)
+        if (lock == null) {
             return true;
+        }
 
         PlayerData data = PlayerDataHandler.get(player);
         return data.matchStats(lock);
@@ -248,8 +250,9 @@ public class LevelLockHandler {
 
     @SubscribeEvent
     public static void leftClick(LeftClickBlock event) {
-        if (isFake(event))
+        if (isFake(event)) {
             return;
+        }
         enforce(event);
 
         if (!event.isCanceled()) {
@@ -258,8 +261,9 @@ public class LevelLockHandler {
             Block block = state.getBlock();
             int meta = state.getBlock().getMetaFromState(state);
             ItemStack stack = new ItemStack(state.getBlock(), 1, meta);
-            if (stack.isEmpty())
+            if (stack.isEmpty()) {
                 stack = block.getItem(event.getWorld(), event.getPos(), state);
+            }
 
             if (ConfigHandler.enforceFakePlayers) {
                 if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
@@ -277,26 +281,24 @@ public class LevelLockHandler {
 
     @SubscribeEvent
     public static void rightClickItem(RightClickItem event) {
-        if (!isFake(event))
-            enforce(event);
+        enforce(event);
     }
 
     @SubscribeEvent
     public static void rightClickBlock(RightClickBlock event) {
-        if (isFake(event))
-            return;
-        enforce(event);
         EntityPlayer player = event.getEntityPlayer();
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         Block block = state.getBlock();
         int meta = state.getBlock().getMetaFromState(state);
         ItemStack stack = new ItemStack(block, 1, meta);
-        if (stack.isEmpty())
+        if (stack.isEmpty()) {
             stack = block.getItem(event.getWorld(), event.getPos(), state);
+        }
         if (ConfigHandler.enforceFakePlayers) {
             if (!player.isCreative() && !canPlayerUseItem(player, stack)) {
                 event.setUseBlock(Result.DENY);
                 event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
+                event.setCanceled(true);
                 if (!isFake(player)) {
                     tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
                 }
@@ -305,6 +307,7 @@ public class LevelLockHandler {
             tellPlayer(player, stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
             event.setUseBlock(Result.DENY);
             event.setUseItem(player.isSneaking() ? Result.DEFAULT : Result.DENY);
+            event.setCanceled(true);
         }
     }
 
@@ -331,29 +334,31 @@ public class LevelLockHandler {
 
     @SubscribeEvent
     public static void entityInteract(EntityInteract event) {
-        if (!isFake(event))
-            enforce(event);
+        enforce(event);
     }
 
     @SubscribeEvent
     public static void tick(PlayerTickEvent event) {
-        if (!event.player.isCreative() && !isFake(event.player))
+        if (!event.player.isCreative() && !isFake(event.player)) {
             for (int i = 0; i < event.player.inventory.armorInventory.size(); i++) {
                 ItemStack stack = event.player.inventory.armorInventory.get(i);
                 if (!stack.isEmpty() && !canPlayerUseItem(event.player, stack)) {
                     ItemStack copy = stack.copy();
-                    if (!event.player.inventory.addItemStackToInventory(copy))
+                    if (!event.player.inventory.addItemStackToInventory(copy)) {
                         event.player.dropItem(copy, false);
+                    }
                     event.player.inventory.armorInventory.set(i, ItemStack.EMPTY);
                     tellPlayer(event.player, stack, MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED);
                 }
             }
+        }
     }
 
     @SubscribeEvent
     public static void onEntityDrops(LivingDropsEvent event) {
-        if (ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep)
+        if (ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep) {
             event.getDrops().removeIf((e) -> e.getItem().getItem() == Item.getItemFromBlock(Blocks.WOOL));
+        }
     }
 
     private static boolean isFake(EntityEvent e) {
@@ -365,17 +370,26 @@ public class LevelLockHandler {
     }
 
     private static void enforce(PlayerInteractEvent event) {
-        if (event.isCanceled())
+        if (event.isCanceled()) {
             return;
+        }
 
         EntityPlayer player = event.getEntityPlayer();
-        if (player.isCreative())
+        if (player.isCreative()) {
             return;
+        }
 
         ItemStack stack = event.getItemStack();
-        if (!canPlayerUseItem(player, stack)) {
-            tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
+        if (ConfigHandler.enforceFakePlayers) {
+            if (!canPlayerUseItem(player, stack)) {
+                event.setCanceled(true);
+                if (!isFake(player)){
+                    tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
+                }
+            }
+        } else if (!isFake(player) && !canPlayerUseItem(player, stack)){
             event.setCanceled(true);
+            tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
         }
     }
 
@@ -396,6 +410,40 @@ public class LevelLockHandler {
         }
         PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         lastLock.addRequirementsToTooltip(data, event.getToolTip());
+    }
+
+    private static class ItemInfo {
+        private int metadata;
+        private Item item;
+        private NBTTagCompound tag;
+
+        private ItemInfo(Item item, int metadata) {
+            this(item, metadata, null);
+        }
+
+        private ItemInfo(Item item, int metadata, NBTTagCompound tag) {
+            this.item = item;
+            this.metadata = metadata;
+            this.tag = tag;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof ItemInfo)) {
+                return false;
+            }
+            ItemInfo other = (ItemInfo) o;
+            return item == other.item && tag == other.tag &&
+                    (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(item, tag);
+        }
     }
 
 }

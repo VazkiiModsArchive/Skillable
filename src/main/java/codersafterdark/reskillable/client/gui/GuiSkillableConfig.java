@@ -23,9 +23,11 @@ public class GuiSkillableConfig extends GuiConfig {
         List<IConfigElement> list = new ArrayList();
 
         Set<String> categories = ConfigHandler.config.getCategoryNames();
-        for (String s : categories)
-            if (!s.contains("."))
+        for (String s : categories) {
+            if (!s.contains(".")) {
                 list.add(new DummyConfigElement.DummyCategoryElement(s, s, new ConfigElement(ConfigHandler.config.getCategory(s)).getChildElements()));
+            }
+        }
 
         return list;
     }

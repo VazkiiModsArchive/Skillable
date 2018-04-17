@@ -28,8 +28,9 @@ public class TraitFossilDigger extends Trait {
         IBlockState state = event.getState();
 
         if (state.getBlock() == Blocks.COAL_ORE && ConditionHelper.hasRightTool(player, state, "pickaxe", ToolMaterial.IRON.getHarvestLevel())
-                && player.world.rand.nextInt(10) == 0 && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, player.getHeldItemMainhand()) == 0)
+                && player.world.rand.nextInt(10) == 0 && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, player.getHeldItemMainhand()) == 0) {
             event.getDrops().add(new ItemStack(Items.COAL));
+        }
     }
 
 

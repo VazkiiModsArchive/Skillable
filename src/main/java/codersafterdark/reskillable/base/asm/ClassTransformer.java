@@ -21,7 +21,7 @@ public class ClassTransformer implements IClassTransformer {
             String obfName = "f";
             String desc = "()V";
 
-            for (MethodNode method : node.methods)
+            for (MethodNode method : node.methods) {
                 if ((method.name.equals(funcName) || method.name.equals(obfName)) && method.desc.equals(desc)) {
                     Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
 
@@ -42,6 +42,7 @@ public class ClassTransformer implements IClassTransformer {
                     node.accept(writer);
                     return writer.toByteArray();
                 }
+            }
         }
 
         return basicClass;

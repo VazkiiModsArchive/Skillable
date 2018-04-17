@@ -23,8 +23,9 @@ public class TraitMoreWheat extends Trait {
         EntityPlayer player = event.getHarvester();
         IBlockState state = event.getState();
 
-        if (state.getBlock() == Blocks.WHEAT && player.world.rand.nextInt(10) == 0)
+        if (state.getBlock() == Blocks.WHEAT && player.world.rand.nextInt(10) == 0) {
             event.getDrops().add(new ItemStack(Items.WHEAT));
+        }
     }
 
 

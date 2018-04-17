@@ -30,8 +30,9 @@ public class GuiButtonInventoryTab extends GuiButton {
         enabled = type.shouldRender() && !mc.player.getRecipeBook().isGuiOpen();
 
         GuiScreen curr = mc.currentScreen;
-        if (curr instanceof GuiContainerCreative && ((GuiContainerCreative) curr).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex())
+        if (curr instanceof GuiContainerCreative && ((GuiContainerCreative) curr).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex()) {
             enabled = false;
+        }
 
         if (enabled) {
             GlStateManager.color(1F, 1F, 1F);
@@ -75,8 +76,9 @@ public class GuiButtonInventoryTab extends GuiButton {
         private TabType(int iconIndex, Predicate<PlayerData> render) {
             this.iconIndex = iconIndex;
             this.renderPred = render;
-            if (renderPred == null)
+            if (renderPred == null) {
                 renderPred = (data) -> true;
+            }
         }
 
         public boolean shouldRender() {

@@ -26,14 +26,16 @@ public class TraitChorusTransmutation extends TraitTransmutation {
         Map<IBlockState, IBlockState> map = new HashMap<>();
         map.put(Blocks.STONE.getDefaultState(), Blocks.END_STONE.getDefaultState());
 
-        for (EnumFacing face : EnumFacing.HORIZONTALS)
+        for (EnumFacing face : EnumFacing.HORIZONTALS) {
             map.put(Blocks.PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, face), Blocks.MELON_BLOCK.getDefaultState());
+        }
 
         map.put(Blocks.MELON_BLOCK.getDefaultState(), Blocks.PUMPKIN.getDefaultState());
         map.put(Blocks.PRISMARINE.getDefaultState(), Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.DARK));
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++) {
             map.put(Blocks.SAPLING.getStateFromMeta(i), Blocks.SAPLING.getStateFromMeta(i == 5 ? 0 : i + 1));
+        }
         for (int i = 0; i < 16; i++) {
             map.put(Blocks.WOOL.getStateFromMeta(i), Blocks.WOOL.getStateFromMeta(i == 15 ? 0 : i + 1));
             map.put(Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(i), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(i == 15 ? 0 : i + 1));

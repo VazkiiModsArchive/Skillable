@@ -26,12 +26,14 @@ public class PlayerDataHandler {
     private static HashMap<Integer, PlayerData> playerData = new HashMap<>();
 
     public static PlayerData get(EntityPlayer player) {
-        if (player == null)
+        if (player == null) {
             return null;
+        }
 
         int key = getKey(player);
-        if (!playerData.containsKey(key))
+        if (!playerData.containsKey(key)) {
             playerData.put(key, new PlayerData(player));
+        }
 
         PlayerData data = playerData.get(key);
         if (data.playerWR.get() != player) {
@@ -54,8 +56,9 @@ public class PlayerDataHandler {
             }
         }
 
-        for (int i : removals)
+        for (int i : removals) {
             playerData.remove(i);
+        }
     }
 
     private static int getKey(EntityPlayer player) {
@@ -64,12 +67,14 @@ public class PlayerDataHandler {
 
     public static NBTTagCompound getDataCompoundForPlayer(EntityPlayer player) {
         NBTTagCompound forgeData = player.getEntityData();
-        if (!forgeData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
+        if (!forgeData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
             forgeData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound());
+        }
 
         NBTTagCompound persistentData = forgeData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        if (!persistentData.hasKey(DATA_TAG))
+        if (!persistentData.hasKey(DATA_TAG)) {
             persistentData.setTag(DATA_TAG, new NBTTagCompound());
+        }
 
         return persistentData.getCompoundTag(DATA_TAG);
     }
@@ -78,46 +83,52 @@ public class PlayerDataHandler {
 
         @SubscribeEvent
         public static void onServerTick(ServerTickEvent event) {
-            if (event.phase == Phase.END)
+            if (event.phase == Phase.END) {
                 PlayerDataHandler.cleanup();
+            }
         }
 
         @SubscribeEvent
         public static void onPlayerLogin(PlayerLoggedInEvent event) {
             PlayerData data = PlayerDataHandler.get(event.player);
-            if (data != null)
+            if (data != null) {
                 data.sync();
+            }
         }
 
         @SubscribeEvent
         public static void onPlayerTick(PlayerTickEvent event) {
             if (event.phase == Phase.END) {
                 PlayerData data = PlayerDataHandler.get(event.player);
-                if (data != null)
+                if (data != null) {
                     data.tickPlayer(event);
+                }
             }
         }
 
         @SubscribeEvent
         public static void onBlockDrops(HarvestDropsEvent event) {
             PlayerData data = PlayerDataHandler.get(event.getHarvester());
-            if (data != null)
+            if (data != null) {
                 data.blockDrops(event);
+            }
         }
 
         @SubscribeEvent
         public static void onGetBreakSpeed(BreakSpeed event) {
             PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
-            if (data != null)
+            if (data != null) {
                 data.breakSpeed(event);
+            }
         }
 
         @SubscribeEvent
         public static void onMobDrops(LivingDropsEvent event) {
             if (event.getSource().getTrueSource() instanceof EntityPlayer) {
                 PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
-                if (data != null)
+                if (data != null) {
                     data.mobDrops(event);
+                }
             }
         }
 
@@ -125,29 +136,33 @@ public class PlayerDataHandler {
         public static void onHurt(LivingHurtEvent event) {
             if (event.getEntity() instanceof EntityPlayer) {
                 PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getEntity());
-                if (data != null)
+                if (data != null) {
                     data.hurt(event);
+                }
             }
             if (event.getSource().getTrueSource() instanceof EntityPlayer) {
                 PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
-                if (data != null)
+                if (data != null) {
                     data.attackMob(event);
+                }
             }
         }
 
         @SubscribeEvent
         public static void onRightClickBlock(RightClickBlock event) {
             PlayerData data = PlayerDataHandler.get(event.getEntityPlayer());
-            if (data != null)
+            if (data != null) {
                 data.rightClickBlock(event);
+            }
         }
 
         @SubscribeEvent
         public static void onEnderTeleport(EnderTeleportEvent event) {
             if (event.getEntity() instanceof EntityPlayer) {
                 PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getEntity());
-                if (data != null)
+                if (data != null) {
                     data.enderTeleport(event);
+                }
             }
         }
 
@@ -155,8 +170,9 @@ public class PlayerDataHandler {
         public static void onMobDeath(LivingDeathEvent event) {
             if (event.getSource().getTrueSource() instanceof EntityPlayer) {
                 PlayerData data = PlayerDataHandler.get((EntityPlayer) event.getSource().getTrueSource());
-                if (data != null)
+                if (data != null) {
                     data.killMob(event);
+                }
             }
         }
 
