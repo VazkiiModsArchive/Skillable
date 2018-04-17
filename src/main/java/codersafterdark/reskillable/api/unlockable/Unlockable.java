@@ -75,9 +75,8 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     @Override
     public int compareTo(@Nonnull Unlockable o) {
         int skillCmp = getParentSkill().compareTo(o.getParentSkill());
-        if (skillCmp == 0) {
+        if (skillCmp == 0)
             return getName().compareTo(o.getName());
-        }
 
         return skillCmp;
     }
@@ -86,11 +85,11 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         return unlockableConfig.getCost();
     }
 
-    public int getX() {
+    public int getX(){
         return unlockableConfig.getX();
     }
 
-    public int getY() {
+    public int getY(){
         return unlockableConfig.getY();
     }
 

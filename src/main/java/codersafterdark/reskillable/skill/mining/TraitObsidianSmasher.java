@@ -23,9 +23,8 @@ public class TraitObsidianSmasher extends Trait {
         EntityPlayer player = event.getEntityPlayer();
         IBlockState state = event.getState();
 
-        if (state.getBlock() == Blocks.OBSIDIAN && ConditionHelper.hasRightTool(player, state, "pickaxe", ToolMaterial.DIAMOND.getHarvestLevel())) {
+        if (state.getBlock() == Blocks.OBSIDIAN && ConditionHelper.hasRightTool(player, state, "pickaxe", ToolMaterial.DIAMOND.getHarvestLevel()))
             event.setNewSpeed(event.getOriginalSpeed() * 10);
-        }
     }
 
 }

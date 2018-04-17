@@ -27,9 +27,8 @@ public class InventoryTabHandler {
     public static int mx, my;
 
     public static void addTabs(GuiScreen currScreen, List<GuiButton> buttonList) {
-        if (!ConfigHandler.enableTabs) {
+        if (!ConfigHandler.enableTabs)
             return;
-        }
 
         int x = currScreen.width / 2 - 120;
         int y = currScreen.height / 2 - 76;
@@ -46,9 +45,8 @@ public class InventoryTabHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void initGui(GuiScreenEvent.InitGuiEvent.Post event) {
-        if (event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiContainerCreative) {
+        if (event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiContainerCreative)
             addTabs(event.getGui(), event.getButtonList());
-        }
     }
 
     @SubscribeEvent
@@ -84,9 +82,8 @@ public class InventoryTabHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
-        if (ConfigHandler.enableTabs) {
+        if (ConfigHandler.enableTabs)
             event.setCanceled(true);
-        }
     }
 
     public static int getPotionOffset() {
