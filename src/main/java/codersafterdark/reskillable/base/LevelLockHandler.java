@@ -412,38 +412,4 @@ public class LevelLockHandler {
         lastLock.addRequirementsToTooltip(data, event.getToolTip());
     }
 
-    private static class ItemInfo {
-        private int metadata;
-        private Item item;
-        private NBTTagCompound tag;
-
-        private ItemInfo(Item item, int metadata) {
-            this(item, metadata, null);
-        }
-
-        private ItemInfo(Item item, int metadata, NBTTagCompound tag) {
-            this.item = item;
-            this.metadata = metadata;
-            this.tag = tag;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-            if (!(o instanceof ItemInfo)) {
-                return false;
-            }
-            ItemInfo other = (ItemInfo) o;
-            return item == other.item && tag == other.tag &&
-                    (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(item, tag);
-        }
-    }
-
 }
