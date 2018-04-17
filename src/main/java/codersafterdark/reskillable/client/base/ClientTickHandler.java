@@ -28,19 +28,21 @@ public class ClientTickHandler {
 
     @SubscribeEvent
     public static void renderTick(RenderTickEvent event) {
-        if (event.phase == Phase.START)
+        if (event.phase == Phase.START) {
             partialTicks = event.renderTickTime;
+        }
     }
 
     @SubscribeEvent
     public static void clientTickEnd(ClientTickEvent event) {
         if (event.phase == Phase.END) {
             Minecraft mc = Minecraft.getMinecraft();
-            if (mc.world == null)
+            if (mc.world == null) {
                 PlayerDataHandler.cleanup();
-            else if (mc.player != null) {
-                while (!scheduledActions.isEmpty())
+            } else if (mc.player != null) {
+                while (!scheduledActions.isEmpty()) {
                     scheduledActions.poll().run();
+                }
             }
 
             GuiScreen gui = mc.currentScreen;

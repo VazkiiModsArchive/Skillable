@@ -17,8 +17,9 @@ public class TraitLuckyFisherman extends Trait {
 
     @Override
     public void onPlayerTick(PlayerTickEvent event) {
-        if (event.player.fishEntity != null)
+        if (event.player.fishEntity != null) {
             event.player.addPotionEffect(new PotionEffect(MobEffects.LUCK, 10, 0, true, true));
+        }
     }
 
 }

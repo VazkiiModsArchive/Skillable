@@ -23,29 +23,31 @@ public class TraitDropGuarantee extends Trait {
         Entity e = event.getEntity();
         if (event.getDrops().isEmpty() && e.getEntityWorld().getGameRules().getBoolean("doMobLoot")) {
             ItemStack drop = null;
-            if (e instanceof EntityCreeper)
+            if (e instanceof EntityCreeper) {
                 drop = new ItemStack(Items.GUNPOWDER);
-            else if (e instanceof EntityZombie)
+            } else if (e instanceof EntityZombie) {
                 drop = new ItemStack(Items.ROTTEN_FLESH);
-            else if (e instanceof EntitySkeleton)
+            } else if (e instanceof EntitySkeleton) {
                 drop = new ItemStack(Items.BONE);
-            else if (e instanceof EntitySpider)
+            } else if (e instanceof EntitySpider) {
                 drop = new ItemStack(Items.STRING);
-            else if (e instanceof EntityBlaze)
+            } else if (e instanceof EntityBlaze) {
                 drop = new ItemStack(Items.BLAZE_ROD);
-            else if (e instanceof EntityGuardian)
+            } else if (e instanceof EntityGuardian) {
                 drop = new ItemStack(Items.PRISMARINE_SHARD);
-            else if (e instanceof EntityGhast)
+            } else if (e instanceof EntityGhast) {
                 drop = new ItemStack(Items.GHAST_TEAR);
-            else if (e instanceof EntityEnderman)
+            } else if (e instanceof EntityEnderman) {
                 drop = new ItemStack(Items.ENDER_PEARL);
-            else if (e instanceof EntitySlime)
+            } else if (e instanceof EntitySlime) {
                 drop = new ItemStack(Items.SLIME_BALL);
-            else if (e instanceof EntityWitch)
+            } else if (e instanceof EntityWitch) {
                 drop = e.getEntityWorld().rand.nextBoolean() ? new ItemStack(Items.REDSTONE) : new ItemStack(Items.GLOWSTONE_DUST);
+            }
 
-            if (drop != null)
+            if (drop != null) {
                 event.getDrops().add(new EntityItem(e.getEntityWorld(), e.posX, e.posY, e.posZ, drop));
+            }
         }
     }
 

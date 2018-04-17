@@ -38,8 +38,9 @@ public abstract class TraitTransmutation extends Trait {
                 event.getWorld().playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F);
                 if (event.getWorld().isRemote) {
                     event.getEntityPlayer().swingArm(event.getHand());
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < 20; i++) {
                         event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(), pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0);
+                    }
                 }
 
                 stack.shrink(1);
