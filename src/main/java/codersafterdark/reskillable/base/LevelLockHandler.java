@@ -154,7 +154,8 @@ public class LevelLockHandler {
         }
         switch (full.getId()) {
             case Constants.NBT.TAG_COMPOUND:
-                NBTTagCompound fullTag = (NBTTagCompound) full, partialTag = (NBTTagCompound) partial;
+                NBTTagCompound fullTag = (NBTTagCompound) full;
+                NBTTagCompound partialTag = (NBTTagCompound) partial;
                 Set<String> ptKeys = partialTag.getKeySet();
                 for (String partialKey : ptKeys) {
                     //One of the keys is missing OR the tags are different types OR they do not match
@@ -184,7 +185,8 @@ public class LevelLockHandler {
                 }
                 return 1;
             case Constants.NBT.TAG_BYTE_ARRAY:
-                byte[] fByteArray = ((NBTTagByteArray) full).getByteArray(), pByteArray = ((NBTTagByteArray) partial).getByteArray();
+                byte[] fByteArray = ((NBTTagByteArray) full).getByteArray();
+                byte[] pByteArray = ((NBTTagByteArray) partial).getByteArray();
                 for (byte pByte : pByteArray) {
                     boolean hasMatch = false;
                     for (byte fByte : fByteArray) {
@@ -199,7 +201,8 @@ public class LevelLockHandler {
                 }
                 return 1;
             case Constants.NBT.TAG_INT_ARRAY:
-                int[] fIntArray = ((NBTTagIntArray) full).getIntArray(), pIntArray = ((NBTTagIntArray) partial).getIntArray();
+                int[] fIntArray = ((NBTTagIntArray) full).getIntArray();
+                int[] pIntArray = ((NBTTagIntArray) partial).getIntArray();
                 for (int pint : pIntArray) {
                     if (IntStream.of(fIntArray).noneMatch(i -> i == pint)){
                         return -1;
