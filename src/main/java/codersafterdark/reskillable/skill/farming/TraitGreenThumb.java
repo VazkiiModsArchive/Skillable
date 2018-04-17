@@ -7,7 +7,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -36,8 +35,9 @@ public class TraitGreenThumb extends Trait {
             for (int i = 4; i > -2; i--) {
                 int y = pos.getY() + i;
                 BlockPos offPos = new BlockPos(x, y, z);
-                if (player.world.isAirBlock(offPos))
+                if (player.world.isAirBlock(offPos)) {
                     continue;
+                }
 
                 if (isPlant(player.world, offPos)) {
                     ItemStack item = new ItemStack(Items.DYE, 1, 15);
@@ -52,8 +52,9 @@ public class TraitGreenThumb extends Trait {
     private boolean isPlant(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
-        if (block == Blocks.GRASS || block == Blocks.LEAVES || block == Blocks.LEAVES2 || block instanceof BlockBush && !(block instanceof BlockCrops) && !(block instanceof BlockSapling))
+        if (block == Blocks.GRASS || block == Blocks.LEAVES || block == Blocks.LEAVES2 || block instanceof BlockBush && !(block instanceof BlockCrops) && !(block instanceof BlockSapling)) {
             return false;
+        }
 
         Material mat = state.getMaterial();
         return mat != null && (mat == Material.PLANTS || mat == Material.CACTUS || mat == Material.GRASS || mat == Material.LEAVES || mat == Material.GOURD) && block instanceof IGrowable && ((IGrowable) block).canGrow(world, pos, world.getBlockState(pos), world.isRemote);

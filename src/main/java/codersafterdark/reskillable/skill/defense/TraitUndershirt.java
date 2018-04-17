@@ -29,8 +29,9 @@ public class TraitUndershirt extends Trait {
     @Override
     public void onPlayerTick(PlayerTickEvent event) {
         int cd = event.player.getEntityData().getInteger(TAG_COOLDOWN);
-        if (cd > 0)
+        if (cd > 0) {
             event.player.getEntityData().setInteger(TAG_COOLDOWN, cd - 1);
+        }
     }
 
 }

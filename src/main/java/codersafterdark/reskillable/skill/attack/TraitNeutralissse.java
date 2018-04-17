@@ -27,8 +27,9 @@ public class TraitNeutralissse extends Trait {
         if (event.getEntity() instanceof EntityCreeper) {
             EntityCreeper creeper = (EntityCreeper) event.getEntity();
             int time = ReflectionHelper.getPrivateValue(EntityCreeper.class, creeper, LibObfuscation.TIME_SINCE_IGNITED);
-            if (time < 5)
+            if (time < 5) {
                 creeper.getEntityData().setInteger(TAG_DEFUSED, 40);
+            }
         }
     }
 

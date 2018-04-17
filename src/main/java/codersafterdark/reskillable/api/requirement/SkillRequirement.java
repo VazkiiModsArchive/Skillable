@@ -33,7 +33,7 @@ public class SkillRequirement extends Requirement {
         if (info.getLevel() < level) {
             color = TextFormatting.RED;
         }
-        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.skillFormat", TextFormatting.DARK_AQUA , skill.getName(), color, level);
+        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(), color, level);
     }
 
     public Skill getSkill() {

@@ -18,8 +18,9 @@ public class TraitRoadWalk extends Trait {
     @Override
     public void onPlayerTick(PlayerTickEvent event) {
         BlockPos pos = event.player.getPosition().down();
-        if (event.player.world.getBlockState(pos).getBlock() == Blocks.GRASS_PATH && event.player.onGround && event.player.moveForward > 0)
+        if (event.player.world.getBlockState(pos).getBlock() == Blocks.GRASS_PATH && event.player.onGround && event.player.moveForward > 0) {
             event.player.moveRelative(0F, 0F, 1F, 0.05F);
+        }
     }
 
 
