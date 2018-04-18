@@ -2,6 +2,7 @@ package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -31,6 +32,33 @@ public class RequirementHolder {
     public RequirementHolder(List<Requirement> requirements) {
         this.requirements = requirements;
         this.forcedEmpty = false;
+    }
+
+    public RequirementHolder(RequirementHolder... others) {
+        this.forcedEmpty = false;
+        this.requirements = Lists.newArrayList();
+        for (RequirementHolder other : others) {
+            for (Requirement otherRequirement : other.requirements) {
+                boolean noMatch = true;
+                int toRemove = -1;
+                for (int i = 0; i < requirements.size(); i++) {
+                    RequirementComparision match = requirements.get(i).matches(otherRequirement);
+                    if (match.equals(RequirementComparision.EQUAL_TO) || match.equals(RequirementComparision.GREATER_THAN)) {
+                        noMatch = false;
+                        break;
+                    } else if (match.equals(RequirementComparision.LESS_THAN)) {
+                        toRemove = i;
+                        break;
+                    }
+                }
+                if (toRemove >= 0) {
+                    requirements.remove(toRemove);
+                }
+                if (noMatch) {
+                    requirements.add(otherRequirement);
+                }
+            }
+        }
     }
 
     public static RequirementHolder realEmpty() {
@@ -100,5 +128,4 @@ public class RequirementHolder {
     public List<Requirement> getRequirements() {
         return requirements;
     }
-
 }
