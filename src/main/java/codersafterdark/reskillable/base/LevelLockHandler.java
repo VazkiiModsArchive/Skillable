@@ -289,6 +289,10 @@ public class LevelLockHandler {
 
     @SubscribeEvent
     public static void rightClickBlock(RightClickBlock event) {
+        enforce(event);
+        if (event.isCanceled()) {
+            return;
+        }
         EntityPlayer player = event.getEntityPlayer();
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         Block block = state.getBlock();
