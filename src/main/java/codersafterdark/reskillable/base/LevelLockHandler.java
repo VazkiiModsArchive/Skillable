@@ -364,15 +364,15 @@ public class LevelLockHandler {
         }
     }
 
-    private static boolean isFake(EntityEvent e) {
+    public static boolean isFake(EntityEvent e) {
         return isFake(e.getEntity());
     }
 
-    private static boolean isFake(Entity e) {
+    public static boolean isFake(Entity e) {
         return e instanceof FakePlayer;
     }
 
-    private static void enforce(PlayerInteractEvent event) {
+    public static void enforce(PlayerInteractEvent event) {
         if (event.isCanceled()) {
             return;
         }
