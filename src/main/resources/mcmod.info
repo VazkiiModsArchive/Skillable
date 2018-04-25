@@ -1,17 +1,12 @@
 [
-{
-  "modid": "skillable",
-  "name": "Skillable",
-  "description": "Skills and Abilities. Made for the Modoff.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "logoFile": "",
-  "url": "http://www.vazkii.us",
-  "updateUrl": "",
-  "authorList": ["Vazkii", "wiiv"],
-  "credits": "",
-  "parent": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "reskillable",
+    "name": "Reskillable",
+    "description": "Reskillable is a continuation of Skillable by Vazkii. \nReskillable is a mod about leveling various skills up, using XP. \nLeveling skills up allow you to unlock traits and use more items. \nBy default, a lot of vanilla items are locked to require leveling your skills up. \nFor example, you're not allowed to use a Diamond Pickaxe until you reach level 16 Mining.",
+    "version": "1.3.0",
+    "mcversion": "1.12.2",
+    "url": "https://minecraft.curseforge.com/projects/reskillable",
+    "authorList": ["Lanse505", "Buuz135", "jaredlll08", "SkySom"],
+    "credits": "Pupnewfster, Vazkii & Wiiv"
+  }
 ]
