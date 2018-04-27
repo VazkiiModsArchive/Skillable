@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -90,16 +89,12 @@ public class LevelLockHandler {
     }
 
     private static void registerDefaultLockKeys() {
-        //TODO: figure out how priority works
-        registerLockKey(ItemInfo.class, 0);
-        registerLockKey(ModLockKey.class, 1);
-        registerLockKey(GenericNBTLockKey.class, 2);
+        registerLockKey(ItemInfo.class, ModLockKey.class, GenericNBTLockKey.class);
     }
 
-    public static void registerLockKey(Class<? extends LockKey> keyClass, int priority) {
-        //TODO: Figure out how to handle the locks whether it is a list or how to store it to bump priority of things
-        itemLockPriority.add(keyClass);
-        //TODO handle priority
+    public static void registerLockKey(Class<? extends LockKey>... keyClass) {
+        itemLockPriority.addAll(Arrays.asList(keyClass));
+        //TODO: Check when adding to itemLockPriority if it has a "new type(item)"
     }
 
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
@@ -129,64 +124,37 @@ public class LevelLockHandler {
             return EMPTY_LOCK;
         }
 
-        //TODO make it so that there is a boolean method that returns if there is a method to try and get more exact??
-        //TODO other option is to make it so that if instanceof NBTLockKey has a fuzzy lock method and otherwise it does default
-
-        ItemInfo cleanStack = new ItemInfo(stack.getItem(), stack.getMetadata());
-        //There is no NBT information so matching is not needed. OR no specific NBT locks for this item stack so the NBT tags can be ignored
-        ResourceLocation registryName = stack.getItem().getRegistryName();
-        if (registryName == null) {
-            //TODO fix this maybe but this should never be the case
-            return EMPTY_LOCK;
-        }
-        /*if (!stack.hasTagCompound()) {// || !nbtLockInfo.containsKey(cleanStack)) {//TODO add back some of that optimization checks?
-            //TODO fix this to have automated priority checking
-            ModLockKey modLock = new ModLockKey(registryName.getResourceDomain());
-            return locks.getOrDefault(cleanStack, locks.getOrDefault(modLock, EMPTY_LOCK));
-        }*/
-
         NBTTagCompound tag = stack.getTagCompound();
-
-        //TODO should NBT check all higher types (probably)
-
-        boolean hasNBTTag = stack.hasTagCompound();
-        boolean hasBaseLock = false;
 
         List<RequirementHolder> requirements = new ArrayList<>();
         for (Class<? extends LockKey> keyClass : itemLockPriority) {
-            //TODO: Check when adding to itemLockPriority if it has a "new type(item)"
+            LockKey lock;
+            //TODO add documentation that all NBTLockKeys or things that can be done by an item need a param itemstack at least for now
+            //TODO can fromItemStack even be used?
+            try {
+                lock = keyClass.getDeclaredConstructor(ItemStack.class).newInstance(stack);
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+                continue;//Failed to find method initializer
+            }
 
+            //TODO: It should probably do the check if the lock contains it exactly first??
+            //
 
-            if (NBTLockKey.class.isAssignableFrom(keyClass)) {
-                NBTLockKey nbtLock;
-                //TODO add documentation that all NBTLockKeys need a param itemstack at least for here. OR only register them in the lockprio for items
-                //TODO can fromItemStack even be used?
-                try {
-                    nbtLock = (NBTLockKey) keyClass.getDeclaredConstructor(ItemStack.class).newInstance(stack);
-                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                    e.printStackTrace();
-                    continue;//Failed to find method initializer
-                }
-
-                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(nbtLock));
+            if (lock instanceof NBTLockKey) {
+                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(lock));
 
                 if (!nbtRequirement.equals(EMPTY_LOCK)) {
                     requirements.add(nbtRequirement);
                 }
-                if (!hasBaseLock) { //Use fallback if a fallback has not already been used
-                    LockKey fallBack = nbtLock.withoutTag();
-                    if (fallBack == null || !locks.containsKey(fallBack)) {
-                        continue;
-                    }
-                    requirements.add(locks.get(fallBack));
-                    hasBaseLock = true;
+                //Add the base for this item if there is one
+                LockKey fallBack = ((NBTLockKey) lock).withoutTag();
+                if (fallBack == null || !locks.containsKey(fallBack)) {
+                    continue;
                 }
-            } else if (!hasBaseLock) {
-                //TODO add the base lock
-
-                if (!hasNBTTag) {
-                    break;
-                }
+                requirements.add(locks.get(fallBack));
+            } else if (locks.containsKey(lock)) { //Add the base for the item
+                requirements.add(locks.get(lock));
             }
         }
 
@@ -194,6 +162,9 @@ public class LevelLockHandler {
     }
 
     private static RequirementHolder getNBTLock(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {
+        if (tag == null) { //If there is no tag for the item just return no lock
+            return EMPTY_LOCK;
+        }
         List<LockKey> partialLocks = new ArrayList<>();
         for (NBTLockKey nbtLock : nbtItemLookup) {
             int comp = compareNBT(tag, nbtLock.getTag());
@@ -203,7 +174,7 @@ public class LevelLockHandler {
                 partialLocks.add(nbtLock);
             }
         }
-        if (partialLocks.isEmpty()) {//TODO Should it potentially just always build any NBT locks ontop of the default item type locks
+        if (partialLocks.isEmpty()) {
             return EMPTY_LOCK;
         }
         return new RequirementHolder(partialLocks.stream().map(locks::get).filter(Objects::nonNull).toArray(RequirementHolder[]::new));
