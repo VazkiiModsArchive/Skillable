@@ -33,15 +33,6 @@ public class ModLockKey implements LockKey, NBTLockKey {
     }
 
     @Override
-    public NBTLockKey fromItemStack(ItemStack stack) {
-        ResourceLocation registryName = stack.getItem().getRegistryName();
-        if (registryName == null) {
-            return null;
-        }
-        return new ModLockKey(registryName.getResourceDomain(), stack.getTagCompound());
-    }
-
-    @Override
     public LockKey withoutTag() {
         return tag == null ? this : new ModLockKey(modName);
     }

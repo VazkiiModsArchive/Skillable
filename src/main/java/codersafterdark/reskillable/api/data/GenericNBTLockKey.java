@@ -21,11 +21,6 @@ public class GenericNBTLockKey implements NBTLockKey {
     }
 
     @Override
-    public NBTLockKey fromItemStack(ItemStack stack) {
-        return new GenericNBTLockKey(stack.getTagCompound());
-    }
-
-    @Override
     public LockKey withoutTag() {
         return null;
     }

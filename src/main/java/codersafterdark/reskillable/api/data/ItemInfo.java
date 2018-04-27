@@ -32,11 +32,6 @@ public class ItemInfo implements NBTLockKey {
     }
 
     @Override
-    public NBTLockKey fromItemStack(ItemStack stack) {
-        return new ItemInfo(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
-    }
-
-    @Override
     public LockKey withoutTag() {
         return tag == null ? this : new ItemInfo(item, metadata);
     }

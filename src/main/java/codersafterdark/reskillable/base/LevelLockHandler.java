@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.base;
 
+import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.data.*;
 import codersafterdark.reskillable.network.MessageLockedItem;
 import codersafterdark.reskillable.network.PacketHandler;
@@ -32,9 +33,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LevelLockHandler {
@@ -43,12 +46,11 @@ public class LevelLockHandler {
     public static final Map<LockKey, RequirementHolder> locks = new HashMap<>();
     public static final EmptyLockKey EMPTY_LOCK_KEY = new EmptyLockKey();
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
+    private static Map<Class<?>, List<Class<? extends LockKey>>> lockTypesMap = new HashMap<>();
     private static Map<LockKey, Set<NBTLockKey>> nbtLockInfo = new HashMap<>();
     private static RequirementHolder lastLock = EMPTY_LOCK;
     private static ItemStack lastItem;
     private static String[] configLocks;
-
-    private static List<Class<? extends LockKey>> itemLockPriority = new ArrayList<>();//TODO Map<Type, List>
 
     public static void loadFromConfig(String[] configValues) {
         configLocks = configValues;
@@ -87,6 +89,7 @@ public class LevelLockHandler {
                 }
             }
         }
+        //TODO remove hardcoded tests
         try {
             addLockByKey(new GenericNBTLockKey(JsonToNBT.getTagFromJson("{ench:[{id: 33s}]}")), RequirementHolder.fromString("reskillable:magic|10"));
 
@@ -99,17 +102,29 @@ public class LevelLockHandler {
     }
 
     private static void registerDefaultLockKeys() {
-        registerLockKey(ItemInfo.class, ModLockKey.class, GenericNBTLockKey.class);
+        registerLockKey(ItemStack.class, ItemInfo.class, ModLockKey.class, GenericNBTLockKey.class);
     }
 
-    public static void registerLockKey(Class<? extends LockKey>... keyClass) {
-        itemLockPriority.addAll(Arrays.asList(keyClass));
-        //TODO: Check when adding to itemLockPriority if it has a "new type(item)"
+    public static void registerLockKey(Class<?> lockTypeClass, Class<? extends LockKey>... keyClasses) {
+        for (Class<? extends LockKey> keyClass : keyClasses) {
+            try {
+                keyClass.getDeclaredConstructor(lockTypeClass);
+                //TODO do we have to create a "new instance" to make sure it is properly accessible?
 
+                //Add it to the map
+                lockTypesMap.computeIfAbsent(lockTypeClass, k -> new ArrayList<>()).add(keyClass);
+            } catch (NoSuchMethodException | SecurityException e) {
+                ReskillableAPI.getInstance().log(Level.ERROR, keyClass.getSimpleName() + " does not have a constructor with the parameter: " + lockTypeClass.getSimpleName());
+                //TODO: Throw an actual error?
+            }
+        }
         //TODO have them declare a class that has the correct param and whatever else they need?
+        //TODO add documentation that all NBTLockKeys or things that can be done by an item need a param itemstack at least for now
+        //This pertains to things that start with itemstack.class
     }
 
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
+        //TODO Note somewhere that if the LockKey type is not registered it may not be automatically searched
         if (key == null || key.equals(EMPTY_LOCK_KEY)) { //Do not add an empty lock key to the actual map
             return;
         }
@@ -118,13 +133,12 @@ public class LevelLockHandler {
         if (key instanceof NBTLockKey) {
             NBTTagCompound tag = ((NBTLockKey) key).getTag();
             if (tag != null) {
-                //Store the NBT tag in a list for the specific item
                 LockKey without = ((NBTLockKey) key).withoutTag();
-                if (without == null) {//Use a key that is constant for purposes of getting
+                if (without == null) {//Use a key that is constant for purposes of retrieving efficiently
                     without = EMPTY_LOCK_KEY;
                 }
+                //Store the NBT tag in a list for the specific item
                 nbtLockInfo.computeIfAbsent(without, k -> new HashSet<>()).add((NBTLockKey) key);
-
             }
         }
 
@@ -141,43 +155,60 @@ public class LevelLockHandler {
         addLockByKey(new ItemInfo(stack), holder);
     }
 
-    public static RequirementHolder getSkillLock(ItemStack stack) {//TODO is there a way to not do this for EVERY item on load of JEI
-        if (stack == null || stack.isEmpty()) {
+    public static RequirementHolder getLockByKey(LockKey key) {
+        return locks.containsKey(key) ? locks.get(key) : EMPTY_LOCK;
+    }
+
+    //TODO is there a way to not do this for EVERY item on load of JEI
+    public static RequirementHolder getSkillLock(ItemStack stack) {
+        return stack == null || stack.isEmpty() ? EMPTY_LOCK : getLocks(stack);
+    }
+
+    public static <T> RequirementHolder getLocks(T toCheck) {
+        if (toCheck == null) {
+            return EMPTY_LOCK;
+        }
+        Class<?> classType = toCheck.getClass();
+
+        if (!lockTypesMap.containsKey(classType)) {
             return EMPTY_LOCK;
         }
 
-        NBTTagCompound tag = stack.getTagCompound();
-
+        List<Class<? extends LockKey>> lockTypes = lockTypesMap.get(classType);
         List<RequirementHolder> requirements = new ArrayList<>();
-        for (Class<? extends LockKey> keyClass : itemLockPriority) {
+
+        for (Class<? extends LockKey> keyClass : lockTypes) {
             LockKey lock;
-            //TODO add documentation that all NBTLockKeys or things that can be done by an item need a param itemstack at least for now
-            //TODO can fromItemStack even be used?
+            //We know that this constructor exists because of checks done during registering lock types
             try {
-                lock = keyClass.getDeclaredConstructor(ItemStack.class).newInstance(stack);
+                lock = keyClass.getDeclaredConstructor(classType).newInstance(toCheck);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                //Failed to find method initializer (this should not happen because of the checks done in registerLockKey
                 e.printStackTrace();
-                continue;//Failed to find method initializer
+                continue;
             }
 
-            //TODO: It should probably do the check if the lock contains it exactly first??
-            //TODO: that would make it so that if there it ignores the type without a tag
             if (lock instanceof NBTLockKey) {
                 LockKey baseLock = ((NBTLockKey) lock).withoutTag();
                 if (baseLock == null) {
-                    //TODO do this better maybe
+                    //If there is no base lock then use a representation for getting partial locks in general
+                    //Used for GenericNBTLockKey but may also be needed for custom NBTLockKey objects
                     baseLock = EMPTY_LOCK_KEY;
                 }
-                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(baseLock));
 
-                if (!nbtRequirement.equals(EMPTY_LOCK)) {
-                    requirements.add(nbtRequirement);
+                if (locks.containsKey(lock)) {
+                    //Minorly increases performance if there is a proper match
+                    requirements.add(locks.get(lock));
+                } else {
+                    //getNBTLocks may be an empty list but that is fine as then no elements will be added
+                    requirements.addAll(getNBTLocks(((NBTLockKey) lock).getTag(), nbtLockInfo.get(baseLock)));
                 }
-                //Add the base for this item if there is one
-                if (locks.containsKey(baseLock)) { //Should always be false if it is EMPTY_LOCK_KEY
-                    requirements.add(locks.get(baseLock));
-                }
-            } else if (locks.containsKey(lock)) { //Add the base for the item
+
+                //Ignore NBT for checking if there is a lock without NBT
+                lock = baseLock; //Below if should always be false if it is EMPTY_LOCK_KEY
+            }
+            //Add the base for the item
+            if (locks.containsKey(lock)) {
                 requirements.add(locks.get(lock));
             }
         }
@@ -185,26 +216,22 @@ public class LevelLockHandler {
         return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
     }
 
-    private static RequirementHolder getNBTLock(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {//TODO should this be a list of Requirement holders?
+    private static List<RequirementHolder> getNBTLocks(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {
         if (tag == null || nbtItemLookup == null) { //If there is no tag for the item just return no lock
-            return EMPTY_LOCK;//TODO is this fine with the tag == null check?
+            return new ArrayList<>();
         }
         List<LockKey> partialLocks = new ArrayList<>();
         for (NBTLockKey nbtLock : nbtItemLookup) {
             int comp = compareNBT(tag, nbtLock.getTag());
             if (comp == 0) {
-                return locks.getOrDefault(nbtLock, EMPTY_LOCK);
+                return !locks.containsKey(nbtLock) ? new ArrayList<>() : Collections.singletonList(locks.get(nbtLock));
             } else if (comp > 0) { //Build up the best match
                 partialLocks.add(nbtLock);
             }
         }
-        if (partialLocks.isEmpty()) {
-            return EMPTY_LOCK;
-        }
-        return new RequirementHolder(partialLocks.stream().map(locks::get).filter(Objects::nonNull).toArray(RequirementHolder[]::new));
+        return partialLocks.stream().filter(locks::containsKey).map(locks::get).collect(Collectors.toList());
     }
 
-    //TODO does this always get called by the partial tag? If so can it be moved into NBTLockKey (probably)
     private static int compareNBT(NBTBase full, NBTBase partial) {
         if (full == null) {
             return partial != null ? -1 : 0;
@@ -483,5 +510,12 @@ public class LevelLockHandler {
         }
         PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         lastLock.addRequirementsToTooltip(data, event.getToolTip());
+    }
+
+    //This is only used internally so store it here so that other places can only reference it if they need to but can not create a new instance
+    public static final class EmptyLockKey implements LockKey {
+        private EmptyLockKey() {
+
+        }
     }
 }
