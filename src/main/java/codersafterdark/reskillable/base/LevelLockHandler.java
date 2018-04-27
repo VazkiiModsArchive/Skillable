@@ -86,6 +86,16 @@ public class LevelLockHandler {
                 }
             }
         }
+        try {
+            NBTTagCompound silkTouch = JsonToNBT.getTagFromJson("{ench:[{id: 33 as short}]}");//Any level of silk touch incase some mod for some reason adds more
+            addLockByKey(new GenericNBTLockKey(silkTouch), RequirementHolder.fromString("reskillable|magic:10"));
+
+            addLockByKey(new ModLockKey("minecraft"), RequirementHolder.fromString("reskillable|building:4"));
+
+            addLockByKey(new ModLockKey("minecraft", JsonToNBT.getTagFromJson("{ench:[{id: 34 as short}]}")), RequirementHolder.fromString("reskillable|gathering:6"));
+        } catch (NBTException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void registerDefaultLockKeys() {
@@ -95,10 +105,21 @@ public class LevelLockHandler {
     public static void registerLockKey(Class<? extends LockKey>... keyClass) {
         itemLockPriority.addAll(Arrays.asList(keyClass));
         //TODO: Check when adding to itemLockPriority if it has a "new type(item)"
+
+        //TODO have them declare a class that has the correct param and whatever else they need?
     }
 
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
         locks.put(key, holder);
+
+        if (key instanceof NBTLockKey) {
+            NBTTagCompound tag = ((NBTLockKey) key).getTag();
+            if (tag != null) {
+                //Store the NBT tag in a list for the specific item
+                //TODO maybe make it so that nbtLockInfo is lockKey isntead of NBTLockKey for the key
+                nbtLockInfo.computeIfAbsent((NBTLockKey) ((NBTLockKey) key).withoutTag(), k -> new HashSet<>()).add((NBTLockKey) key);
+            }
+        }
 
         //Reset the tooltip cache in case the item being hovered is what changed
         lastItem = null;
@@ -110,16 +131,16 @@ public class LevelLockHandler {
     }
 
     public static void addLock(ItemStack stack, RequirementHolder holder) {
-        ItemInfo stackKey = new ItemInfo(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
-        addLockByKey(stackKey, holder);
-        //Only bother mapping it if there is an NBT tag
+        //ItemInfo stackKey = new ItemInfo(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
+        addLockByKey(new ItemInfo(stack), holder);
+        /*//Only bother mapping it if there is an NBT tag
         if (stack.hasTagCompound()) {
             //Store the NBT tag in a list for the specific item
             nbtLockInfo.computeIfAbsent(new ItemInfo(stack.getItem(), stack.getMetadata()), k -> new HashSet<>()).add(stackKey);
-        }
+        }*/
     }
 
-    public static RequirementHolder getSkillLock(ItemStack stack) {
+    public static RequirementHolder getSkillLock(ItemStack stack) {//TODO is there a way to not do this for EVERY item on load of JEI
         if (stack == null || stack.isEmpty()) {
             return EMPTY_LOCK;
         }
@@ -246,7 +267,7 @@ public class LevelLockHandler {
                 int[] fIntArray = ((NBTTagIntArray) full).getIntArray();
                 int[] pIntArray = ((NBTTagIntArray) partial).getIntArray();
                 for (int pint : pIntArray) {
-                    if (IntStream.of(fIntArray).noneMatch(i -> i == pint)){
+                    if (IntStream.of(fIntArray).noneMatch(i -> i == pint)) {
                         return -1;
                     }
                 }
@@ -432,11 +453,11 @@ public class LevelLockHandler {
         if (ConfigHandler.enforceFakePlayers) {
             if (!canPlayerUseItem(player, stack)) {
                 event.setCanceled(true);
-                if (!isFake(player)){
+                if (!isFake(player)) {
                     tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
                 }
             }
-        } else if (!isFake(player) && !canPlayerUseItem(player, stack)){
+        } else if (!isFake(player) && !canPlayerUseItem(player, stack)) {
             event.setCanceled(true);
             tellPlayer(player, stack, MessageLockedItem.MSG_ITEM_LOCKED);
         }
@@ -460,5 +481,4 @@ public class LevelLockHandler {
         PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         lastLock.addRequirementsToTooltip(data, event.getToolTip());
     }
-
 }

@@ -22,6 +22,10 @@ public class ItemInfo implements NBTLockKey {
         this.tag = tag;
     }
 
+    public ItemInfo(ItemStack stack) {
+        this(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
+    }
+
     @Override
     public NBTTagCompound getTag() {
         return this.tag;
