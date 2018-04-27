@@ -89,16 +89,6 @@ public class LevelLockHandler {
                 }
             }
         }
-        //TODO remove hardcoded tests
-        try {
-            addLockByKey(new GenericNBTLockKey(JsonToNBT.getTagFromJson("{ench:[{id: 33s}]}")), RequirementHolder.fromString("reskillable:magic|10"));
-
-            addLockByKey(new ModLockKey("minecraft"), RequirementHolder.fromString("reskillable:building|4"));
-
-            addLockByKey(new ModLockKey("minecraft", JsonToNBT.getTagFromJson("{ench:[{id: 34s}]}")), RequirementHolder.fromString("reskillable:gathering|6"));
-        } catch (NBTException e) {
-            e.printStackTrace();
-        }
     }
 
     private static void registerDefaultLockKeys() {
@@ -159,7 +149,7 @@ public class LevelLockHandler {
         return locks.containsKey(key) ? locks.get(key) : EMPTY_LOCK;
     }
 
-    //TODO is there a way to not do this for EVERY item on load of JEI
+    //TODO is there a way to not do this for EVERY item on load? JEI gets the tooltip of every item when it registers it (not sure if they cache the output or not)
     public static RequirementHolder getSkillLock(ItemStack stack) {
         return stack == null || stack.isEmpty() ? EMPTY_LOCK : getLocks(stack);
     }
