@@ -34,6 +34,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -42,16 +43,19 @@ public class LevelLockHandler {
     public static final String[] DEFAULT_SKILL_LOCKS = new String[]{"minecraft:iron_shovel:*=reskillable:gathering|5", "minecraft:iron_axe:*=reskillable:gathering|5", "minecraft:iron_sword:*=reskillable:attack|5", "minecraft:iron_pickaxe:*=reskillable:mining|5", "minecraft:iron_hoe:*=reskillable:farming|5", "minecraft:iron_helmet:*=reskillable:defense|5", "minecraft:iron_chestplate:*=reskillable:defense|5", "minecraft:iron_leggings:*=reskillable:defense|5", "minecraft:iron_boots:*=reskillable:defense|5", "minecraft:golden_shovel:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_axe:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_sword:*=reskillable:attack|5,reskillable:magic|5", "minecraft:golden_pickaxe:*=reskillable:mining|5,reskillable:magic|5", "minecraft:golden_hoe:*=reskillable:farming|5,reskillable:magic|5", "minecraft:golden_helmet:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_chestplate:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_leggings:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_boots:*=reskillable:defense|5,reskillable:magic|5", "minecraft:diamond_shovel:*=reskillable:gathering|16", "minecraft:diamond_axe:*=reskillable:gathering|16", "minecraft:diamond_sword:*=reskillable:attack|16", "minecraft:diamond_pickaxe:*=reskillable:mining|16", "minecraft:diamond_hoe:*=reskillable:farming|16", "minecraft:diamond_helmet:*=reskillable:defense|16", "minecraft:diamond_chestplate:*=reskillable:defense|16", "minecraft:diamond_leggings:*=reskillable:defense|16", "minecraft:diamond_boots:*=reskillable:defense|16", "minecraft:shears:*=reskillable:farming|5,reskillable:gathering|5", "minecraft:fishing_rod:*=reskillable:gathering|8", "minecraft:shield:*=reskillable:defense|8", "minecraft:bow:*=reskillable:attack|8", "minecraft:ender_pearl=reskillable:magic|8", "minecraft:ender_eye=reskillable:magic|16,reskillable:building|8", "minecraft:elytra:*=reskillable:defense|16,reskillable:agility|24,reskillable:magic|16", "minecraft:lead=reskillable:farming|5", "minecraft:end_crystal=reskillable:building|24,reskillable:magic|32", "minecraft:iron_horse_armor:*=reskillable:defense|5,reskillable:agility|5", "minecraft:golden_horse_armor:*=reskillable:defense|5,reskillable:magic|5,reskillable:agility|5", "minecraft:diamond_horse_armor:*=reskillable:defense|16,reskillable:agility|16", "minecraft:fireworks=reskillable:agility|24", "minecraft:dye:15=reskillable:farming|12", "minecraft:saddle=reskillable:agility|12", "minecraft:redstone=reskillable:building|5", "minecraft:redstone_torch=reskillable:building|5", "minecraft:skull:1=reskillable:building|20,reskillable:attack|20,reskillable:defense|20"};
     public static final Map<LockKey, RequirementHolder> locks = new HashMap<>();
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
-    private static Map<ItemInfo, Set<ItemInfo>> nbtLockInfo = new HashMap<>();
+    private static Map<NBTLockKey, Set<NBTLockKey>> nbtLockInfo = new HashMap<>();
     private static RequirementHolder lastLock = EMPTY_LOCK;
     private static ItemStack lastItem;
     private static String[] configLocks;
+
+    private static List<Class<? extends LockKey>> itemLockPriority = new ArrayList<>();//TODO Map<Type, List>
 
     public static void loadFromConfig(String[] configValues) {
         configLocks = configValues;
     }
 
     public static void setupLocks() {
+        registerDefaultLockKeys();
         if (configLocks != null) {
             for (String s : configLocks) {
                 String[] tokens = s.split("=");
@@ -85,6 +89,19 @@ public class LevelLockHandler {
         }
     }
 
+    private static void registerDefaultLockKeys() {
+        //TODO: figure out how priority works
+        registerLockKey(ItemInfo.class, 0);
+        registerLockKey(ModLockKey.class, 1);
+        registerLockKey(GenericNBTLockKey.class, 2);
+    }
+
+    public static void registerLockKey(Class<? extends LockKey> keyClass, int priority) {
+        //TODO: Figure out how to handle the locks whether it is a list or how to store it to bump priority of things
+        itemLockPriority.add(keyClass);
+        //TODO handle priority
+    }
+
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
         locks.put(key, holder);
 
@@ -112,33 +129,87 @@ public class LevelLockHandler {
             return EMPTY_LOCK;
         }
 
+        //TODO make it so that there is a boolean method that returns if there is a method to try and get more exact??
+        //TODO other option is to make it so that if instanceof NBTLockKey has a fuzzy lock method and otherwise it does default
+
         ItemInfo cleanStack = new ItemInfo(stack.getItem(), stack.getMetadata());
         //There is no NBT information so matching is not needed. OR no specific NBT locks for this item stack so the NBT tags can be ignored
         ResourceLocation registryName = stack.getItem().getRegistryName();
-        ModLockKey modLock = registryName != null ? new ModLockKey(registryName.getResourceDomain()) : null;
-        if (!stack.hasTagCompound() || !nbtLockInfo.containsKey(cleanStack)) {
-            return locks.getOrDefault(cleanStack, modLock != null ? locks.getOrDefault(modLock, EMPTY_LOCK) : EMPTY_LOCK);
+        if (registryName == null) {
+            //TODO fix this maybe but this should never be the case
+            return EMPTY_LOCK;
         }
+        /*if (!stack.hasTagCompound()) {// || !nbtLockInfo.containsKey(cleanStack)) {//TODO add back some of that optimization checks?
+            //TODO fix this to have automated priority checking
+            ModLockKey modLock = new ModLockKey(registryName.getResourceDomain());
+            return locks.getOrDefault(cleanStack, locks.getOrDefault(modLock, EMPTY_LOCK));
+        }*/
 
         NBTTagCompound tag = stack.getTagCompound();
-        Set<ItemInfo> nbtItemLookup = nbtLockInfo.get(cleanStack);
 
-        List<LockKey> partialLocks = new ArrayList<>();
-        for (ItemInfo nbtItem : nbtItemLookup) {
-            int comp = compareNBT(tag, nbtItem.getTag());
-            if (comp == 0) {
-                return locks.getOrDefault(nbtItem, modLock != null ? locks.getOrDefault(modLock, EMPTY_LOCK) : EMPTY_LOCK);
-            } else if (comp > 0) { //Build up the best match
-                partialLocks.add(nbtItem);
+        //TODO should NBT check all higher types (probably)
+
+        boolean hasNBTTag = stack.hasTagCompound();
+        boolean hasBaseLock = false;
+
+        List<RequirementHolder> requirements = new ArrayList<>();
+        for (Class<? extends LockKey> keyClass : itemLockPriority) {
+            //TODO: Check when adding to itemLockPriority if it has a "new type(item)"
+
+
+            if (NBTLockKey.class.isAssignableFrom(keyClass)) {
+                NBTLockKey nbtLock;
+                //TODO add documentation that all NBTLockKeys need a param itemstack at least for here. OR only register them in the lockprio for items
+                //TODO can fromItemStack even be used?
+                try {
+                    nbtLock = (NBTLockKey) keyClass.getDeclaredConstructor(ItemStack.class).newInstance(stack);
+                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    e.printStackTrace();
+                    continue;//Failed to find method initializer
+                }
+
+                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(nbtLock));
+
+                if (!nbtRequirement.equals(EMPTY_LOCK)) {
+                    requirements.add(nbtRequirement);
+                }
+                if (!hasBaseLock) { //Use fallback if a fallback has not already been used
+                    LockKey fallBack = nbtLock.withoutTag();
+                    if (fallBack == null || !locks.containsKey(fallBack)) {
+                        continue;
+                    }
+                    requirements.add(locks.get(fallBack));
+                    hasBaseLock = true;
+                }
+            } else if (!hasBaseLock) {
+                //TODO add the base lock
+
+                if (!hasNBTTag) {
+                    break;
+                }
             }
         }
-        if (partialLocks.isEmpty()) {
-            return locks.getOrDefault(cleanStack, modLock != null ? locks.getOrDefault(modLock, EMPTY_LOCK) : EMPTY_LOCK);
-        }
 
+        return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+    }
+
+    private static RequirementHolder getNBTLock(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {
+        List<LockKey> partialLocks = new ArrayList<>();
+        for (NBTLockKey nbtLock : nbtItemLookup) {
+            int comp = compareNBT(tag, nbtLock.getTag());
+            if (comp == 0) {
+                return locks.getOrDefault(nbtLock, EMPTY_LOCK);
+            } else if (comp > 0) { //Build up the best match
+                partialLocks.add(nbtLock);
+            }
+        }
+        if (partialLocks.isEmpty()) {//TODO Should it potentially just always build any NBT locks ontop of the default item type locks
+            return EMPTY_LOCK;
+        }
         return new RequirementHolder(partialLocks.stream().map(locks::get).filter(Objects::nonNull).toArray(RequirementHolder[]::new));
     }
 
+    //TODO does this always get called by the partial tag? If so can it be moved into NBTLockKey (probably)
     private static int compareNBT(NBTBase full, NBTBase partial) {
         if (full == null) {
             return partial != null ? -1 : 0;
