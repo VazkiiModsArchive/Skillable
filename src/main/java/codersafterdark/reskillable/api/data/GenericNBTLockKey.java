@@ -12,7 +12,7 @@ public class GenericNBTLockKey implements NBTLockKey {
 
     //TODO potentially remove, this is just for reverse building
     public GenericNBTLockKey(ItemStack stack) {
-        this.tag = stack.getTagCompound();
+        this(stack.getTagCompound());
     }
 
     @Override
@@ -28,5 +28,15 @@ public class GenericNBTLockKey implements NBTLockKey {
     @Override
     public LockKey withoutTag() {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof GenericNBTLockKey && (tag == null ? ((GenericNBTLockKey) o).tag == null : tag.equals(((GenericNBTLockKey) o).tag));
+    }
+
+    @Override
+    public int hashCode() {
+        return tag == null ? super.hashCode() : tag.hashCode();
     }
 }

@@ -41,8 +41,9 @@ public class LevelLockHandler {
 
     public static final String[] DEFAULT_SKILL_LOCKS = new String[]{"minecraft:iron_shovel:*=reskillable:gathering|5", "minecraft:iron_axe:*=reskillable:gathering|5", "minecraft:iron_sword:*=reskillable:attack|5", "minecraft:iron_pickaxe:*=reskillable:mining|5", "minecraft:iron_hoe:*=reskillable:farming|5", "minecraft:iron_helmet:*=reskillable:defense|5", "minecraft:iron_chestplate:*=reskillable:defense|5", "minecraft:iron_leggings:*=reskillable:defense|5", "minecraft:iron_boots:*=reskillable:defense|5", "minecraft:golden_shovel:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_axe:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_sword:*=reskillable:attack|5,reskillable:magic|5", "minecraft:golden_pickaxe:*=reskillable:mining|5,reskillable:magic|5", "minecraft:golden_hoe:*=reskillable:farming|5,reskillable:magic|5", "minecraft:golden_helmet:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_chestplate:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_leggings:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_boots:*=reskillable:defense|5,reskillable:magic|5", "minecraft:diamond_shovel:*=reskillable:gathering|16", "minecraft:diamond_axe:*=reskillable:gathering|16", "minecraft:diamond_sword:*=reskillable:attack|16", "minecraft:diamond_pickaxe:*=reskillable:mining|16", "minecraft:diamond_hoe:*=reskillable:farming|16", "minecraft:diamond_helmet:*=reskillable:defense|16", "minecraft:diamond_chestplate:*=reskillable:defense|16", "minecraft:diamond_leggings:*=reskillable:defense|16", "minecraft:diamond_boots:*=reskillable:defense|16", "minecraft:shears:*=reskillable:farming|5,reskillable:gathering|5", "minecraft:fishing_rod:*=reskillable:gathering|8", "minecraft:shield:*=reskillable:defense|8", "minecraft:bow:*=reskillable:attack|8", "minecraft:ender_pearl=reskillable:magic|8", "minecraft:ender_eye=reskillable:magic|16,reskillable:building|8", "minecraft:elytra:*=reskillable:defense|16,reskillable:agility|24,reskillable:magic|16", "minecraft:lead=reskillable:farming|5", "minecraft:end_crystal=reskillable:building|24,reskillable:magic|32", "minecraft:iron_horse_armor:*=reskillable:defense|5,reskillable:agility|5", "minecraft:golden_horse_armor:*=reskillable:defense|5,reskillable:magic|5,reskillable:agility|5", "minecraft:diamond_horse_armor:*=reskillable:defense|16,reskillable:agility|16", "minecraft:fireworks=reskillable:agility|24", "minecraft:dye:15=reskillable:farming|12", "minecraft:saddle=reskillable:agility|12", "minecraft:redstone=reskillable:building|5", "minecraft:redstone_torch=reskillable:building|5", "minecraft:skull:1=reskillable:building|20,reskillable:attack|20,reskillable:defense|20"};
     public static final Map<LockKey, RequirementHolder> locks = new HashMap<>();
+    public static final EmptyLockKey EMPTY_LOCK_KEY = new EmptyLockKey();
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
-    private static Map<NBTLockKey, Set<NBTLockKey>> nbtLockInfo = new HashMap<>();
+    private static Map<LockKey, Set<NBTLockKey>> nbtLockInfo = new HashMap<>();
     private static RequirementHolder lastLock = EMPTY_LOCK;
     private static ItemStack lastItem;
     private static String[] configLocks;
@@ -87,12 +88,11 @@ public class LevelLockHandler {
             }
         }
         try {
-            NBTTagCompound silkTouch = JsonToNBT.getTagFromJson("{ench:[{id: 33 as short}]}");//Any level of silk touch incase some mod for some reason adds more
-            addLockByKey(new GenericNBTLockKey(silkTouch), RequirementHolder.fromString("reskillable|magic:10"));
+            addLockByKey(new GenericNBTLockKey(JsonToNBT.getTagFromJson("{ench:[{id: 33s}]}")), RequirementHolder.fromString("reskillable:magic|10"));
 
-            addLockByKey(new ModLockKey("minecraft"), RequirementHolder.fromString("reskillable|building:4"));
+            addLockByKey(new ModLockKey("minecraft"), RequirementHolder.fromString("reskillable:building|4"));
 
-            addLockByKey(new ModLockKey("minecraft", JsonToNBT.getTagFromJson("{ench:[{id: 34 as short}]}")), RequirementHolder.fromString("reskillable|gathering:6"));
+            addLockByKey(new ModLockKey("minecraft", JsonToNBT.getTagFromJson("{ench:[{id: 34s}]}")), RequirementHolder.fromString("reskillable:gathering|6"));
         } catch (NBTException e) {
             e.printStackTrace();
         }
@@ -110,14 +110,21 @@ public class LevelLockHandler {
     }
 
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
+        if (key == null || key.equals(EMPTY_LOCK_KEY)) { //Do not add an empty lock key to the actual map
+            return;
+        }
         locks.put(key, holder);
 
         if (key instanceof NBTLockKey) {
             NBTTagCompound tag = ((NBTLockKey) key).getTag();
             if (tag != null) {
                 //Store the NBT tag in a list for the specific item
-                //TODO maybe make it so that nbtLockInfo is lockKey isntead of NBTLockKey for the key
-                nbtLockInfo.computeIfAbsent((NBTLockKey) ((NBTLockKey) key).withoutTag(), k -> new HashSet<>()).add((NBTLockKey) key);
+                LockKey without = ((NBTLockKey) key).withoutTag();
+                if (without == null) {//Use a key that is constant for purposes of getting
+                    without = EMPTY_LOCK_KEY;
+                }
+                nbtLockInfo.computeIfAbsent(without, k -> new HashSet<>()).add((NBTLockKey) key);
+
             }
         }
 
@@ -131,13 +138,7 @@ public class LevelLockHandler {
     }
 
     public static void addLock(ItemStack stack, RequirementHolder holder) {
-        //ItemInfo stackKey = new ItemInfo(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
         addLockByKey(new ItemInfo(stack), holder);
-        /*//Only bother mapping it if there is an NBT tag
-        if (stack.hasTagCompound()) {
-            //Store the NBT tag in a list for the specific item
-            nbtLockInfo.computeIfAbsent(new ItemInfo(stack.getItem(), stack.getMetadata()), k -> new HashSet<>()).add(stackKey);
-        }*/
     }
 
     public static RequirementHolder getSkillLock(ItemStack stack) {//TODO is there a way to not do this for EVERY item on load of JEI
@@ -160,20 +161,22 @@ public class LevelLockHandler {
             }
 
             //TODO: It should probably do the check if the lock contains it exactly first??
-            //
-
+            //TODO: that would make it so that if there it ignores the type without a tag
             if (lock instanceof NBTLockKey) {
-                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(lock));
+                LockKey baseLock = ((NBTLockKey) lock).withoutTag();
+                if (baseLock == null) {
+                    //TODO do this better maybe
+                    baseLock = EMPTY_LOCK_KEY;
+                }
+                RequirementHolder nbtRequirement = getNBTLock(tag, nbtLockInfo.get(baseLock));
 
                 if (!nbtRequirement.equals(EMPTY_LOCK)) {
                     requirements.add(nbtRequirement);
                 }
                 //Add the base for this item if there is one
-                LockKey fallBack = ((NBTLockKey) lock).withoutTag();
-                if (fallBack == null || !locks.containsKey(fallBack)) {
-                    continue;
+                if (locks.containsKey(baseLock)) { //Should always be false if it is EMPTY_LOCK_KEY
+                    requirements.add(locks.get(baseLock));
                 }
-                requirements.add(locks.get(fallBack));
             } else if (locks.containsKey(lock)) { //Add the base for the item
                 requirements.add(locks.get(lock));
             }
@@ -182,9 +185,9 @@ public class LevelLockHandler {
         return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
     }
 
-    private static RequirementHolder getNBTLock(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {
-        if (tag == null) { //If there is no tag for the item just return no lock
-            return EMPTY_LOCK;
+    private static RequirementHolder getNBTLock(NBTTagCompound tag, Set<NBTLockKey> nbtItemLookup) {//TODO should this be a list of Requirement holders?
+        if (tag == null || nbtItemLookup == null) { //If there is no tag for the item just return no lock
+            return EMPTY_LOCK;//TODO is this fine with the tag == null check?
         }
         List<LockKey> partialLocks = new ArrayList<>();
         for (NBTLockKey nbtLock : nbtItemLookup) {

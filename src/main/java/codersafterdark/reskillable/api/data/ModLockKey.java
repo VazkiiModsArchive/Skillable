@@ -9,7 +9,7 @@ public class ModLockKey implements LockKey, NBTLockKey {
     private NBTTagCompound tag;
 
     public ModLockKey(String modName) {
-        this.modName = modName.toLowerCase();
+        this.modName = modName == null ? "" : modName.toLowerCase();
     }
 
     public ModLockKey(String modName, NBTTagCompound tag) {
@@ -47,8 +47,14 @@ public class ModLockKey implements LockKey, NBTLockKey {
     }
 
     @Override
-    public boolean equals(Object o) {//TODO make it check if the tags are equal
-        return o == this || o instanceof ModLockKey && modName.equals(((ModLockKey) o).modName);
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof ModLockKey && modName.equals(((ModLockKey) o).modName)) {
+            return tag == null ? ((ModLockKey) o).tag == null : tag.equals(((ModLockKey) o).tag);
+        }
+        return false;
     }
 
     @Override
