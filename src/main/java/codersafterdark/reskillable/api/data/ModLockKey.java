@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Objects;
+
 public class ModLockKey implements LockKey, NBTLockKey {
     private final String modName;
     private NBTTagCompound tag;
@@ -50,6 +52,6 @@ public class ModLockKey implements LockKey, NBTLockKey {
 
     @Override
     public int hashCode() {
-        return modName.hashCode();
+        return Objects.hash(modName, tag);
     }
 }

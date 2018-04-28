@@ -43,7 +43,7 @@ import java.util.stream.IntStream;
 public class LevelLockHandler {
 
     public static final String[] DEFAULT_SKILL_LOCKS = new String[]{"minecraft:iron_shovel:*=reskillable:gathering|5", "minecraft:iron_axe:*=reskillable:gathering|5", "minecraft:iron_sword:*=reskillable:attack|5", "minecraft:iron_pickaxe:*=reskillable:mining|5", "minecraft:iron_hoe:*=reskillable:farming|5", "minecraft:iron_helmet:*=reskillable:defense|5", "minecraft:iron_chestplate:*=reskillable:defense|5", "minecraft:iron_leggings:*=reskillable:defense|5", "minecraft:iron_boots:*=reskillable:defense|5", "minecraft:golden_shovel:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_axe:*=reskillable:gathering|5,reskillable:magic|5", "minecraft:golden_sword:*=reskillable:attack|5,reskillable:magic|5", "minecraft:golden_pickaxe:*=reskillable:mining|5,reskillable:magic|5", "minecraft:golden_hoe:*=reskillable:farming|5,reskillable:magic|5", "minecraft:golden_helmet:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_chestplate:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_leggings:*=reskillable:defense|5,reskillable:magic|5", "minecraft:golden_boots:*=reskillable:defense|5,reskillable:magic|5", "minecraft:diamond_shovel:*=reskillable:gathering|16", "minecraft:diamond_axe:*=reskillable:gathering|16", "minecraft:diamond_sword:*=reskillable:attack|16", "minecraft:diamond_pickaxe:*=reskillable:mining|16", "minecraft:diamond_hoe:*=reskillable:farming|16", "minecraft:diamond_helmet:*=reskillable:defense|16", "minecraft:diamond_chestplate:*=reskillable:defense|16", "minecraft:diamond_leggings:*=reskillable:defense|16", "minecraft:diamond_boots:*=reskillable:defense|16", "minecraft:shears:*=reskillable:farming|5,reskillable:gathering|5", "minecraft:fishing_rod:*=reskillable:gathering|8", "minecraft:shield:*=reskillable:defense|8", "minecraft:bow:*=reskillable:attack|8", "minecraft:ender_pearl=reskillable:magic|8", "minecraft:ender_eye=reskillable:magic|16,reskillable:building|8", "minecraft:elytra:*=reskillable:defense|16,reskillable:agility|24,reskillable:magic|16", "minecraft:lead=reskillable:farming|5", "minecraft:end_crystal=reskillable:building|24,reskillable:magic|32", "minecraft:iron_horse_armor:*=reskillable:defense|5,reskillable:agility|5", "minecraft:golden_horse_armor:*=reskillable:defense|5,reskillable:magic|5,reskillable:agility|5", "minecraft:diamond_horse_armor:*=reskillable:defense|16,reskillable:agility|16", "minecraft:fireworks=reskillable:agility|24", "minecraft:dye:15=reskillable:farming|12", "minecraft:saddle=reskillable:agility|12", "minecraft:redstone=reskillable:building|5", "minecraft:redstone_torch=reskillable:building|5", "minecraft:skull:1=reskillable:building|20,reskillable:attack|20,reskillable:defense|20"};
-    public static final Map<LockKey, RequirementHolder> locks = new HashMap<>();
+    private static final Map<LockKey, RequirementHolder> locks = new HashMap<>(); //This should stay private to ensure that it is added to correctly
     public static final EmptyLockKey EMPTY_LOCK_KEY = new EmptyLockKey();
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
     private static Map<Class<?>, List<Class<? extends LockKey>>> lockTypesMap = new HashMap<>();
@@ -95,26 +95,36 @@ public class LevelLockHandler {
         registerLockKey(ItemStack.class, ItemInfo.class, ModLockKey.class, GenericNBTLockKey.class);
     }
 
+    /**
+     * Registers LockKey class implementations as key types to be automatically checked when calling {@link #getLocks(Object)} on an
+     * Object of the type given by lockTypeClass.
+     * @param lockTypeClass A class that represents the type of object that the given keyClasses can be built from.
+     * @param keyClasses    A list of Classes that implement LockKey, and have a constructor with the parameter with of the type lockTypeClass
+     */
     public static void registerLockKey(Class<?> lockTypeClass, Class<? extends LockKey>... keyClasses) {
         for (Class<? extends LockKey> keyClass : keyClasses) {
             try {
+                //Should work, it "may" need to attempt to create a "new instance" to make sure it is properly accessible
+                //if this ends up being valid and then errors in getLocks
                 keyClass.getDeclaredConstructor(lockTypeClass);
-                //TODO do we have to create a "new instance" to make sure it is properly accessible?
 
                 //Add it to the map
                 lockTypesMap.computeIfAbsent(lockTypeClass, k -> new ArrayList<>()).add(keyClass);
             } catch (NoSuchMethodException | SecurityException e) {
                 ReskillableAPI.getInstance().log(Level.ERROR, keyClass.getSimpleName() + " does not have a constructor with the parameter: " + lockTypeClass.getSimpleName());
-                //TODO: Throw an actual error?
+                //TODO: Localize the error message (potentially also rephrase it slightly)
             }
         }
-        //TODO have them declare a class that has the correct param and whatever else they need?
-        //TODO add documentation that all NBTLockKeys or things that can be done by an item need a param itemstack at least for now
-        //This pertains to things that start with itemstack.class
     }
 
+    /**
+     * Adds locks to the given key.
+     * @param key    The key to register the given holder locks against. If the given LockKey type has not been registered
+     *               in {@link #registerLockKey(Class, Class[])}, then it will not be able to be automatically retrieved
+     *               using {@link #getLocks(Object)}
+     * @param holder The RequirementHolder that represents the locks to add.
+     */
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
-        //TODO Note somewhere that if the LockKey type is not registered it may not be automatically searched
         if (key == null || key.equals(EMPTY_LOCK_KEY)) { //Do not add an empty lock key to the actual map
             return;
         }
@@ -149,11 +159,16 @@ public class LevelLockHandler {
         return locks.containsKey(key) ? locks.get(key) : EMPTY_LOCK;
     }
 
-    //TODO is there a way to not do this for EVERY item on load? JEI gets the tooltip of every item when it registers it (not sure if they cache the output or not)
     public static RequirementHolder getSkillLock(ItemStack stack) {
         return stack == null || stack.isEmpty() ? EMPTY_LOCK : getLocks(stack);
     }
 
+    /**
+     * Gets all the locks the given object has on it.
+     * @param toCheck The object to retrieve the locks of.
+     * @param <T>     Represents the type of the object to check, must be registered using {@link #registerLockKey(Class, Class[])}
+     * @return A RequirementHolder of all he locks for the given object.
+     */
     public static <T> RequirementHolder getLocks(T toCheck) {
         if (toCheck == null) {
             return EMPTY_LOCK;
@@ -186,13 +201,8 @@ public class LevelLockHandler {
                     baseLock = EMPTY_LOCK_KEY;
                 }
 
-                if (locks.containsKey(lock)) {
-                    //Minorly increases performance if there is a proper match
-                    requirements.add(locks.get(lock));
-                } else {
-                    //getNBTLocks may be an empty list but that is fine as then no elements will be added
-                    requirements.addAll(getNBTLocks(((NBTLockKey) lock).getTag(), nbtLockInfo.get(baseLock)));
-                }
+                //getNBTLocks may be an empty list but that is fine as then no elements will be added
+                requirements.addAll(getNBTLocks(((NBTLockKey) lock).getTag(), nbtLockInfo.get(baseLock)));
 
                 //Ignore NBT for checking if there is a lock without NBT
                 lock = baseLock; //Below if should always be false if it is EMPTY_LOCK_KEY
@@ -212,10 +222,7 @@ public class LevelLockHandler {
         }
         List<LockKey> partialLocks = new ArrayList<>();
         for (NBTLockKey nbtLock : nbtItemLookup) {
-            int comp = compareNBT(tag, nbtLock.getTag());
-            if (comp == 0) {
-                return !locks.containsKey(nbtLock) ? new ArrayList<>() : Collections.singletonList(locks.get(nbtLock));
-            } else if (comp > 0) { //Build up the best match
+            if (compareNBT(tag, nbtLock.getTag()) >= 0) { //Build up the best match
                 partialLocks.add(nbtLock);
             }
         }

@@ -10,7 +10,6 @@ public class GenericNBTLockKey implements NBTLockKey {
         this.tag = tag;
     }
 
-    //TODO potentially remove, this is just for reverse building
     public GenericNBTLockKey(ItemStack stack) {
         this(stack.getTagCompound());
     }
