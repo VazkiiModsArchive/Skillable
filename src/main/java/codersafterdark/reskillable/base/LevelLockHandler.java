@@ -163,17 +163,21 @@ public class LevelLockHandler {
         return stack == null || stack.isEmpty() ? EMPTY_LOCK : getLocks(stack);
     }
 
+    //If this does not return "guess" the correct registered type use below method where you tell it the type
+    public static <T> RequirementHolder getLocks(T toCheck) {
+        return toCheck == null ? EMPTY_LOCK : getLocks(toCheck.getClass(), toCheck);
+    }
+
     /**
      * Gets all the locks the given object has on it.
      * @param toCheck The object to retrieve the locks of.
      * @param <T>     Represents the type of the object to check, must be registered using {@link #registerLockKey(Class, Class[])}
      * @return A RequirementHolder of all he locks for the given object.
      */
-    public static <T> RequirementHolder getLocks(T toCheck) {
+    public static <T> RequirementHolder getLocks(Class<? extends T> classType, T toCheck) {
         if (toCheck == null) {
             return EMPTY_LOCK;
         }
-        Class<?> classType = toCheck.getClass();
 
         if (!lockTypesMap.containsKey(classType)) {
             return EMPTY_LOCK;
