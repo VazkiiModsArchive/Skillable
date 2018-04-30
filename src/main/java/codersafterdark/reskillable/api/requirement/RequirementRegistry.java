@@ -37,6 +37,12 @@ public class RequirementRegistry {
                 }
             }
 
+        } else if (requirements.length > 2) {
+            String requirementType = requirements[0];
+            if (requirementHandlers.containsKey(requirementType)) {
+                //Pass them the whole extended requirement Inputs (Note: they will have to split by | themselves
+                requirement = requirementHandlers.get(requirementType).apply(requirementString.replaceFirst(requirementType + "\\|", ""));
+            }
         }
         return Objects.requireNonNull(requirement, "Invalid Level Lock for Input: " + requirementString);
     }

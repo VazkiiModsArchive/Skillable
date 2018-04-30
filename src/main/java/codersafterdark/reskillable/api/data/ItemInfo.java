@@ -1,12 +1,13 @@
 package codersafterdark.reskillable.api.data;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Objects;
 
-public class ItemInfo implements LockKey {
+public class ItemInfo implements NBTLockKey {
     private int metadata;
     private Item item;
     private NBTTagCompound tag;
@@ -21,8 +22,18 @@ public class ItemInfo implements LockKey {
         this.tag = tag;
     }
 
+    public ItemInfo(ItemStack stack) {
+        this(stack.getItem(), stack.getMetadata(), stack.getTagCompound());
+    }
+
+    @Override
     public NBTTagCompound getTag() {
         return this.tag;
+    }
+
+    @Override
+    public LockKey withoutTag() {
+        return tag == null ? this : new ItemInfo(item, metadata);
     }
 
     @Override
