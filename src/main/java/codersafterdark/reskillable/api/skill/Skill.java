@@ -62,7 +62,8 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     }
 
     public Pair<Integer, Integer> getSpriteFromRank(int rank) {
-        return new MutablePair<>(Math.min(rank, 3) * 16, 0);
+        //TODO: If we ever end up having more images than 4 when the Math.min is changed make sure to also change the value rank is divided by
+        return new MutablePair<>(Math.min(rank / 2, 3) * 16, 0);
     }
 
     @Override
