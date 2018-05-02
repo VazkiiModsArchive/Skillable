@@ -13,7 +13,7 @@ skillable.misc.armorEquipLocked=你不符合穿戴该装备的需求
 
 # FORMATS
 skillable.misc.skillFormat=%s%s: %s%d
-skillable.misc.achievementFormat=进度： %s
+skillable.misc.achievementFormat=进度： %s%s
 skillable.misc.traitFormat=特性： %s%s
 
 # SKILL NAMES
