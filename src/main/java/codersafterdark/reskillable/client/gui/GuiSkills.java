@@ -39,7 +39,8 @@ public class GuiSkills extends GuiScreen {
     private List<Skill> skills;
 
     public GuiSkills() {
-        skills = new ArrayList<>(ReskillableRegistries.SKILLS.getValuesCollection());
+        skills = new ArrayList<>();
+        ReskillableRegistries.SKILLS.getValuesCollection().stream().filter(Skill::isEnabled).forEach(skills::add);
     }
 
     public static void drawSkill(int x, int y, Skill skill) {

@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.api.requirement;
 
+import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.skill.Skill;
@@ -8,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 public class RequirementRegistry {
@@ -44,7 +44,14 @@ public class RequirementRegistry {
                 requirement = requirementHandlers.get(requirementType).apply(requirementString.replaceFirst(requirementType + "\\|", ""));
             }
         }
-        return Objects.requireNonNull(requirement, "Invalid Level Lock for Input: " + requirementString);
+        if (requirement == null) {
+            Reskillable.logger.log(Level.ERROR, "Invalid Lock for Input: " + requirementString);
+        } else if (!requirement.isEnabled()) {
+            //TODO: potentially let requirements set their own disabled message
+            Reskillable.logger.log(Level.ERROR, "Disabled Requirement for Input: " + requirementString);
+            requirement = null;
+        }
+        return requirement;
     }
 
     public void addRequirementHandler(String identity, Function<String, Requirement> creator) {
