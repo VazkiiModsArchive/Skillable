@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.api.unlockable;
 
+import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.data.RequirementHolder;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -30,14 +32,19 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         setRegistryName(name);
         icon = new ResourceLocation(name.getResourceDomain(), "textures/unlockables/" + name.getResourcePath() + ".png");
         this.unlockableConfig = ReskillableAPI.getInstance().getTraitConfig(name, x, y, cost, defaultRequirements);
+        parentSkill = Objects.requireNonNull(ReskillableRegistries.SKILLS.getValue(skillName));
+        if (isEnabled()) {
+            if (parentSkill.isEnabled()) {
+                parentSkill.addUnlockable(this);
+            } else {
+                Reskillable.logger.log(Level.ERROR, getName() + " is enabled but the parent skill: " + parentSkill.getName() + " is disabled. Disabling: " + getName());
+                this.unlockableConfig.setEnabled(false);
+            }
+        }
     }
 
     @Nonnull
     public Skill getParentSkill() {
-        if (parentSkill == null) {
-            parentSkill = Objects.requireNonNull(ReskillableRegistries.SKILLS.getValue(skillName));
-            parentSkill.addUnlockable(this);
-        }
         return parentSkill;
     }
 

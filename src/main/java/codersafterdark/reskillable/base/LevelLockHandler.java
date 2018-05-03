@@ -128,6 +128,10 @@ public class LevelLockHandler {
         if (key == null || key.equals(EMPTY_LOCK_KEY)) { //Do not add an empty lock key to the actual map
             return;
         }
+        if (holder == null || holder.equals(EMPTY_LOCK) || holder.getRestrictionLength() == 0) {
+            //If the holder is invalid or has no data don't actually add it (most likely caused by requirements being disabled or being invalid)
+            return;
+        }
         locks.put(key, holder);
 
         if (key instanceof NBTLockKey) {

@@ -1,8 +1,6 @@
 package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
-import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -41,9 +39,6 @@ public class Reskillable {
         if (ConfigHandler.config.hasChanged()) {
             ConfigHandler.config.save();
         }
-        ReskillableRegistries.UNLOCKABLES.getValuesCollection().parallelStream()
-                .filter(Unlockable::isEnabled)
-                .forEach(Unlockable::getParentSkill);
 
         proxy.init(event);
     }

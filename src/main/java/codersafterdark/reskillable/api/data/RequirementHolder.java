@@ -14,9 +14,8 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RequirementHolder {
 
@@ -66,17 +65,14 @@ public class RequirementHolder {
     }
 
     public static RequirementHolder fromStringList(String[] requirementStringList) {
-        RequirementHolder requirementHolder;
-
-        if (requirementStringList.length == 0) {
-            requirementHolder = RequirementHolder.realEmpty();
-        } else {
-            List<Requirement> requirements = Arrays.stream(requirementStringList)
-                    .map(ReskillableAPI.getInstance().getRequirementRegistry()::getRequirement)
-                    .collect(Collectors.toList());
-            requirementHolder = new RequirementHolder(requirements);
+        List<Requirement> requirements = new ArrayList<>();
+        for (String s : requirementStringList) {
+            Requirement requirement = ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(s);
+            if (requirement != null) {
+                requirements.add(requirement);
+            }
         }
-        return requirementHolder;
+        return requirements.isEmpty() ? RequirementHolder.realEmpty() : new RequirementHolder(requirements);
     }
 
     public static RequirementHolder fromString(String s) {

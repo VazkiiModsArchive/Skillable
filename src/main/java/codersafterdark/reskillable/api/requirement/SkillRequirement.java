@@ -61,4 +61,9 @@ public class SkillRequirement extends Requirement {
         }
         return RequirementComparision.NOT_EQUAL;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return getSkill() != null && getSkill().isEnabled();
+    }
 }
