@@ -3,11 +3,9 @@ package codersafterdark.reskillable.api.data;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GenericNBTLockKey implements NBTLockKey {
-    private NBTTagCompound tag;
-
+public class GenericNBTLockKey extends NBTLockKey {
     public GenericNBTLockKey(NBTTagCompound tag) {
-        this.tag = tag;
+        super(tag);
     }
 
     public GenericNBTLockKey(ItemStack stack) {
@@ -15,18 +13,13 @@ public class GenericNBTLockKey implements NBTLockKey {
     }
 
     @Override
-    public NBTTagCompound getTag() {
-        return tag;
-    }
-
-    @Override
-    public LockKey withoutTag() {
+    public LockKey getNotFuzzy() {
         return null;
     }
 
     @Override
     public boolean equals(Object o) {
-        return o == this || o instanceof GenericNBTLockKey && (tag == null ? ((GenericNBTLockKey) o).tag == null : tag.equals(((GenericNBTLockKey) o).tag));
+        return o == this || o instanceof GenericNBTLockKey && (getTag() == null ? ((GenericNBTLockKey) o).getTag() == null : getTag().equals(((GenericNBTLockKey) o).getTag()));
     }
 
     @Override

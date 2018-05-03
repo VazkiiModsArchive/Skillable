@@ -7,19 +7,18 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Objects;
 
-public class ItemInfo implements NBTLockKey {
+public class ItemInfo extends NBTLockKey {
     private int metadata;
     private Item item;
-    private NBTTagCompound tag;
 
     public ItemInfo(Item item, int metadata) {
         this(item, metadata, null);
     }
 
     public ItemInfo(Item item, int metadata, NBTTagCompound tag) {
+        super(tag);
         this.item = item;
         this.metadata = metadata;
-        this.tag = tag;
     }
 
     public ItemInfo(ItemStack stack) {
@@ -27,13 +26,8 @@ public class ItemInfo implements NBTLockKey {
     }
 
     @Override
-    public NBTTagCompound getTag() {
-        return this.tag;
-    }
-
-    @Override
-    public LockKey withoutTag() {
-        return tag == null ? this : new ItemInfo(item, metadata);
+    public LockKey getNotFuzzy() {
+        return isNotFuzzy() ? this : new ItemInfo(item, metadata);
     }
 
     @Override
@@ -48,10 +42,10 @@ public class ItemInfo implements NBTLockKey {
         if (item != other.item) {
             return false;
         }
-        if (tag == null) {
-            return other.tag == null && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        if (getTag() == null) {
+            return other.getTag() == null && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
         }
-        return tag.equals(other.tag) && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        return getTag().equals(other.getTag()) && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
     }
 
     @Override

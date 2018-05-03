@@ -6,37 +6,27 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.Objects;
 
-public class ModLockKey implements LockKey, NBTLockKey {
+public class ModLockKey extends NBTLockKey {
     private final String modName;
-    private NBTTagCompound tag;
 
     public ModLockKey(String modName) {
-        this.modName = modName == null ? "" : modName.toLowerCase();
+        this(modName, null);
     }
 
     public ModLockKey(String modName, NBTTagCompound tag) {
-        this(modName);
-        this.tag = tag;
+        super(tag);
+        this.modName = modName == null ? "" : modName.toLowerCase();
     }
 
     public ModLockKey(ItemStack stack) {
+        super(stack.getTagCompound());
         ResourceLocation registryName = stack.getItem().getRegistryName();
-        if (registryName == null) {
-            modName = "";
-        } else {
-            modName = registryName.getResourceDomain();
-            tag = stack.getTagCompound();
-        }
+        this.modName = registryName == null ? "" : registryName.getResourceDomain();
     }
 
     @Override
-    public NBTTagCompound getTag() {
-        return tag;
-    }
-
-    @Override
-    public LockKey withoutTag() {
-        return tag == null ? this : new ModLockKey(modName);
+    public LockKey getNotFuzzy() {
+        return isNotFuzzy() ? this : new ModLockKey(modName);
     }
 
     @Override
@@ -45,7 +35,7 @@ public class ModLockKey implements LockKey, NBTLockKey {
             return true;
         }
         if (o instanceof ModLockKey && modName.equals(((ModLockKey) o).modName)) {
-            return tag == null ? ((ModLockKey) o).tag == null : tag.equals(((ModLockKey) o).tag);
+            return getTag() == null ? ((ModLockKey) o).getTag() == null : getTag().equals(((ModLockKey) o).getTag());
         }
         return false;
     }
