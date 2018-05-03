@@ -20,7 +20,7 @@ public class GuiSkillableConfig extends GuiConfig {
 
 
     public static List<IConfigElement> getAllElements() {
-        List<IConfigElement> list = new ArrayList();
+        List<IConfigElement> list = new ArrayList<>();
 
         Set<String> categories = ConfigHandler.config.getCategoryNames();
         for (String s : categories) {

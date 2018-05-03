@@ -65,19 +65,19 @@ public class GuiButtonInventoryTab extends GuiButton {
         return selectedPred.test(Minecraft.getMinecraft().currentScreen);
     }
 
-    public static enum TabType {
+    public enum TabType {
         INVENTORY(1, null),
         SKILLS(0, null),
-        ABILITIES(2, (data) -> data.hasAnyAbilities());
+        ABILITIES(2, PlayerData::hasAnyAbilities);
 
         public final int iconIndex;
         private Predicate<PlayerData> renderPred;
 
-        private TabType(int iconIndex, Predicate<PlayerData> render) {
+        TabType(int iconIndex, Predicate<PlayerData> render) {
             this.iconIndex = iconIndex;
             this.renderPred = render;
             if (renderPred == null) {
-                renderPred = (data) -> true;
+                renderPred = data -> true;
             }
         }
 

@@ -90,10 +90,7 @@ public class GuiSkills extends GuiScreen {
 
 
         int index = 0;
-        for (int j = 0; j < skills.size(); j++) {
-            if (j < offset || index > 7) {
-                continue;
-            }
+        for (int j = offset; j < skills.size() && index < 8; j++) {
             Skill skill = skills.get(j);
             PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
@@ -124,8 +121,8 @@ public class GuiSkills extends GuiScreen {
             mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + skill.getCap(), x + 26, y + 17, 0x888888);
         }
         GL11.glColor4f(1, 1, 1, 1);
-        drawScrollButtonsTop(left + ((79 + 3) + 8) / 2, top + 18 - 4);
-        drawScrollButtonsBottom(left + ((79 + 3) + 8) / 2, lastY + 32);
+        drawScrollButtonsTop(left + 45, top + 18 - 4); //Precalculate ((79 + 3) + 8) / 2 to 45
+        drawScrollButtonsBottom(left + 45, lastY + 32); //Precalculate ((79 + 3) + 8) / 2 to 45
 
 
         String skillsStr = I18n.translateToLocal("skillable.misc.skills");
@@ -144,32 +141,36 @@ public class GuiSkills extends GuiScreen {
             mc.displayGuiScreen(gui);
         }
         if (mouseButton == 0) {
-            if (mouseX >= left + ((79 + 3) + 8) / 2 && mouseX <= left + ((79 + 3) + 8) / 2 + 79) {
+            if (mouseX >= left + 45 && mouseX <= left + 45 + 79) { //Precalculate ((79 + 3) + 8) / 2 to 45
                 if (mouseY >= top + 14 && mouseY <= top + 14 + 4) {
-                    offset = Math.max(offset - 2, 0);
+                    scrollUp();
                 } else if (mouseY >= top + 14 && mouseY <= lastY + 36) {
-                    int off = 2;
-                    if (skills.size() % 2 == 1) {
-                        off = 1;
-                    }
-                    offset = Math.min(offset + 2, skills.size() - off);
+                    scrollDown();
                 }
             }
         }
 
     }
 
+    private void scrollUp() {
+        offset = Math.max(offset - 2, 0);
+    }
+
+    private void scrollDown() {
+        int off = 2;
+        if (skills.size() % 2 == 1) {
+            off = 1;
+        }
+        offset = Math.min(offset + 2, Math.max(skills.size() - 6 - off, 0));
+    }
+
     @Override
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
         if (Mouse.getEventDWheel() > 0) {
-            offset = Math.max(offset - 2, 0);
+            scrollUp();
         } else if (Mouse.getEventDWheel() < 0) {
-            int off = 2;
-            if (skills.size() % 2 == 1) {
-                off = 1;
-            }
-            offset = Math.min(offset + 2, skills.size() - off);
+            scrollDown();
         }
     }
 
