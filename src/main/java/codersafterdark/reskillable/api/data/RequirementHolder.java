@@ -36,6 +36,7 @@ public class RequirementHolder {
     public RequirementHolder(RequirementHolder... others) {
         this.forcedEmpty = false;
         this.requirements = Lists.newArrayList();
+        //TODO Eventually look into optimizing this. Potentially by presorting others by requirement count
         for (RequirementHolder other : others) {
             for (Requirement otherRequirement : other.requirements) {
                 boolean noMatch = true;
