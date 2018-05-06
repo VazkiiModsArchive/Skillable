@@ -91,7 +91,7 @@ public class LevelLockHandler {
     }
 
     /**
-     * Registers LockKey class implementations as key types to be automatically checked when calling {@link #getLocks(Class, Object)} on an
+     * Registers LockKey class implementations as key types to be automatically checked when calling {@link #getLocks(Class, Object[])} on an
      * Object of the type given by lockTypeClass.
      * @param lockTypeClass A class that represents the type of object that the given keyClasses can be built from.
      * @param keyClasses    A list of Classes that implement LockKey, and have a constructor with the parameter with of the type lockTypeClass
@@ -116,7 +116,7 @@ public class LevelLockHandler {
      * Adds locks to the given key.
      * @param key    The key to register the given holder locks against. If the given LockKey type has not been registered
      *               in {@link #registerLockKey(Class, Class[])}, then it will not be able to be automatically retrieved
-     *               using {@link #getLocks(Class, Object)}
+     *               using {@link #getLocks(Class, Object[])}
      * @param holder The RequirementHolder that represents the locks to add.
      */
     public static void addLockByKey(LockKey key, RequirementHolder holder) {
@@ -158,64 +158,73 @@ public class LevelLockHandler {
         return locks.containsKey(key) ? locks.get(key) : EMPTY_LOCK;
     }
 
+    public static RequirementHolder getLockByFuzzyKey(FuzzyLockKey key) {
+        List<RequirementHolder> requirements = getFuzzyRequirements(key);
+        return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+    }
+
+    private static List<RequirementHolder> getFuzzyRequirements(FuzzyLockKey key) {
+        List<RequirementHolder> requirements = new ArrayList<>();
+        if (!key.isNotFuzzy()) {
+            LockKey baseLock = key.getNotFuzzy();
+            if (baseLock == null) {
+                //If there is no base lock then use a representation for getting partial locks in general
+                baseLock = new GenericLockKey(key.getClass());
+            } else if (locks.containsKey(baseLock)) {
+                //Add the base lock's requirements
+                requirements.add(locks.get(baseLock));
+            }
+
+            Set<FuzzyLockKey> fuzzyLookup = fuzzyLockInfo.get(baseLock);
+            if (fuzzyLookup != null) {
+                for (FuzzyLockKey fuzzyLock : fuzzyLookup) {
+                    if (key.fuzzyEquals(fuzzyLock) && locks.containsKey(fuzzyLock)) { //Build up the best match
+                        //fuzzy is the given object and has all info and fuzzyLock is the partial information
+                        requirements.add(locks.get(fuzzyLock));
+                    }
+                }
+            }
+        } else if (locks.containsKey(key)) {
+            requirements.add(locks.get(key));
+        }
+        return requirements;
+    }
+
     public static RequirementHolder getSkillLock(ItemStack stack) {
         return stack == null || stack.isEmpty() ? EMPTY_LOCK : getLocks(ItemStack.class, stack);
     }
 
     /**
      * Gets all the locks the given object has on it.
-     * @param toCheck The object to retrieve the locks of.
-     * @param <T>     Represents the type of the object to check, must be registered using {@link #registerLockKey(Class, Class[])}
+     * @param tToCheck A list of objects to retrieve the combined locks of.
+     * @param <T>     Represents the type of the objects to check, must be registered using {@link #registerLockKey(Class, Class[])}
      * @return A RequirementHolder of all he locks for the given object.
      */
-    public static <T> RequirementHolder getLocks(Class<? extends T> classType, T toCheck) {
-        if (toCheck == null) {
-            return EMPTY_LOCK;
-        }
-
-        if (!lockTypesMap.containsKey(classType)) {
+    @SafeVarargs
+    public static <T> RequirementHolder getLocks(Class<? extends T> classType, T... tToCheck) {
+        if (tToCheck == null || tToCheck.length == 0 || !lockTypesMap.containsKey(classType)) {
             return EMPTY_LOCK;
         }
 
         List<Class<? extends LockKey>> lockTypes = lockTypesMap.get(classType);
         List<RequirementHolder> requirements = new ArrayList<>();
-
-        for (Class<? extends LockKey> keyClass : lockTypes) {
-            LockKey lock;
-            //We know that this constructor exists because of checks done during registering lock types
-            try {
-                lock = keyClass.getDeclaredConstructor(classType).newInstance(toCheck);
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                //Failed to find method initializer (this should not happen because of the checks done in registerLockKey
-                e.printStackTrace();
-                continue;
-            }
-
-            if (lock instanceof FuzzyLockKey) {
-                FuzzyLockKey fuzzy = (FuzzyLockKey) lock;
-                if (!fuzzy.isNotFuzzy()) {
-                    LockKey baseLock = fuzzy.getNotFuzzy();
-                    if (baseLock == null) {
-                        //If there is no base lock then use a representation for getting partial locks in general
-                        baseLock = new GenericLockKey(lock.getClass());
-                    }
-
-                    Set<FuzzyLockKey> fuzzyLookup = fuzzyLockInfo.get(baseLock);
-                    if (fuzzyLookup != null) {
-                        for (FuzzyLockKey fuzzyLock : fuzzyLookup) {
-                            if (fuzzy.fuzzyEquals(fuzzyLock) && locks.containsKey(fuzzyLock)) { //Build up the best match
-                                //fuzzy is the given object and has all info and fuzzyLock is the partial information
-                                requirements.add(locks.get(fuzzyLock));
-                            }
-                        }
-                    }
-
-                    lock = baseLock;
+        for (T toCheck : tToCheck) {
+            for (Class<? extends LockKey> keyClass : lockTypes) {
+                LockKey lock;
+                //We know that this constructor exists because of checks done during registering lock types
+                try {
+                    lock = keyClass.getDeclaredConstructor(classType).newInstance(toCheck);
+                } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    //Failed to find method initializer (this should not happen because of the checks done in registerLockKey
+                    e.printStackTrace();
+                    continue;
                 }
-            }
-            //Add the base for the item
-            if (!(lock instanceof GenericLockKey) && locks.containsKey(lock)) {
-                requirements.add(locks.get(lock));
+
+                if (lock instanceof FuzzyLockKey) {
+                    requirements.addAll(getFuzzyRequirements((FuzzyLockKey) lock));
+                } else if (locks.containsKey(lock)) {
+                    requirements.add(locks.get(lock));
+                }
             }
         }
 
