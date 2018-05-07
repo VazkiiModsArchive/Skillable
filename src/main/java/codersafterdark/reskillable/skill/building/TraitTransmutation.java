@@ -26,6 +26,9 @@ public abstract class TraitTransmutation extends Trait {
 
     @Override
     public void onRightClickBlock(RightClickBlock event) {
+        if (event.isCanceled()) {
+            return;
+        }
         ItemStack stack = event.getItemStack();
         if (ItemStack.areItemsEqual(stack, reagent)) {
             IBlockState state = event.getWorld().getBlockState(event.getPos());

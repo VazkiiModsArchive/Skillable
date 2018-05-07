@@ -20,6 +20,9 @@ public class TraitObsidianSmasher extends Trait {
 
     @Override
     public void getBreakSpeed(BreakSpeed event) {
+        if (event.isCanceled()) {
+            return;
+        }
         EntityPlayer player = event.getEntityPlayer();
         IBlockState state = event.getState();
 

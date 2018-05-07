@@ -15,7 +15,9 @@ public class TraitSafePort extends Trait {
 
     @Override
     public void onEnderTeleport(EnderTeleportEvent event) {
-        event.setAttackDamage(0);
+        if (!event.isCanceled()) {
+            event.setAttackDamage(0);
+        }
     }
 
 }
