@@ -15,23 +15,28 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> implements Comparable<Unlockable> {
-
-    public final int x;
-    public final int y;
     private final String name;
     private final ResourceLocation icon;
-    private Skill parentSkill;
-    private ResourceLocation skillName;
-    private UnlockableConfig unlockableConfig;
+    protected Skill parentSkill;
+    protected UnlockableConfig unlockableConfig;
 
     public Unlockable(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, String... defaultRequirements) {
         this.name = name.toString().replace(":", ".");
-        this.x = x;
-        this.y = y;
-        this.skillName = skillName;
         setRegistryName(name);
         icon = new ResourceLocation(name.getResourceDomain(), "textures/unlockables/" + name.getResourcePath() + ".png");
         this.unlockableConfig = ReskillableAPI.getInstance().getTraitConfig(name, x, y, cost, defaultRequirements);
+        setParentSkill(skillName);
+    }
+
+    protected void setParentSkill(ResourceLocation skillName) {
+        if (parentSkill != null)  {
+            if (skillName != null && skillName.equals(parentSkill.getRegistryName())) {
+                //The skill is already the parent skill
+                return;
+            }
+            //Remove from old parent skill if there already is a parent skill
+            parentSkill.getUnlockables().remove(this);
+        }
         parentSkill = Objects.requireNonNull(ReskillableRegistries.SKILLS.getValue(skillName));
         if (isEnabled()) {
             if (parentSkill.isEnabled()) {
