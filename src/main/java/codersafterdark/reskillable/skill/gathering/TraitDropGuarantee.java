@@ -20,6 +20,9 @@ public class TraitDropGuarantee extends Trait {
 
     @Override
     public void onMobDrops(LivingDropsEvent event) {
+        if (event.isCanceled()) {
+            return;
+        }
         Entity e = event.getEntity();
         if (event.getDrops().isEmpty() && e.getEntityWorld().getGameRules().getBoolean("doMobLoot")) {
             ItemStack drop = null;

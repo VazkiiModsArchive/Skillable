@@ -24,6 +24,9 @@ public class TraitNeutralissse extends Trait {
 
     @Override
     public void onAttackMob(LivingHurtEvent event) {
+        if (event.isCanceled()) {
+            return;
+        }
         if (event.getEntity() instanceof EntityCreeper) {
             EntityCreeper creeper = (EntityCreeper) event.getEntity();
             int time = ReflectionHelper.getPrivateValue(EntityCreeper.class, creeper, LibObfuscation.TIME_SINCE_IGNITED);
@@ -35,7 +38,7 @@ public class TraitNeutralissse extends Trait {
 
     @SubscribeEvent
     public void entityTick(LivingUpdateEvent event) {
-        if (event.getEntity() instanceof EntityCreeper) {
+        if (!event.isCanceled() && event.getEntity() instanceof EntityCreeper) {
             EntityCreeper creeper = (EntityCreeper) event.getEntity();
             int defuseTime = creeper.getEntityData().getInteger(TAG_DEFUSED);
             if (defuseTime > 0) {
