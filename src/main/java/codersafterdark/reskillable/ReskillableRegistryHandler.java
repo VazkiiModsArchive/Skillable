@@ -3,6 +3,7 @@ package codersafterdark.reskillable;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
+import codersafterdark.reskillable.skill.agility.TraitHillWalker;
 import codersafterdark.reskillable.skill.agility.TraitRoadWalk;
 import codersafterdark.reskillable.skill.agility.TraitSidestep;
 import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
@@ -58,6 +59,7 @@ public class ReskillableRegistryHandler {
     @SubscribeEvent
     public static void registerTraits(RegistryEvent.Register<Unlockable> unlockablesRegister) {
         unlockablesRegister.getRegistry().registerAll(
+                new TraitHillWalker(),
                 new TraitRoadWalk(),
                 new TraitSidestep(),
                 new TraitNeutralissse(),
