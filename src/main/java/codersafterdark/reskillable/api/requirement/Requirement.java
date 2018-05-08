@@ -8,7 +8,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class Requirement {
     public abstract boolean achievedByPlayer(EntityPlayer entityPlayerMP);
 
-    @SideOnly(Side.CLIENT)
     public abstract String getToolTip(PlayerData data);
 
     public RequirementComparision matches(Requirement other) {

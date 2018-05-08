@@ -111,7 +111,6 @@ public class RequirementHolder {
         if (!isRealLock()) {
             return;
         }
-
         if (GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
             for (Requirement requirement : requirements) {

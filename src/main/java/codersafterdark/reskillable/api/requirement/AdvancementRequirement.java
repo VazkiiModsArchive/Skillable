@@ -8,6 +8,7 @@ import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,7 +31,6 @@ public class AdvancementRequirement extends Requirement {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getToolTip(PlayerData data) {
         Advancement adv = getAdvancement();
         String toolTip = "";
@@ -39,12 +39,11 @@ public class AdvancementRequirement extends Requirement {
             color = TextFormatting.RED;
         }
         if (adv != null) {
-            toolTip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + I18n.format(
-                    "skillable.misc.achievementFormat",
+            toolTip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
                     color,
                     adv.getDisplayText()
                             .getUnformattedText()
-                            .replaceAll("[\\[\\]]", ""));
+                            .replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
         }
         return toolTip;
     }

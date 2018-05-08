@@ -6,6 +6,7 @@ import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,14 +27,13 @@ public class SkillRequirement extends Requirement {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getToolTip(PlayerData data) {
         PlayerSkillInfo info = data.getSkillInfo(skill);
         TextFormatting color = TextFormatting.GREEN;
         if (info.getLevel() < level) {
             color = TextFormatting.RED;
         }
-        return TextFormatting.GRAY + " - " + I18n.format("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(), color, level);
+        return TextFormatting.GRAY + " - " + new TextComponentTranslation("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(), color, level).getUnformattedComponentText();
     }
 
     public Skill getSkill() {
