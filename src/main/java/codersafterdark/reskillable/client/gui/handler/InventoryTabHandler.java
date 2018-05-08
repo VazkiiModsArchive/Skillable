@@ -71,7 +71,7 @@ public class InventoryTabHandler {
             }
         }
     }
-    
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void finishRenderTick(RenderTickEvent event) {

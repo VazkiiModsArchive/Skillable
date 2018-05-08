@@ -26,7 +26,6 @@ public class KeyBindings {
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
 
         if (Minecraft.getMinecraft().currentScreen != null) {
             return;
