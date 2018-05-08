@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements Comparable<Skill> {
-    private final ResourceLocation background;
     private final ResourceLocation spriteLocation;
     private final String name;
     private final List<Unlockable> unlockables = new ArrayList<>();
-    private SkillConfig skillConfig;
+    protected ResourceLocation background;
+    protected SkillConfig skillConfig;
 
     public Skill(ResourceLocation name, ResourceLocation background) {
         this.name = name.toString().replace(":", ".");
