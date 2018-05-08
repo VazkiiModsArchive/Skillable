@@ -2,11 +2,13 @@ package codersafterdark.reskillable.client.base;
 
 import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
+import codersafterdark.reskillable.client.gui.handler.KeyBindings;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -32,6 +34,12 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
+    public void registerKeyBindings() {
+        KeyBindings.init();
+        MinecraftForge.EVENT_BUS.register(new KeyBindings());
+    }
+
+    @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft().player;
     }
@@ -44,5 +52,10 @@ public class ClientProxy extends CommonProxy {
                 .map(advancementManager -> advancementManager.advancementToProgress)
                 .map(advancementAdvancementProgressMap -> advancementAdvancementProgressMap.get(advancement))
                 .orElseGet(AdvancementProgress::new);
+    }
+
+    @Override
+    public String getLocalizedString(String string) {
+        return I18n.format(string);
     }
 }

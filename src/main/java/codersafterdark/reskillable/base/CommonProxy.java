@@ -32,6 +32,10 @@ public class CommonProxy {
 
     }
 
+    public void registerKeyBindings() {
+
+    }
+
     public AdvancementProgress getPlayerAdvancementProgress(EntityPlayer entityPlayer, Advancement advancement) {
         return ((EntityPlayerMP) entityPlayer).getAdvancements().getProgress(advancement);
     }
@@ -40,4 +44,7 @@ public class CommonProxy {
         return null;
     }
 
+    public String getLocalizedString(String string){
+        return string;
+    }
 }

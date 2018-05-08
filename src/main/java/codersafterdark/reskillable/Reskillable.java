@@ -46,6 +46,7 @@ public class Reskillable {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+        proxy.registerKeyBindings();
     }
 
     @EventHandler

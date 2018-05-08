@@ -77,3 +77,7 @@ skillable.rank.8=Ascendant
 skillable.tab.inventory=Inventory
 skillable.tab.skills=Skills
 skillable.tab.abilities=Abilities
+
+# KEY-BINDINGS
+key.controls.reskillable=Reskillable
+key.openGUI=Open Skill GUI

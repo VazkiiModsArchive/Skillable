@@ -13,6 +13,7 @@ import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,7 +72,7 @@ public class InventoryTabHandler {
             }
         }
     }
-
+    
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void finishRenderTick(RenderTickEvent event) {
