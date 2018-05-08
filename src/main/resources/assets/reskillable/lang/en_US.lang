@@ -62,7 +62,7 @@ skillable.unlock.reskillable.battle_spirit.desc=Killing a monster will give you 
 skillable.unlock.reskillable.effect_twist=Effect Twist
 skillable.unlock.reskillable.effect_twist.desc=Being hit by a monster while under good potion effects has a chance to propagate the bad version of those effects to the attacker
 skillable.unlock.reskillable.hillwalker=Hill Walker
-skillable.unlock.reskillable.hillwalker.desc=After many a long journey, and step climb, you've reached a state of perpetual up-stepping capacities. \n You now have up-step assist!
+skillable.unlock.reskillable.hillwalker.desc=After many a long journey, and step climb, you've reached a state of perpetual up-stepping capacities. You now have step-assist!
 
 # RANK NAMES
 skillable.rank.0=Novice
