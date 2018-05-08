@@ -17,8 +17,8 @@ import java.util.Objects;
 public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> implements Comparable<Unlockable> {
     private final String name;
     private final ResourceLocation icon;
-    private Skill parentSkill;
     protected UnlockableConfig unlockableConfig;
+    private Skill parentSkill;
 
     public Unlockable(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, String... defaultRequirements) {
         this.name = name.toString().replace(":", ".");
@@ -28,8 +28,13 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         setParentSkill(skillName);
     }
 
+    @Nonnull
+    public Skill getParentSkill() {
+        return parentSkill;
+    }
+
     protected void setParentSkill(ResourceLocation skillName) {
-        if (parentSkill != null)  {
+        if (parentSkill != null) {
             if (skillName != null && skillName.equals(parentSkill.getRegistryName())) {
                 //The skill is already the parent skill
                 return;
@@ -46,11 +51,6 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
                 this.unlockableConfig.setEnabled(false);
             }
         }
-    }
-
-    @Nonnull
-    public Skill getParentSkill() {
-        return parentSkill;
     }
 
     public RequirementHolder getRequirements() {

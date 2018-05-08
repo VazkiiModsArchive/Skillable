@@ -16,10 +16,15 @@ import org.lwjgl.input.Keyboard;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindings {
+    static KeyBinding openGUI = new KeyBinding(Reskillable.proxy.getLocalizedString("key.openGUI"), Keyboard.KEY_Y, Reskillable.proxy.getLocalizedString("key.controls." + LibMisc.MOD_ID));
     boolean prevState;
 
+    public static final void init() {
+        ClientRegistry.registerKeyBinding(openGUI);
+    }
+
     @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event){
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final EntityPlayerSP player = minecraft.player;
 
@@ -30,12 +35,5 @@ public class KeyBindings {
         if (openGUI.isPressed()) {
             minecraft.displayGuiScreen(new GuiSkills());
         }
-    }
-
-
-    static KeyBinding openGUI = new KeyBinding(Reskillable.proxy.getLocalizedString("key.openGUI"), Keyboard.KEY_Y, Reskillable.proxy.getLocalizedString("key.controls." + LibMisc.MOD_ID));
-
-    public static final void init(){
-        ClientRegistry.registerKeyBinding(openGUI);
     }
 }

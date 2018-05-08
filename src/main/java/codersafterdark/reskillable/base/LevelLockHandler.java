@@ -93,6 +93,7 @@ public class LevelLockHandler {
     /**
      * Registers LockKey class implementations as key types to be automatically checked when calling {@link #getLocks(Class, Object[])} on an
      * Object of the type given by lockTypeClass.
+     *
      * @param lockTypeClass A class that represents the type of object that the given keyClasses can be built from.
      * @param keyClasses    A list of Classes that implement LockKey, and have a constructor with the parameter with of the type lockTypeClass
      */
@@ -114,6 +115,7 @@ public class LevelLockHandler {
 
     /**
      * Adds locks to the given key.
+     *
      * @param key    The key to register the given holder locks against. If the given LockKey type has not been registered
      *               in {@link #registerLockKey(Class, Class[])}, then it will not be able to be automatically retrieved
      *               using {@link #getLocks(Class, Object[])}
@@ -196,8 +198,9 @@ public class LevelLockHandler {
 
     /**
      * Gets all the locks the given object has on it.
+     *
      * @param tToCheck A list of objects to retrieve the combined locks of.
-     * @param <T>     Represents the type of the objects to check, must be registered using {@link #registerLockKey(Class, Class[])}
+     * @param <T>      Represents the type of the objects to check, must be registered using {@link #registerLockKey(Class, Class[])}
      * @return A RequirementHolder of all he locks for the given object.
      */
     @SafeVarargs

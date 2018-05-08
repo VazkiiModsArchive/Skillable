@@ -13,26 +13,6 @@ public abstract class NBTLockKey implements FuzzyLockKey {
         this.tag = tag;
     }
 
-    public NBTTagCompound getTag() {
-        return this.tag;
-    }
-
-    @Override
-    public boolean isNotFuzzy() {
-        return this.tag == null;
-    }
-
-    @Override
-    public boolean fuzzyEquals(FuzzyLockKey other) {
-        if (other == this) {
-            return true;
-        }
-        if (other instanceof NBTLockKey) {
-            return similarNBT(getTag(), ((NBTLockKey) other).getTag());
-        }
-        return false;
-    }
-
     protected static boolean similarNBT(NBTBase full, NBTBase partial) {
         if (full == null) {
             return partial == null;
@@ -109,5 +89,25 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             default:
                 return false;
         }
+    }
+
+    public NBTTagCompound getTag() {
+        return this.tag;
+    }
+
+    @Override
+    public boolean isNotFuzzy() {
+        return this.tag == null;
+    }
+
+    @Override
+    public boolean fuzzyEquals(FuzzyLockKey other) {
+        if (other == this) {
+            return true;
+        }
+        if (other instanceof NBTLockKey) {
+            return similarNBT(getTag(), ((NBTLockKey) other).getTag());
+        }
+        return false;
     }
 }

@@ -5,13 +5,10 @@ import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Optional;
 
@@ -35,7 +32,7 @@ public class AdvancementRequirement extends Requirement {
         Advancement adv = getAdvancement();
         String toolTip = "";
         TextFormatting color = TextFormatting.GREEN;
-        if (!achievedByPlayer(data.playerWR.get())){
+        if (!achievedByPlayer(data.playerWR.get())) {
             color = TextFormatting.RED;
         }
         if (adv != null) {

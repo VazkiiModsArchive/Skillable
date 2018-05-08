@@ -44,7 +44,7 @@ public class CommonProxy {
         return null;
     }
 
-    public String getLocalizedString(String string){
+    public String getLocalizedString(String string) {
         return string;
     }
 }
