@@ -5,6 +5,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -200,9 +201,11 @@ public class GuiSkillInfo extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button == levelUpButton) {
-            MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
-            PacketHandler.INSTANCE.sendToServer(message);
+        if (ConfigHandler.enableLevelUp){
+            if (button == levelUpButton) {
+                MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
+                PacketHandler.INSTANCE.sendToServer(message);
+            }
         }
     }
 
