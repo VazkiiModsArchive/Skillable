@@ -4,7 +4,6 @@ import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
