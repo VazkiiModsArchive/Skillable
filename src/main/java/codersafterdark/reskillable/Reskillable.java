@@ -3,6 +3,7 @@ package codersafterdark.reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.commands.ReskillableCmd;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -51,6 +52,8 @@ public class Reskillable {
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new ReskillableCmd());
+
         proxy.serverStarting(event);
     }
 }
