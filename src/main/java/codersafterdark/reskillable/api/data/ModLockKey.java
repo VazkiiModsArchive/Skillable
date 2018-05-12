@@ -34,7 +34,7 @@ public class ModLockKey extends NBTLockKey {
         if (o == this) {
             return true;
         }
-        if (o instanceof ModLockKey && modName.equals(((ModLockKey) o).modName)) {
+        if (o instanceof ModLockKey && getModName().equals(((ModLockKey) o).getModName())) {
             return getTag() == null ? ((ModLockKey) o).getTag() == null : getTag().equals(((ModLockKey) o).getTag());
         }
         return false;
@@ -43,5 +43,9 @@ public class ModLockKey extends NBTLockKey {
     @Override
     public int hashCode() {
         return Objects.hash(modName, tag);
+    }
+
+    public String getModName() {
+        return modName;
     }
 }
