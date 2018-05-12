@@ -39,17 +39,25 @@ public class ItemInfo extends NBTLockKey {
             return false;
         }
         ItemInfo other = (ItemInfo) o;
-        if (item != other.item) {
+        if (getItem() != other.getItem()) {
             return false;
         }
         if (getTag() == null) {
-            return other.getTag() == null && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+            return other.getTag() == null && (getMetadata() == OreDictionary.WILDCARD_VALUE || other.getMetadata() == OreDictionary.WILDCARD_VALUE || getMetadata() == other.getMetadata());
         }
-        return getTag().equals(other.getTag()) && (metadata == OreDictionary.WILDCARD_VALUE || other.metadata == OreDictionary.WILDCARD_VALUE || metadata == other.metadata);
+        return getTag().equals(other.getTag()) && (getMetadata() == OreDictionary.WILDCARD_VALUE || other.getMetadata() == OreDictionary.WILDCARD_VALUE || getMetadata() == other.getMetadata());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(item, tag);
+    }
+    
+    public Item getItem() {
+        return item;
+    }
+    
+    public int getMetadata() {
+        return metadata;
     }
 }
