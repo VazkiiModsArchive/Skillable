@@ -3,6 +3,7 @@ package codersafterdark.reskillable.api.data;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -111,7 +112,7 @@ public class RequirementHolder {
         if (!isRealLock()) {
             return;
         }
-        if (GuiScreen.isShiftKeyDown()) {
+        if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
             for (Requirement requirement : requirements) {
                 tooltip.add(requirement.getToolTip(data));

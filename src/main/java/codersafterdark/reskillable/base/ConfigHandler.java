@@ -17,6 +17,7 @@ public class ConfigHandler {
     public static boolean enforceFakePlayers = true;
     public static boolean enableTabs = true;
     public static boolean enableLevelUp = true;
+    public static boolean hideRequirements = true;
 
     public static void init(File configFile) {
         config = new Configuration(configFile);
@@ -30,6 +31,7 @@ public class ConfigHandler {
         enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
         enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
         enableLevelUp = loadPropBool("Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
+        hideRequirements = loadPropBool("Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
 
         String desc = "Set requirements for items in this list. Each entry is composed of the item key and the requirements\n"
                 + "The item key is in the simple mod:item_id format. Optionally, it can be in mod:item_id:metadata, if you want to match metadata.\n"
