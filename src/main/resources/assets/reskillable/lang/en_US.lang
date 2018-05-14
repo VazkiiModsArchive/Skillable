@@ -83,3 +83,39 @@ skillable.tab.abilities=Abilities
 # KEY-BINDINGS
 key.controls.reskillable=Reskillable
 key.openGUI=Open Skill GUI
+
+# COMMANDS
+reskillable.command.usage=/reskillable subcommand
+reskillable.command.resetskill.usage=/reskillable resetskill <player> <skill>
+reskillable.command.setskilllevel.usage=/reskillable setskilllevel <player> <skill> <level>
+reskillable.command.incrementskill.usage=/reskillable incrementskill <player> <skill>
+reskillable.command.resetall.usage=/reskillable resetall <player>
+reskillable.command.toggletrait.usage=/reskillable toggletrait <player> <trait>
+
+reskillable.command.success.unlocktrait=Successfully unlocked '%s' for player '%s'.
+reskillable.command.success.locktrait=Successfully locked '%s' for player '%s'.
+reskillable.command.success.resetskill=Successfully reset Skill: '%s' for player '%s'.
+reskillable.command.success.setskilllevel=Successfully set the level of Skill: '%s' to '%s' for player '%s'.
+reskillable.command.success.skillup=Successfully leveled up Skill: '%s' for player '%s'.
+reskillable.command.success.resetall=Successfully reset all skills for player '%s'.
+
+reskillable.command.fail.unlocktrait=Failed to unlock '%s' for player '%s'.
+reskillable.command.fail.locktrait=Failed to lock '%s' for player '%s'.
+reskillable.command.fail.resetskill=Failed to reset Skill: '%s' for player '%s'.
+reskillable.command.fail.setskilllevel=Failed tp set the level of Skill: '%s' to '%s' for player '%s'.
+reskillable.command.fail.skillup=Failed to level up Skill: '%s' for player '%s'.
+reskillable.command.fail.resetall=Failed to reset skills '%s' for player '%s'.
+
+reskillable.command.invalid.skill=Skill '%s' is invalid.
+reskillable.command.invalid.trait=Trait '%s' is invalid.
+reskillable.command.invalid.pastcap=Level '%s' is past the cap of '%s' for that skill.
+reskillable.command.invalid.belowmin=Level '%s' is below the minimum level of '1'.
+
+reskillable.command.invalid.missing.skill=You must enter the name of a skill.
+reskillable.command.invalid.missing.trait=You must enter the name of a trait.
+reskillable.command.invalid.missing.player=You must enter the name of a player.
+reskillable.command.invalid.missing.level=You must enter a level to set the skill to.
+reskillable.command.invalid.missing.playerskill=You must enter the name of both a player and a skill.
+reskillable.command.invalid.missing.playertrait=You must enter the name of both a player and a trait.
+reskillable.command.invalid.missing.playerskilllevel=You must enter the name of both a player and a skill, and a level for the skill.
+reskillable.command.invalid.missing.skilllevel=You must enter the name of a skill, and a level for the skill.
