@@ -23,17 +23,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CmdResetSkill extends CommandBase {
+public class CmdIncrementSkill extends CommandBase {
     @Nonnull
     @Override
     public String getName() {
-        return "resetskill";
+        return "incrementskill";
     }
 
     @Nonnull
     @Override
     public String getUsage(@Nonnull ICommandSender sender) {
-        return "reskillable.command.resetskill.usage";
+        return "reskillable.command.incrementskill.usage";
     }
 
     @Override
@@ -54,13 +54,12 @@ public class CmdResetSkill extends CommandBase {
         PlayerData data = PlayerDataHandler.get(player);
         PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
         int oldLevel = skillInfo.getLevel();
-        if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, 1, oldLevel))) {
-            skillInfo.setLevel(1);
-            skillInfo.respec();
-            MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, 1, oldLevel));
-            sender.sendMessage(new TextComponentTranslation("reskillable.command.success.resetskill", skillName, player.getDisplayName()));
+        if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, oldLevel + 1, oldLevel))) {
+            skillInfo.levelUp();
+            MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, skillInfo.getLevel(), oldLevel));
+            sender.sendMessage(new TextComponentTranslation("reskillable.command.success.skillup", skillName, player.getDisplayName()));
         } else {
-            sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.resetskill", skillName, player.getDisplayName()));
+            sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.skillup", skillName, player.getDisplayName()));
         }
         data.saveAndSync();
     }

@@ -18,6 +18,7 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -43,6 +44,10 @@ public class PlayerData {
 
     public PlayerSkillInfo getSkillInfo(Skill s) {
         return skillInfo.get(s);
+    }
+
+    public Collection<PlayerSkillInfo> getAllSkillInfo() {
+        return skillInfo.values();
     }
 
     public boolean hasAnyAbilities() {

@@ -6,10 +6,14 @@ import net.minecraftforge.server.command.CommandTreeBase;
 import javax.annotation.Nonnull;
 
 public class ReskillableCmd extends CommandTreeBase {
-    //TODO @p and @a support for commands
+    //TODO ResetSkill and ResetAll should really make it so any skill locks or trait requirements no longer met get their state reset as well
 
     public ReskillableCmd() {
+        addSubcommand(new CmdIncrementSkill());
+        addSubcommand(new CmdResetAll());
         addSubcommand(new CmdResetSkill());
+        addSubcommand(new CmdSetSkillLevel());
+        addSubcommand(new CmdToggleTrait());
     }
 
     @Nonnull

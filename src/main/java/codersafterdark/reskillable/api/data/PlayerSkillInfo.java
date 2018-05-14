@@ -96,11 +96,24 @@ public class PlayerSkillInfo {
         }
     }
 
+    //TODO decide if this should just call setLevel(level + 1);
     public void levelUp() {
         level++;
         if (level % skill.getSkillPointInterval() == 0) {
             skillPoints++;
         }
+    }
+
+    public void setLevel(int level) {
+        int interval = skill.getSkillPointInterval();
+        skillPoints += level / interval - this.level / interval;
+        this.level = level;
+    }
+
+    public void lock(Unlockable u, EntityPlayer p) {
+        skillPoints += u.getCost();
+        unlockables.remove(u);
+        u.onLock(p);
     }
 
     public void unlock(Unlockable u, EntityPlayer p) {
@@ -121,5 +134,4 @@ public class PlayerSkillInfo {
             }
         });
     }
-
 }

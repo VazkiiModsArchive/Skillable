@@ -76,6 +76,9 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     public void onUnlock(EntityPlayer player) {
     }
 
+    public void onLock(EntityPlayer player) {
+    }
+
     public boolean hasSpikes() {
         return false;
     }

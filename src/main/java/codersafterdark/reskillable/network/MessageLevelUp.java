@@ -52,12 +52,13 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
         if (!info.isCapped()) {
             int cost = info.getLevelUpCost();
             if (player.experienceLevel >= cost || player.isCreative()) {
-                if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, info.getLevel() + 1))) {
+                int oldLevel = info.getLevel();
+                if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, oldLevel + 1, oldLevel))) {
                     if (!player.isCreative()) {
                         ExperienceHelper.drainPlayerXP(player, ExperienceHelper.getExperienceForLevel(cost));
                     }
                     info.levelUp();
-                    MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, info.getLevel()));
+                    MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, info.getLevel(), oldLevel));
                 }
                 data.saveAndSync();
             }

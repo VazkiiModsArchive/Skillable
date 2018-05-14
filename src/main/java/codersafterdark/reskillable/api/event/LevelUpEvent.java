@@ -8,11 +8,13 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 public class LevelUpEvent extends PlayerEvent {
     private Skill skill;
     private int level;
+    private int oldLevel;
 
-    protected LevelUpEvent(EntityPlayer player, Skill skill, int level) {
+    protected LevelUpEvent(EntityPlayer player, Skill skill, int level, int oldLevel) {
         super(player);
         this.skill = skill;
         this.level = level;
+        this.oldLevel = oldLevel;
     }
 
     public Skill getSkill() {
@@ -23,16 +25,28 @@ public class LevelUpEvent extends PlayerEvent {
         return level;
     }
 
+    public int getOldLevel() {
+        return oldLevel;
+    }
+
     @Cancelable
     public static class Pre extends LevelUpEvent {
         public Pre(EntityPlayer player, Skill skill, int level) {
-            super(player, skill, level);
+            this(player, skill, level, level - 1);
+        }
+
+        public Pre(EntityPlayer player, Skill skill, int level, int oldLevel) {
+            super(player, skill, level, oldLevel);
         }
     }
 
     public static class Post extends LevelUpEvent {
         public Post(EntityPlayer player, Skill skill, int level) {
-            super(player, skill, level);
+            this(player, skill, level, level - 1);
+        }
+
+        public Post(EntityPlayer player, Skill skill, int level, int oldLevel) {
+            super(player, skill, level, oldLevel);
         }
     }
 }
