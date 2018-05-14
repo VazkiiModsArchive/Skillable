@@ -32,7 +32,7 @@ public class AdvancementRequirement extends Requirement {
         Advancement adv = getAdvancement();
         String toolTip = "";
         TextFormatting color = TextFormatting.GREEN;
-        if (!achievedByPlayer(data.playerWR.get())) {
+        if (data == null || !achievedByPlayer(data.playerWR.get())) {
             color = TextFormatting.RED;
         }
         if (adv != null) {
