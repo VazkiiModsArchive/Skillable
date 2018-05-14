@@ -76,11 +76,12 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     }
 
     public int getLevelUpCost(int level) {
-        return this.skillConfig.getLevelStaggering()
+        int cost = this.skillConfig.getLevelStaggering()
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getKey() < level + 1)
                 .mapToInt(Map.Entry::getValue)
                 .sum() + this.skillConfig.getBaseLevelCost();
+        return cost < 0 ? 0 : cost;
     }
 }
