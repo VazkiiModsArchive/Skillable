@@ -6,7 +6,6 @@ import codersafterdark.reskillable.network.MessageLockedItem;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +18,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -28,8 +26,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
@@ -43,8 +39,6 @@ public class LevelLockHandler {
     public static RequirementHolder EMPTY_LOCK = new RequirementHolder();
     private static Map<Class<?>, List<Class<? extends LockKey>>> lockTypesMap = new HashMap<>();
     private static Map<LockKey, Set<FuzzyLockKey>> fuzzyLockInfo = new HashMap<>();
-    private static RequirementHolder lastLock = EMPTY_LOCK;
-    private static ItemStack lastItem;
     private static String[] configLocks;
 
     public static void loadFromConfig(String[] configValues) {
@@ -144,8 +138,7 @@ public class LevelLockHandler {
         }
 
         //Reset the tooltip cache in case the item being hovered is what changed
-        lastItem = null;
-        lastLock = EMPTY_LOCK;
+        ToolTipHandler.resetLast();
     }
 
     public static void addModLock(String modName, RequirementHolder holder) {
@@ -362,20 +355,5 @@ public class LevelLockHandler {
         if (player instanceof EntityPlayerMP) {
             PacketHandler.INSTANCE.sendTo(new MessageLockedItem(stack, msg), (EntityPlayerMP) player);
         }
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public static void onTooltip(ItemTooltipEvent event) {
-        if (event.isCanceled()) {
-            return;
-        }
-        ItemStack current = event.getItemStack();
-        if (lastItem != current) {
-            lastItem = current;
-            lastLock = getSkillLock(current);
-        }
-        PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
-        lastLock.addRequirementsToTooltip(data, event.getToolTip());
     }
 }

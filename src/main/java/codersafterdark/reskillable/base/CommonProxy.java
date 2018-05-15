@@ -17,6 +17,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
+        MinecraftForge.EVENT_BUS.register(ToolTipHandler.class);
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         PacketHandler.preInit();
     }
