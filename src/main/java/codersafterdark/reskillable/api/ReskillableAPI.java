@@ -4,6 +4,7 @@ import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.TraitRequirement;
+import codersafterdark.reskillable.api.requirement.UnobtainableRequirement;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
 import net.minecraft.advancements.Advancement;
@@ -24,6 +25,7 @@ public class ReskillableAPI {
         this.requirementRegistry = new RequirementRegistry();
         requirementRegistry.addRequirementHandler("adv", input -> new AdvancementRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("trait", input -> new TraitRequirement(new ResourceLocation(input)));
+        requirementRegistry.addRequirementHandler("unobtainable", input -> new UnobtainableRequirement());
     }
 
     public static ReskillableAPI getInstance() {
