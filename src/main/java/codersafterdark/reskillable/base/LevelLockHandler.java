@@ -303,7 +303,7 @@ public class LevelLockHandler {
             if (!player.isCreative() && !isFake(player)) {
                 EntityEquipmentSlot slot = event.getSlot();
                 if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
-                    ItemStack stack = player.inventory.armorItemInSlot(slot.getIndex());
+                    ItemStack stack = player.inventory.armorInventory.get(slot.getIndex());
                     if (!canPlayerUseItem(player, stack)) {
                         ItemStack copy = stack.copy();
                         if (!player.inventory.addItemStackToInventory(copy)) {
