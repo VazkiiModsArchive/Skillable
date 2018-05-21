@@ -221,6 +221,12 @@ public class LevelLockHandler {
                 } else if (locks.containsKey(lock)) {
                     requirements.add(locks.get(lock));
                 }
+                if (lock instanceof ParentLockKey) {
+                    RequirementHolder subLocks = ((ParentLockKey) lock).getSubRequirements();
+                    if (!subLocks.equals(EMPTY_LOCK)) {
+                        requirements.add(subLocks);
+                    }
+                }
             }
         }
 
