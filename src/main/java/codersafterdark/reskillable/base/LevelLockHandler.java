@@ -223,7 +223,7 @@ public class LevelLockHandler {
                 }
                 if (lock instanceof ParentLockKey) {
                     RequirementHolder subLocks = ((ParentLockKey) lock).getSubRequirements();
-                    if (!subLocks.equals(EMPTY_LOCK)) {
+                    if (subLocks != null && !subLocks.equals(EMPTY_LOCK)) {
                         requirements.add(subLocks);
                     }
                 }
