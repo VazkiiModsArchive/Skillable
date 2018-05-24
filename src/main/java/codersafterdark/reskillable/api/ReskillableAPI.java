@@ -5,6 +5,8 @@ import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.TraitRequirement;
 import codersafterdark.reskillable.api.requirement.UnobtainableRequirement;
+import codersafterdark.reskillable.api.requirement.logic.LogicParser;
+import codersafterdark.reskillable.api.requirement.logic.LogicTypes;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
 import net.minecraft.advancements.Advancement;
@@ -26,6 +28,15 @@ public class ReskillableAPI {
         requirementRegistry.addRequirementHandler("adv", input -> new AdvancementRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("trait", input -> new TraitRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("unobtainable", input -> new UnobtainableRequirement());
+
+        //Logic Requirements
+        requirementRegistry.addRequirementHandler(LogicTypes.NOT.getName(), LogicParser::parseNOT);
+        requirementRegistry.addRequirementHandler(LogicTypes.AND.getName(), LogicParser::parseAND);
+        requirementRegistry.addRequirementHandler(LogicTypes.OR.getName(), LogicParser::parseOR);
+        requirementRegistry.addRequirementHandler(LogicTypes.XOR.getName(), LogicParser::parseXOR);
+        requirementRegistry.addRequirementHandler(LogicTypes.NAND.getName(), LogicParser::parseNAND);
+        requirementRegistry.addRequirementHandler(LogicTypes.NOR.getName(), LogicParser::parseNOR);
+        requirementRegistry.addRequirementHandler(LogicTypes.XNOR.getName(), LogicParser::parseXNOR);
     }
 
     public static ReskillableAPI getInstance() {

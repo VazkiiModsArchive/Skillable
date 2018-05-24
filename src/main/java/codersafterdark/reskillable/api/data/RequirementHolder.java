@@ -3,6 +3,7 @@ package codersafterdark.reskillable.api.data;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
+import codersafterdark.reskillable.api.requirement.logic.TrueRequirement;
 import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
@@ -70,7 +71,7 @@ public class RequirementHolder {
         List<Requirement> requirements = new ArrayList<>();
         for (String s : requirementStringList) {
             Requirement requirement = ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(s);
-            if (requirement != null) {
+            if (requirement != null && !(requirement instanceof TrueRequirement)) {
                 requirements.add(requirement);
             }
         }
