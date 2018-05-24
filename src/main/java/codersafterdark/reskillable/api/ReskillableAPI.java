@@ -32,10 +32,10 @@ public class ReskillableAPI {
         //Logic Requirements
         requirementRegistry.addRequirementHandler(LogicTypes.NOT.getName(), LogicParser::parseNOT);
         requirementRegistry.addRequirementHandler(LogicTypes.AND.getName(), LogicParser::parseAND);
-        requirementRegistry.addRequirementHandler(LogicTypes.OR.getName(), LogicParser::parseOR);
-        requirementRegistry.addRequirementHandler(LogicTypes.XOR.getName(), LogicParser::parseXOR);
         requirementRegistry.addRequirementHandler(LogicTypes.NAND.getName(), LogicParser::parseNAND);
+        requirementRegistry.addRequirementHandler(LogicTypes.OR.getName(), LogicParser::parseOR);
         requirementRegistry.addRequirementHandler(LogicTypes.NOR.getName(), LogicParser::parseNOR);
+        requirementRegistry.addRequirementHandler(LogicTypes.XOR.getName(), LogicParser::parseXOR);
         requirementRegistry.addRequirementHandler(LogicTypes.XNOR.getName(), LogicParser::parseXNOR);
     }
 

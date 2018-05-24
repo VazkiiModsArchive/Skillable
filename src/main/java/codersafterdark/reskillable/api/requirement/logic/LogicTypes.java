@@ -2,11 +2,11 @@ package codersafterdark.reskillable.api.requirement.logic;
 
 public enum LogicTypes {
     NOT("not"),
-    OR("or"),
     AND("and"),
-    XOR("xor"),
-    NOR("nor"),
     NAND("nand"),
+    OR("or"),
+    NOR("nor"),
+    XOR("xor"),
     XNOR("xnor");
 
     private final String name;

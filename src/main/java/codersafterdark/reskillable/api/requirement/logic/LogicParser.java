@@ -6,25 +6,34 @@ import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.logic.impl.*;
 
-//TODO: Add code to at least partially optimize the logic statement if it is a deep logic statement
-//TODO: Try Have True Simplify out
+//TODO: Make sure all TRUEs are out of the final result
 //null means it is an invalid requirement/subrequirement TRUE means that it is valid but more or less will just be ignored
 public class LogicParser {
     private final static FalseRequirement FALSE = new FalseRequirement();
     private final static TrueRequirement TRUE = new TrueRequirement();
 
+    //TODO: Should we have checks of things like ((x AND y) AND (y AND z)) and simplify it to ((x AND y) AND z)
+    //TODO Cont: If we decide to then we should look at other similar optimization methods
+
     public static Requirement parseNOT(String input) {
         if (input == null || input.isEmpty()) {
             return null;
         }
-        Requirement requirement = ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(input);
+        return parseNOT(ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(input));
+    }
+
+    private static Requirement parseNOT(Requirement requirement) {
         if (requirement == null) {
             return null;
-        } else if (requirement instanceof FalseRequirement) {
+        }
+
+        if (requirement instanceof FalseRequirement) {
             return TRUE;
         } else if (requirement instanceof TrueRequirement) {
             return FALSE;
-        } else if (requirement instanceof NOTRequirement) {
+        }
+
+        if (requirement instanceof NOTRequirement) {
             //If it is NOT of NOT just remove both NOTs
             return ((NOTRequirement) requirement).getRequirement();
         } else if (requirement instanceof DoubleRequirement) {
@@ -38,6 +47,54 @@ public class LogicParser {
             }
         }
         return new NOTRequirement(requirement);
+    }
+
+    public static Requirement parseAND(String input) {
+        RequirementPair subRequirements = getSubRequirements(input);
+        if (subRequirements == null) {
+            return null;
+        }
+        Requirement left = subRequirements.getLeft();
+        Requirement right = subRequirements.getRight();
+
+        if (left instanceof FalseRequirement || right instanceof FalseRequirement) {
+            return FALSE;
+        } else if (left instanceof TrueRequirement) {
+            return right;
+        } else if (right instanceof TrueRequirement) {
+            return left;
+        }
+
+        //Simplify the requirements if they are the "same" to be the one that is more restrictive
+        RequirementComparision matches = left.matches(right);
+        if (matches.equals(RequirementComparision.EQUAL_TO) || matches.equals(RequirementComparision.GREATER_THAN)) {
+            return left;
+        } else if (matches.equals(RequirementComparision.LESS_THAN)) {
+            return right;
+        }
+        return new ANDRequirement(left, right);
+    }
+
+    public static Requirement parseNAND(String input) {
+        RequirementPair subRequirements = getSubRequirements(input);
+        if (subRequirements == null) {
+            return null;
+        }
+        Requirement left = subRequirements.getLeft();
+        Requirement right = subRequirements.getRight();
+
+        if (left instanceof FalseRequirement || right instanceof FalseRequirement) {
+            return TRUE;
+        } else if (left instanceof TrueRequirement) {
+            return parseNOT(right);
+        } else if (right instanceof TrueRequirement) {
+            return parseNOT(left);
+        }
+
+        if (left.matches(right).equals(RequirementComparision.EQUAL_TO)) {
+            return parseNOT(left);
+        }
+        return new NANDRequirement(left, right);
     }
 
     public static Requirement parseOR(String input) {
@@ -75,7 +132,7 @@ public class LogicParser {
         return new ORRequirement(left, right);
     }
 
-    public static Requirement parseAND(String input) {
+    public static Requirement parseNOR(String input) {
         RequirementPair subRequirements = getSubRequirements(input);
         if (subRequirements == null) {
             return null;
@@ -83,47 +140,21 @@ public class LogicParser {
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
-        if (left instanceof FalseRequirement || right instanceof FalseRequirement) {
+        if (left instanceof TrueRequirement && right instanceof TrueRequirement) {
             return FALSE;
-        } else if (left instanceof TrueRequirement) {
-            return right;
-        } else if (right instanceof TrueRequirement) {
-            return left;
+        } else if (left instanceof FalseRequirement) {
+            return parseNOT(right);
+        } else if (right instanceof FalseRequirement) {
+            return parseNOT(left);
         }
 
-        //Simplify the requirements if they are the "same" to be the one that is more restrictive
-        RequirementComparision matches = left.matches(right);
-        if (matches.equals(RequirementComparision.EQUAL_TO) || matches.equals(RequirementComparision.GREATER_THAN)) {
-            return left;
-        } else if (matches.equals(RequirementComparision.LESS_THAN)) {
-            return right;
+        if (left.matches(right).equals(RequirementComparision.EQUAL_TO)) {
+            return parseNOT(left);
         }
-        return new ANDRequirement(left, right);
-    }
-
-    public static DoubleRequirement parseXOR(String input) {
-        RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
-        Requirement left = subRequirements.getLeft();
-        Requirement right = subRequirements.getRight();
-
-        return new XORRequirement(left, right);
-    }
-
-    public static DoubleRequirement parseNOR(String input) {
-        RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
-        Requirement left = subRequirements.getLeft();
-        Requirement right = subRequirements.getRight();
-
         return new NORRequirement(left, right);
     }
 
-    public static DoubleRequirement parseNAND(String input) {
+    public static Requirement parseXOR(String input) {
         RequirementPair subRequirements = getSubRequirements(input);
         if (subRequirements == null) {
             return null;
@@ -131,10 +162,23 @@ public class LogicParser {
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
-        return new NANDRequirement(left, right);
+        if (left instanceof TrueRequirement) {
+            return parseNOT(right);
+        } else if (left instanceof FalseRequirement) {
+            return right;
+        } else if (right instanceof TrueRequirement) {
+            return parseNOT(left);
+        } else if (right instanceof FalseRequirement) {
+            return left;
+        }
+
+        if (left.matches(right).equals(RequirementComparision.EQUAL_TO)) {
+            return FALSE;
+        }
+        return new XORRequirement(left, right);
     }
 
-    public static DoubleRequirement parseXNOR(String input) {
+    public static Requirement parseXNOR(String input) {
         RequirementPair subRequirements = getSubRequirements(input);
         if (subRequirements == null) {
             return null;
@@ -142,6 +186,19 @@ public class LogicParser {
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
+        if (left instanceof TrueRequirement) {
+            return right;
+        } else if (left instanceof FalseRequirement) {
+            return parseNOT(right);
+        } else if (right instanceof TrueRequirement) {
+            return left;
+        } else if (right instanceof FalseRequirement) {
+            return parseNOT(left);
+        }
+
+        if (left.matches(right).equals(RequirementComparision.EQUAL_TO)) {
+            return TRUE;
+        }
         return new XNORRequirement(left, right);
     }
 
