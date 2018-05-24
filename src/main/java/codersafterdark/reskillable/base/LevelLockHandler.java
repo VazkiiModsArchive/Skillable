@@ -221,6 +221,12 @@ public class LevelLockHandler {
                 } else if (locks.containsKey(lock)) {
                     requirements.add(locks.get(lock));
                 }
+                if (lock instanceof ParentLockKey) {
+                    RequirementHolder subLocks = ((ParentLockKey) lock).getSubRequirements();
+                    if (subLocks != null && !subLocks.equals(EMPTY_LOCK)) {
+                        requirements.add(subLocks);
+                    }
+                }
             }
         }
 
@@ -305,9 +311,8 @@ public class LevelLockHandler {
                 if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
                     ItemStack stack = player.inventory.armorInventory.get(slot.getIndex());
                     if (!canPlayerUseItem(player, stack)) {
-                        ItemStack copy = stack.copy();
-                        if (!player.inventory.addItemStackToInventory(copy)) {
-                            player.dropItem(copy, false);
+                        if (!player.inventory.addItemStackToInventory(stack)) {
+                            player.dropItem(stack, false);
                         }
                         player.inventory.armorInventory.set(slot.getIndex(), ItemStack.EMPTY);
                         tellPlayer(player, stack, MessageLockedItem.MSG_ARMOR_EQUIP_LOCKED);
