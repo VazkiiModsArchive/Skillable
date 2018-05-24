@@ -1,10 +1,12 @@
 package codersafterdark.reskillable.api.requirement.logic;
 
+import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.logic.impl.*;
+import org.apache.logging.log4j.Level;
 
 //TODO: Make sure all TRUEs are out of the final result
 //null means it is an invalid requirement/subrequirement TRUE means that it is valid but more or less will just be ignored
@@ -202,19 +204,54 @@ public class LogicParser {
         return new XNORRequirement(left, right);
     }
 
-    //TODO implement
     private static RequirementPair getSubRequirements(String input) {
-        if (input == null || input.isEmpty()) {
+        //[requirement]~[requirement]
+        //[ -> Count if at start or after '|' or '~'
+        //] -> Count if at end or before '~'
+        if (input == null || input.length() < 5 || !input.startsWith("[") || !input.endsWith("]")) {
             return null;
         }
+        String first = "";
+        int count = 1;//The first bracket
+        char lastChar = '[';
+        int secondStart = 4;
+        for (int i = 1; i < input.length() - 1; i++) {
+            char c = input.charAt(i);
+            if (lastChar == '|' || lastChar == '~') {
+                if (c == '[') {
+                    count++;
+                }
+            } else if (lastChar == ']' && c == '~') {
+                count--;
+            }
+
+            if (count == 0) {
+                if (!first.isEmpty()) {
+                    Reskillable.logger.log(Level.ERROR, "Something went wrong getting logic requirements for: " + input);
+                    return null;
+                }
+                first = input.substring(1, i - 1);
+                secondStart = i + 2;
+            }
+            lastChar = c;
+        }
+        String second = count == 1 ? input.substring(secondStart, input.length() - 1) : "";
+
+        if (first.isEmpty() || second.isEmpty()) {
+            return null;
+        }
+        //System.out.println("Input: " + input + " First: " + first + " Second: " + second);//TODO remove this line after it gets used for debugging
+
         RequirementRegistry registry = ReskillableAPI.getInstance().getRequirementRegistry();
-        //TODO figure out format
-        //[requirement]~[requirement]
-        //What if NBT has either symbol will things get screwed up? (thinking of item requirements in compatskills)
-        return null;
+        Requirement left = registry.getRequirement(first);
+        if (left == null) {
+            return null;
+        }
+        Requirement right = registry.getRequirement(second);
+        return right == null ? null : new RequirementPair(left, right);
     }
 
-    private class RequirementPair {
+    private static class RequirementPair {
         private Requirement left, right;
 
         private RequirementPair(Requirement left, Requirement right) {
