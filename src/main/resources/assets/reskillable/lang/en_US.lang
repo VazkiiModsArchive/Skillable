@@ -16,6 +16,12 @@ skillable.misc.skillFormat=%s%s: %s%d
 skillable.misc.achievementFormat=Advancement: %s%s
 skillable.misc.traitFormat=Trait: %s%s
 skillable.misc.unobtainableFormat=Unobtainable
+reskillable.misc.andFormat=%s AND
+reskillable.misc.nandFormat=%s NAND
+reskillable.misc.orFormat=%s OR
+reskillable.misc.norFormat=%s NOR
+reskillable.misc.xorFormat=%s XOR
+reskillable.misc.xnorFormat=%s XNOR
 
 # SKILL NAMES
 skillable.skill.reskillable.mining=Mining
@@ -103,7 +109,7 @@ reskillable.command.success.resetall=Successfully reset all skills for player '%
 reskillable.command.fail.unlocktrait=Failed to unlock '%s' for player '%s'.
 reskillable.command.fail.locktrait=Failed to lock '%s' for player '%s'.
 reskillable.command.fail.resetskill=Failed to reset Skill: '%s' for player '%s'.
-reskillable.command.fail.setskilllevel=Failed tp set the level of Skill: '%s' to '%s' for player '%s'.
+reskillable.command.fail.setskilllevel=Failed to set the level of Skill: '%s' to '%s' for player '%s'.
 reskillable.command.fail.skillup=Failed to level up Skill: '%s' for player '%s'.
 reskillable.command.fail.resetall=Failed to reset skills '%s' for player '%s'.
 

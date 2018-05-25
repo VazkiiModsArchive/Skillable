@@ -5,6 +5,8 @@ import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 public class ANDRequirement extends DoubleRequirement {
     public ANDRequirement(Requirement left, Requirement right) {
@@ -18,7 +20,8 @@ public class ANDRequirement extends DoubleRequirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        return null;
+        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.andFormat", TextFormatting.RESET).getUnformattedComponentText() +
+                getRight().getToolTip(data);
     }
 
     //TODO: Figure out how to implement this in the other logic requirements for if the elements are not just the same
