@@ -41,6 +41,9 @@ public class RequirementHolder {
         //TODO Eventually look into optimizing this. Potentially by presorting others by requirement count
         for (RequirementHolder other : others) {
             for (Requirement otherRequirement : other.requirements) {
+                if (otherRequirement instanceof TrueRequirement) {
+                    continue;
+                }
                 boolean noMatch = true;
                 int toRemove = -1;
                 for (int i = 0; i < requirements.size(); i++) {
@@ -68,6 +71,7 @@ public class RequirementHolder {
     }
 
     public static RequirementHolder fromStringList(String[] requirementStringList) {
+        //TODO If length is 1 try splitting the string. Instead it is probably better to follow the TODO below for deprecating single string requirement lists
         List<Requirement> requirements = new ArrayList<>();
         for (String s : requirementStringList) {
             Requirement requirement = ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(s);
@@ -78,6 +82,8 @@ public class RequirementHolder {
         return requirements.isEmpty() ? RequirementHolder.realEmpty() : new RequirementHolder(requirements);
     }
 
+    //TODO: Rewrite config system to store things in a format closer to JSON so that requirements are as a list which would remove the need for this
+    //TODO Cont: This would make sure that there are no issues storing things like ItemRequirements if they have NBT data with commas in it
     public static RequirementHolder fromString(String s) {
         RequirementHolder requirementHolder;
         if (s.matches("(?i)^(none|null|nil)$")) {
