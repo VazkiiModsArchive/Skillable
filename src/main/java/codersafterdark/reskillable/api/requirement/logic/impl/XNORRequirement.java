@@ -6,7 +6,6 @@ import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 
 public class XNORRequirement extends DoubleRequirement {
     public XNORRequirement(Requirement left, Requirement right) {
@@ -20,8 +19,7 @@ public class XNORRequirement extends DoubleRequirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.xnorFormat", TextFormatting.RESET).getUnformattedComponentText() +
-                getRight().getToolTip(data);
+        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.xnorFormat").getUnformattedComponentText() + getRightToolTip(data);
     }
 
     @Override

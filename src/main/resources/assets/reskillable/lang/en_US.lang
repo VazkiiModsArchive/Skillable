@@ -16,12 +16,12 @@ skillable.misc.skillFormat=%s%s: %s%d
 skillable.misc.achievementFormat=Advancement: %s%s
 skillable.misc.traitFormat=Trait: %s%s
 skillable.misc.unobtainableFormat=Unobtainable
-reskillable.misc.andFormat=%s AND
-reskillable.misc.nandFormat=%s NAND
-reskillable.misc.orFormat=%s OR
-reskillable.misc.norFormat=%s NOR
-reskillable.misc.xorFormat=%s XOR
-reskillable.misc.xnorFormat=%s XNOR
+reskillable.misc.andFormat=AND
+reskillable.misc.nandFormat=NAND
+reskillable.misc.orFormat=OR
+reskillable.misc.norFormat=NOR
+reskillable.misc.xorFormat=XOR
+reskillable.misc.xnorFormat=XNOR
 
 # SKILL NAMES
 skillable.skill.reskillable.mining=Mining

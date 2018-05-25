@@ -5,7 +5,6 @@ import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.TraitRequirement;
 import codersafterdark.reskillable.api.requirement.logic.LogicParser;
-import codersafterdark.reskillable.api.requirement.logic.LogicTypes;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
 import net.minecraft.advancements.Advancement;
@@ -29,13 +28,13 @@ public class ReskillableAPI {
         requirementRegistry.addRequirementHandler("unobtainable", input -> LogicParser.FALSE);
 
         //Logic Requirements
-        requirementRegistry.addRequirementHandler(LogicTypes.NOT.getName(), LogicParser::parseNOT);
-        requirementRegistry.addRequirementHandler(LogicTypes.AND.getName(), LogicParser::parseAND);
-        requirementRegistry.addRequirementHandler(LogicTypes.NAND.getName(), LogicParser::parseNAND);
-        requirementRegistry.addRequirementHandler(LogicTypes.OR.getName(), LogicParser::parseOR);
-        requirementRegistry.addRequirementHandler(LogicTypes.NOR.getName(), LogicParser::parseNOR);
-        requirementRegistry.addRequirementHandler(LogicTypes.XOR.getName(), LogicParser::parseXOR);
-        requirementRegistry.addRequirementHandler(LogicTypes.XNOR.getName(), LogicParser::parseXNOR);
+        requirementRegistry.addRequirementHandler("not", LogicParser::parseNOT);
+        requirementRegistry.addRequirementHandler("and", LogicParser::parseAND);
+        requirementRegistry.addRequirementHandler("nand", LogicParser::parseNAND);
+        requirementRegistry.addRequirementHandler("or", LogicParser::parseOR);
+        requirementRegistry.addRequirementHandler("nor", LogicParser::parseNOR);
+        requirementRegistry.addRequirementHandler("xor", LogicParser::parseXOR);
+        requirementRegistry.addRequirementHandler("xnor", LogicParser::parseXNOR);
     }
 
     public static ReskillableAPI getInstance() {

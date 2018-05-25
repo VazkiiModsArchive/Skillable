@@ -6,7 +6,6 @@ import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 
 public class NANDRequirement extends DoubleRequirement {
     public NANDRequirement(Requirement left, Requirement right) {
@@ -20,8 +19,7 @@ public class NANDRequirement extends DoubleRequirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.nandFormat", TextFormatting.RESET).getUnformattedComponentText() +
-                getRight().getToolTip(data);
+        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.nandFormat").getUnformattedComponentText() + getRightToolTip(data);
     }
 
     @Override
