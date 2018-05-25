@@ -2,6 +2,7 @@ package codersafterdark.reskillable.api.requirement.logic.impl;
 
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class NOTRequirement extends Requirement {
@@ -25,5 +26,10 @@ public class NOTRequirement extends Requirement {
 
     public Requirement getRequirement() {
         return this.requirement;
+    }
+
+    @Override
+    public RequirementComparision matches(Requirement o) {
+        return o instanceof NOTRequirement ? getRequirement().matches(((NOTRequirement) o).getRequirement()) : RequirementComparision.NOT_EQUAL;
     }
 }

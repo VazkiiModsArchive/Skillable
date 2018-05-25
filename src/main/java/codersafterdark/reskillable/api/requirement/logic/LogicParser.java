@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Level;
 //TODO: Make sure all TRUEs are out of the final result
 //null means it is an invalid requirement/subrequirement TRUE means that it is valid but more or less will just be ignored
 public class LogicParser {
-    private final static FalseRequirement FALSE = new FalseRequirement();
-    private final static TrueRequirement TRUE = new TrueRequirement();
+    public final static FalseRequirement FALSE = new FalseRequirement();
+    public final static TrueRequirement TRUE = new TrueRequirement();
 
     //TODO: Should we have checks of things like ((x AND y) AND (y AND z)) and simplify it to ((x AND y) AND z)
     //TODO Cont: If we decide to then we should look at other similar optimization methods
