@@ -40,17 +40,13 @@ public class NOTRequirement extends Requirement {
         while (index < parentToolTip.length()) {
             int greenIndex = parentToolTip.indexOf(green, index);
             int redIndex = parentToolTip.indexOf(red, index);
-            if (greenIndex >= 0 && greenIndex < redIndex) {
+            if (greenIndex >= 0 && (greenIndex < redIndex || redIndex < 0)) {
                 String end = greenIndex + 2 > parentToolTip.length() ? "" : parentToolTip.substring(greenIndex + 2);
                 parentToolTip = parentToolTip.substring(index, greenIndex) + red + end;
                 index = greenIndex + 2;
             } else {
                 if (redIndex < 0) {
-                    if (greenIndex < 0) {
-                        break;
-                    } else {
-                        continue;
-                    }
+                    break;
                 }
                 String end = redIndex + 2 > parentToolTip.length() ? "" : parentToolTip.substring(redIndex + 2);
                 parentToolTip = parentToolTip.substring(index, redIndex) + green + end;
