@@ -24,7 +24,11 @@ public abstract class DoubleRequirement extends Requirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + TextFormatting.GOLD + getFormat() + ' ' + getToolTipPart(data, getRight());
+        TextFormatting color = TextFormatting.GREEN;
+        if (data == null || !achievedByPlayer(data.playerWR.get())) {
+            color = TextFormatting.RED;
+        }
+        return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + color + getFormat() + ' ' + getToolTipPart(data, getRight());
     }
 
     private String getToolTipPart(PlayerData data, Requirement side) {
