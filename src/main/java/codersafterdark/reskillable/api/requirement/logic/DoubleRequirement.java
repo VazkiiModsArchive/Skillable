@@ -20,19 +20,22 @@ public abstract class DoubleRequirement extends Requirement {
         return this.right;
     }
 
-    protected String getRightToolTip(PlayerData data) {
-        String tooltip = getRight().getToolTip(data);
+    protected abstract String getFormat();
+
+    @Override
+    public String getToolTip(PlayerData data) {
+        return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + TextFormatting.GOLD + getFormat() +
+                TextFormatting.RESET + ' ' + getToolTipPart(data, getRight());
+    }
+
+    private String getToolTipPart(PlayerData data, Requirement side) {
+        String tooltip = side.getToolTip(data);
         if (tooltip != null && tooltip.startsWith(TextFormatting.GRAY + " - ")) {
             tooltip = tooltip.replaceFirst(TextFormatting.GRAY + " - ", "");
         }
-        return TextFormatting.RESET + " " + tooltip;
-    }
-
-    protected String getLeftToolTip(PlayerData data) {
-        String tooltip = getLeft().getToolTip(data);
-        if (tooltip != null && !tooltip.startsWith(TextFormatting.GRAY + " - ")) {
-            tooltip = TextFormatting.GRAY + " - " + tooltip;
+        if (side instanceof DoubleRequirement) {
+            tooltip = TextFormatting.RESET + "(" + tooltip + TextFormatting.RESET + ')';
         }
-        return tooltip + ' ' + TextFormatting.GOLD;
+        return tooltip;
     }
 }

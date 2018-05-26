@@ -1,6 +1,5 @@
 package codersafterdark.reskillable.api.requirement.logic.impl;
 
-import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
@@ -18,8 +17,8 @@ public class NORRequirement extends DoubleRequirement {
     }
 
     @Override
-    public String getToolTip(PlayerData data) {
-        return getLeft().getToolTip(data) + new TextComponentTranslation("reskillable.misc.norFormat").getUnformattedComponentText() + getRightToolTip(data);
+    protected String getFormat() {
+        return new TextComponentTranslation("reskillable.misc.norFormat").getUnformattedComponentText();
     }
 
     @Override
