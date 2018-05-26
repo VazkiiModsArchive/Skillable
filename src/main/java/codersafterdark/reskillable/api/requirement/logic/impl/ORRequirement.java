@@ -41,7 +41,7 @@ public class ORRequirement extends DoubleRequirement {
             }
 
             //OR specific check
-
+            //If both are less restrictive make it greater than??
         }
         return RequirementComparision.NOT_EQUAL;
     }

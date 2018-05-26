@@ -70,6 +70,7 @@ public class RequirementHolder {
         return new RequirementHolder();
     }
 
+    //TODO: This should potentially do something similar to the merge constructor above in case there are duplicate requirements
     public static RequirementHolder fromStringList(String[] requirementStringList) {
         //TODO If length is 1 try splitting the string. Instead it is probably better to follow the TODO below for deprecating single string requirement lists
         List<Requirement> requirements = new ArrayList<>();
