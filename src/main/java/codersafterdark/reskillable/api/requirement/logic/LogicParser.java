@@ -8,7 +8,7 @@ import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.logic.impl.*;
 import org.apache.logging.log4j.Level;
 
-//TODO: Make sure all TRUEs are out of the final result
+//TODO: Make it so that if a requirement is simplified it logs what the new string is so that pack makers can know the simpler string
 //null means it is an invalid requirement/subrequirement TRUE means that it is valid but more or less will just be ignored
 public class LogicParser {
     public final static FalseRequirement FALSE = new FalseRequirement();
@@ -222,7 +222,8 @@ public class LogicParser {
         int count = 1;//The first bracket
         char lastChar = '[';
         int secondStart = 4;
-        for (int i = 1; i < input.length() - 1; i++) {
+        int end = input.length() - 1;
+        for (int i = 1; i < end; i++) {
             char c = input.charAt(i);
             if (lastChar == '|' || lastChar == '~') {
                 if (c == '[') {
@@ -230,8 +231,10 @@ public class LogicParser {
                 }
             } else if (lastChar == ']' && c == '~') {
                 count--;
+                for (int check = i - 2; check > 0 && input.charAt(check) == ']'; check--) {
+                    count--;
+                }
             }
-
             if (count == 0) {
                 if (!first.isEmpty()) {
                     Reskillable.logger.log(Level.ERROR, "Something went wrong getting logic requirements for: " + input);
@@ -242,19 +245,22 @@ public class LogicParser {
             }
             lastChar = c;
         }
-        String second = count == 1 ? input.substring(secondStart, input.length() - 1) : "";
-
-        if (first.isEmpty() || second.isEmpty()) {
+        if (first.isEmpty()) {
             return null;
         }
-        //System.out.println("Input: " + input + " First: " + first + " Second: " + second);//TODO remove this line after it gets used for debugging
+        for (int check = end; check > 0 && input.charAt(check) == ']'; check--) {
+            count--;
+        }
+        if (count != 0) {
+            return null;
+        }
 
         RequirementRegistry registry = ReskillableAPI.getInstance().getRequirementRegistry();
         Requirement left = registry.getRequirement(first);
         if (left == null) {
             return null;
         }
-        Requirement right = registry.getRequirement(second);
+        Requirement right = registry.getRequirement(input.substring(secondStart, end));
         return right == null ? null : new RequirementPair(left, right);
     }
 

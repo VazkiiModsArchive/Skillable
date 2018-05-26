@@ -24,8 +24,7 @@ public abstract class DoubleRequirement extends Requirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + TextFormatting.GOLD + getFormat() +
-                TextFormatting.RESET + ' ' + getToolTipPart(data, getRight());
+        return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + TextFormatting.GOLD + getFormat() + ' ' + getToolTipPart(data, getRight());
     }
 
     private String getToolTipPart(PlayerData data, Requirement side) {
@@ -34,7 +33,10 @@ public abstract class DoubleRequirement extends Requirement {
             tooltip = tooltip.replaceFirst(TextFormatting.GRAY + " - ", "");
         }
         if (side instanceof DoubleRequirement) {
-            tooltip = TextFormatting.RESET + "(" + tooltip + TextFormatting.RESET + ')';
+            tooltip = TextFormatting.GOLD + "(" + TextFormatting.RESET + tooltip + TextFormatting.GOLD + ')';
+        } else {
+            //Ensure that no color leaks
+            tooltip = TextFormatting.RESET + tooltip;
         }
         return tooltip;
     }
