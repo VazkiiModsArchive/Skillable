@@ -40,12 +40,19 @@ public class LogicParser {
             return ((NOTRequirement) requirement).getRequirement();
         } else if (requirement instanceof DoubleRequirement) {
             DoubleRequirement orRequirement = (DoubleRequirement) requirement;
-            if (requirement instanceof ORRequirement) {
-                return new NORRequirement(orRequirement.getLeft(), orRequirement.getRight());
-            } else if (requirement instanceof ANDRequirement) {
+            //Switch the requirement to be an inversion for better performance when checking if achieved
+            if (requirement instanceof ANDRequirement) {
                 return new NANDRequirement(orRequirement.getLeft(), orRequirement.getRight());
+            } else if (requirement instanceof NANDRequirement) {
+                return new ANDRequirement(orRequirement.getLeft(), orRequirement.getRight());
+            } else if (requirement instanceof ORRequirement) {
+                return new NORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+            } else if (requirement instanceof NORRequirement) {
+                return new ORRequirement(orRequirement.getLeft(), orRequirement.getRight());
             } else if (requirement instanceof XORRequirement) {
                 return new XNORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+            } else if (requirement instanceof XNORRequirement) {
+                return new XORRequirement(orRequirement.getLeft(), orRequirement.getRight());
             }
         }
         return new NOTRequirement(requirement);
