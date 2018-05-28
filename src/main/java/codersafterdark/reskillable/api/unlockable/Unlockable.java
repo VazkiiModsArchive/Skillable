@@ -16,14 +16,14 @@ import java.util.Objects;
 
 public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> implements Comparable<Unlockable> {
     private final String name;
-    private final ResourceLocation icon;
+    private ResourceLocation icon;
     protected UnlockableConfig unlockableConfig;
     private Skill parentSkill;
 
     public Unlockable(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, String... defaultRequirements) {
         this.name = name.toString().replace(":", ".");
         setRegistryName(name);
-        icon = new ResourceLocation(name.getResourceDomain(), "textures/unlockables/" + name.getResourcePath() + ".png");
+        setIcon(new ResourceLocation(name.getResourceDomain(), "textures/unlockables/" + name.getResourcePath() + ".png"));
         this.unlockableConfig = ReskillableAPI.getInstance().getTraitConfig(name, x, y, cost, defaultRequirements);
         setParentSkill(skillName);
     }
@@ -71,6 +71,10 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
 
     public ResourceLocation getIcon() {
         return icon;
+    }
+
+    protected void setIcon(ResourceLocation newIcon) {
+        icon = newIcon;
     }
 
     public void onUnlock(EntityPlayer player) {
