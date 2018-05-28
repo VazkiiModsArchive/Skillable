@@ -1,14 +1,13 @@
-package codersafterdark.reskillable.api.requirement;
+package codersafterdark.reskillable.api.requirement.logic;
 
 import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
-public class UnobtainableRequirement extends Requirement {
-
-    public UnobtainableRequirement (){}
-
+public class FalseRequirement extends Requirement {
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayerMP) {
         return false;
@@ -21,9 +20,6 @@ public class UnobtainableRequirement extends Requirement {
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        if (other instanceof UnobtainableRequirement) {
-            return RequirementComparision.EQUAL_TO;
-        }
-        return RequirementComparision.NOT_EQUAL;
+        return other instanceof FalseRequirement ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
     }
 }
