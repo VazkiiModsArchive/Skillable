@@ -37,11 +37,13 @@ public class RequirementRegistry {
                 }
             }
 
-        } else if (requirements.length > 2) {
+        } else if (requirements.length > 0) {
             String requirementType = requirements[0];
             if (requirementHandlers.containsKey(requirementType)) {
                 //Pass them the whole extended requirement Inputs (Note: they will have to split by | themselves)
-                requirement = requirementHandlers.get(requirementType).apply(requirementString.substring(requirementType.length() + 1));
+                int pos = requirementType.length() + 1;
+                String input = pos > requirementString.length() ? "" : requirementString.substring(pos);
+                requirement = requirementHandlers.get(requirementType).apply(input);
             }
         }
         if (requirement == null) {

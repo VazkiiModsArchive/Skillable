@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.api.data;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
+import codersafterdark.reskillable.api.requirement.NoneRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.TrueRequirement;
@@ -24,6 +25,7 @@ public class RequirementHolder {
     private static AdvancementList advList;
     private final List<Requirement> requirements;
     private final boolean forcedEmpty;
+    private boolean hasNone;
 
     public RequirementHolder() {
         this.requirements = Lists.newArrayList();
@@ -36,49 +38,38 @@ public class RequirementHolder {
     }
 
     public RequirementHolder(RequirementHolder... others) {
-        this.forcedEmpty = false;
         this.requirements = Lists.newArrayList();
-        //TODO Eventually look into optimizing this. Potentially by presorting others by requirement count
+        this.forcedEmpty = false;
         for (RequirementHolder other : others) {
-            for (Requirement otherRequirement : other.requirements) {
-                if (otherRequirement instanceof TrueRequirement) {
-                    continue;
-                }
-                boolean noMatch = true;
-                int toRemove = -1;
-                for (int i = 0; i < requirements.size(); i++) {
-                    RequirementComparision match = requirements.get(i).matches(otherRequirement);
-                    if (match.equals(RequirementComparision.EQUAL_TO) || match.equals(RequirementComparision.GREATER_THAN)) {
-                        noMatch = false;
-                        break;
-                    } else if (match.equals(RequirementComparision.LESS_THAN)) {
-                        toRemove = i;
-                        break;
-                    }
-                }
-                if (toRemove >= 0) {
-                    requirements.remove(toRemove);
-                }
-                if (noMatch) {
-                    requirements.add(otherRequirement);
-                }
+            if (other.hasNone) {
+                this.requirements.addAll(other.requirements);
+                hasNone = true;
+                break;
             }
+            other.requirements.forEach(otherRequirement -> addRequirement(this.requirements, otherRequirement));
         }
+    }
+
+    public static RequirementHolder noneHolder() {
+        RequirementHolder requirementHolder = new RequirementHolder(new ArrayList<>());
+        requirementHolder.hasNone = true;
+        requirementHolder.requirements.add(new NoneRequirement());
+        return requirementHolder;
     }
 
     public static RequirementHolder realEmpty() {
         return new RequirementHolder();
     }
 
-    //TODO: This should potentially do something similar to the merge constructor above in case there are duplicate requirements
     public static RequirementHolder fromStringList(String[] requirementStringList) {
         //TODO If length is 1 try splitting the string. Instead it is probably better to follow the TODO below for deprecating single string requirement lists
         List<Requirement> requirements = new ArrayList<>();
         for (String s : requirementStringList) {
             Requirement requirement = ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(s);
-            if (requirement != null && !(requirement instanceof TrueRequirement)) {
-                requirements.add(requirement);
+            if (requirement instanceof NoneRequirement) {
+                return noneHolder();
             }
+            addRequirement(requirements, requirement);
         }
         return requirements.isEmpty() ? RequirementHolder.realEmpty() : new RequirementHolder(requirements);
     }
@@ -94,6 +85,22 @@ public class RequirementHolder {
         }
 
         return requirementHolder;
+    }
+
+    private static void addRequirement(List<Requirement> requirements, Requirement requirement) {
+        if (requirement == null || requirement instanceof TrueRequirement) {
+            return;
+        }
+        for (int i = 0; i < requirements.size(); i++) {
+            RequirementComparision match = requirements.get(i).matches(requirement);
+            if (match.equals(RequirementComparision.EQUAL_TO) || match.equals(RequirementComparision.GREATER_THAN)) {
+                return;
+            } else if (match.equals(RequirementComparision.LESS_THAN)) {
+                requirements.remove(i);
+                break;
+            }
+        }
+        requirements.add(requirement);
     }
 
     public static AdvancementList getAdvancementList() {
@@ -132,5 +139,9 @@ public class RequirementHolder {
 
     public List<Requirement> getRequirements() {
         return requirements;
+    }
+
+    public boolean hasNone() {
+        return hasNone;
     }
 }

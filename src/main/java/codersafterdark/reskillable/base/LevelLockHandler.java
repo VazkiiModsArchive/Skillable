@@ -150,12 +150,22 @@ public class LevelLockHandler {
     }
 
     public static RequirementHolder getLockByKey(LockKey key) {
-        return locks.containsKey(key) ? locks.get(key) : EMPTY_LOCK;
+        if (locks.containsKey(key)) {
+            RequirementHolder holder = locks.get(key);
+            if (!holder.hasNone()) {
+                return holder;
+            }
+        }
+        return EMPTY_LOCK;
     }
 
     public static RequirementHolder getLockByFuzzyKey(FuzzyLockKey key) {
         List<RequirementHolder> requirements = getFuzzyRequirements(key);
-        return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+        if (requirements.isEmpty()) {
+            return EMPTY_LOCK;
+        }
+        RequirementHolder holder = new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+        return holder.hasNone() ? EMPTY_LOCK : holder;
     }
 
     private static List<RequirementHolder> getFuzzyRequirements(FuzzyLockKey key) {
@@ -167,7 +177,11 @@ public class LevelLockHandler {
                 baseLock = new GenericLockKey(key.getClass());
             } else if (locks.containsKey(baseLock)) {
                 //Add the base lock's requirements
-                requirements.add(locks.get(baseLock));
+                RequirementHolder holder = locks.get(baseLock);
+                if (holder.hasNone()) {
+                    return Collections.singletonList(holder);
+                }
+                requirements.add(holder);
             }
 
             Set<FuzzyLockKey> fuzzyLookup = fuzzyLockInfo.get(baseLock);
@@ -175,12 +189,20 @@ public class LevelLockHandler {
                 for (FuzzyLockKey fuzzyLock : fuzzyLookup) {
                     if (key.fuzzyEquals(fuzzyLock) && locks.containsKey(fuzzyLock)) { //Build up the best match
                         //fuzzy is the given object and has all info and fuzzyLock is the partial information
-                        requirements.add(locks.get(fuzzyLock));
+                        RequirementHolder holder = locks.get(fuzzyLock);
+                        if (holder.hasNone()) {
+                            return Collections.singletonList(holder);
+                        }
+                        requirements.add(holder);
                     }
                 }
             }
         } else if (locks.containsKey(key)) {
-            requirements.add(locks.get(key));
+            RequirementHolder holder = locks.get(key);
+            if (holder.hasNone()) {
+                return Collections.singletonList(holder);
+            }
+            requirements.add(holder);
         }
         return requirements;
     }
@@ -219,18 +241,29 @@ public class LevelLockHandler {
                 if (lock instanceof FuzzyLockKey) {
                     requirements.addAll(getFuzzyRequirements((FuzzyLockKey) lock));
                 } else if (locks.containsKey(lock)) {
-                    requirements.add(locks.get(lock));
+                    RequirementHolder holder = locks.get(lock);
+                    if (holder.hasNone()) {
+                        return EMPTY_LOCK;
+                    }
+                    requirements.add(holder);
                 }
                 if (lock instanceof ParentLockKey) {
                     RequirementHolder subLocks = ((ParentLockKey) lock).getSubRequirements();
                     if (subLocks != null && !subLocks.equals(EMPTY_LOCK)) {
+                        if (subLocks.hasNone()) {
+                            return EMPTY_LOCK;
+                        }
                         requirements.add(subLocks);
                     }
                 }
             }
         }
 
-        return requirements.isEmpty() ? EMPTY_LOCK : new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+        if (requirements.isEmpty()) {
+            return EMPTY_LOCK;
+        }
+        RequirementHolder holder = new RequirementHolder(requirements.toArray(new RequirementHolder[0]));
+        return holder.hasNone() ? EMPTY_LOCK : holder;
     }
 
     public static boolean canPlayerUseItem(EntityPlayer player, ItemStack stack) {
