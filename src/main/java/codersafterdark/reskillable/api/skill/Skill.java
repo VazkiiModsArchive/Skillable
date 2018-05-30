@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements Comparable<Skill> {
-    private ResourceLocation spriteLocation;
+    private final ResourceLocation spriteLocation;
     private final String name;
     private final List<Unlockable> unlockables = new ArrayList<>();
     protected ResourceLocation background;
@@ -23,7 +23,8 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public Skill(ResourceLocation name, ResourceLocation background) {
         this.name = name.toString().replace(":", ".");
         this.background = background;
-        setSpriteLocation(new ResourceLocation(name.getResourceDomain(), "textures/skills/" + name.getResourcePath() + ".png"));
+        this.spriteLocation = new ResourceLocation(name.getResourceDomain(), "textures/skills/" +
+                name.getResourcePath() + ".png");
         this.setRegistryName(name);
         this.skillConfig = ReskillableAPI.getInstance().getSkillConfig(name);
     }
@@ -58,10 +59,6 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
 
     public ResourceLocation getSpriteLocation() {
         return spriteLocation;
-    }
-
-    public void setSpriteLocation(ResourceLocation newSprite) {
-        spriteLocation = newSprite;
     }
 
     public Pair<Integer, Integer> getSpriteFromRank(int rank) {
