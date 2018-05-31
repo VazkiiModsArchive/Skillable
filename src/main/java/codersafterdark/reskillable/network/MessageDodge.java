@@ -27,9 +27,7 @@ public class MessageDodge implements IMessage, IMessageHandler<MessageDodge, IMe
 
     public IMessage handleMessage(MessageContext context) {
         EntityPlayerMP player = context.getServerHandler().player;
-        player.mcServer.addScheduledTask(() -> {
-            player.addExhaustion(0.3F);
-        });
+        player.mcServer.addScheduledTask(() -> player.addExhaustion(0.3F));
 
         return null;
     }

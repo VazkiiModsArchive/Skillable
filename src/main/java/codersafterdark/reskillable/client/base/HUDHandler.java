@@ -70,8 +70,7 @@ public class HUDHandler {
             PlayerData data = PlayerDataHandler.get(mc.player);
             RequirementHolder requirements = LevelLockHandler.getSkillLock(lockedItem);
             int pad = 26;
-            int left = width / 2 - (requirements.getRestrictionLength() * pad) / 2;
-            int xp = left;
+            int xp = width / 2 - (requirements.getRestrictionLength() * pad) / 2;
 
             List<SkillRequirement> skillRequirements = Lists.newArrayList();
             List<AdvancementRequirement> advancementRequirements = Lists.newArrayList();

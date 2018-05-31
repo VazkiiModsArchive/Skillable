@@ -137,10 +137,10 @@ public class RenderHelper {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buff = tessellator.getBuffer();
         buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        buff.pos(par1 + 0, par2 + par6, z).tex((par3 + 0) * f, (par4 + par6) * f1).endVertex();
+        buff.pos(par1, par2 + par6, z).tex(par3 * f, (par4 + par6) * f1).endVertex();
         buff.pos(par1 + par5, par2 + par6, z).tex((par3 + par5) * f, (par4 + par6) * f1).endVertex();
-        buff.pos(par1 + par5, par2 + 0, z).tex((par3 + par5) * f, (par4 + 0) * f1).endVertex();
-        buff.pos(par1 + 0, par2 + 0, z).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
+        buff.pos(par1 + par5, par2, z).tex((par3 + par5) * f, par4 * f1).endVertex();
+        buff.pos(par1, par2, z).tex(par3 * f, par4 * f1).endVertex();
         tessellator.draw();
     }
 }

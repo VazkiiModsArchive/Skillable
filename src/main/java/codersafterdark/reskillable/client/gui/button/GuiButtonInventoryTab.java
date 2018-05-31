@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.text.translation.I18n;
 
+import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 public class GuiButtonInventoryTab extends GuiButton {
@@ -26,7 +27,7 @@ public class GuiButtonInventoryTab extends GuiButton {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float f) {
+    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float f) {
         enabled = type.shouldRender() && !mc.player.getRecipeBook().isGuiOpen();
 
         GuiScreen curr = mc.currentScreen;

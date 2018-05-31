@@ -57,7 +57,7 @@ public class TraitGreenThumb extends Trait {
         }
 
         Material mat = state.getMaterial();
-        return mat != null && (mat == Material.PLANTS || mat == Material.CACTUS || mat == Material.GRASS || mat == Material.LEAVES || mat == Material.GOURD) && block instanceof IGrowable && ((IGrowable) block).canGrow(world, pos, world.getBlockState(pos), world.isRemote);
+        return (mat == Material.PLANTS || mat == Material.CACTUS || mat == Material.GRASS || mat == Material.LEAVES || mat == Material.GOURD) && block instanceof IGrowable && ((IGrowable) block).canGrow(world, pos, world.getBlockState(pos), world.isRemote);
     }
 
 }

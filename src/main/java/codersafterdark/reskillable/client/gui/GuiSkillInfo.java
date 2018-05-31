@@ -199,7 +199,7 @@ public class GuiSkillInfo extends GuiScreen {
 
         while (i < tokens.length) {
             while (fontRenderer.getStringWidth(curr) < maxLen && i < tokens.length) {
-                curr = curr + tokens[i] + " ";
+                curr = curr + tokens[i] + ' ';
                 i++;
             }
             tooltip.add(curr);
