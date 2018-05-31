@@ -28,7 +28,7 @@ public class TraitPerfectRecover extends Trait {
                 hasGlowstoneBlock |= stack.getItem() == this.getGlowstone();
             }
             if (!hasGlowstoneBlock) {
-                event.getDrops().removeIf((s) -> s.getItem() == Items.GLOWSTONE_DUST);
+                event.getDrops().removeIf(s -> s.getItem() == Items.GLOWSTONE_DUST);
                 event.getDrops().add(new ItemStack(Items.GLOWSTONE_DUST, 4));
             }
         } else if (event.getState().getBlock() == Blocks.SEA_LANTERN) {
@@ -37,7 +37,7 @@ public class TraitPerfectRecover extends Trait {
                 hasSeaLantern |= stack.getItem() == this.getSeaLantern();
             }
             if (!hasSeaLantern) {
-                event.getDrops().removeIf((s) -> s.getItem() == Items.PRISMARINE_CRYSTALS);
+                event.getDrops().removeIf(s -> s.getItem() == Items.PRISMARINE_CRYSTALS);
                 event.getDrops().add(new ItemStack(Items.PRISMARINE_CRYSTALS, 5));
                 event.getDrops().add(new ItemStack(Items.PRISMARINE_SHARD, 4));
             }

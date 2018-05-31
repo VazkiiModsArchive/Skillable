@@ -38,9 +38,9 @@ public class InventoryTabHandler {
             x -= 10;
             y += 15;
         }
-        buttonList.add(new GuiButtonInventoryTab(82931, x, y, GuiButtonInventoryTab.TabType.INVENTORY, (gui) -> gui instanceof GuiInventory || gui instanceof GuiContainerCreative));
-        buttonList.add(new GuiButtonInventoryTab(82932, x, y + 29, GuiButtonInventoryTab.TabType.SKILLS, (gui) -> gui instanceof GuiSkills || gui instanceof GuiSkillInfo));
-        buttonList.add(new GuiButtonInventoryTab(82933, x, y + 58, GuiButtonInventoryTab.TabType.ABILITIES, (gui) -> gui instanceof GuiAbilities));
+        buttonList.add(new GuiButtonInventoryTab(82931, x, y, GuiButtonInventoryTab.TabType.INVENTORY, gui -> gui instanceof GuiInventory || gui instanceof GuiContainerCreative));
+        buttonList.add(new GuiButtonInventoryTab(82932, x, y + 29, GuiButtonInventoryTab.TabType.SKILLS, gui -> gui instanceof GuiSkills || gui instanceof GuiSkillInfo));
+        buttonList.add(new GuiButtonInventoryTab(82933, x, y + 58, GuiButtonInventoryTab.TabType.ABILITIES, gui -> gui instanceof GuiAbilities));
     }
 
     @SubscribeEvent

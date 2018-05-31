@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.GlStateManager;
 public class GuiButtonLevelUp extends GuiButton {
 
     int cost;
-    float renderTicks = 0;
+    float renderTicks;
 
     public GuiButtonLevelUp(int x, int y) {
         super(0, x, y, 14, 14, "");

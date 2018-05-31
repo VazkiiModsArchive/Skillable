@@ -134,10 +134,10 @@ public class GuiSkillInfo extends GuiScreen {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos((double) (x), (double) (y + height), (double) this.zLevel).tex(0, 1).endVertex();
+        bufferbuilder.pos((double) x, (double) (y + height), (double) this.zLevel).tex(0, 1).endVertex();
         bufferbuilder.pos((double) (x + width), (double) (y + height), (double) this.zLevel).tex(1, 1).endVertex();
-        bufferbuilder.pos((double) (x + width), (double) (y), (double) this.zLevel).tex(1, 0).endVertex();
-        bufferbuilder.pos((double) (x), (double) (y), (double) this.zLevel).tex(0, 0).endVertex();
+        bufferbuilder.pos((double) (x + width), (double) y, (double) this.zLevel).tex(1, 0).endVertex();
+        bufferbuilder.pos((double) x, (double) y, (double) this.zLevel).tex(0, 0).endVertex();
         tessellator.draw();
     }
 

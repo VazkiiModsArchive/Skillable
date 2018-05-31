@@ -128,7 +128,7 @@ public class PlayerSkillInfo {
     }
 
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
-        unlockables.forEach((u) -> {
+        unlockables.forEach(u -> {
             if (u.isEnabled() && u instanceof IAbilityEventHandler) {
                 consumer.accept((IAbilityEventHandler) u);
             }

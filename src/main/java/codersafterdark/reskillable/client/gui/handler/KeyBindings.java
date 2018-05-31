@@ -18,7 +18,7 @@ public class KeyBindings {
     static KeyBinding openGUI = new KeyBinding(Reskillable.proxy.getLocalizedString("key.openGUI"), Keyboard.KEY_Y, Reskillable.proxy.getLocalizedString("key.controls." + LibMisc.MOD_ID));
     boolean prevState;
 
-    public static final void init() {
+    public static void init() {
         ClientRegistry.registerKeyBinding(openGUI);
     }
 

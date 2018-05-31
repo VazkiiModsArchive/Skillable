@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class LoadingPlugin implements IFMLLoadingPlugin {
 
-    public static boolean runtimeDeobfEnabled = false;
+    public static boolean runtimeDeobfEnabled;
 
     @Override
     public String[] getASMTransformerClass() {

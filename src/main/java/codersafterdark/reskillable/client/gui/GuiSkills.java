@@ -30,7 +30,7 @@ public class GuiSkills extends GuiScreen {
     private int guiWidth, guiHeight;
     private Skill hoveredSkill;
 
-    private int offset = 0;
+    private int offset;
 
     private int left;
     private int top;
