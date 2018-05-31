@@ -269,10 +269,7 @@ public class LevelLockHandler {
 
     @SubscribeEvent
     public static void hurtEvent(LivingAttackEvent event) {
-        if (event.isCanceled()) {
-            return;
-        }
-        if (event.getSource().getTrueSource() instanceof EntityPlayer) {
+        if (!event.isCanceled() && event.getSource().getTrueSource() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
             genericEnforce(event, player, player.getHeldItemMainhand(), MessageLockedItem.MSG_ITEM_LOCKED);
         }
@@ -363,13 +360,11 @@ public class LevelLockHandler {
     }
 
     public static void enforce(PlayerInteractEvent event) {
-        if (!event.isCanceled()) {
-            genericEnforce(event, event.getEntityPlayer(), event.getItemStack(), MessageLockedItem.MSG_ITEM_LOCKED);
-        }
+        genericEnforce(event, event.getEntityPlayer(), event.getItemStack(), MessageLockedItem.MSG_ITEM_LOCKED);
     }
 
     public static void genericEnforce(Event event, EntityPlayer player, ItemStack stack, String lockMessage) {
-        if (!event.isCancelable() || player == null || stack == null || stack.isEmpty() || player.isCreative()) {
+        if (!event.isCancelable() || event.isCanceled() || player == null || stack == null || stack.isEmpty() || player.isCreative()) {
             return;
         }
         if (ConfigHandler.enforceFakePlayers) {
@@ -385,6 +380,7 @@ public class LevelLockHandler {
         }
     }
 
+    //TODO: Make this properly handle custom requirements instead of just not displaying them and showing that it should be met
     public static void tellPlayer(EntityPlayer player, ItemStack stack, String msg) {
         if (player instanceof EntityPlayerMP) {
             PacketHandler.INSTANCE.sendTo(new MessageLockedItem(stack, msg), (EntityPlayerMP) player);

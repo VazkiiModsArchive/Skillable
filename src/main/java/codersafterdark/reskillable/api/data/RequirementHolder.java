@@ -128,9 +128,7 @@ public class RequirementHolder {
         }
         if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
-            for (Requirement requirement : requirements) {
-                tooltip.add(requirement.getToolTip(data));
-            }
+            requirements.stream().map(requirement -> requirement.getToolTip(data)).forEach(tooltip::add);
         } else {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
         }
