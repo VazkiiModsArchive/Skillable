@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class ClientProxy extends CommonProxy {
-
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);

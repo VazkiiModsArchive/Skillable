@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequirementHolder {
-
     private static AdvancementList advList;
     private final List<Requirement> requirements;
     private final boolean forcedEmpty;

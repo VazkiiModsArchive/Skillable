@@ -29,7 +29,6 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class HUDHandler {
-
     private static ItemStack lockedItem;
     private static String lockMessage;
     private static int lockTime;
@@ -146,6 +145,4 @@ public class HUDHandler {
             lockTime--;
         }
     }
-
-
 }

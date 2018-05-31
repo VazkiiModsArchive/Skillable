@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 
 public class ConfigHandler {
-
     public static Configuration config;
 
     public static boolean disableSheepWool = true;
@@ -77,7 +76,6 @@ public class ConfigHandler {
     }
 
     public static class ChangeListener {
-
         @SubscribeEvent
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
             if (eventArgs.getModID().equals(LibMisc.MOD_ID)) {

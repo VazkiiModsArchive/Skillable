@@ -12,7 +12,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class ClientTickHandler {
-
     public static volatile Queue<Runnable> scheduledActions = new ArrayDeque<>();
 
     public static int ticksInGame;
@@ -55,5 +54,4 @@ public class ClientTickHandler {
             calcDelta();
         }
     }
-
 }

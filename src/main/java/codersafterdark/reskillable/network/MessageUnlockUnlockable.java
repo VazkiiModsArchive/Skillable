@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.util.Objects;
 
 public class MessageUnlockUnlockable implements IMessage, IMessageHandler<MessageUnlockUnlockable, IMessage> {
-
     private ResourceLocation skill;
     private ResourceLocation unlockable;
 
@@ -42,7 +41,6 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
     public void toBytes(ByteBuf buf) {
         ByteBufUtils.writeUTF8String(buf, skill.toString());
         ByteBufUtils.writeUTF8String(buf, unlockable.toString());
-
     }
 
     @Override
@@ -62,10 +60,8 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
                 && !MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Pre(player, unlockable))) {
             info.unlock(unlockable, player);
             MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Post(player, unlockable));
-
         }
         data.saveAndSync();
-
         return null;
     }
 }

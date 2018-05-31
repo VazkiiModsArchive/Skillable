@@ -9,7 +9,6 @@ import org.objectweb.asm.tree.*;
 import java.util.Iterator;
 
 public class ClassTransformer implements IClassTransformer {
-
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (transformedName.equals("net.minecraft.client.renderer.InventoryEffectRenderer")) {
@@ -44,8 +43,6 @@ public class ClassTransformer implements IClassTransformer {
                 }
             }
         }
-
         return basicClass;
     }
-
 }

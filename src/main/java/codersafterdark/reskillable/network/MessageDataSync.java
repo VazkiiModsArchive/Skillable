@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MessageDataSync implements IMessage, IMessageHandler<MessageDataSync, IMessage> {
-
     public NBTTagCompound cmp;
 
     public MessageDataSync() {
@@ -24,7 +23,6 @@ public class MessageDataSync implements IMessage, IMessageHandler<MessageDataSyn
         cmp = new NBTTagCompound();
         data.saveToNBT(cmp);
     }
-
 
     @Override
     public void fromBytes(ByteBuf buf) {

@@ -5,7 +5,6 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import java.util.Map;
 
 public class LoadingPlugin implements IFMLLoadingPlugin {
-
     public static boolean runtimeDeobfEnabled;
 
     @Override
@@ -32,5 +31,4 @@ public class LoadingPlugin implements IFMLLoadingPlugin {
     public String getAccessTransformerClass() {
         return null;
     }
-
 }

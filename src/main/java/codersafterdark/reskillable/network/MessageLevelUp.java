@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp, IMessage> {
-
     public ResourceLocation skillName;
 
     public MessageLevelUp() {
@@ -65,6 +64,4 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
         }
         return null;
     }
-
-
 }

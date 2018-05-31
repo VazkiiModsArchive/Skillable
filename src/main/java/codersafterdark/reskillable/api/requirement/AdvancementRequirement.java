@@ -30,19 +30,12 @@ public class AdvancementRequirement extends Requirement {
     @Override
     public String getToolTip(PlayerData data) {
         Advancement adv = getAdvancement();
-        String toolTip = "";
-        TextFormatting color = TextFormatting.GREEN;
-        if (data == null || !achievedByPlayer(data.playerWR.get())) {
-            color = TextFormatting.RED;
+        if (adv == null) {
+            return "";
         }
-        if (adv != null) {
-            toolTip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
-                    color,
-                    adv.getDisplayText()
-                            .getUnformattedText()
-                            .replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
-        }
-        return toolTip;
+        return TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
+                data == null || !achievedByPlayer(data.playerWR.get()) ? TextFormatting.RED : TextFormatting.GREEN,
+                adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
     }
 
     public Advancement getAdvancement() {

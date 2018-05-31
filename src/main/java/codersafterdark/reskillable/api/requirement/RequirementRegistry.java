@@ -36,7 +36,6 @@ public class RequirementRegistry {
                     ReskillableAPI.getInstance().log(Level.WARN, "Invalid Level Lock: " + requirementString);
                 }
             }
-
         } else if (requirements.length > 0) {
             String requirementType = requirements[0];
             if (requirementHandlers.containsKey(requirementType)) {

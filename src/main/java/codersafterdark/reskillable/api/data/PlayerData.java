@@ -25,7 +25,6 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 
 public class PlayerData {
-
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
     public WeakReference<EntityPlayer> playerWR;
@@ -174,5 +173,4 @@ public class PlayerData {
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
         skillInfo.values().forEach(info -> info.forEachEventHandler(consumer));
     }
-
 }

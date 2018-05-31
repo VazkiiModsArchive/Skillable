@@ -97,7 +97,6 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
         if (skillCmp == 0) {
             return getName().compareTo(o.getName());
         }
-
         return skillCmp;
     }
 
@@ -112,5 +111,4 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     public int getY() {
         return unlockableConfig.getY();
     }
-
 }

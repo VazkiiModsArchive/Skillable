@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class PlayerSkillInfo {
-
     private static final String TAG_LEVEL = "level";
     private static final String TAG_SKILL_POINTS = "skillPoints";
     private static final String TAG_UNLOCKABLES = "unlockables";

@@ -16,7 +16,6 @@ import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 public class GuiButtonInventoryTab extends GuiButton {
-
     public final TabType type;
     private final Predicate<GuiScreen> selectedPred;
 
@@ -85,7 +84,5 @@ public class GuiButtonInventoryTab extends GuiButton {
         public boolean shouldRender() {
             return renderPred.test(PlayerDataHandler.get(Minecraft.getMinecraft().player));
         }
-
     }
-
 }

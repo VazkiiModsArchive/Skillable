@@ -23,8 +23,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public Skill(ResourceLocation name, ResourceLocation background) {
         this.name = name.toString().replace(":", ".");
         this.background = background;
-        this.spriteLocation = new ResourceLocation(name.getResourceDomain(), "textures/skills/" +
-                name.getResourcePath() + ".png");
+        this.spriteLocation = new ResourceLocation(name.getResourceDomain(), "textures/skills/" + name.getResourcePath() + ".png");
         this.setRegistryName(name);
         this.skillConfig = ReskillableAPI.getInstance().getSkillConfig(name);
     }

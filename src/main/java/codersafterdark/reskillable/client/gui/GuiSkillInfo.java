@@ -32,7 +32,6 @@ import java.util.List;
 import static codersafterdark.reskillable.client.base.RenderHelper.renderTooltip;
 
 public class GuiSkillInfo extends GuiScreen {
-
     public static final ResourceLocation SKILL_INFO_RES = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skill_info.png");
     public static final ResourceLocation SKILL_INFO_RES2 = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skill_info2.png");
 
@@ -58,12 +57,11 @@ public class GuiSkillInfo extends GuiScreen {
         int top = height / 2 - guiHeight / 2;
 
         buttonList.clear();
-        if (ConfigHandler.enableLevelUp){
+        if (ConfigHandler.enableLevelUp) {
             buttonList.add(levelUpButton = new GuiButtonLevelUp(left + 147, top + 10));
         }
         InventoryTabHandler.addTabs(this, buttonList);
         sprite = skill.getBackground();
-
     }
 
     @Override
@@ -76,23 +74,18 @@ public class GuiSkillInfo extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
         PlayerSkillInfo skillInfo = data.getSkillInfo(skill);
 
-
         mc.renderEngine.bindTexture(sprite);
         GlStateManager.color(0.5F, 0.5F, 0.5F);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 8; j++) {
-                int x = left + 16 + i * 16;
-                int y = top + 33 + j * 16;
-                int width = 16;
-                int height = 16;
-                drawTexturedRec(x, y, width, height);
+                drawTexturedRec(left + 16 + i * 16, top + 33 + j * 16, 16, 16);
             }
         }
 
         GlStateManager.color(1F, 1F, 1F);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        if (ConfigHandler.enableLevelUp){
+        if (ConfigHandler.enableLevelUp) {
             mc.renderEngine.bindTexture(SKILL_INFO_RES);
         } else {
             mc.renderEngine.bindTexture(SKILL_INFO_RES2);
@@ -114,15 +107,13 @@ public class GuiSkillInfo extends GuiScreen {
             costStr = new TextComponentTranslation("skillable.misc.capped").getUnformattedComponentText();
         }
 
-        if (ConfigHandler.enableLevelUp){
+        if (ConfigHandler.enableLevelUp) {
             drawCenteredString(mc.fontRenderer, costStr, left + 138, top + 13, 0xAFFF02);
             levelUpButton.setCost(cost);
         }
 
         hoveredUnlockable = null;
-        for (Unlockable u : skill.getUnlockables()) {
-            drawUnlockable(data, skillInfo, u, mouseX, mouseY);
-        }
+        skill.getUnlockables().forEach(u -> drawUnlockable(data, skillInfo, u, mouseX, mouseY));
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (hoveredUnlockable != null) {
@@ -210,11 +201,9 @@ public class GuiSkillInfo extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (ConfigHandler.enableLevelUp){
-            if (button == levelUpButton) {
-                MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
-                PacketHandler.INSTANCE.sendToServer(message);
-            }
+        if (ConfigHandler.enableLevelUp && button == levelUpButton) {
+            MessageLevelUp message = new MessageLevelUp(skill.getRegistryName());
+            PacketHandler.INSTANCE.sendToServer(message);
         }
     }
 

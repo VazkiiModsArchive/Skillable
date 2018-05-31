@@ -21,8 +21,7 @@ public class TraitRequirement extends Requirement {
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
-        PlayerData data = PlayerDataHandler.get(entityPlayer);
-        return data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable);
+        return PlayerDataHandler.get(entityPlayer).getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable);
     }
 
     @Override

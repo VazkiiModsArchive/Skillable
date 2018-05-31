@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitEffectTwist extends Trait {
-
     private Map<Potion, Potion> badPotions;
 
     public TraitEffectTwist() {
@@ -49,6 +48,4 @@ public class TraitEffectTwist extends Trait {
             }
         }
     }
-
-
 }

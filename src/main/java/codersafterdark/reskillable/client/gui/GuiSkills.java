@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiSkills extends GuiScreen {
-
     public static final ResourceLocation SKILLS_RES = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skills.png");
 
     private int guiWidth, guiHeight;
@@ -46,22 +45,17 @@ public class GuiSkills extends GuiScreen {
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
-        int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
-        Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
+        Pair<Integer, Integer> pair = skill.getSpriteFromRank(PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank());
         RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16, 1f / 64, 1f / 64);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
-
+        Minecraft.getMinecraft().renderEngine.bindTexture(SKILLS_RES);
         RenderHelper.drawTexturedModalRect(x, y, 1, 0, 230, 80, 4);
     }
 
     public static void drawScrollButtonsBottom(int x, int y) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
-
+        Minecraft.getMinecraft().renderEngine.bindTexture(SKILLS_RES);
         RenderHelper.drawTexturedModalRect(x, y, 1, 0, 235, 80, 4);
     }
 
@@ -87,7 +81,6 @@ public class GuiSkills extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
 
         hoveredSkill = null;
-
 
         int index = 0;
         for (int j = offset; j < skills.size() && index < 8; j++) {
@@ -124,7 +117,6 @@ public class GuiSkills extends GuiScreen {
         drawScrollButtonsTop(left + 49, top + 14);
         drawScrollButtonsBottom(left + 49, lastY + 32);
 
-
         String skillsStr = new TextComponentTranslation("skillable.misc.skills").getUnformattedComponentText();
         fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 5, 4210752);
 
@@ -149,7 +141,6 @@ public class GuiSkills extends GuiScreen {
                 }
             }
         }
-
     }
 
     private void scrollUp() {
@@ -178,5 +169,4 @@ public class GuiSkills extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
 }

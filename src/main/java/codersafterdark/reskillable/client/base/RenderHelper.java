@@ -25,7 +25,6 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
-
     public static void renderTooltip(int x, int y, List<String> tooltipData) {
         int color = 0x505000ff;
         int color2 = 0xf0100010;
@@ -61,15 +60,13 @@ public class RenderHelper {
             int right = var6 + var5 + 5;
             int swidth = res.getScaledWidth();
             if (right > swidth) {
-                int diff = right - swidth;
-                var6 -= diff;
+                var6 -= right - swidth;
             }
 
             int bottom = var7 + var9 + 5;
             int sheight = res.getScaledHeight();
             if (bottom > sheight) {
-                int diff = bottom - sheight;
-                var7 -= diff;
+                var7 -= bottom - sheight;
             }
 
             float z = 300F;

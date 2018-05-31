@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import javax.annotation.Nonnull;
 
 public class GuiButtonLevelUp extends GuiButton {
-
     int cost;
     float renderTicks;
 
@@ -26,7 +25,7 @@ public class GuiButtonLevelUp extends GuiButton {
     public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float f) {
         enabled = mc.player.experienceLevel >= cost || mc.player.isCreative();
 
-        if (ConfigHandler.enableLevelUp){
+        if (ConfigHandler.enableLevelUp) {
             if (enabled) {
                 GlStateManager.color(1F, 1F, 1F);
                 mc.renderEngine.bindTexture(GuiSkillInfo.SKILL_INFO_RES);
@@ -43,11 +42,9 @@ public class GuiButtonLevelUp extends GuiButton {
                 } else {
                     float speedModifier = 4;
                     GlStateManager.color(1, 1, 1, (float) (Math.sin(mc.player.ticksExisted / speedModifier) + 1) / 2);
-
                 }
                 drawTexturedModalRect(x, y, u, v, w, h);
             }
         }
     }
-
 }

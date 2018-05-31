@@ -10,7 +10,6 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public interface IAbilityEventHandler {
-
     default void onPlayerTick(PlayerTickEvent event) {
     }
 
@@ -37,5 +36,4 @@ public interface IAbilityEventHandler {
 
     default void onKillMob(LivingDeathEvent event) {
     }
-
 }

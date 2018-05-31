@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
-
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(PlayerDataHandler.EventHandler.class);
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);

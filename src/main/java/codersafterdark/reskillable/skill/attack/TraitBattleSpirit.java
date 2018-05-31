@@ -11,7 +11,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitBattleSpirit extends Trait {
-
     public TraitBattleSpirit() {
         super(new ResourceLocation(MOD_ID, "battle_spirit"), 3, 2, new ResourceLocation(MOD_ID, "attack"),
                 6, "reskillable:attack|16", "reskillable:defense|16", "reskillable:agility|12");
@@ -23,5 +22,4 @@ public class TraitBattleSpirit extends Trait {
             ((EntityPlayer) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 120, 0));
         }
     }
-
 }
