@@ -18,7 +18,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -64,7 +64,7 @@ public class HUDHandler {
             int transparencyInt = (int) (0xFF * transparency) << 24;
             int color = (int) (0x11 * transparency) << 24;
 
-            String msg = I18n.translateToLocal(lockMessage);
+            String msg = new TextComponentTranslation(lockMessage).getUnformattedComponentText();
             int len = mc.fontRenderer.getStringWidth(msg);
 
             PlayerData data = PlayerDataHandler.get(mc.player);

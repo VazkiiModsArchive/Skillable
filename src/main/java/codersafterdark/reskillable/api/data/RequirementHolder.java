@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -128,12 +128,12 @@ public class RequirementHolder {
             return;
         }
         if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLock"));
+            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
             for (Requirement requirement : requirements) {
                 tooltip.add(requirement.getToolTip(data));
             }
         } else {
-            tooltip.add(TextFormatting.DARK_PURPLE + I18n.translateToLocal("skillable.misc.skillLockShift"));
+            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
         }
     }
 

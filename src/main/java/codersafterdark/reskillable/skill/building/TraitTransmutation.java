@@ -36,8 +36,7 @@ public abstract class TraitTransmutation extends Trait {
                 IBlockState placeState = stateMap.get(state);
                 BlockPos pos = event.getPos();
                 event.getWorld().setBlockState(pos, placeState);
-
-                SoundEvent sound = placeState.getBlock().getSoundType().getPlaceSound();
+                SoundEvent sound = placeState.getBlock().getSoundType(placeState, event.getWorld(), pos, null).getPlaceSound();
                 event.getWorld().playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F);
                 if (event.getWorld().isRemote) {
                     event.getEntityPlayer().swingArm(event.getHand());

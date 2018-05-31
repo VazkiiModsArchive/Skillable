@@ -30,7 +30,7 @@ public class ClassTransformer implements IClassTransformer {
                         if (itrNode.getOpcode() == Opcodes.BIPUSH) {
                             IntInsnNode intNode = (IntInsnNode) itrNode;
                             if (intNode.operand == 124) {
-                                MethodInsnNode newNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "codersafterdark/reskillable/client/gui/handler/InventoryTabHandler", "getPotionOffset", "()I");
+                                MethodInsnNode newNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "codersafterdark/reskillable/client/gui/handler/InventoryTabHandler", "getPotionOffset", "()I", false);
                                 method.instructions.insert(intNode, newNode);
                                 method.instructions.remove(intNode);
                                 break;

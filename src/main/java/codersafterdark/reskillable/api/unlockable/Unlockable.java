@@ -7,7 +7,7 @@ import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.skill.Skill;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.Level;
 
@@ -62,11 +62,11 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     }
 
     public String getName() {
-        return I18n.translateToLocal("skillable.unlock." + getKey());
+        return new TextComponentTranslation("skillable.unlock." + getKey()).getUnformattedComponentText();
     }
 
     public String getDescription() {
-        return I18n.translateToLocal("skillable.unlock." + getKey() + ".desc");
+        return new TextComponentTranslation("skillable.unlock." + getKey() + ".desc").getUnformattedComponentText();
     }
 
     public ResourceLocation getIcon() {

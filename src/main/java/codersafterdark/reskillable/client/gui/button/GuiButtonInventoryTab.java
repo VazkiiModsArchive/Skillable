@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
@@ -55,7 +55,7 @@ public class GuiButtonInventoryTab extends GuiButton {
             drawTexturedModalRect(this.x + 12, y + 6, 176 + type.iconIndex * 16, 28, 16, 16);
 
             if (mouseX > this.x && mouseY > this.y && mouseX < this.x + width && mouseY < this.y + height) {
-                InventoryTabHandler.tooltip = I18n.translateToLocal("skillable.tab." + type.name().toLowerCase());
+                InventoryTabHandler.tooltip = new TextComponentTranslation("skillable.tab." + type.name().toLowerCase()).getUnformattedComponentText();
                 InventoryTabHandler.mx = mouseX;
                 InventoryTabHandler.my = mouseY;
             }

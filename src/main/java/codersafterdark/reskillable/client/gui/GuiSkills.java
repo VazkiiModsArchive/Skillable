@@ -14,7 +14,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -125,7 +125,7 @@ public class GuiSkills extends GuiScreen {
         drawScrollButtonsBottom(left + 49, lastY + 32);
 
 
-        String skillsStr = I18n.translateToLocal("skillable.misc.skills");
+        String skillsStr = new TextComponentTranslation("skillable.misc.skills").getUnformattedComponentText();
         fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 5, 4210752);
 
         super.drawScreen(mouseX, mouseY, partialTicks);

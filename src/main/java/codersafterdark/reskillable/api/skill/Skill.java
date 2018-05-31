@@ -3,7 +3,7 @@ package codersafterdark.reskillable.api.skill;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -42,7 +42,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     }
 
     public String getName() {
-        return I18n.translateToLocal("skillable.skill." + getKey());
+        return new TextComponentTranslation("skillable.skill." + getKey()).getUnformattedComponentText();
     }
 
     public ResourceLocation getBackground() {
