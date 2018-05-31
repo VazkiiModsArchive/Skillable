@@ -121,8 +121,8 @@ public class GuiSkills extends GuiScreen {
             mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + skill.getCap(), x + 26, y + 17, 0x888888);
         }
         GL11.glColor4f(1, 1, 1, 1);
-        drawScrollButtonsTop(left + 45, top + 18 - 4); //Precalculate ((79 + 3) + 8) / 2 to 45
-        drawScrollButtonsBottom(left + 45, lastY + 32); //Precalculate ((79 + 3) + 8) / 2 to 45
+        drawScrollButtonsTop(left + 49, top + 14);
+        drawScrollButtonsBottom(left + 49, lastY + 32);
 
 
         String skillsStr = I18n.translateToLocal("skillable.misc.skills");
@@ -141,10 +141,10 @@ public class GuiSkills extends GuiScreen {
             mc.displayGuiScreen(gui);
         }
         if (mouseButton == 0) {
-            if (mouseX >= left + 45 && mouseX <= left + 45 + 79) { //Precalculate ((79 + 3) + 8) / 2 to 45
-                if (mouseY >= top + 14 && mouseY <= top + 14 + 4) {
+            if (mouseX >= left + 49 && mouseX <= left + 128 && mouseY >= top + 14) {
+                if (mouseY <= top + 18) {
                     scrollUp();
-                } else if (mouseY >= top + 14 && mouseY <= lastY + 36) {
+                } else if (mouseY <= lastY + 36) {
                     scrollDown();
                 }
             }
