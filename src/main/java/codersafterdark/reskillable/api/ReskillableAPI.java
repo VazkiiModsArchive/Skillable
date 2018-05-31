@@ -2,6 +2,7 @@ package codersafterdark.reskillable.api;
 
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
+import codersafterdark.reskillable.api.requirement.NoneRequirement;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.TraitRequirement;
 import codersafterdark.reskillable.api.requirement.logic.LogicParser;
@@ -26,6 +27,7 @@ public class ReskillableAPI {
         requirementRegistry.addRequirementHandler("adv", input -> new AdvancementRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("trait", input -> new TraitRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("unobtainable", input -> LogicParser.FALSE);
+        requirementRegistry.addRequirementHandler("none", input -> new NoneRequirement()); //Makes it so other requirements are ignored
 
         //Logic Requirements
         requirementRegistry.addRequirementHandler("not", LogicParser::parseNOT);
