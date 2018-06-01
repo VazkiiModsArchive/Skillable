@@ -24,6 +24,7 @@ public class LogicParser {
         return parseNOT(ReskillableAPI.getInstance().getRequirementRegistry().getRequirement(input));
     }
 
+    //TODO: Decide if it should replace parts of the string to auto simplify parts before getting the requirements. Would make there be slightly less calls to getRequirement
     private static Requirement parseNOT(Requirement requirement) {
         if (requirement == null) {
             return null;
@@ -39,20 +40,20 @@ public class LogicParser {
             //If it is NOT of NOT just remove both NOTs
             return ((NOTRequirement) requirement).getRequirement();
         } else if (requirement instanceof DoubleRequirement) {
-            DoubleRequirement orRequirement = (DoubleRequirement) requirement;
+            DoubleRequirement doubleRequirement = (DoubleRequirement) requirement;
             //Switch the requirement to be an inversion for better performance when checking if achieved
             if (requirement instanceof ANDRequirement) {
-                return new NANDRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new NANDRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             } else if (requirement instanceof NANDRequirement) {
-                return new ANDRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new ANDRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             } else if (requirement instanceof ORRequirement) {
-                return new NORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new NORRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             } else if (requirement instanceof NORRequirement) {
-                return new ORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new ORRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             } else if (requirement instanceof XORRequirement) {
-                return new XNORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new XNORRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             } else if (requirement instanceof XNORRequirement) {
-                return new XORRequirement(orRequirement.getLeft(), orRequirement.getRight());
+                return new XORRequirement(doubleRequirement.getLeft(), doubleRequirement.getRight());
             }
         }
         return new NOTRequirement(requirement);
@@ -222,18 +223,23 @@ public class LogicParser {
         int count = 1;//The first bracket
         char lastChar = '[';
         int secondStart = 4;
-        int end = input.length() - 1;
-        for (int i = 1; i < end; i++) {
+        int closeBrackets = 0;
+        for (int i = 1; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (lastChar == '|' || lastChar == '~') {
-                if (c == '[') {
+            if (lastChar == ']') {
+                if (c == ']') {
+                    closeBrackets++;
+                } else {
+                    if (c == '~') {
+                        count = count - 1 - closeBrackets;
+                    }
+                    closeBrackets = 0;
+                }
+            } else {
+                if ((lastChar == '|' || lastChar == '~') && c == '[') {
                     count++;
                 }
-            } else if (lastChar == ']' && c == '~') {
-                count--;
-                for (int check = i - 2; check > 0 && input.charAt(check) == ']'; check--) {
-                    count--;
-                }
+                closeBrackets = 0;
             }
             if (count == 0) {
                 if (!first.isEmpty()) {
@@ -248,9 +254,7 @@ public class LogicParser {
         if (first.isEmpty()) {
             return null;
         }
-        for (int check = end; check > 0 && input.charAt(check) == ']'; check--) {
-            count--;
-        }
+        count = count - 1 - closeBrackets;
         if (count != 0) {
             return null;
         }
@@ -260,7 +264,7 @@ public class LogicParser {
         if (left == null) {
             return null;
         }
-        Requirement right = registry.getRequirement(input.substring(secondStart, end));
+        Requirement right = registry.getRequirement(input.substring(secondStart, input.length() - 1));
         return right == null ? null : new RequirementPair(left, right);
     }
 
