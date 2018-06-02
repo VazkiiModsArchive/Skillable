@@ -32,14 +32,8 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 public class ReskillableRegistryHandler {
     @SubscribeEvent
     public static void buildRegistry(RegistryEvent.NewRegistry newRegistryEvent) {
-        new RegistryBuilder<Skill>()
-                .setName(new ResourceLocation(MOD_ID, "skill"))
-                .setType(Skill.class)
-                .create();
-        new RegistryBuilder<Unlockable>()
-                .setName(new ResourceLocation(MOD_ID, "unlockable"))
-                .setType(Unlockable.class)
-                .create();
+        new RegistryBuilder<Skill>().setName(new ResourceLocation(MOD_ID, "skill")).setType(Skill.class).create();
+        new RegistryBuilder<Unlockable>().setName(new ResourceLocation(MOD_ID, "unlockable")).setType(Unlockable.class).create();
     }
 
     @SubscribeEvent

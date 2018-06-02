@@ -23,21 +23,13 @@ public class TraitPerfectRecover extends Trait {
     @Override
     public void onBlockDrops(HarvestDropsEvent event) {
         if (event.getState().getBlock() == Blocks.GLOWSTONE) {
-            boolean hasGlowstoneBlock = false;
-            for (ItemStack stack : event.getDrops()) {
-                hasGlowstoneBlock |= stack.getItem() == this.getGlowstone();
-            }
-            if (!hasGlowstoneBlock) {
-                event.getDrops().removeIf((s) -> s.getItem() == Items.GLOWSTONE_DUST);
+            if (!event.getDrops().stream().map(stack -> stack.getItem() == this.getGlowstone()).reduce(false, (a, b) -> a || b)) {
+                event.getDrops().removeIf(s -> s.getItem() == Items.GLOWSTONE_DUST);
                 event.getDrops().add(new ItemStack(Items.GLOWSTONE_DUST, 4));
             }
         } else if (event.getState().getBlock() == Blocks.SEA_LANTERN) {
-            boolean hasSeaLantern = false;
-            for (ItemStack stack : event.getDrops()) {
-                hasSeaLantern |= stack.getItem() == this.getSeaLantern();
-            }
-            if (!hasSeaLantern) {
-                event.getDrops().removeIf((s) -> s.getItem() == Items.PRISMARINE_CRYSTALS);
+            if (!event.getDrops().stream().map(stack -> stack.getItem() == this.getSeaLantern()).reduce(false, (a, b) -> a || b)) {
+                event.getDrops().removeIf(s -> s.getItem() == Items.PRISMARINE_CRYSTALS);
                 event.getDrops().add(new ItemStack(Items.PRISMARINE_CRYSTALS, 5));
                 event.getDrops().add(new ItemStack(Items.PRISMARINE_SHARD, 4));
             }

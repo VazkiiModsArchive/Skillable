@@ -26,7 +26,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitSidestep extends Trait {
-
     public static final int MAX_CD = 20;
     private int leftDown, rightDown, cd;
 
@@ -38,7 +37,6 @@ public class TraitSidestep extends Trait {
             MinecraftForge.EVENT_BUS.register(this);
         }
     }
-
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -120,6 +118,4 @@ public class TraitSidestep extends Trait {
 
         GlStateManager.color(1F, 1F, 1F, 1F);
     }
-
-
 }

@@ -18,7 +18,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -29,7 +29,6 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class HUDHandler {
-
     private static ItemStack lockedItem;
     private static String lockMessage;
     private static int lockTime;
@@ -64,14 +63,13 @@ public class HUDHandler {
             int transparencyInt = (int) (0xFF * transparency) << 24;
             int color = (int) (0x11 * transparency) << 24;
 
-            String msg = I18n.translateToLocal(lockMessage);
+            String msg = new TextComponentTranslation(lockMessage).getUnformattedComponentText();
             int len = mc.fontRenderer.getStringWidth(msg);
 
             PlayerData data = PlayerDataHandler.get(mc.player);
             RequirementHolder requirements = LevelLockHandler.getSkillLock(lockedItem);
             int pad = 26;
-            int left = width / 2 - (requirements.getRestrictionLength() * pad) / 2;
-            int xp = left;
+            int xp = width / 2 - (requirements.getRestrictionLength() * pad) / 2;
 
             List<SkillRequirement> skillRequirements = Lists.newArrayList();
             List<AdvancementRequirement> advancementRequirements = Lists.newArrayList();
@@ -147,6 +145,4 @@ public class HUDHandler {
             lockTime--;
         }
     }
-
-
 }

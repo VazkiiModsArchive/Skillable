@@ -18,17 +18,13 @@ public class SkillRequirement extends Requirement {
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
-        PlayerData data = PlayerDataHandler.get(entityPlayer);
-        return data.getSkillInfo(skill).getLevel() >= level;
+        return PlayerDataHandler.get(entityPlayer).getSkillInfo(skill).getLevel() >= level;
     }
 
     @Override
     public String getToolTip(PlayerData data) {
-        TextFormatting color = TextFormatting.GREEN;
-        if (data == null || data.getSkillInfo(skill).getLevel() < level) {
-            color = TextFormatting.RED;
-        }
-        return TextFormatting.GRAY + " - " + new TextComponentTranslation("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(), color, level).getUnformattedComponentText();
+        return TextFormatting.GRAY + " - " + new TextComponentTranslation("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(),
+                data == null || !achievedByPlayer(data.playerWR.get()) ? TextFormatting.RED : TextFormatting.GREEN, level).getUnformattedComponentText();
     }
 
     public Skill getSkill() {

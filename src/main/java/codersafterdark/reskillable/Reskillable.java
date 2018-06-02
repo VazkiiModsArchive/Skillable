@@ -18,8 +18,6 @@ import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 @Mod(modid = MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, guiFactory = LibMisc.GUI_FACTORY)
 public class Reskillable {
-
-
     @SidedProxy(serverSide = LibMisc.PROXY_COMMON, clientSide = LibMisc.PROXY_CLIENT)
     public static CommonProxy proxy;
 
@@ -40,7 +38,6 @@ public class Reskillable {
         if (ConfigHandler.config.hasChanged()) {
             ConfigHandler.config.save();
         }
-
         proxy.init(event);
     }
 
@@ -53,7 +50,6 @@ public class Reskillable {
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new ReskillableCmd());
-
         proxy.serverStarting(event);
     }
 }

@@ -13,7 +13,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitNeutralissse extends Trait {
-
     private static final String TAG_DEFUSED = "skillable:defuse";
 
     public TraitNeutralissse() {
@@ -47,5 +46,4 @@ public class TraitNeutralissse extends Trait {
             }
         }
     }
-
 }

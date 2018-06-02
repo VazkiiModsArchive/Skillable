@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitEffectTwist extends Trait {
-
     private Map<Potion, Potion> badPotions;
 
     public TraitEffectTwist() {
@@ -41,7 +40,7 @@ public class TraitEffectTwist extends Trait {
         }
         Entity src = event.getSource().getTrueSource();
         if (src instanceof EntityLivingBase && src instanceof IMob && src.world.rand.nextBoolean()) {
-            List<PotionEffect> effects = event.getEntityLiving().getActivePotionEffects().stream().filter((p) -> badPotions.containsKey(p.getPotion())).collect(Collectors.toList());
+            List<PotionEffect> effects = event.getEntityLiving().getActivePotionEffects().stream().filter(p -> badPotions.containsKey(p.getPotion())).collect(Collectors.toList());
             if (effects.size() > 0) {
                 PotionEffect target = effects.get(src.world.rand.nextInt(effects.size()));
                 PotionEffect newEff = new PotionEffect(badPotions.get(target.getPotion()), 80 + src.world.rand.nextInt(60), 0);
@@ -49,6 +48,4 @@ public class TraitEffectTwist extends Trait {
             }
         }
     }
-
-
 }

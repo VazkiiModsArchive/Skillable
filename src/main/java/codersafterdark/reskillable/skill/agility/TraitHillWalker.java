@@ -28,9 +28,8 @@ public class TraitHillWalker extends Trait {
             if (player.isSneaking()) {
                 player.stepHeight = 0.9F;
             } else {
-                player.stepHeight = 1.0F + (1F / 16F);
+                player.stepHeight = 1.0625F;
             }
         }
     }
-
 }

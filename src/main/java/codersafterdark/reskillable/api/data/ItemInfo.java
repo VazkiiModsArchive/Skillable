@@ -52,11 +52,11 @@ public class ItemInfo extends NBTLockKey {
     public int hashCode() {
         return Objects.hash(item, tag);
     }
-    
+
     public Item getItem() {
         return item;
     }
-    
+
     public int getMetadata() {
         return metadata;
     }

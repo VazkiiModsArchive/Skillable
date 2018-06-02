@@ -32,11 +32,7 @@ public class ToolTip {
     }
 
     public boolean add(String line, @Nullable TextFormatting formatting) {
-        if (formatting != null) {
-            return lines.add(formatting + line);
-        } else {
-            return lines.add(line);
-        }
+        return lines.add(formatting != null ? formatting + line : line);
     }
 
     public boolean add(List lines) {

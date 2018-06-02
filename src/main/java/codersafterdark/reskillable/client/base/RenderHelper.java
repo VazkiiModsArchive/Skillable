@@ -25,7 +25,6 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
-
     public static void renderTooltip(int x, int y, List<String> tooltipData) {
         int color = 0x505000ff;
         int color2 = 0xf0100010;
@@ -61,15 +60,13 @@ public class RenderHelper {
             int right = var6 + var5 + 5;
             int swidth = res.getScaledWidth();
             if (right > swidth) {
-                int diff = right - swidth;
-                var6 -= diff;
+                var6 -= right - swidth;
             }
 
             int bottom = var7 + var9 + 5;
             int sheight = res.getScaledHeight();
             if (bottom > sheight) {
-                int diff = bottom - sheight;
-                var7 -= diff;
+                var7 -= bottom - sheight;
             }
 
             float z = 300F;
@@ -137,10 +134,10 @@ public class RenderHelper {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buff = tessellator.getBuffer();
         buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        buff.pos(par1 + 0, par2 + par6, z).tex((par3 + 0) * f, (par4 + par6) * f1).endVertex();
+        buff.pos(par1, par2 + par6, z).tex(par3 * f, (par4 + par6) * f1).endVertex();
         buff.pos(par1 + par5, par2 + par6, z).tex((par3 + par5) * f, (par4 + par6) * f1).endVertex();
-        buff.pos(par1 + par5, par2 + 0, z).tex((par3 + par5) * f, (par4 + 0) * f1).endVertex();
-        buff.pos(par1 + 0, par2 + 0, z).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
+        buff.pos(par1 + par5, par2, z).tex((par3 + par5) * f, par4 * f1).endVertex();
+        buff.pos(par1, par2, z).tex(par3 * f, par4 * f1).endVertex();
         tessellator.draw();
     }
 }

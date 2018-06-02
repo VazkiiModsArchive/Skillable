@@ -14,7 +14,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextComponentTranslation;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiSkills extends GuiScreen {
-
     public static final ResourceLocation SKILLS_RES = new ResourceLocation(LibMisc.MOD_ID, "textures/gui/skills.png");
 
     private int guiWidth, guiHeight;
     private Skill hoveredSkill;
 
-    private int offset = 0;
+    private int offset;
 
     private int left;
     private int top;
@@ -46,22 +45,17 @@ public class GuiSkills extends GuiScreen {
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
-        int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
-        Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
+        Pair<Integer, Integer> pair = skill.getSpriteFromRank(PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank());
         RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16, 1f / 64, 1f / 64);
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
-
+        Minecraft.getMinecraft().renderEngine.bindTexture(SKILLS_RES);
         RenderHelper.drawTexturedModalRect(x, y, 1, 0, 230, 80, 4);
     }
 
     public static void drawScrollButtonsBottom(int x, int y) {
-        Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(SKILLS_RES);
-
+        Minecraft.getMinecraft().renderEngine.bindTexture(SKILLS_RES);
         RenderHelper.drawTexturedModalRect(x, y, 1, 0, 235, 80, 4);
     }
 
@@ -87,7 +81,6 @@ public class GuiSkills extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
 
         hoveredSkill = null;
-
 
         int index = 0;
         for (int j = offset; j < skills.size() && index < 8; j++) {
@@ -121,11 +114,10 @@ public class GuiSkills extends GuiScreen {
             mc.fontRenderer.drawString(skillInfo.getLevel() + "/" + skill.getCap(), x + 26, y + 17, 0x888888);
         }
         GL11.glColor4f(1, 1, 1, 1);
-        drawScrollButtonsTop(left + 45, top + 18 - 4); //Precalculate ((79 + 3) + 8) / 2 to 45
-        drawScrollButtonsBottom(left + 45, lastY + 32); //Precalculate ((79 + 3) + 8) / 2 to 45
+        drawScrollButtonsTop(left + 49, top + 14);
+        drawScrollButtonsBottom(left + 49, lastY + 32);
 
-
-        String skillsStr = I18n.translateToLocal("skillable.misc.skills");
+        String skillsStr = new TextComponentTranslation("skillable.misc.skills").getUnformattedComponentText();
         fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 5, 4210752);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -141,15 +133,14 @@ public class GuiSkills extends GuiScreen {
             mc.displayGuiScreen(gui);
         }
         if (mouseButton == 0) {
-            if (mouseX >= left + 45 && mouseX <= left + 45 + 79) { //Precalculate ((79 + 3) + 8) / 2 to 45
-                if (mouseY >= top + 14 && mouseY <= top + 14 + 4) {
+            if (mouseX >= left + 49 && mouseX <= left + 128 && mouseY >= top + 14) {
+                if (mouseY <= top + 18) {
                     scrollUp();
-                } else if (mouseY >= top + 14 && mouseY <= lastY + 36) {
+                } else if (mouseY <= lastY + 36) {
                     scrollDown();
                 }
             }
         }
-
     }
 
     private void scrollUp() {
@@ -178,5 +169,4 @@ public class GuiSkills extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
 }

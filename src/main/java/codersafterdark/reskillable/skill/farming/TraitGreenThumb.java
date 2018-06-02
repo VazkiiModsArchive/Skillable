@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitGreenThumb extends Trait {
-
     public TraitGreenThumb() {
         super(new ResourceLocation(MOD_ID, "green_thumb"), 3, 1, new ResourceLocation(MOD_ID, "farming"),
                 8, "reskillable:farming|16", "reskillable:magic|16");
@@ -57,7 +56,6 @@ public class TraitGreenThumb extends Trait {
         }
 
         Material mat = state.getMaterial();
-        return mat != null && (mat == Material.PLANTS || mat == Material.CACTUS || mat == Material.GRASS || mat == Material.LEAVES || mat == Material.GOURD) && block instanceof IGrowable && ((IGrowable) block).canGrow(world, pos, world.getBlockState(pos), world.isRemote);
+        return (mat == Material.PLANTS || mat == Material.CACTUS || mat == Material.GRASS || mat == Material.LEAVES || mat == Material.GOURD) && block instanceof IGrowable && ((IGrowable) block).canGrow(world, pos, world.getBlockState(pos), world.isRemote);
     }
-
 }

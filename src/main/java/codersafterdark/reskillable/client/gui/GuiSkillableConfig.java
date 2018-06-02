@@ -8,28 +8,16 @@ import net.minecraftforge.fml.client.config.DummyConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GuiSkillableConfig extends GuiConfig {
-
     public GuiSkillableConfig(GuiScreen parentScreen) {
         super(parentScreen, getAllElements(), LibMisc.MOD_ID, false, false, GuiConfig.getAbridgedConfigPath(ConfigHandler.config.toString()));
     }
 
-
     public static List<IConfigElement> getAllElements() {
-        List<IConfigElement> list = new ArrayList<>();
-
-        Set<String> categories = ConfigHandler.config.getCategoryNames();
-        for (String s : categories) {
-            if (!s.contains(".")) {
-                list.add(new DummyConfigElement.DummyCategoryElement(s, s, new ConfigElement(ConfigHandler.config.getCategory(s)).getChildElements()));
-            }
-        }
-
-        return list;
+        return ConfigHandler.config.getCategoryNames().stream().filter(s -> !s.contains(".")).map(s -> new DummyConfigElement.DummyCategoryElement(s, s,
+                new ConfigElement(ConfigHandler.config.getCategory(s)).getChildElements())).collect(Collectors.toList());
     }
-
 }

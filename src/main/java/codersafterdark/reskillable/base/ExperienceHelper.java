@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 
 //From OpenBlocksLib: https://github.com/OpenMods/OpenModsLib
 public class ExperienceHelper {
-
     public static int getPlayerXP(EntityPlayer player) {
         return (int) (getExperienceForLevel(player.experienceLevel) + player.experience * player.xpBarCap());
     }
@@ -30,9 +29,8 @@ public class ExperienceHelper {
             return level * level + 6 * level;
         } else if (level > 16 && level < 32) {
             return (int) (2.5 * level * level - 40.5 * level + 360);
-        } else {
-            return (int) (4.5 * level * level - 162.5 * level + 2220);
         }
+        return (int) (4.5 * level * level - 162.5 * level + 2220);
     }
 
     public static int getLevelForExperience(int experience) {
@@ -42,5 +40,4 @@ public class ExperienceHelper {
         }
         return i - 1;
     }
-
 }

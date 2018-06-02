@@ -16,7 +16,6 @@ import java.util.Map;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitChorusTransmutation extends TraitTransmutation {
-
     public TraitChorusTransmutation() {
         super(new ResourceLocation(MOD_ID, "chorus_transmute"), 3, 2, new ResourceLocation(MOD_ID, "building"),
                 8, new ItemStack(Items.CHORUS_FRUIT), makeMap(), "reskillable:building|16", "reskillable:magic|16");
@@ -47,8 +46,6 @@ public class TraitChorusTransmutation extends TraitTransmutation {
         map.put(Blocks.SPONGE.getDefaultState().withProperty(BlockSponge.WET, true), Blocks.SPONGE.getDefaultState());
         map.put(Blocks.HARDENED_CLAY.getDefaultState(), Blocks.CLAY.getDefaultState());
         map.put(Blocks.MAGMA.getDefaultState(), Blocks.ICE.getDefaultState());
-
         return map;
     }
-
 }

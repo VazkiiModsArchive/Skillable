@@ -27,33 +27,31 @@ public class NOTRequirement extends Requirement {
         if (parentToolTip.startsWith(TextFormatting.GRAY + " - ")) {
             parentToolTip = parentToolTip.replaceFirst(TextFormatting.GRAY + " - ", "");
         }
-        if (parentToolTip.length() > 2 && parentToolTip.startsWith("\u00a7")) {
-            parentToolTip = parentToolTip.substring(0, 2) + '!' + parentToolTip.substring(2);
-        } else {
-            parentToolTip = '!' + parentToolTip;
+        char colorCode = '\u00a7';
+        String start = TextFormatting.GRAY + " - ";
+        if (parentToolTip.length() > 2 && parentToolTip.startsWith(Character.toString(colorCode))) {
+            start += parentToolTip.substring(0, 2);
+            parentToolTip = parentToolTip.substring(2);
         }
-        parentToolTip = TextFormatting.GRAY + " - " + parentToolTip;
-
-        String green = TextFormatting.GREEN.toString();
-        String red = TextFormatting.RED.toString();
-        int index = 0;
-        while (index < parentToolTip.length()) {
-            int greenIndex = parentToolTip.indexOf(green, index);
-            int redIndex = parentToolTip.indexOf(red, index);
-            if (greenIndex >= 0 && (greenIndex < redIndex || redIndex < 0)) {
-                String end = greenIndex + 2 > parentToolTip.length() ? "" : parentToolTip.substring(greenIndex + 2);
-                parentToolTip = parentToolTip.substring(index, greenIndex) + red + end;
-                index = greenIndex + 2;
-            } else {
-                if (redIndex < 0) {
-                    break;
+        start += '!';
+        StringBuilder tooltip = new StringBuilder(start);
+        char[] chars = parentToolTip.toCharArray();
+        char lastChar = '!';
+        char red = 'c';
+        char green = 'a';
+        for (char c : chars) {
+            if (lastChar == colorCode && (c == red || c == green)) {
+                if (c == red) {
+                    tooltip.append(green);
+                } else {
+                    tooltip.append(red);
                 }
-                String end = redIndex + 2 > parentToolTip.length() ? "" : parentToolTip.substring(redIndex + 2);
-                parentToolTip = parentToolTip.substring(index, redIndex) + green + end;
-                index = redIndex + 2;
+            } else {
+                tooltip.append(c);
             }
+            lastChar = c;
         }
-        return parentToolTip;
+        return tooltip.toString();
     }
 
     public Requirement getRequirement() {

@@ -9,7 +9,6 @@ import org.objectweb.asm.tree.*;
 import java.util.Iterator;
 
 public class ClassTransformer implements IClassTransformer {
-
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (transformedName.equals("net.minecraft.client.renderer.InventoryEffectRenderer")) {
@@ -30,7 +29,7 @@ public class ClassTransformer implements IClassTransformer {
                         if (itrNode.getOpcode() == Opcodes.BIPUSH) {
                             IntInsnNode intNode = (IntInsnNode) itrNode;
                             if (intNode.operand == 124) {
-                                MethodInsnNode newNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "codersafterdark/reskillable/client/gui/handler/InventoryTabHandler", "getPotionOffset", "()I");
+                                MethodInsnNode newNode = new MethodInsnNode(Opcodes.INVOKESTATIC, "codersafterdark/reskillable/client/gui/handler/InventoryTabHandler", "getPotionOffset", "()I", false);
                                 method.instructions.insert(intNode, newNode);
                                 method.instructions.remove(intNode);
                                 break;
@@ -44,8 +43,6 @@ public class ClassTransformer implements IClassTransformer {
                 }
             }
         }
-
         return basicClass;
     }
-
 }

@@ -25,7 +25,6 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 
 public class PlayerData {
-
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
     public WeakReference<EntityPlayer> playerWR;
@@ -136,43 +135,42 @@ public class PlayerData {
     // Event Handlers
 
     public void tickPlayer(PlayerTickEvent event) {
-        forEachEventHandler((h) -> h.onPlayerTick(event));
+        forEachEventHandler(h -> h.onPlayerTick(event));
     }
 
     public void blockDrops(HarvestDropsEvent event) {
-        forEachEventHandler((h) -> h.onBlockDrops(event));
+        forEachEventHandler(h -> h.onBlockDrops(event));
     }
 
     public void mobDrops(LivingDropsEvent event) {
-        forEachEventHandler((h) -> h.onMobDrops(event));
+        forEachEventHandler(h -> h.onMobDrops(event));
     }
 
     public void breakSpeed(BreakSpeed event) {
-        forEachEventHandler((h) -> h.getBreakSpeed(event));
+        forEachEventHandler(h -> h.getBreakSpeed(event));
     }
 
     public void attackMob(LivingHurtEvent event) {
-        forEachEventHandler((h) -> h.onAttackMob(event));
+        forEachEventHandler(h -> h.onAttackMob(event));
     }
 
     public void hurt(LivingHurtEvent event) {
-        forEachEventHandler((h) -> h.onHurt(event));
+        forEachEventHandler(h -> h.onHurt(event));
     }
 
     public void rightClickBlock(RightClickBlock event) {
-        forEachEventHandler((h) -> h.onRightClickBlock(event));
+        forEachEventHandler(h -> h.onRightClickBlock(event));
     }
 
     public void enderTeleport(EnderTeleportEvent event) {
-        forEachEventHandler((h) -> h.onEnderTeleport(event));
+        forEachEventHandler(h -> h.onEnderTeleport(event));
     }
 
     public void killMob(LivingDeathEvent event) {
-        forEachEventHandler((h) -> h.onKillMob(event));
+        forEachEventHandler(h -> h.onKillMob(event));
     }
 
     public void forEachEventHandler(Consumer<IAbilityEventHandler> consumer) {
-        skillInfo.values().forEach((info) -> info.forEachEventHandler(consumer));
+        skillInfo.values().forEach(info -> info.forEachEventHandler(consumer));
     }
-
 }

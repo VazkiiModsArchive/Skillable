@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitUndershirt extends Trait {
-
     private static final String TAG_COOLDOWN = "skillable:UndershirtCD";
 
     public TraitUndershirt() {
@@ -36,5 +35,4 @@ public class TraitUndershirt extends Trait {
             event.player.getEntityData().setInteger(TAG_COOLDOWN, cd - 1);
         }
     }
-
 }

@@ -69,7 +69,7 @@ public class ReskillableModAccess implements IModAccess {
 
     @Override
     public void syncPlayerData(EntityPlayer entityPlayer, PlayerData playerData) {
-        if (entityPlayer != null && entityPlayer instanceof EntityPlayerMP) {
+        if (entityPlayer instanceof EntityPlayerMP) {
             MessageDataSync message = new MessageDataSync(playerData);
             PacketHandler.INSTANCE.sendTo(message, (EntityPlayerMP) entityPlayer);
         }

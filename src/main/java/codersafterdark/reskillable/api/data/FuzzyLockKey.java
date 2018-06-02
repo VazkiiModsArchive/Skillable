@@ -3,7 +3,6 @@ package codersafterdark.reskillable.api.data;
 public interface FuzzyLockKey extends LockKey {
     /**
      * Self is the full lock and other is the partial data.
-     *
      * @param other The FuzzyLockKey to check.
      * @return True if the two objects count as equals, false otherwise.
      */

@@ -10,32 +10,30 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public interface IAbilityEventHandler {
-
-    public default void onPlayerTick(PlayerTickEvent event) {
+    default void onPlayerTick(PlayerTickEvent event) {
     }
 
-    public default void onBlockDrops(HarvestDropsEvent event) {
+    default void onBlockDrops(HarvestDropsEvent event) {
     }
 
-    public default void getBreakSpeed(BreakSpeed event) {
+    default void getBreakSpeed(BreakSpeed event) {
     }
 
-    public default void onMobDrops(LivingDropsEvent event) {
+    default void onMobDrops(LivingDropsEvent event) {
     }
 
-    public default void onAttackMob(LivingHurtEvent event) {
+    default void onAttackMob(LivingHurtEvent event) {
     }
 
-    public default void onHurt(LivingHurtEvent event) {
+    default void onHurt(LivingHurtEvent event) {
     }
 
-    public default void onRightClickBlock(RightClickBlock event) {
+    default void onRightClickBlock(RightClickBlock event) {
     }
 
-    public default void onEnderTeleport(EnderTeleportEvent event) {
+    default void onEnderTeleport(EnderTeleportEvent event) {
     }
 
-    public default void onKillMob(LivingDeathEvent event) {
+    default void onKillMob(LivingDeathEvent event) {
     }
-
 }

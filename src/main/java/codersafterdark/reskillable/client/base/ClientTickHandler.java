@@ -12,13 +12,12 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class ClientTickHandler {
+    public static volatile Queue<Runnable> scheduledActions = new ArrayDeque<>();
 
-    public static volatile Queue<Runnable> scheduledActions = new ArrayDeque();
-
-    public static int ticksInGame = 0;
-    public static float partialTicks = 0;
-    public static float delta = 0;
-    public static float total = 0;
+    public static int ticksInGame;
+    public static float partialTicks;
+    public static float delta;
+    public static float total;
 
     private static void calcDelta() {
         float oldTotal = total;
@@ -55,5 +54,4 @@ public class ClientTickHandler {
             calcDelta();
         }
     }
-
 }

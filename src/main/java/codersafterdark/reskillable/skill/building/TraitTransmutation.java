@@ -11,14 +11,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public abstract class TraitTransmutation extends Trait {
-
     private final ItemStack reagent;
     private final Map<IBlockState, IBlockState> stateMap;
 
-    public TraitTransmutation(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, ItemStack reagent,
-                              Map<IBlockState, IBlockState> stateMap, String... requirements) {
+    public TraitTransmutation(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, ItemStack reagent, Map<IBlockState, IBlockState> stateMap, String... requirements) {
         super(name, x, y, skillName, cost, requirements);
         this.reagent = reagent;
         this.stateMap = stateMap;
@@ -36,19 +35,14 @@ public abstract class TraitTransmutation extends Trait {
                 IBlockState placeState = stateMap.get(state);
                 BlockPos pos = event.getPos();
                 event.getWorld().setBlockState(pos, placeState);
-
-                SoundEvent sound = placeState.getBlock().getSoundType().getPlaceSound();
+                SoundEvent sound = placeState.getBlock().getSoundType(placeState, event.getWorld(), pos, null).getPlaceSound();
                 event.getWorld().playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F);
                 if (event.getWorld().isRemote) {
                     event.getEntityPlayer().swingArm(event.getHand());
-                    for (int i = 0; i < 20; i++) {
-                        event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(), pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0);
-                    }
+                    IntStream.range(0, 20).forEach(i -> event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(),pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0));
                 }
-
                 stack.shrink(1);
             }
         }
     }
-
 }

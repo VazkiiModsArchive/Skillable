@@ -12,7 +12,6 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import static codersafterdark.reskillable.lib.LibMisc.MOD_ID;
 
 public class TraitMoreWheat extends Trait {
-
     public TraitMoreWheat() {
         super(new ResourceLocation(MOD_ID, "more_wheat"), 1, 2, new ResourceLocation(MOD_ID, "farming"),
                 6, "reskillable:farming|12");
@@ -27,6 +26,4 @@ public class TraitMoreWheat extends Trait {
             event.getDrops().add(new ItemStack(Items.WHEAT));
         }
     }
-
-
 }
