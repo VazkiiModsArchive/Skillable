@@ -45,6 +45,7 @@ public class CmdIncrementSkill extends CommandBase {
             throw new CommandException("reskillable.command.invalid.missing.skill");
         }
         EntityPlayerMP player = getPlayer(server, sender, args[0]);
+        args[1] = args[1].replaceAll(":", ".");
         String[] parts = args[1].split("\\.");
         ResourceLocation skillName = parts.length > 1 ? new ResourceLocation(parts[0], args[1].substring(parts[0].length() + 1)) : new ResourceLocation(args[1]);
         if (!ReskillableRegistries.SKILLS.containsKey(skillName)) {
@@ -75,7 +76,7 @@ public class CmdIncrementSkill extends CommandBase {
             return Arrays.stream(server.getPlayerList().getOnlinePlayerNames()).filter(name -> name.startsWith(partialName)).collect(Collectors.toList());
         }
         if (args.length == 2) {
-            String partial = args[1];
+            String partial = args[1].replaceAll(":", ".");
             return ReskillableRegistries.SKILLS.getValuesCollection().stream().map(Skill::getKey).filter(skillName -> skillName.startsWith(partial)).collect(Collectors.toList());
         }
         return new ArrayList<>();
