@@ -89,4 +89,9 @@ public class CmdToggleTrait extends CommandBase {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
 }

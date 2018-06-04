@@ -27,4 +27,9 @@ public class ReskillableCmd extends CommandTreeBase {
     public String getUsage(@Nonnull ICommandSender sender) {
         return "reskillable.command.usage";
     }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
 }

@@ -82,4 +82,9 @@ public class CmdResetSkill extends CommandBase {
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
 }
