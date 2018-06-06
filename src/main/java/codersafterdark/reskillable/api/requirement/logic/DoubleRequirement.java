@@ -1,7 +1,9 @@
 package codersafterdark.reskillable.api.requirement.logic;
 
 import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
 public abstract class DoubleRequirement extends Requirement {
@@ -22,10 +24,18 @@ public abstract class DoubleRequirement extends Requirement {
 
     protected abstract String getFormat();
 
+    protected boolean leftAchieved(EntityPlayer player) {
+        return player != null && PlayerDataHandler.get(player).requirementAchieved(left);
+    }
+
+    protected boolean rightAchieved(EntityPlayer player) {
+        return player != null && PlayerDataHandler.get(player).requirementAchieved(right);
+    }
+
     @Override
     public String getToolTip(PlayerData data) {
         TextFormatting color = TextFormatting.GREEN;
-        if (data == null || !achievedByPlayer(data.playerWR.get())) {
+        if (data == null || !data.requirementAchieved(this)) {
             color = TextFormatting.RED;
         }
         return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + color + getFormat() + ' ' + getToolTipPart(data, getRight());

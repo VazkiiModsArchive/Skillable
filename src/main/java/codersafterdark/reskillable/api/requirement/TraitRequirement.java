@@ -32,7 +32,7 @@ public class TraitRequirement extends Requirement {
         String name = "";
 
         if (unlockable != null) {
-            if (data == null || !data.getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable)) {
+            if (data == null || !data.requirementAchieved(this)) {
                 color = TextFormatting.RED;
             }
             name = unlockable.getName();

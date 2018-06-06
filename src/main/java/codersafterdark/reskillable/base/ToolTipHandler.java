@@ -28,11 +28,14 @@ public class ToolTipHandler {
             return;
         }
         ItemStack current = event.getItemStack();
+        PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         if (lastItem != current) {
+            if (data != null) {
+                data.resetRequirementCache();
+            }
             lastItem = current;
             lastLock = LevelLockHandler.getSkillLock(current);
         }
-        PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         lastLock.addRequirementsToTooltip(data, event.getToolTip());
     }
 

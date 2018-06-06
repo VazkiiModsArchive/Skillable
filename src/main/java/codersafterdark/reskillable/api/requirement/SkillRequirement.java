@@ -24,7 +24,7 @@ public class SkillRequirement extends Requirement {
     @Override
     public String getToolTip(PlayerData data) {
         return TextFormatting.GRAY + " - " + new TextComponentTranslation("skillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(),
-                data == null || !achievedByPlayer(data.playerWR.get()) ? TextFormatting.RED : TextFormatting.GREEN, level).getUnformattedComponentText();
+                data == null || !data.requirementAchieved(this) ? TextFormatting.RED : TextFormatting.GREEN, level).getUnformattedComponentText();
     }
 
     public Skill getSkill() {

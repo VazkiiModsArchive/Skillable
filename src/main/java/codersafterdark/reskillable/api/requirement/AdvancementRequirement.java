@@ -34,7 +34,7 @@ public class AdvancementRequirement extends Requirement {
             return "";
         }
         return TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
-                data == null || !achievedByPlayer(data.playerWR.get()) ? TextFormatting.RED : TextFormatting.GREEN,
+                data == null || !data.requirementAchieved(this) ? TextFormatting.RED : TextFormatting.GREEN,
                 adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
     }
 

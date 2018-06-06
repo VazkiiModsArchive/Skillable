@@ -13,7 +13,7 @@ public class NANDRequirement extends DoubleRequirement {
 
     @Override
     public boolean achievedByPlayer(EntityPlayer player) {
-        return !getLeft().achievedByPlayer(player) || !getRight().achievedByPlayer(player);
+        return !leftAchieved(player) || !rightAchieved(player);
     }
 
     @Override
