@@ -3,10 +3,12 @@ package codersafterdark.reskillable.api.requirement;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.event.LockUnlockableEvent;
 import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
-import codersafterdark.reskillable.api.requirement.logic.impl.*;
+import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
+import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -15,7 +17,7 @@ public class RequirementCache {
     private static List<Class<? extends Requirement>> dirtyCacheTypes = new ArrayList<>();
     private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
 
-    //TODO should it be requirement -> player/boolean so that it does not need to keep track of multiple requirements? They really are pointers so it should not matter
+    //TODO: Should it be requirement -> player/boolean so that it does not need to keep track of multiple requirements? They really are pointers so it should not matter
     private Map<Requirement, Boolean> requirementCache = new HashMap<>();
     private EntityPlayer player;
     private boolean dirtyCache;
@@ -25,13 +27,19 @@ public class RequirementCache {
         cacheMap.put(player.getUniqueID(), this);
     }
 
+    //TODO: Improved caching for tooltips. Would specifically help logic requirements and item requirements because their tooltip logic can be rather complex
     public boolean requirementAchieved(Requirement requirement) {
+        if (requirement == null) {
+            return false;
+        }
         if (requirementCache.containsKey(requirement)) {
             return requirementCache.get(requirement);
         }
         boolean achieved = requirement.achievedByPlayer(player);
         requirementCache.put(requirement, achieved);
-        dirtyCache = true; //TODO: Decide if this should only add as dirty if the type matches one of the dirtyCacheTypes. Would potentially improve performance
+        if (dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
+            dirtyCache = true;
+        }
         return achieved;
     }
 
@@ -60,9 +68,8 @@ public class RequirementCache {
     }
 
     public static void registerDirtyTypes() {
-        //Register all Logic requirements to Requirement.class so that they always get invalidated when things become invalid
-        registerRequirementType(NOTRequirement.class, ANDRequirement.class, NANDRequirement.class, ORRequirement.class, NORRequirement.class,
-                XORRequirement.class, XNORRequirement.class);
+        //Register logic requirements and any other implementations of DoubleRequirement to be invalidated
+        registerRequirementType(NOTRequirement.class, DoubleRequirement.class);
     }
 
     //A method to allow adding of requirements that should always be invalidated if other requirements get invalidated
@@ -98,7 +105,6 @@ public class RequirementCache {
         return false;
     }
 
-    //TODO add the listeners that invalidate the caches for the types we have
     @SubscribeEvent
     public static void onLevelChange(LevelUpEvent.Post event) {
         //Just invalidate all skills because it is easier than checking each requirement they have to see if the skill matches
@@ -118,5 +124,10 @@ public class RequirementCache {
     @SubscribeEvent
     public static void onAdvancement(AdvancementEvent event) {
         invalidateCache(event.getEntityPlayer().getUniqueID(), AdvancementRequirement.class);
+    }
+
+    @SubscribeEvent
+    public static void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
+        cacheMap.remove(event.player.getUniqueID());
     }
 }
