@@ -35,18 +35,15 @@ public class RequirementCache {
         return achieved;
     }
 
-    public void invalidateCache(Class<? extends Requirement> cacheType) {
-        List<Class<? extends Requirement>> dirtyTypes = null;
-        if (dirtyCache) {
-            //Clear all types that are supposed to be invalidated each time
-            dirtyTypes = new ArrayList<>(dirtyCacheTypes);
-            if (cacheType != null) {
-                dirtyTypes.add(cacheType);
-            }
-        } else if (cacheType != null) {
-            dirtyTypes = Collections.singletonList(cacheType);
+    public void invalidateCache(Class<? extends Requirement>... cacheType) {
+        List<Class<? extends Requirement>> dirtyTypes = dirtyCache ? new ArrayList<>(dirtyCacheTypes) : new ArrayList<>();
+        //Clear all types that are supposed to be invalidated each time if dirtyCache is true
+
+        if (cacheType != null) {
+            dirtyTypes.addAll(Arrays.asList(cacheType));
         }
-        if (dirtyTypes == null || dirtyTypes.isEmpty()) {
+
+        if (dirtyTypes.isEmpty()) {
             return;
         }
         Set<Requirement> requirements = requirementCache.keySet();
@@ -73,16 +70,16 @@ public class RequirementCache {
         dirtyCacheTypes.addAll(Arrays.asList(requirementClasses));
     }
 
-    public static void invalidateCache(EntityPlayer player, Class<? extends Requirement> cacheType) {
+    public static void invalidateCache(EntityPlayer player, Class<? extends Requirement>... cacheTypes) {
         if (player != null) {
-            invalidateCache(player.getUniqueID(), cacheType);
+            invalidateCache(player.getUniqueID(), cacheTypes);
         }
     }
 
-    public static void invalidateCache(UUID uuid, Class<? extends Requirement> cacheType) {
+    public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
         RequirementCache requirementCache = cacheMap.get(uuid);
         if (requirementCache != null) {
-            requirementCache.invalidateCache(cacheType);
+            requirementCache.invalidateCache(cacheTypes);
         }
     }
 
