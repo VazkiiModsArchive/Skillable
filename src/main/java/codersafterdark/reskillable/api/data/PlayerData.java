@@ -3,6 +3,7 @@ package codersafterdark.reskillable.api.data;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementCache;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
@@ -24,13 +25,14 @@ import java.util.function.Consumer;
 public class PlayerData {
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
+    private final RequirementCache requirementCache;
     public WeakReference<EntityPlayer> playerWR;
     private Map<Skill, PlayerSkillInfo> skillInfo = new HashMap<>();
-    private Map<Requirement, Boolean> requirementCache = new HashMap<>();
 
     public PlayerData(EntityPlayer player) {
         playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
+        requirementCache = new RequirementCache(player);
 
         ReskillableRegistries.SKILLS.getValuesCollection().forEach(s -> skillInfo.put(s, new PlayerSkillInfo(s)));
 
@@ -55,46 +57,17 @@ public class PlayerData {
         return set;
     }
 
-    //TODO Cont: This will allow nested requirements and tooltips (if the code gets properly updated) to store the value
-    //TODO Cont: The value will still be valid so it can get the cached boolean because all parent checks get called before a new call to matchStats
     public boolean matchStats(RequirementHolder holder) {
-        //TODO: Improve on the caching method so that it does not have to always reset the cache when a new requirement holder is being checked.
-        //TODO Cont: This would also require a better way of deciding when something should be rechecked and how long to store the data for
-        resetRequirementCache(); //Clears the previous cache
-        EntityPlayer entityPlayer = playerWR.get();
-        if (entityPlayer != null) {
-            for (Requirement requirement : holder.getRequirements()) {
-                //TODO figure out how to cache if it has been achieved and see if it has to be updated
-                //TODO: Have a start cache and an "end" cache that removes it from being cached
-                if (!requirementAchieved(requirement)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return playerWR.get() == null || holder.getRequirements().stream().allMatch(this::requirementAchieved);
     }
 
-    //TODO: Use this in the tooltip method of requirements, and also in the sub requirement parts of logic requirements
+    //helper method to access the requirement cache
     public boolean requirementAchieved(Requirement requirement) {
-        EntityPlayer entityPlayer = playerWR.get();
-        if (entityPlayer != null) {
-            if (requirementCache.containsKey(requirement)) {
-                return requirementCache.get(requirement);
-            }
-            boolean achieved = requirement.achievedByPlayer(entityPlayer);
-            requirementCache.put(requirement, achieved);
-            return achieved;
-        }
-        return false;
+        return getRequirementCache().requirementAchieved(requirement);
     }
 
-    //TODO: Does requirementCache get cleared often enough? For example for tooltips will it need this to be rechecked when stats/dimensions etc change
-    //TODO Cont: Potentially make this get called in specific circumstances when things may not update properly.
-    //TODO Cont: This will be needed if we want auto unlockables to be efficient
-    //TODO: Make a way to "invalidate" certain requirement types. It may not be as efficient as manually removing same skill types instead of all skill requirement caches
-    //TODO Cont: but it will probably work better. Logic Requirements probably should always be invalidated
-    public void resetRequirementCache() {
-        requirementCache.clear();
+    public final RequirementCache getRequirementCache() {
+        return requirementCache;
     }
 
     public void load() {

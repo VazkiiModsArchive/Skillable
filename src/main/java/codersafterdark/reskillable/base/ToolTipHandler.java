@@ -30,9 +30,6 @@ public class ToolTipHandler {
         ItemStack current = event.getItemStack();
         PlayerData data = PlayerDataHandler.get(Minecraft.getMinecraft().player);
         if (lastItem != current) {
-            if (data != null) {
-                data.resetRequirementCache();
-            }
             lastItem = current;
             lastLock = LevelLockHandler.getSkillLock(current);
         }
