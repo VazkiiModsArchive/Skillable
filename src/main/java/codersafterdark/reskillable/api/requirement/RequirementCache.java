@@ -12,13 +12,15 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RequirementCache {
-    private static List<Class<? extends Requirement>> dirtyCacheTypes = new ArrayList<>();
+    private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
     private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
 
     //TODO: Should it be requirement -> player/boolean so that it does not need to keep track of multiple requirements? They really are pointers so it should not matter
     private Map<Requirement, Boolean> requirementCache = new HashMap<>();
+    private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
     private EntityPlayer player;
     private boolean dirtyCache;
 
@@ -39,6 +41,9 @@ public class RequirementCache {
         requirementCache.put(requirement, achieved);
         if (dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
             dirtyCache = true;
+        } else {
+            //Remove the cached already invalidated types
+            recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
         }
         return achieved;
     }
@@ -48,7 +53,17 @@ public class RequirementCache {
         //Clear all types that are supposed to be invalidated each time if dirtyCache is true
 
         if (cacheType != null) {
-            dirtyTypes.addAll(Arrays.asList(cacheType));
+            //If no classes of that type have been added do not bother invalidating it again.
+            for (Class<? extends Requirement> type : cacheType) {
+                if (!recentlyInvalidated.contains(type)) {
+                    dirtyTypes.add(type);
+                    recentlyInvalidated.add(type);
+                }
+            }
+            if (dirtyTypes.size() == dirtyCacheTypes.size()) {
+                //Nothing changed so the dirty types are not actually dirty and they aren't being directly invalidated because cacheType is not null
+                return;
+            }
         }
 
         if (dirtyTypes.isEmpty()) {
