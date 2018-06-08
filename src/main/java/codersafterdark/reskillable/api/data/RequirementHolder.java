@@ -128,9 +128,16 @@ public class RequirementHolder {
         }
         if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
-            requirements.stream().map(requirement -> requirement.getToolTip(data)).forEach(tooltip::add);
+            addRequirementsIgnoreShift(data, tooltip);
         } else {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addRequirementsIgnoreShift(PlayerData data, List<String> tooltip) {
+        if (isRealLock()) {
+            requirements.stream().map(requirement -> requirement.getToolTip(data)).forEach(tooltip::add);
         }
     }
 

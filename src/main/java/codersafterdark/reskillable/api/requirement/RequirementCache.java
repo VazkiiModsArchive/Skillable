@@ -18,7 +18,8 @@ public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
     private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
 
-    //TODO: Should it be requirement -> player/boolean so that it does not need to keep track of multiple requirements? They really are pointers so it should not matter
+    //TODO: Cache as Map<RequirementType, Map<Requirement, Boolean>> So that it is slightly more efficient for clearing out during invalidation
+    //TODO Cont: Will be a decent boost for performance if lots of items are checked in JEI for example with different requirements
     private Map<Requirement, Boolean> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
     private EntityPlayer player;
