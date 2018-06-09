@@ -1,43 +1,24 @@
 package codersafterdark.reskillable.api.requirement;
 
-import codersafterdark.reskillable.api.ReskillableRegistries;
-import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TraitRequirement extends Requirement {
     private Unlockable unlockable;
 
-    public TraitRequirement(ResourceLocation traitName) {
-        this.unlockable = ReskillableRegistries.UNLOCKABLES.getValue(traitName);
+    public TraitRequirement(Unlockable unlockable) {
+        this.unlockable = unlockable;
+        this.tooltip =  TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + new TextComponentTranslation("skillable.misc.traitFormat", "%s",
+                this.unlockable.getName()).getUnformattedComponentText();
     }
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
         return PlayerDataHandler.get(entityPlayer).getSkillInfo(unlockable.getParentSkill()).isUnlocked(unlockable);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String getToolTip(PlayerData data) {
-        Unlockable unlockable = getUnlockable();
-        TextFormatting color = TextFormatting.GREEN;
-        String name = "";
-
-        if (unlockable != null) {
-            if (data == null || !data.requirementAchieved(this)) {
-                color = TextFormatting.RED;
-            }
-            name = unlockable.getName();
-        }
-        return TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + new TextComponentTranslation("skillable.misc.traitFormat", color, name).getUnformattedComponentText();
     }
 
     public Skill getSkill() {
@@ -50,14 +31,8 @@ public class TraitRequirement extends Requirement {
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        if (other instanceof TraitRequirement) {
-            TraitRequirement traitRequirement = (TraitRequirement) other;
-            if (getUnlockable() == null) {
-                return traitRequirement.getUnlockable() == null ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
-            }
-            return traitRequirement.getUnlockable() != null && getUnlockable().getKey().equals(traitRequirement.getUnlockable().getKey()) ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
-        }
-        return RequirementComparision.NOT_EQUAL;
+        return other instanceof TraitRequirement ? getUnlockable().getKey().equals(((TraitRequirement) other).getUnlockable().getKey()) ?
+                RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL : RequirementComparision.NOT_EQUAL;
     }
 
     @Override

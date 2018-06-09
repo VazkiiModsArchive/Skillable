@@ -20,38 +20,44 @@ public class NOTRequirement extends Requirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        String parentToolTip = this.requirement.getToolTip(data);
-        if (parentToolTip == null) {
-            return "";
-        }
-        if (parentToolTip.startsWith(TextFormatting.GRAY + " - ")) {
-            parentToolTip = parentToolTip.replaceFirst(TextFormatting.GRAY + " - ", "");
-        }
-        char colorCode = '\u00a7';
-        String start = TextFormatting.GRAY + " - ";
-        if (parentToolTip.length() > 2 && parentToolTip.startsWith(Character.toString(colorCode))) {
-            start += parentToolTip.substring(0, 2);
-            parentToolTip = parentToolTip.substring(2);
-        }
-        start += '!';
-        StringBuilder tooltip = new StringBuilder(start);
-        char[] chars = parentToolTip.toCharArray();
-        char lastChar = '!';
-        char red = 'c';
-        char green = 'a';
-        for (char c : chars) {
-            if (lastChar == colorCode && (c == red || c == green)) {
-                if (c == red) {
-                    tooltip.append(green);
-                } else {
-                    tooltip.append(red);
-                }
-            } else {
-                tooltip.append(c);
+        try {
+            //Just use the opposite coloring for the parent tooltip. Allows for red and green coloring of requirement name
+            return String.format(this.requirement.internalToolTip(), data == null || !data.requirementAchieved(this) ? TextFormatting.RED : TextFormatting.GREEN);
+        } catch (IllegalArgumentException e) {
+            //If it fails fall back to old method of inverting the colors
+            String parentToolTip = this.requirement.getToolTip(data);
+            if (parentToolTip == null) {
+                return "";
             }
-            lastChar = c;
+            if (parentToolTip.startsWith(TextFormatting.GRAY + " - ")) {
+                parentToolTip = parentToolTip.replaceFirst(TextFormatting.GRAY + " - ", "");
+            }
+            char colorCode = '\u00a7';
+            String start = TextFormatting.GRAY + " - ";
+            if (parentToolTip.length() > 2 && parentToolTip.startsWith(Character.toString(colorCode))) {
+                start += parentToolTip.substring(0, 2);
+                parentToolTip = parentToolTip.substring(2);
+            }
+            start += '!';
+            StringBuilder tooltip = new StringBuilder(start);
+            char[] chars = parentToolTip.toCharArray();
+            char lastChar = '!';
+            char red = 'c';
+            char green = 'a';
+            for (char c : chars) {
+                if (lastChar == colorCode && (c == red || c == green)) {
+                    if (c == red) {
+                        tooltip.append(green);
+                    } else {
+                        tooltip.append(red);
+                    }
+                } else {
+                    tooltip.append(c);
+                }
+                lastChar = c;
+            }
+            return tooltip.toString();
         }
-        return tooltip.toString();
     }
 
     public Requirement getRequirement() {

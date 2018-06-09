@@ -1,45 +1,28 @@
 package codersafterdark.reskillable.api.requirement;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
-import codersafterdark.reskillable.api.data.PlayerData;
-import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
-import java.util.Optional;
-
 public class AdvancementRequirement extends Requirement {
-    private ResourceLocation advancementName;
+    private Advancement advancement;
 
-    public AdvancementRequirement(ResourceLocation advancementName) {
-        this.advancementName = advancementName;
+    //TODO: Double check that this does not need to actually check the advancement later
+    public AdvancementRequirement(Advancement advancement) {
+        this.advancement = advancement;
+        this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
+                "%S", advancement.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
     }
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
-        return Optional.ofNullable(this.getAdvancement())
-                .map(advancement -> ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, advancement))
-                .map(AdvancementProgress::isDone)
-                .orElse(false);
-    }
-
-    @Override
-    public String getToolTip(PlayerData data) {
-        Advancement adv = getAdvancement();
-        if (adv == null) {
-            return "";
-        }
-        return TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
-                data == null || !data.requirementAchieved(this) ? TextFormatting.RED : TextFormatting.GREEN,
-                adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
+        return ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, getAdvancement()).isDone();
     }
 
     public Advancement getAdvancement() {
-        return RequirementHolder.getAdvancementList().getAdvancement(advancementName);
+        return advancement;
     }
 
     @Override

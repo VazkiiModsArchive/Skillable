@@ -18,9 +18,8 @@ public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
     private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
 
-    //TODO: Cache as Map<RequirementType, Map<Requirement, Boolean>> So that it is slightly more efficient for clearing out during invalidation
-    //TODO Cont: Will be a decent boost for performance if lots of items are checked in JEI for example with different requirements
-    private Map<Requirement, Boolean> requirementCache = new HashMap<>();
+    //TODO: Check if Requirement needs to have updated equals and hashCode methods
+    private Map<Class<? extends Requirement>, Map<Requirement, Boolean>> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
     private EntityPlayer player;
     private boolean dirtyCache;
@@ -30,16 +29,23 @@ public class RequirementCache {
         cacheMap.put(player.getUniqueID(), this);
     }
 
-    //TODO: Improved caching for tooltips. Would specifically help logic requirements and item requirements because their tooltip logic can be rather complex
+    //TODO: Implement the tooltip changes in CompatSkills of caching the format because it is the same for all requirements and then just inserting the color
     public boolean requirementAchieved(Requirement requirement) {
         if (requirement == null) {
             return false;
         }
-        if (requirementCache.containsKey(requirement)) {
-            return requirementCache.get(requirement);
+        Class<? extends Requirement> clazz = requirement.getClass();
+        Map<Requirement, Boolean> cache;
+        if (requirementCache.containsKey(clazz)) {
+            cache = requirementCache.get(clazz);
+            if (cache.containsKey(requirement)) {
+                return cache.get(requirement);
+            }
+        } else {
+            requirementCache.put(clazz, cache = new HashMap<>());
         }
         boolean achieved = requirement.achievedByPlayer(player);
-        requirementCache.put(requirement, achieved);
+        cache.put(requirement, achieved);
         if (dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
             dirtyCache = true;
         } else {
@@ -70,12 +76,12 @@ public class RequirementCache {
         if (dirtyTypes.isEmpty()) {
             return;
         }
-        Set<Requirement> requirements = requirementCache.keySet();
-        List<Requirement> toRemove = new ArrayList<>();
+        Set<Class<? extends Requirement>> requirements = requirementCache.keySet();
+        List<Class<? extends Requirement>> toRemove = new ArrayList<>();
 
-        for (Requirement requirement : requirements) {
+        for (Class<? extends Requirement> requirement : requirements) {
             for (Class<? extends Requirement> dirtyType : dirtyTypes) {
-                if (dirtyType.isInstance(requirement)) {
+                if (dirtyType.isAssignableFrom(requirement)) {
                     toRemove.add(requirement);
                 }
             }
