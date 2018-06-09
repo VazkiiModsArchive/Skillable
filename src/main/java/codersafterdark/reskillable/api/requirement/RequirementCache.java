@@ -29,7 +29,6 @@ public class RequirementCache {
         cacheMap.put(player.getUniqueID(), this);
     }
 
-    //TODO: Implement the tooltip changes in CompatSkills of caching the format because it is the same for all requirements and then just inserting the color
     public boolean requirementAchieved(Requirement requirement) {
         if (requirement == null) {
             return false;
