@@ -18,7 +18,7 @@ public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
     private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
 
-    //TODO: Check if Requirement needs to have updated equals and hashCode methods
+    //TODO: Requirement needs to have updated equals and hashCode methods
     private Map<Class<? extends Requirement>, Map<Requirement, Boolean>> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
     private EntityPlayer player;

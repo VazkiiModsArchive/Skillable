@@ -43,11 +43,13 @@ public class ToolTipHandler {
             lastLock.addRequirementsIgnoreShift(data, toolTip = new ArrayList<>());
         }
         List<String> curTooltip = event.getToolTip();
-        if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
-            curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
-            curTooltip.addAll(toolTip);
-        } else {
-            curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
+        if (!toolTip.isEmpty()) {
+            if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
+                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
+                curTooltip.addAll(toolTip);
+            } else {
+                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
+            }
         }
     }
 
