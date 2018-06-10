@@ -18,7 +18,7 @@ public class AdvancementRequirement extends Requirement {
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
-        return ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, getAdvancement()).isDone();
+        return ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, advancement).isDone();
     }
 
     public Advancement getAdvancement() {
@@ -27,7 +27,17 @@ public class AdvancementRequirement extends Requirement {
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        return other instanceof AdvancementRequirement && getAdvancement().equals(((AdvancementRequirement) other).getAdvancement())
+        return other instanceof AdvancementRequirement && advancement.equals(((AdvancementRequirement) other).advancement)
                 ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof AdvancementRequirement && advancement.equals(((AdvancementRequirement) o).advancement);
+    }
+
+    @Override
+    public int hashCode() {
+        return advancement.hashCode();
     }
 }

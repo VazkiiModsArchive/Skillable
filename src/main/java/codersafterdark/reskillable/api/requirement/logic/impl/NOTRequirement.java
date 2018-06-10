@@ -77,7 +77,7 @@ public class NOTRequirement extends Requirement {
     @Override
     public RequirementComparision matches(Requirement o) {
         if (o instanceof NOTRequirement) {
-            RequirementComparision match = getRequirement().matches(((NOTRequirement) o).getRequirement());
+            RequirementComparision match = requirement.matches(((NOTRequirement) o).requirement);
             switch (match) {
                 case GREATER_THAN:
                     return RequirementComparision.LESS_THAN;
@@ -88,5 +88,15 @@ public class NOTRequirement extends Requirement {
             }
         }
         return RequirementComparision.NOT_EQUAL;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof NOTRequirement && requirement.equals(((NOTRequirement) o).requirement);
+    }
+
+    @Override
+    public int hashCode() {
+        return requirement.hashCode();
     }
 }

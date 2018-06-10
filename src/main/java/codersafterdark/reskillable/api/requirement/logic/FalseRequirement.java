@@ -26,4 +26,14 @@ public class FalseRequirement extends Requirement {
     public RequirementComparision matches(Requirement other) {
         return other instanceof FalseRequirement ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof FalseRequirement;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

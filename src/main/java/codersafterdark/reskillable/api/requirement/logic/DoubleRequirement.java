@@ -51,4 +51,24 @@ public abstract class DoubleRequirement extends Requirement {
         }
         return tooltip;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof DoubleRequirement) {//The order of the logic requirements does not actually matter so might as well put it here
+            DoubleRequirement dreq = (DoubleRequirement) o;
+            return (getRight().equals(dreq.getRight()) && getLeft().equals(dreq.getLeft())) || (getRight().equals(dreq.getLeft()) && getLeft().equals(dreq.getRight()));
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        //Ensure there is no out of bounds errors AND that the hashcode is the same even if left and right got reversed
+        long leftHash = getLeft().hashCode();
+        long rightHash = getRight().hashCode();
+        return (int) ((leftHash + rightHash) / 2);
+    }
 }

@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.Objects;
+
 public class TraitRequirement extends Requirement {
     private Unlockable unlockable;
 
@@ -31,12 +33,22 @@ public class TraitRequirement extends Requirement {
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        return other instanceof TraitRequirement ? getUnlockable().getKey().equals(((TraitRequirement) other).getUnlockable().getKey()) ?
+        return other instanceof TraitRequirement ? unlockable.getKey().equals(((TraitRequirement) other).unlockable.getKey()) ?
                 RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL : RequirementComparision.NOT_EQUAL;
     }
 
     @Override
     public boolean isEnabled() {
-        return getUnlockable() != null && getUnlockable().isEnabled();
+        return unlockable != null && unlockable.isEnabled();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof TraitRequirement && unlockable.equals(((TraitRequirement) o).unlockable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(unlockable);
     }
 }

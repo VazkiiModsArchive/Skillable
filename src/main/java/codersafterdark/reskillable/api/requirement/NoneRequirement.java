@@ -25,4 +25,15 @@ public final class NoneRequirement extends Requirement {
     public RequirementComparision matches(Requirement other) {
         return other instanceof NoneRequirement ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof NoneRequirement;
+    }
+
+    @Override
+    public int hashCode() {
+        //Does not actually matter but might as well have it be the same for each none requirement
+        return 2;
+    }
 }

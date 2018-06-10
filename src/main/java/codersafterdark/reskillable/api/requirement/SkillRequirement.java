@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.Objects;
+
 public class SkillRequirement extends Requirement {
     private final Skill skill;
     private final int level;
@@ -34,15 +36,15 @@ public class SkillRequirement extends Requirement {
     public RequirementComparision matches(Requirement other) {
         if (other instanceof SkillRequirement) {
             SkillRequirement skillRequirement = (SkillRequirement) other;
-            if (getSkill() == null || skillRequirement.getSkill() == null) {
+            if (skill == null || skillRequirement.skill == null) {
                 //If they are both invalid don't bother checking the level.
                 return RequirementComparision.NOT_EQUAL;
             }
-            if (getSkill().getKey().equals(skillRequirement.getSkill().getKey())) {
-                if (getLevel() == skillRequirement.getLevel()) {
+            if (skill.getKey().equals(skillRequirement.skill.getKey())) {
+                if (level == skillRequirement.level) {
                     return RequirementComparision.EQUAL_TO;
                 }
-                return getLevel() > skillRequirement.getLevel() ? RequirementComparision.GREATER_THAN : RequirementComparision.LESS_THAN;
+                return level > skillRequirement.level ? RequirementComparision.GREATER_THAN : RequirementComparision.LESS_THAN;
             }
         }
         return RequirementComparision.NOT_EQUAL;
@@ -50,6 +52,23 @@ public class SkillRequirement extends Requirement {
 
     @Override
     public boolean isEnabled() {
-        return getSkill() != null && getSkill().isEnabled();
+        return skill != null && skill.isEnabled();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof SkillRequirement) {
+            SkillRequirement sReq = (SkillRequirement) o;
+            return skill.equals(sReq.skill) && level == sReq.level;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(skill, level);
     }
 }
