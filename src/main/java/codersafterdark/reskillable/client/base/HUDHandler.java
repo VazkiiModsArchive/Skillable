@@ -107,6 +107,9 @@ public class HUDHandler {
 
             for (AdvancementRequirement advancementRequirement : advancementRequirements) {
                 Advancement adv = advancementRequirement.getAdvancement();
+                if (adv == null) {
+                    continue;
+                }
 
                 mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/advancements/widgets.png"));
                 DisplayInfo display = adv.getDisplay();

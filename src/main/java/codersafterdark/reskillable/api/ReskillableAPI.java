@@ -1,7 +1,6 @@
 package codersafterdark.reskillable.api;
 
 import codersafterdark.reskillable.api.data.PlayerData;
-import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
 import codersafterdark.reskillable.api.requirement.NoneRequirement;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
@@ -26,10 +25,7 @@ public class ReskillableAPI {
     public ReskillableAPI(IModAccess modAccess) {
         this.modAccess = modAccess;
         this.requirementRegistry = new RequirementRegistry();
-        requirementRegistry.addRequirementHandler("adv", input -> {
-            Advancement adv = RequirementHolder.getAdvancementList().getAdvancement(new ResourceLocation(input));
-            return adv == null ? null : new AdvancementRequirement(adv);
-        });
+        requirementRegistry.addRequirementHandler("adv", input -> new AdvancementRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("trait", input -> {
             Unlockable unlockable = ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(input));
             return unlockable == null ? null : new TraitRequirement(unlockable);

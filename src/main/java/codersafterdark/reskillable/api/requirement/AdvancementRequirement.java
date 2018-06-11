@@ -1,43 +1,60 @@
 package codersafterdark.reskillable.api.requirement;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
+import codersafterdark.reskillable.api.data.PlayerData;
+import codersafterdark.reskillable.api.data.RequirementHolder;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
-public class AdvancementRequirement extends Requirement {
-    private Advancement advancement;
+import java.util.Optional;
 
-    //TODO: Double check that this does not need to actually check the advancement later
-    public AdvancementRequirement(Advancement advancement) {
-        this.advancement = advancement;
-        this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
-                "%S", advancement.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
+public class AdvancementRequirement extends Requirement {
+    private ResourceLocation advancementName;
+
+    public AdvancementRequirement(ResourceLocation advancementName) {
+        this.advancementName = advancementName;
+
     }
 
     @Override
     public boolean achievedByPlayer(EntityPlayer entityPlayer) {
-        return ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, advancement).isDone();
+        return Optional.ofNullable(this.getAdvancement())
+                .map(advancement -> ReskillableAPI.getInstance().getAdvancementProgress(entityPlayer, advancement))
+                .map(AdvancementProgress::isDone)
+                .orElse(false);
+    }
+
+    @Override
+    public String getToolTip(PlayerData data) {
+        if (tooltip.isEmpty()) {
+            Advancement adv = getAdvancement();
+            this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
+                    "%S", adv == null ? "" : adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
+        }
+        return super.getToolTip(data);
     }
 
     public Advancement getAdvancement() {
-        return advancement;
+        return RequirementHolder.getAdvancementList().getAdvancement(advancementName);
     }
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        return other instanceof AdvancementRequirement && advancement.equals(((AdvancementRequirement) other).advancement)
+        return other instanceof AdvancementRequirement && advancementName.equals(((AdvancementRequirement) other).advancementName)
                 ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
     }
 
     @Override
     public boolean equals(Object o) {
-        return o == this || o instanceof AdvancementRequirement && advancement.equals(((AdvancementRequirement) o).advancement);
+        return o == this || o instanceof AdvancementRequirement && advancementName.equals(((AdvancementRequirement) o).advancementName);
     }
 
     @Override
     public int hashCode() {
-        return advancement.hashCode();
+        return advancementName.hashCode();
     }
 }
