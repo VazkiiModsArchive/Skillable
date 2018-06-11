@@ -2,6 +2,8 @@ package codersafterdark.reskillable.api.requirement.logic;
 
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementCache;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
 public abstract class DoubleRequirement extends Requirement {
@@ -22,12 +24,17 @@ public abstract class DoubleRequirement extends Requirement {
 
     protected abstract String getFormat();
 
+    protected boolean leftAchieved(EntityPlayer player) {
+        return player != null && RequirementCache.requirementAchieved(player, getLeft());
+    }
+
+    protected boolean rightAchieved(EntityPlayer player) {
+        return player != null && RequirementCache.requirementAchieved(player, getRight());
+    }
+
     @Override
     public String getToolTip(PlayerData data) {
-        TextFormatting color = TextFormatting.GREEN;
-        if (data == null || !achievedByPlayer(data.playerWR.get())) {
-            color = TextFormatting.RED;
-        }
+        TextFormatting color = data == null || !data.requirementAchieved(this) ? TextFormatting.RED : TextFormatting.GREEN;
         return TextFormatting.GRAY + " - " + getToolTipPart(data, getLeft()) + ' ' + color + getFormat() + ' ' + getToolTipPart(data, getRight());
     }
 
@@ -43,5 +50,25 @@ public abstract class DoubleRequirement extends Requirement {
             tooltip = TextFormatting.RESET + tooltip;
         }
         return tooltip;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof DoubleRequirement) {//The order of the logic requirements does not actually matter so might as well put it here
+            DoubleRequirement dreq = (DoubleRequirement) o;
+            return (getRight().equals(dreq.getRight()) && getLeft().equals(dreq.getLeft())) || (getRight().equals(dreq.getLeft()) && getLeft().equals(dreq.getRight()));
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        //Ensure there is no out of bounds errors AND that the hashcode is the same even if left and right got reversed
+        long leftHash = getLeft().hashCode();
+        long rightHash = getRight().hashCode();
+        return (int) ((leftHash + rightHash) / 2);
     }
 }

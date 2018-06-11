@@ -17,6 +17,7 @@ public class AdvancementRequirement extends Requirement {
 
     public AdvancementRequirement(ResourceLocation advancementName) {
         this.advancementName = advancementName;
+
     }
 
     @Override
@@ -29,13 +30,12 @@ public class AdvancementRequirement extends Requirement {
 
     @Override
     public String getToolTip(PlayerData data) {
-        Advancement adv = getAdvancement();
-        if (adv == null) {
-            return "";
+        if (tooltip.isEmpty()) {
+            Advancement adv = getAdvancement();
+            this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
+                    "%S", adv == null ? "" : adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
         }
-        return TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("skillable.misc.achievementFormat",
-                data == null || !achievedByPlayer(data.playerWR.get()) ? TextFormatting.RED : TextFormatting.GREEN,
-                adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
+        return super.getToolTip(data);
     }
 
     public Advancement getAdvancement() {
@@ -44,7 +44,17 @@ public class AdvancementRequirement extends Requirement {
 
     @Override
     public RequirementComparision matches(Requirement other) {
-        return other instanceof AdvancementRequirement && getAdvancement().equals(((AdvancementRequirement) other).getAdvancement())
+        return other instanceof AdvancementRequirement && advancementName.equals(((AdvancementRequirement) other).advancementName)
                 ? RequirementComparision.EQUAL_TO : RequirementComparision.NOT_EQUAL;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || o instanceof AdvancementRequirement && advancementName.equals(((AdvancementRequirement) o).advancementName);
+    }
+
+    @Override
+    public int hashCode() {
+        return advancementName.hashCode();
     }
 }

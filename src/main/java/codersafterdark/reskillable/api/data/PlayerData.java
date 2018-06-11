@@ -3,6 +3,7 @@ package codersafterdark.reskillable.api.data;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.requirement.Requirement;
+import codersafterdark.reskillable.api.requirement.RequirementCache;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Ability;
 import codersafterdark.reskillable.api.unlockable.IAbilityEventHandler;
@@ -18,25 +19,22 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class PlayerData {
     private static final String TAG_SKILLS_CMP = "SkillLevels";
     private final boolean client;
+    private final RequirementCache requirementCache;
     public WeakReference<EntityPlayer> playerWR;
-    private HashMap<Skill, PlayerSkillInfo> skillInfo = new HashMap<>();
+    private Map<Skill, PlayerSkillInfo> skillInfo = new HashMap<>();
 
     public PlayerData(EntityPlayer player) {
         playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
+        requirementCache = new RequirementCache(player);
 
-        for (Skill s : ReskillableRegistries.SKILLS.getValuesCollection()) {
-            skillInfo.put(s, new PlayerSkillInfo(s));
-        }
+        ReskillableRegistries.SKILLS.getValuesCollection().forEach(s -> skillInfo.put(s, new PlayerSkillInfo(s)));
 
         load();
     }
@@ -55,23 +53,21 @@ public class PlayerData {
 
     public Set<Ability> getAllAbilities() {
         Set<Ability> set = new TreeSet<>();
-        for (PlayerSkillInfo info : skillInfo.values()) {
-            info.addAbilities(set);
-        }
-
+        skillInfo.values().forEach(info -> info.addAbilities(set));
         return set;
     }
 
     public boolean matchStats(RequirementHolder holder) {
-        EntityPlayer entityPlayer = playerWR.get();
-        if (entityPlayer != null) {
-            for (Requirement requirement : holder.getRequirements()) {
-                if (!requirement.achievedByPlayer(entityPlayer)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return playerWR.get() == null || holder.getRequirements().stream().allMatch(this::requirementAchieved);
+    }
+
+    //helper method to access the requirement cache
+    public boolean requirementAchieved(Requirement requirement) {
+        return getRequirementCache().requirementAchieved(requirement);
+    }
+
+    public final RequirementCache getRequirementCache() {
+        return requirementCache;
     }
 
     public void load() {
