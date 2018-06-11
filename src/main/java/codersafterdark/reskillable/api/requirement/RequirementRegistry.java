@@ -48,7 +48,7 @@ public class RequirementRegistry {
                 }
             }
         } catch (RequirementException e) {
-            Reskillable.logger.log(Level.ERROR, "Requirement Format Exception: Input '" + requirementString +  "'\n" + e.getMessage());
+            Reskillable.logger.log(Level.ERROR, "Requirement Format Exception (" + requirementString +  "): " + e.getMessage());
             return null;
         }
         if (requirement == null) {
