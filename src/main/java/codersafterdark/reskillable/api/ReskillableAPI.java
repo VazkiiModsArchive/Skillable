@@ -1,10 +1,7 @@
 package codersafterdark.reskillable.api;
 
 import codersafterdark.reskillable.api.data.PlayerData;
-import codersafterdark.reskillable.api.requirement.AdvancementRequirement;
-import codersafterdark.reskillable.api.requirement.NoneRequirement;
-import codersafterdark.reskillable.api.requirement.RequirementRegistry;
-import codersafterdark.reskillable.api.requirement.TraitRequirement;
+import codersafterdark.reskillable.api.requirement.*;
 import codersafterdark.reskillable.api.requirement.logic.LogicParser;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
@@ -28,7 +25,10 @@ public class ReskillableAPI {
         requirementRegistry.addRequirementHandler("adv", input -> new AdvancementRequirement(new ResourceLocation(input)));
         requirementRegistry.addRequirementHandler("trait", input -> {
             Unlockable unlockable = ReskillableRegistries.UNLOCKABLES.getValue(new ResourceLocation(input));
-            return unlockable == null ? null : new TraitRequirement(unlockable);
+            if (unlockable == null) {
+                throw new RequirementException("Unlockable '" + input + "' not found.");
+            }
+            return new TraitRequirement(unlockable);
         });
         requirementRegistry.addRequirementHandler("unobtainable", input -> LogicParser.FALSE);
         requirementRegistry.addRequirementHandler("none", input -> new NoneRequirement()); //Makes it so other requirements are ignored

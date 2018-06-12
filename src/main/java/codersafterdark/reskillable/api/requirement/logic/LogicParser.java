@@ -1,12 +1,11 @@
 package codersafterdark.reskillable.api.requirement.logic;
 
-import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
+import codersafterdark.reskillable.api.requirement.RequirementException;
 import codersafterdark.reskillable.api.requirement.RequirementRegistry;
 import codersafterdark.reskillable.api.requirement.logic.impl.*;
-import org.apache.logging.log4j.Level;
 
 //TODO: Make it so that if a requirement is simplified it logs what the new string is so that pack makers can know the simpler string
 //null means it is an invalid requirement/subrequirement TRUE means that it is valid but more or less will just be ignored
@@ -59,11 +58,8 @@ public class LogicParser {
         return new NOTRequirement(requirement);
     }
 
-    public static Requirement parseAND(String input) {
+    public static Requirement parseAND(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -85,11 +81,8 @@ public class LogicParser {
         return new ANDRequirement(left, right);
     }
 
-    public static Requirement parseNAND(String input) {
+    public static Requirement parseNAND(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -107,11 +100,8 @@ public class LogicParser {
         return new NANDRequirement(left, right);
     }
 
-    public static Requirement parseOR(String input) {
+    public static Requirement parseOR(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -142,11 +132,8 @@ public class LogicParser {
         return new ORRequirement(left, right);
     }
 
-    public static Requirement parseNOR(String input) {
+    public static Requirement parseNOR(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -164,11 +151,8 @@ public class LogicParser {
         return new NORRequirement(left, right);
     }
 
-    public static Requirement parseXOR(String input) {
+    public static Requirement parseXOR(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -188,11 +172,8 @@ public class LogicParser {
         return new XORRequirement(left, right);
     }
 
-    public static Requirement parseXNOR(String input) {
+    public static Requirement parseXNOR(String input) throws RequirementException {
         RequirementPair subRequirements = getSubRequirements(input);
-        if (subRequirements == null) {
-            return null;
-        }
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
@@ -212,12 +193,12 @@ public class LogicParser {
         return new XNORRequirement(left, right);
     }
 
-    private static RequirementPair getSubRequirements(String input) {
+    private static RequirementPair getSubRequirements(String input) throws RequirementException {
         //[requirement]~[requirement]
         //[ -> Count if at start or after '|' or '~'
         //] -> Count if at end or before '~'
         if (input == null || input.length() < 5 || !input.startsWith("[") || !input.endsWith("]")) {
-            return null;
+            throw new RequirementException("Invalid format for double requirement.");
         }
         String first = "";
         int count = 1;//The first bracket
@@ -243,29 +224,29 @@ public class LogicParser {
             }
             if (count == 0) {
                 if (!first.isEmpty()) {
-                    Reskillable.logger.log(Level.ERROR, "Something went wrong getting logic requirements for: " + input);
-                    return null;
+                    throw new RequirementException("Something went wrong, double check brackets.");
                 }
                 first = input.substring(1, i - 1);
                 secondStart = i + 2;
             }
             lastChar = c;
         }
-        if (first.isEmpty()) {
-            return null;
-        }
         count = count - 1 - closeBrackets;
         if (count != 0) {
-            return null;
+            throw new RequirementException("Mismatched brackets.");
         }
 
         RequirementRegistry registry = ReskillableAPI.getInstance().getRequirementRegistry();
         Requirement left = registry.getRequirement(first);
         if (left == null) {
-            return null;
+            throw new RequirementException("Invalid left-hand requirement '" + first + "'.");
         }
-        Requirement right = registry.getRequirement(input.substring(secondStart, input.length() - 1));
-        return right == null ? null : new RequirementPair(left, right);
+        String second = input.substring(secondStart, input.length() - 1);
+        Requirement right = registry.getRequirement(second);
+        if (right == null) {
+            throw new RequirementException("Invalid right-hand requirement '" + second + "'.");
+        }
+        return new RequirementPair(left, right);
     }
 
     private static class RequirementPair {
