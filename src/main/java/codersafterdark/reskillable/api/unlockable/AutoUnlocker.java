@@ -4,6 +4,8 @@ import codersafterdark.reskillable.api.ReskillableRegistries;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
+import codersafterdark.reskillable.api.data.RequirementHolder;
+import codersafterdark.reskillable.base.LevelLockHandler;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.Collection;
@@ -46,9 +48,12 @@ public class AutoUnlocker {
         boolean anyUnlocked = false;
         for (Unlockable u : unlockables) {
             PlayerSkillInfo skillInfo = data.getSkillInfo(u.getParentSkill());
-            if (!skillInfo.isUnlocked(u) && data.matchStats(u.getRequirements())) {
-                skillInfo.unlock(u, player);
-                anyUnlocked = true;
+            if (!skillInfo.isUnlocked(u)) {
+                RequirementHolder holder = u.getRequirements();
+                if (holder.equals(LevelLockHandler.EMPTY_LOCK) || data.matchStats(holder)) {
+                    skillInfo.unlock(u, player);
+                    anyUnlocked = true;
+                }
             }
         }
         if (anyUnlocked) {
