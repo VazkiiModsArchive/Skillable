@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.api.data;
 
+import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -91,6 +92,7 @@ public class PlayerDataHandler {
             if (data != null) {
                 data.sync();
             }
+            AutoUnlocker.recheck(event.player);
         }
 
         @SubscribeEvent

@@ -2,6 +2,7 @@ package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.requirement.RequirementCache;
+import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -29,6 +30,7 @@ public class CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         LevelLockHandler.setupLocks();
         RequirementCache.registerDirtyTypes();
+        AutoUnlocker.setUnlockables();
     }
 
     public void serverStarting(FMLServerStartingEvent event) {

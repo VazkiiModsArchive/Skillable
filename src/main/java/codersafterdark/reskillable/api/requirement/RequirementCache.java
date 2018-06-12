@@ -5,6 +5,7 @@ import codersafterdark.reskillable.api.event.LockUnlockableEvent;
 import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
+import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -74,6 +75,9 @@ public class RequirementCache {
         if (dirtyTypes.isEmpty()) {
             return;
         }
+
+        AutoUnlocker.recheck(player);//Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
+
         Set<Class<? extends Requirement>> requirements = requirementCache.keySet();
         List<Class<? extends Requirement>> toRemove = new ArrayList<>();
 

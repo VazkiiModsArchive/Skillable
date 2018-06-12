@@ -15,6 +15,7 @@ public class UnlockableConfig {
 
     public void setCost(int cost) {
         this.cost = cost;
+        AutoUnlocker.recheckUnlockables();
     }
 
     public RequirementHolder getRequirementHolder() {
