@@ -43,23 +43,6 @@ public class GuiSkills extends GuiScreen {
         ReskillableRegistries.SKILLS.getValuesCollection().stream().filter(Skill::isEnabled).forEach(skills::add);
     }
 
-    @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == 1) {
-            this.mc.displayGuiScreen((GuiSkills)null);
-
-            if (this.mc.currentScreen == null) {
-                this.mc.setIngameFocus();
-            }
-        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
-            this.mc.displayGuiScreen((GuiSkills)null);
-
-            if (this.mc.currentScreen != null) {
-                this.mc.setIngameFocus();
-            }
-        }
-    }
-
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderEngine.bindTexture(skill.getSpriteLocation());
@@ -75,6 +58,23 @@ public class GuiSkills extends GuiScreen {
     public static void drawScrollButtonsBottom(int x, int y) {
         Minecraft.getMinecraft().renderEngine.bindTexture(SKILLS_RES);
         RenderHelper.drawTexturedModalRect(x, y, 1, 0, 235, 80, 4);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == 1) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen == null) {
+                this.mc.setIngameFocus();
+            }
+        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen != null) {
+                this.mc.setIngameFocus();
+            }
+        }
     }
 
     @Override
