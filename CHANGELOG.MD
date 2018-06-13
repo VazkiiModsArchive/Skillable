@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.0
+
+- Made it so that the skill gui can be closed with the same key that opens it.
+- Created an api method to allow addons to inject more tooltip information into Reskillable's tooltips.
+
+
+
 ## 1.7.1
 - Fixed the requirement cache not being properly invalidated on both the client and the server.
 
