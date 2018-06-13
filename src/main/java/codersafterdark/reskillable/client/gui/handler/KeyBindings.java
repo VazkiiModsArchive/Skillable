@@ -1,6 +1,7 @@
 package codersafterdark.reskillable.client.gui.handler;
 
 import codersafterdark.reskillable.Reskillable;
+import codersafterdark.reskillable.client.gui.GuiSkillInfo;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
+
 @SideOnly(Side.CLIENT)
 public class KeyBindings {
-    static KeyBinding openGUI = new KeyBinding(Reskillable.proxy.getLocalizedString("key.openGUI"), Keyboard.KEY_Y, Reskillable.proxy.getLocalizedString("key.controls." + LibMisc.MOD_ID));
-    boolean prevState;
+    public static KeyBinding openGUI = new KeyBinding(Reskillable.proxy.getLocalizedString("key.openGUI"), Keyboard.KEY_Y, Reskillable.proxy.getLocalizedString("key.controls." + LibMisc.MOD_ID));
 
     public static void init() {
         ClientRegistry.registerKeyBinding(openGUI);
@@ -24,14 +26,15 @@ public class KeyBindings {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
+        keyTyped(openGUI);
+    }
+
+    private void keyTyped(KeyBinding binding) {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-
-        if (Minecraft.getMinecraft().currentScreen != null) {
-            return;
-        }
-
-        if (openGUI.isPressed()) {
-            minecraft.displayGuiScreen(new GuiSkills());
+        if (binding.isPressed()) {
+            if (minecraft.currentScreen == null) {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiSkills());
+            }
         }
     }
 }

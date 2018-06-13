@@ -7,6 +7,7 @@ import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
+import codersafterdark.reskillable.client.gui.handler.KeyBindings;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -40,6 +41,23 @@ public class GuiSkills extends GuiScreen {
     public GuiSkills() {
         skills = new ArrayList<>();
         ReskillableRegistries.SKILLS.getValuesCollection().stream().filter(Skill::isEnabled).forEach(skills::add);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == 1) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen == null) {
+                this.mc.setIngameFocus();
+            }
+        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen != null) {
+                this.mc.setIngameFocus();
+            }
+        }
     }
 
     public static void drawSkill(int x, int y, Skill skill) {

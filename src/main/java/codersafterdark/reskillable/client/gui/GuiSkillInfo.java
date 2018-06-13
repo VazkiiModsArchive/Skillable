@@ -8,6 +8,7 @@ import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
+import codersafterdark.reskillable.client.gui.handler.KeyBindings;
 import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.network.MessageLevelUp;
 import codersafterdark.reskillable.network.MessageUnlockUnlockable;
@@ -46,6 +47,23 @@ public class GuiSkillInfo extends GuiScreen {
 
     public GuiSkillInfo(Skill skill) {
         this.skill = skill;
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == 1) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen == null) {
+                this.mc.setIngameFocus();
+            }
+        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
+            this.mc.displayGuiScreen((GuiSkills)null);
+
+            if (this.mc.currentScreen != null) {
+                this.mc.setIngameFocus();
+            }
+        }
     }
 
     @Override
