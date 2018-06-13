@@ -49,16 +49,21 @@ public class ToolTipHandler { //TODO: Convert this from being basically all stat
             lastLock.addRequirementsIgnoreShift(data, toolTip = new ArrayList<>());
         }
         boolean showDetails = !ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown();
-        List<String> curTooltip = event.getToolTip();
         List<String> extraToolTips = new ArrayList<>();
 
         if (currentGui != null) {
             //TODO: If an addon/set of addons ever want to both inject tooltips for the same class make tooltipInjectors hold a list of functions
-            extraToolTips = tooltipInjectors.get(currentGui).apply(new ToolTipInfo(showDetails, data, lastItem));
+            ToolTipInfo info = new ToolTipInfo(showDetails, data, lastItem);
+            for (Map.Entry<Class<? extends GuiScreen>, Function<ToolTipInfo, List<String>>> injectorInfo : tooltipInjectors.entrySet()) {
+                if (injectorInfo.getKey().isAssignableFrom(currentGui)) {
+                    extraToolTips.addAll(injectorInfo.getValue().apply(info));
+                }
+            }
             //TODO: Try to cache the return somehow. If so the function would need some way to return two lists one with showDetails one without
             //TODO Cont: Another way would be reset it when item changes and gui changes AND also invalidate it if shift state changes and config option not set
         }
         if (!toolTip.isEmpty() || !extraToolTips.isEmpty()) {
+            List<String> curTooltip = event.getToolTip();
             if (showDetails) {
                 curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
                 curTooltip.addAll(toolTip);
@@ -71,7 +76,7 @@ public class ToolTipHandler { //TODO: Convert this from being basically all stat
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onGuiOpen(GuiOpenEvent event) {
+    public static void onGuiOpen(GuiOpenEvent event) {
         if (enabled && !event.isCanceled()) {
             currentGui = event.getGui() == null ? null : event.getGui().getClass();
         }
