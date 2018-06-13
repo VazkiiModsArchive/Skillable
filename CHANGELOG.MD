@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1
+- Fixed the requirement cache not being properly invalidated on both the client and the server.
+
+
 ## 1.7.0
 
 - Added "none" as a requirement type that basically removes all locks from an item. This allows for locking an entire mod and then unlocking specific items. The config previously stated that this would work and now it works again.
