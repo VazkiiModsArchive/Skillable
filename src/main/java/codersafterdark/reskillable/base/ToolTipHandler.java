@@ -88,4 +88,8 @@ public class ToolTipHandler {
     public static void disconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         enabled = false;
     }
+
+    public static void addTooltipInjector(Class<? extends GuiScreen> gui, Function<Boolean, List<String>> creator) {
+        tooltipInjectors.put(gui, creator);
+    }
 }
