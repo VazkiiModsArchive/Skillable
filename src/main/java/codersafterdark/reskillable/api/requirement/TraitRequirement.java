@@ -14,7 +14,7 @@ public class TraitRequirement extends Requirement {
 
     public TraitRequirement(Unlockable unlockable) {
         this.unlockable = unlockable;
-        this.tooltip =  TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + new TextComponentTranslation("skillable.misc.traitFormat", "%s",
+        this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.LIGHT_PURPLE + new TextComponentTranslation("skillable.misc.traitFormat", "%s",
                 this.unlockable.getName()).getUnformattedComponentText();
     }
 

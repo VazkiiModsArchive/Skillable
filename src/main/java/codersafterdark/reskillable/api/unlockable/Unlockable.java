@@ -16,8 +16,8 @@ import java.util.Objects;
 
 public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> implements Comparable<Unlockable> {
     private final String name;
-    private ResourceLocation icon;
     protected UnlockableConfig unlockableConfig;
+    private ResourceLocation icon;
     private Skill parentSkill;
 
     public Unlockable(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, String... defaultRequirements) {

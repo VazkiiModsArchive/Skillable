@@ -63,13 +63,13 @@ public class GuiSkills extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (keyCode == 1) {
-            this.mc.displayGuiScreen((GuiSkills)null);
+            this.mc.displayGuiScreen((GuiSkills) null);
 
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();
             }
         } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
-            this.mc.displayGuiScreen((GuiSkills)null);
+            this.mc.displayGuiScreen((GuiSkills) null);
 
             if (this.mc.currentScreen != null) {
                 this.mc.setIngameFocus();

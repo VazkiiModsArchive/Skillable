@@ -1,7 +1,6 @@
 package codersafterdark.reskillable.client.gui.handler;
 
 import codersafterdark.reskillable.Reskillable;
-import codersafterdark.reskillable.client.gui.GuiSkillInfo;
 import codersafterdark.reskillable.client.gui.GuiSkills;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.client.Minecraft;
@@ -13,8 +12,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
-
-import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindings {

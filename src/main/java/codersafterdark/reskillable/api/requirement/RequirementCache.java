@@ -29,69 +29,6 @@ public class RequirementCache {
         cacheMap.computeIfAbsent(player.getUniqueID(), k -> new ArrayList<>()).add(this);
     }
 
-    public boolean requirementAchieved(Requirement requirement) {
-        if (requirement == null) {
-            return false;
-        }
-        Class<? extends Requirement> clazz = requirement.getClass();
-        Map<Requirement, Boolean> cache;
-        if (requirementCache.containsKey(clazz)) {
-            cache = requirementCache.get(clazz);
-            if (cache.containsKey(requirement)) {
-                return cache.get(requirement);
-            }
-        } else {
-            requirementCache.put(clazz, cache = new HashMap<>());
-        }
-        boolean achieved = requirement.achievedByPlayer(player);
-        cache.put(requirement, achieved);
-        if (!dirtyCache && dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
-            dirtyCache = true;
-        }
-        //Remove the cached already invalidated types
-        recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
-        return achieved;
-    }
-
-    public void invalidateCache(Class<? extends Requirement>... cacheType) {
-        List<Class<? extends Requirement>> dirtyTypes = dirtyCache ? new ArrayList<>(dirtyCacheTypes) : new ArrayList<>();
-        //Clear all types that are supposed to be invalidated each time if dirtyCache is true
-
-        if (cacheType != null) {
-            //If no classes of that type have been added do not bother invalidating it again.
-            for (Class<? extends Requirement> type : cacheType) {
-                if (!recentlyInvalidated.contains(type)) {
-                    dirtyTypes.add(type);
-                    recentlyInvalidated.add(type);
-                }
-            }
-            if (dirtyTypes.size() == dirtyCacheTypes.size()) {
-                //Nothing changed so the dirty types are not actually dirty and they aren't being directly invalidated because cacheType is not null
-                return;
-            }
-        }
-
-        if (dirtyTypes.isEmpty()) {
-            return;
-        }
-
-        Set<Class<? extends Requirement>> requirements = requirementCache.keySet();
-        List<Class<? extends Requirement>> toRemove = new ArrayList<>();
-
-        for (Class<? extends Requirement> requirement : requirements) {
-            for (Class<? extends Requirement> dirtyType : dirtyTypes) {
-                if (dirtyType.isAssignableFrom(requirement)) {
-                    toRemove.add(requirement);
-                }
-            }
-        }
-        toRemove.forEach(requirement -> requirementCache.remove(requirement));
-
-        //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
-        //Make sure to do it after it finished clearing the cache
-        AutoUnlocker.recheck(player);
-    }
-
     public static void registerDirtyTypes() {
         //Register logic requirements and any other implementations of DoubleRequirement to be invalidated
         registerRequirementType(NOTRequirement.class, DoubleRequirement.class);
@@ -154,5 +91,68 @@ public class RequirementCache {
     @SubscribeEvent
     public static void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
         cacheMap.remove(event.player.getUniqueID());
+    }
+
+    public boolean requirementAchieved(Requirement requirement) {
+        if (requirement == null) {
+            return false;
+        }
+        Class<? extends Requirement> clazz = requirement.getClass();
+        Map<Requirement, Boolean> cache;
+        if (requirementCache.containsKey(clazz)) {
+            cache = requirementCache.get(clazz);
+            if (cache.containsKey(requirement)) {
+                return cache.get(requirement);
+            }
+        } else {
+            requirementCache.put(clazz, cache = new HashMap<>());
+        }
+        boolean achieved = requirement.achievedByPlayer(player);
+        cache.put(requirement, achieved);
+        if (!dirtyCache && dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
+            dirtyCache = true;
+        }
+        //Remove the cached already invalidated types
+        recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
+        return achieved;
+    }
+
+    public void invalidateCache(Class<? extends Requirement>... cacheType) {
+        List<Class<? extends Requirement>> dirtyTypes = dirtyCache ? new ArrayList<>(dirtyCacheTypes) : new ArrayList<>();
+        //Clear all types that are supposed to be invalidated each time if dirtyCache is true
+
+        if (cacheType != null) {
+            //If no classes of that type have been added do not bother invalidating it again.
+            for (Class<? extends Requirement> type : cacheType) {
+                if (!recentlyInvalidated.contains(type)) {
+                    dirtyTypes.add(type);
+                    recentlyInvalidated.add(type);
+                }
+            }
+            if (dirtyTypes.size() == dirtyCacheTypes.size()) {
+                //Nothing changed so the dirty types are not actually dirty and they aren't being directly invalidated because cacheType is not null
+                return;
+            }
+        }
+
+        if (dirtyTypes.isEmpty()) {
+            return;
+        }
+
+        Set<Class<? extends Requirement>> requirements = requirementCache.keySet();
+        List<Class<? extends Requirement>> toRemove = new ArrayList<>();
+
+        for (Class<? extends Requirement> requirement : requirements) {
+            for (Class<? extends Requirement> dirtyType : dirtyTypes) {
+                if (dirtyType.isAssignableFrom(requirement)) {
+                    toRemove.add(requirement);
+                }
+            }
+        }
+        toRemove.forEach(requirement -> requirementCache.remove(requirement));
+
+        //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
+        //Make sure to do it after it finished clearing the cache
+        AutoUnlocker.recheck(player);
     }
 }

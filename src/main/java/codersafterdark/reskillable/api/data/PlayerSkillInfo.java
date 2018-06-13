@@ -67,6 +67,12 @@ public class PlayerSkillInfo {
         return level;
     }
 
+    public void setLevel(int level) {
+        int interval = skill.getSkillPointInterval();
+        skillPoints += level / interval - this.level / interval;
+        this.level = level;
+    }
+
     public int getRank() {
         return 8 * level / skill.getCap();
     }
@@ -101,12 +107,6 @@ public class PlayerSkillInfo {
         if (level % skill.getSkillPointInterval() == 0) {
             skillPoints++;
         }
-    }
-
-    public void setLevel(int level) {
-        int interval = skill.getSkillPointInterval();
-        skillPoints += level / interval - this.level / interval;
-        this.level = level;
     }
 
     public void lock(Unlockable u, EntityPlayer p) {
