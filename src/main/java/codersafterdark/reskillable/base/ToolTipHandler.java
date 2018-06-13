@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ToolTipHandler {
-    private static Map<Class<? extends GuiScreen>, Function<Boolean, List<String>>> tooltipInjectors = new HashMap<>();
+public class ToolTipHandler { //TODO: Convert this from being basically all static to being an object (Low priority)
+    private static Map<Class<? extends GuiScreen>, Function<ToolTipInfo, List<String>>> tooltipInjectors = new HashMap<>();
     private static RequirementHolder lastLock = LevelLockHandler.EMPTY_LOCK;
     private static Class<? extends GuiScreen> currentGui;
     private static List<String> toolTip = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ToolTipHandler {
 
         if (currentGui != null) {
             //TODO: If an addon/set of addons ever want to both inject tooltips for the same class make tooltipInjectors hold a list of functions
-            extraToolTips = tooltipInjectors.get(currentGui).apply(showDetails);
+            extraToolTips = tooltipInjectors.get(currentGui).apply(new ToolTipInfo(showDetails, data, lastItem));
             //TODO: Try to cache the return somehow. If so the function would need some way to return two lists one with showDetails one without
             //TODO Cont: Another way would be reset it when item changes and gui changes AND also invalidate it if shift state changes and config option not set
         }
@@ -89,7 +89,31 @@ public class ToolTipHandler {
         enabled = false;
     }
 
-    public static void addTooltipInjector(Class<? extends GuiScreen> gui, Function<Boolean, List<String>> creator) {
+    public static void addTooltipInjector(Class<? extends GuiScreen> gui, Function<ToolTipInfo, List<String>> creator) {
         tooltipInjectors.put(gui, creator);
+    }
+
+    public static class ToolTipInfo {
+        private boolean showDetails;
+        private PlayerData data;
+        private ItemStack item;
+
+        public ToolTipInfo(boolean showDetails, PlayerData data, ItemStack item) {
+            this.showDetails = showDetails;
+            this.data = data;
+            this.item = item;
+        }
+
+        public boolean showDetails() {
+            return showDetails;
+        }
+
+        public PlayerData getData() {
+            return data;
+        }
+
+        public ItemStack getItem() {
+            return item;
+        }
     }
 }
