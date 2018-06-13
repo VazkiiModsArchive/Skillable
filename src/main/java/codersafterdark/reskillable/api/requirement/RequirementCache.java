@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
-    private static Map<UUID, RequirementCache> cacheMap = new HashMap<>();
+    private static Map<UUID, List<RequirementCache>> cacheMap = new HashMap<>();
 
     private Map<Class<? extends Requirement>, Map<Requirement, Boolean>> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
@@ -26,7 +26,7 @@ public class RequirementCache {
 
     public RequirementCache(@Nonnull EntityPlayer player) {
         this.player = player;
-        cacheMap.put(player.getUniqueID(), this);
+        cacheMap.computeIfAbsent(player.getUniqueID(), k -> new ArrayList<>()).add(this);
     }
 
     public boolean requirementAchieved(Requirement requirement) {
@@ -45,12 +45,11 @@ public class RequirementCache {
         }
         boolean achieved = requirement.achievedByPlayer(player);
         cache.put(requirement, achieved);
-        if (dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
+        if (!dirtyCache && dirtyCacheTypes.stream().anyMatch(dirtyType -> dirtyType.isInstance(requirement))) {
             dirtyCache = true;
-        } else {
-            //Remove the cached already invalidated types
-            recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
         }
+        //Remove the cached already invalidated types
+        recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
         return achieved;
     }
 
@@ -76,8 +75,6 @@ public class RequirementCache {
             return;
         }
 
-        AutoUnlocker.recheck(player);//Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
-
         Set<Class<? extends Requirement>> requirements = requirementCache.keySet();
         List<Class<? extends Requirement>> toRemove = new ArrayList<>();
 
@@ -89,6 +86,10 @@ public class RequirementCache {
             }
         }
         toRemove.forEach(requirement -> requirementCache.remove(requirement));
+
+        //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
+        //Make sure to do it after it finished clearing the cache
+        AutoUnlocker.recheck(player);
     }
 
     public static void registerDirtyTypes() {
@@ -108,23 +109,23 @@ public class RequirementCache {
     }
 
     public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
-        RequirementCache requirementCache = cacheMap.get(uuid);
-        if (requirementCache != null) {
-            requirementCache.invalidateCache(cacheTypes);
+        if (cacheMap.containsKey(uuid)) {
+            cacheMap.get(uuid).forEach(cache -> cache.invalidateCache(cacheTypes));
         }
     }
 
     public static boolean requirementAchieved(EntityPlayer player, Requirement requirement) {
-        if (player != null) {
-            return requirementAchieved(player.getUniqueID(), requirement);
-        }
-        return false;
+        return player != null && requirementAchieved(player.getUniqueID(), requirement);
     }
 
     public static boolean requirementAchieved(UUID uuid, Requirement requirement) {
-        RequirementCache requirementCache = cacheMap.get(uuid);
-        if (requirementCache != null) {
-            return requirementCache.requirementAchieved(requirement);
+        if (cacheMap.containsKey(uuid)) {
+            List<RequirementCache> requirementCaches = cacheMap.get(uuid);
+            boolean achieved = true;
+            for (RequirementCache cache : requirementCaches) {
+                achieved = achieved && cache.requirementAchieved(requirement);
+            }
+            return achieved;
         }
         return false;
     }
