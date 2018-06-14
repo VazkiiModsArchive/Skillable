@@ -111,4 +111,8 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     public int getY() {
         return unlockableConfig.getY();
     }
+
+    public final UnlockableConfig getUnlockableConfig() {
+        return unlockableConfig;
+    }
 }

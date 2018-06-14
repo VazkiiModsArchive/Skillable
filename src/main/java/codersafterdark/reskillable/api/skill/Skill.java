@@ -83,4 +83,8 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
                 .sum() + this.skillConfig.getBaseLevelCost();
         return cost < 0 ? 0 : cost;
     }
+
+    public final SkillConfig getSkillConfig() {
+        return skillConfig;
+    }
 }

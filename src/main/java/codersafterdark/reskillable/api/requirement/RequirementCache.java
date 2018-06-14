@@ -57,12 +57,7 @@ public class RequirementCache {
 
     public static boolean requirementAchieved(UUID uuid, Requirement requirement) {
         if (cacheMap.containsKey(uuid)) {
-            List<RequirementCache> requirementCaches = cacheMap.get(uuid);
-            boolean achieved = true;
-            for (RequirementCache cache : requirementCaches) {
-                achieved = achieved && cache.requirementAchieved(requirement);
-            }
-            return achieved;
+            return cacheMap.get(uuid).stream().anyMatch(cache -> cache.requirementAchieved(requirement));
         }
         return false;
     }
