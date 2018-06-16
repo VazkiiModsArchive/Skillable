@@ -19,6 +19,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     private final List<Unlockable> unlockables = new ArrayList<>();
     protected ResourceLocation background;
     protected SkillConfig skillConfig;
+    private boolean hidden;
 
     public Skill(ResourceLocation name, ResourceLocation background) {
         this.name = name.toString().replace(":", ".");
@@ -86,5 +87,13 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
 
     public final SkillConfig getSkillConfig() {
         return skillConfig;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

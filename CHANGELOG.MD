@@ -5,7 +5,7 @@
 - Made it so that the skill gui can be closed with the same key that opens it.
 - Created an api method to allow addons to inject more tooltip information into Reskillable's tooltips.
 - Made it so that addons are able to edit skill/trait configs. This mainly is for CompatSkills wrappers.
-
+- Added API method to be able to hide skills from the GUI.
 
 
 

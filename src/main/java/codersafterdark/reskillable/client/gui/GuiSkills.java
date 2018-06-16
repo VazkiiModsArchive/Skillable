@@ -36,11 +36,11 @@ public class GuiSkills extends GuiScreen {
     private int top;
     private int lastY;
 
-    private List<Skill> skills;
+    private List<Skill> enabledSkills = new ArrayList<>();
+    private List<Skill> skills = new ArrayList<>();
 
     public GuiSkills() {
-        skills = new ArrayList<>();
-        ReskillableRegistries.SKILLS.getValuesCollection().stream().filter(Skill::isEnabled).forEach(skills::add);
+        ReskillableRegistries.SKILLS.getValuesCollection().stream().filter(Skill::isEnabled).forEach(enabledSkills::add);
     }
 
     public static void drawSkill(int x, int y, Skill skill) {
@@ -61,15 +61,15 @@ public class GuiSkills extends GuiScreen {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
-            this.mc.displayGuiScreen((GuiSkills) null);
+            this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();
             }
         } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
-            this.mc.displayGuiScreen((GuiSkills) null);
+            this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen != null) {
                 this.mc.setIngameFocus();
@@ -99,6 +99,9 @@ public class GuiSkills extends GuiScreen {
         PlayerData data = PlayerDataHandler.get(mc.player);
 
         hoveredSkill = null;
+
+        skills = new ArrayList<>();
+        enabledSkills.stream().filter(enabledSkill -> !enabledSkill.isHidden()).forEach(skills::add);
 
         int index = 0;
         for (int j = offset; j < skills.size() && index < 8; j++) {
