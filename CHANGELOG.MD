@@ -23,6 +23,8 @@
 - Better tooltip caching for hovering and rewrote how tooltips are handled internally so that they are more efficient for calculating and for inverting the color for NOT requirements.
 - Created RequirementExceptions so that more detailed error messages can be given when a requirement string is invalid. This also makes logic requirements provide a simple "stacktrace" to which part of the requirement is formatted wrong.
 - Made it so that if Unlockables/Traits have a cost of 0 then they will automatically unlock when all the requirements are met. This allows the GameStageUnlockables in CompatSkills to automatically unlock a gamestage when the requirements are met. This all is done utilizing the new requirement caching so that it only has to recheck the traits when something changed. (What that means is it will not negatively impact performance!)
+- Added CacheInvalidatedEvent thrown when part of the cache is invalidated.
+
 
 
 ## 1.6.0

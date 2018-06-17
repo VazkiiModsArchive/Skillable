@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.api.requirement;
 
+import codersafterdark.reskillable.api.event.CacheInvalidatedEvent;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.event.LockUnlockableEvent;
 import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
@@ -7,6 +8,7 @@ import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -146,8 +148,12 @@ public class RequirementCache {
         }
         toRemove.forEach(requirement -> requirementCache.remove(requirement));
 
-        //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
-        //Make sure to do it after it finished clearing the cache
-        AutoUnlocker.recheck(player);
+        if (!toRemove.isEmpty()) { //There was actually a change
+            MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player));
+
+            //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
+            //Make sure to do it after it finished clearing the cache
+            AutoUnlocker.recheck(player);
+        }
     }
 }
