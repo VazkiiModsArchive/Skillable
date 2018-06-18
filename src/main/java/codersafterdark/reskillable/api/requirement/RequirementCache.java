@@ -7,7 +7,10 @@ import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
+import codersafterdark.reskillable.network.InvalidateRequirementPacket;
+import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -48,6 +51,23 @@ public class RequirementCache {
     }
 
     public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
+        if (cacheMap.containsKey(uuid)) {
+            List<RequirementCache> requirementCaches = cacheMap.get(uuid);
+            if (requirementCaches.size() == 1) {
+                //Only send sync packets if they are not in single player, otherwise it already syncs
+                InvalidateRequirementPacket invalidatePacket = new InvalidateRequirementPacket(uuid, cacheTypes);
+                EntityPlayer player = requirementCaches.get(0).player;
+                if (player instanceof EntityPlayerMP) {
+                    PacketHandler.INSTANCE.sendTo(invalidatePacket, (EntityPlayerMP) player);
+                } else {
+                    PacketHandler.INSTANCE.sendToServer(invalidatePacket);
+                }
+            }
+            requirementCaches.forEach(cache -> cache.invalidateCache(cacheTypes));
+        }
+    }
+
+    public static void invalidateCacheNoPacket(UUID uuid, Class<? extends Requirement>... cacheTypes) {
         if (cacheMap.containsKey(uuid)) {
             cacheMap.get(uuid).forEach(cache -> cache.invalidateCache(cacheTypes));
         }
