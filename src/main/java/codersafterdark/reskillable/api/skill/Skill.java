@@ -10,13 +10,15 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements Comparable<Skill> {
+    private final Map<Integer, ResourceLocation> customSprites = new HashMap<>();
+    private final List<Unlockable> unlockables = new ArrayList<>();
     private final ResourceLocation spriteLocation;
     private final String name;
-    private final List<Unlockable> unlockables = new ArrayList<>();
     protected ResourceLocation background;
     protected SkillConfig skillConfig;
     private boolean hidden;
@@ -64,6 +66,30 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public Pair<Integer, Integer> getSpriteFromRank(int rank) {
         //TODO: If we ever end up having more images than 4 when the Math.min is changed make sure to also change the value rank is divided by
         return new MutablePair<>(Math.min(rank / 2, 3) * 16, 0);
+    }
+
+    public void setCustomSprite(int rank, ResourceLocation location) {
+        customSprites.put(rank, location);
+    }
+
+    public void removeCustomSprite(int rank) {
+        customSprites.remove(rank);
+    }
+
+    public ResourceLocation getSpriteLocation(int rank) {
+        if (customSprites.containsKey(rank)) {
+            return customSprites.get(rank);
+        }
+        for (int i = rank - 1; i > 0; i--) {
+            if (customSprites.containsKey(i)) {
+                return customSprites.get(i);
+            }
+        }
+        return null;
+    }
+
+    public boolean hasCustomSprites() {
+        return !customSprites.isEmpty();
     }
 
     @Override
