@@ -45,9 +45,17 @@ public class GuiSkills extends GuiScreen {
 
     public static void drawSkill(int x, int y, Skill skill) {
         Minecraft mc = Minecraft.getMinecraft();
-        mc.renderEngine.bindTexture(skill.getSpriteLocation());
-        Pair<Integer, Integer> pair = skill.getSpriteFromRank(PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank());
-        RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16, 1f / 64, 1f / 64);
+        int rank = PlayerDataHandler.get(mc.player).getSkillInfo(skill).getRank();
+        if (skill.hasCustomSprites()) {
+            ResourceLocation sprite = skill.getSpriteLocation(rank);
+            if (sprite != null) {
+                mc.renderEngine.bindTexture(sprite);
+            }
+        } else {
+            mc.renderEngine.bindTexture(skill.getSpriteLocation());
+            Pair<Integer, Integer> pair = skill.getSpriteFromRank(rank);
+            RenderHelper.drawTexturedModalRect(x, y, 1, pair.getKey(), pair.getValue(), 16, 16, 1f / 64, 1f / 64);
+        }
     }
 
     public static void drawScrollButtonsTop(int x, int y) {
