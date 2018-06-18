@@ -50,6 +50,7 @@ public class GuiSkills extends GuiScreen {
             ResourceLocation sprite = skill.getSpriteLocation(rank);
             if (sprite != null) {
                 mc.renderEngine.bindTexture(sprite);
+                drawModalRectWithCustomSizedTexture(x, y, 0, 0, 16, 16, 16, 16);
             }
         } else {
             mc.renderEngine.bindTexture(skill.getSpriteLocation());

@@ -72,6 +72,10 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
         customSprites.put(rank, location);
     }
 
+    public void removeCustomSprite(int rank) {
+        customSprites.remove(rank);
+    }
+
     public ResourceLocation getSpriteLocation(int rank) {
         if (customSprites.containsKey(rank)) {
             return customSprites.get(rank);
