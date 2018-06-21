@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
-    private static Map<UUID, List<RequirementCache>> cacheMap = new HashMap<>();
+    private static Map<UUID, ArrayList<RequirementCache>> cacheMap = new HashMap<>();
 
     private Map<Class<? extends Requirement>, Map<Requirement, Boolean>> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
@@ -50,27 +50,30 @@ public class RequirementCache {
         }
     }
 
-    public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
+    private static ArrayList<RequirementCache> getCache(UUID uuid) {
         if (cacheMap.containsKey(uuid)) {
-            List<RequirementCache> requirementCaches = cacheMap.get(uuid);
-            if (requirementCaches.size() == 1) {
-                //Only send sync packets if they are not in single player, otherwise it already syncs
-                InvalidateRequirementPacket invalidatePacket = new InvalidateRequirementPacket(uuid, cacheTypes);
-                EntityPlayer player = requirementCaches.get(0).player;
-                if (player instanceof EntityPlayerMP) {
-                    PacketHandler.INSTANCE.sendTo(invalidatePacket, (EntityPlayerMP) player);
-                } else {
-                    PacketHandler.INSTANCE.sendToServer(invalidatePacket);
-                }
-            }
-            requirementCaches.forEach(cache -> cache.invalidateCache(cacheTypes));
+            return (ArrayList<RequirementCache>) cacheMap.get(uuid).clone();
         }
+        return new ArrayList<>();
+    }
+
+    public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
+        ArrayList<RequirementCache> requirementCaches = getCache(uuid);
+        if (requirementCaches.size() == 1) {
+            //Only send sync packets if they are not in single player, otherwise it already syncs
+            InvalidateRequirementPacket invalidatePacket = new InvalidateRequirementPacket(uuid, cacheTypes);
+            EntityPlayer player = requirementCaches.get(0).player;
+            if (player instanceof EntityPlayerMP) {
+                PacketHandler.INSTANCE.sendTo(invalidatePacket, (EntityPlayerMP) player);
+            } else {
+                PacketHandler.INSTANCE.sendToServer(invalidatePacket);
+            }
+        }
+        requirementCaches.forEach(cache -> cache.invalidateCache(cacheTypes));
     }
 
     public static void invalidateCacheNoPacket(UUID uuid, Class<? extends Requirement>... cacheTypes) {
-        if (cacheMap.containsKey(uuid)) {
-            cacheMap.get(uuid).forEach(cache -> cache.invalidateCache(cacheTypes));
-        }
+        getCache(uuid).forEach(cache -> cache.invalidateCache(cacheTypes));
     }
 
     public static boolean requirementAchieved(EntityPlayer player, Requirement requirement) {
@@ -78,10 +81,7 @@ public class RequirementCache {
     }
 
     public static boolean requirementAchieved(UUID uuid, Requirement requirement) {
-        if (cacheMap.containsKey(uuid)) {
-            return cacheMap.get(uuid).stream().anyMatch(cache -> cache.requirementAchieved(requirement));
-        }
-        return false;
+        return getCache(uuid).stream().anyMatch(cache -> cache.requirementAchieved(requirement));
     }
 
     @SubscribeEvent

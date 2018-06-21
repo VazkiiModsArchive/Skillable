@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.1
+- Hopefully finally fixed the CME with RequirementCache. It is hard to track down and fix a bug when you are unable to reproduce it.
+
+
 ## 1.8.0
 
 - Made it so that the skill gui can be closed with the same key that opens it.
