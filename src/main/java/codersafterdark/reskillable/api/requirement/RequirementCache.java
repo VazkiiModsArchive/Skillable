@@ -7,6 +7,7 @@ import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
+import codersafterdark.reskillable.base.ToolTipHandler;
 import codersafterdark.reskillable.network.InvalidateRequirementPacket;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -174,6 +175,8 @@ public class RequirementCache {
             //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
             //Make sure to do it after it finished clearing the cache
             AutoUnlocker.recheck(player);
+
+            ToolTipHandler.resetLast(); //Fix tooltips sometimes not updating (mainly for when things are synced through Together Forever)
         }
     }
 }

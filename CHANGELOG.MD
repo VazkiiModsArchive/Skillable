@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.2
+- Fixed tooltips sometimes not being recalculated when requirements are invalidated.
+
+
 ## 1.8.1
 - Hopefully finally fixed the CME with RequirementCache. It is hard to track down and fix a bug when you are unable to reproduce it.
 
