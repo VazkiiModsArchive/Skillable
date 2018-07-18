@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.3
+- Fixed Skill icon for rank 1 not being found if it is not set but one is set for rank 0.
+
+
 ## 1.8.2
 - Fixed tooltips sometimes not being recalculated when requirements are invalidated.
 

@@ -80,7 +80,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
         if (customSprites.containsKey(rank)) {
             return customSprites.get(rank);
         }
-        for (int i = rank - 1; i > 0; i--) {
+        for (int i = rank - 1; i >= 0; i--) {
             if (customSprites.containsKey(i)) {
                 return customSprites.get(i);
             }
