@@ -6,7 +6,11 @@ import codersafterdark.reskillable.api.requirement.RequirementCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public abstract class DoubleRequirement extends Requirement {
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class DoubleRequirement extends Requirement implements OuterRequirement {
     private final Requirement left, right;
 
     protected DoubleRequirement(Requirement left, Requirement right) {
@@ -25,11 +29,11 @@ public abstract class DoubleRequirement extends Requirement {
     protected abstract String getFormat();
 
     protected boolean leftAchieved(EntityPlayer player) {
-        return player != null && RequirementCache.requirementAchieved(player, getLeft());
+        return RequirementCache.requirementAchieved(player, getLeft());
     }
 
     protected boolean rightAchieved(EntityPlayer player) {
-        return player != null && RequirementCache.requirementAchieved(player, getRight());
+        return RequirementCache.requirementAchieved(player, getRight());
     }
 
     @Override
@@ -70,5 +74,24 @@ public abstract class DoubleRequirement extends Requirement {
         long leftHash = getLeft().hashCode();
         long rightHash = getRight().hashCode();
         return (int) ((leftHash + rightHash) / 2);
+    }
+
+    @Nonnull
+    @Override
+    public List<Class<? extends Requirement>> getInternalTypes() {
+        List<Class<? extends Requirement>> types = new ArrayList<>();
+        Requirement lReq = getLeft();
+        Requirement rReq = getRight();
+        if (lReq instanceof OuterRequirement) {
+            types.addAll(((OuterRequirement) lReq).getInternalTypes());
+        } else {
+            types.add(lReq.getClass());
+        }
+        if (rReq instanceof OuterRequirement) {
+            types.addAll(((OuterRequirement) rReq).getInternalTypes());
+        } else {
+            types.add(rReq.getClass());
+        }
+        return types;
     }
 }

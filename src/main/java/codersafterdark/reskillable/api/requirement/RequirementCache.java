@@ -5,6 +5,7 @@ import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.event.LockUnlockableEvent;
 import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
+import codersafterdark.reskillable.api.requirement.logic.OuterRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import codersafterdark.reskillable.base.ToolTipHandler;
@@ -132,6 +133,11 @@ public class RequirementCache {
         }
         //Remove the cached already invalidated types
         recentlyInvalidated.removeAll(recentlyInvalidated.stream().filter(type -> type.isInstance(requirement)).collect(Collectors.toList()));
+
+        if (requirement instanceof OuterRequirement) {
+            recentlyInvalidated.removeAll(((OuterRequirement) requirement).getInternalTypes());
+        }
+
         return achieved;
     }
 

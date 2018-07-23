@@ -3,10 +3,15 @@ package codersafterdark.reskillable.api.requirement.logic.impl;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
+import codersafterdark.reskillable.api.requirement.logic.OuterRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public class NOTRequirement extends Requirement {
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
+
+public class NOTRequirement extends Requirement implements OuterRequirement {
     private final Requirement requirement;
 
     public NOTRequirement(Requirement requirement) {
@@ -98,5 +103,14 @@ public class NOTRequirement extends Requirement {
     @Override
     public int hashCode() {
         return requirement.hashCode();
+    }
+
+    @Nonnull
+    @Override
+    public List<Class<? extends Requirement>> getInternalTypes() {
+        if (requirement instanceof OuterRequirement) {
+            return ((OuterRequirement) requirement).getInternalTypes();
+        }
+        return Collections.singletonList(requirement.getClass());
     }
 }

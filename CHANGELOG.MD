@@ -2,6 +2,7 @@
 
 ## 1.8.3
 - Fixed Skill icon for rank 1 not being found if it is not set but one is set for rank 0.
+- Fixed a bug with Logic Requirements not being properly invalidated
 
 
 ## 1.8.2
