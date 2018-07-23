@@ -14,6 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -290,7 +292,14 @@ public class LevelLockHandler {
         if (stack.isEmpty()) {
             stack = block.getItem(event.getWorld(), event.getPos(), state);
         }
-
+        if (block.hasTileEntity(state)) {
+            TileEntity te = event.getWorld().getTileEntity(event.getPos());
+            if (te != null && !te.isInvalid()) {
+                NBTTagCompound tag = new NBTTagCompound();
+                te.writeToNBT(tag);
+                stack.setTagCompound(tag);
+            }
+        }
         genericEnforce(event, event.getEntityPlayer(), stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
     }
 
@@ -311,7 +320,14 @@ public class LevelLockHandler {
         if (stack.isEmpty()) {
             stack = block.getItem(event.getWorld(), event.getPos(), state);
         }
-
+        if (block.hasTileEntity(state)) {
+            TileEntity te = event.getWorld().getTileEntity(event.getPos());
+            if (te != null && !te.isInvalid()) {
+                NBTTagCompound tag = new NBTTagCompound();
+                te.writeToNBT(tag);
+                stack.setTagCompound(tag);
+            }
+        }
         genericEnforce(event, event.getEntityPlayer(), stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
     }
 
@@ -322,7 +338,14 @@ public class LevelLockHandler {
         }
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
-
+        if (state.getBlock().hasTileEntity(state)) {
+            TileEntity te = event.getWorld().getTileEntity(event.getPos());
+            if (te != null && !te.isInvalid()) {
+                NBTTagCompound tag = new NBTTagCompound();
+                te.writeToNBT(tag);
+                stack.setTagCompound(tag);
+            }
+        }
         genericEnforce(event, event.getPlayer(), stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
     }
 
