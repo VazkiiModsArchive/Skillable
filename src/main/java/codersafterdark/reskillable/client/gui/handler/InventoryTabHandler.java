@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.client.gui.handler;
 
-import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.base.configs.ConfigHandler;
 import codersafterdark.reskillable.client.base.RenderHelper;
 import codersafterdark.reskillable.client.gui.GuiAbilities;
 import codersafterdark.reskillable.client.gui.GuiSkillInfo;
@@ -26,7 +26,7 @@ public class InventoryTabHandler {
     public static int mx, my;
 
     public static void addTabs(GuiScreen currScreen, List<GuiButton> buttonList) {
-        if (!codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs) {
+        if (!ConfigHandler.enableTabs) {
             return;
         }
 
@@ -83,12 +83,12 @@ public class InventoryTabHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
-        if (codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs) {
+        if (ConfigHandler.enableTabs) {
             event.setCanceled(true);
         }
     }
 
     public static int getPotionOffset() {
-        return codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs ? 156 : 124;
+        return ConfigHandler.enableTabs ? 156 : 124;
     }
 }

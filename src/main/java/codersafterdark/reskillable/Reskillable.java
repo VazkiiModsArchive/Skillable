@@ -2,7 +2,7 @@ package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.base.CommonProxy;
-import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.base.configs.ConfigHandler;
 import codersafterdark.reskillable.commands.ReskillableCmd;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraftforge.fml.common.Mod;
@@ -35,8 +35,8 @@ public class Reskillable {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        if (ConfigHandler.config.hasChanged()) {
-            ConfigHandler.config.save();
+        if (ConfigHandler.mainConfig.hasChanged()) {
+            ConfigHandler.mainConfig.save();
         }
         proxy.init(event);
     }

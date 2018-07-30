@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.client.gui.button;
 
-import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.base.configs.ConfigHandler;
 import codersafterdark.reskillable.client.gui.GuiSkillInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -25,7 +25,7 @@ public class GuiButtonLevelUp extends GuiButton {
     public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float f) {
         enabled = mc.player.experienceLevel >= cost || mc.player.isCreative();
 
-        if (codersafterdark.reskillable.base.configs.ConfigHandler.enableLevelUp) {
+        if (ConfigHandler.enableLevelUp) {
             if (enabled) {
                 GlStateManager.color(1F, 1F, 1F);
                 mc.renderEngine.bindTexture(GuiSkillInfo.SKILL_INFO_RES);

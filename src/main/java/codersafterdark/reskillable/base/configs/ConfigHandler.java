@@ -2,6 +2,7 @@ package codersafterdark.reskillable.base.configs;
 
 import codersafterdark.reskillable.base.LevelLockHandler;
 import codersafterdark.reskillable.lib.LibMisc;
+import com.google.gson.Gson;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -12,8 +13,10 @@ import java.util.Map;
 import static codersafterdark.reskillable.base.configs.ConfigUtilities.loadPropBool;
 
 public class ConfigHandler {
-    private static Configuration mainConfig;
+    public static Configuration mainConfig;
     private static File configDir;
+
+    private static Gson gson = new Gson();
 
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
