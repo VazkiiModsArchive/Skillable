@@ -26,7 +26,7 @@ public class InventoryTabHandler {
     public static int mx, my;
 
     public static void addTabs(GuiScreen currScreen, List<GuiButton> buttonList) {
-        if (!ConfigHandler.enableTabs) {
+        if (!codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs) {
             return;
         }
 
@@ -83,12 +83,12 @@ public class InventoryTabHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
-        if (ConfigHandler.enableTabs) {
+        if (codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs) {
             event.setCanceled(true);
         }
     }
 
     public static int getPotionOffset() {
-        return ConfigHandler.enableTabs ? 156 : 124;
+        return codersafterdark.reskillable.base.configs.ConfigHandler.enableTabs ? 156 : 124;
     }
 }

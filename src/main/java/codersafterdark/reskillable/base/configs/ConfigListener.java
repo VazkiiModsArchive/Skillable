@@ -12,9 +12,7 @@ public class ConfigListener {
             Configuration cfg = ConfigHandler.cachedConfigs.get(event.getModID());
             if (cfg != null) {
                 cfg.save();
-
                 ConfigHandler.loadData();
-
             }
         }
     }

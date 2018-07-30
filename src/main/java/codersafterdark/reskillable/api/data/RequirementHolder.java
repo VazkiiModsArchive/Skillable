@@ -126,7 +126,7 @@ public class RequirementHolder {
         if (!isRealLock()) {
             return;
         }
-        if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
+        if (!codersafterdark.reskillable.base.configs.ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
             addRequirementsIgnoreShift(data, tooltip);
         } else {

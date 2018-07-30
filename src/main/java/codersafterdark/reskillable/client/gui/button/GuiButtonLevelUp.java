@@ -25,7 +25,7 @@ public class GuiButtonLevelUp extends GuiButton {
     public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float f) {
         enabled = mc.player.experienceLevel >= cost || mc.player.isCreative();
 
-        if (ConfigHandler.enableLevelUp) {
+        if (codersafterdark.reskillable.base.configs.ConfigHandler.enableLevelUp) {
             if (enabled) {
                 GlStateManager.color(1F, 1F, 1F);
                 mc.renderEngine.bindTexture(GuiSkillInfo.SKILL_INFO_RES);
