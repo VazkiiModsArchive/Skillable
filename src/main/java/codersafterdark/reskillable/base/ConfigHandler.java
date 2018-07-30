@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 
+import static codersafterdark.reskillable.base.configs.ConfigUtilities.loadPropBool;
+
 public class ConfigHandler {
     public static Configuration config;
 
@@ -26,11 +28,11 @@ public class ConfigHandler {
     }
 
     public static void load() {
-        disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
-        enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
-        enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
-        enableLevelUp = loadPropBool("Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
-        hideRequirements = loadPropBool("Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
+        disableSheepWool = loadPropBool(config,"Disable Sheep Dropping Wool on Death", "", disableSheepWool);
+        enforceFakePlayers = loadPropBool(config,"Enforce requirements on Fake Players", "", true);
+        enableTabs = loadPropBool(config,"Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
+        enableLevelUp = loadPropBool(config,"Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
+        hideRequirements = loadPropBool(config,"Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
 
         String desc = "Set requirements for items in this list. Each entry is composed of the item key and the requirements\n"
                 + "The item key is in the simple mod:item_id format. Optionally, it can be in mod:item_id:metadata, if you want to match metadata.\n"
@@ -52,27 +54,6 @@ public class ConfigHandler {
         if (config.hasChanged()) {
             config.save();
         }
-    }
-
-    public static int loadPropInt(String propName, String desc, int default_) {
-        Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
-        prop.setComment(desc);
-
-        return prop.getInt(default_);
-    }
-
-    public static double loadPropDouble(String propName, String desc, double default_) {
-        Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
-        prop.setComment(desc);
-
-        return prop.getDouble(default_);
-    }
-
-    public static boolean loadPropBool(String propName, String desc, boolean default_) {
-        Property prop = config.get(Configuration.CATEGORY_GENERAL, propName, default_);
-        prop.setComment(desc);
-
-        return prop.getBoolean(default_);
     }
 
     public static class ChangeListener {
