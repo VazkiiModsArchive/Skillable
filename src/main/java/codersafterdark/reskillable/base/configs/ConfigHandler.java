@@ -11,8 +11,8 @@ import java.util.Map;
 import static codersafterdark.reskillable.base.configs.ConfigUtilities.loadPropBool;
 
 public class ConfigHandler {
-    public static Configuration config;
-    public static File configDir;
+    public static Configuration mainConfig;
+    public static File configDir = new File(LibMisc.MOD_ID);
 
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
@@ -22,22 +22,28 @@ public class ConfigHandler {
 
     public static Map<String, Configuration> cachedConfigs = new HashMap<>();
 
-    public static void init(File file) {
-        generateFolder(file);
-        config = new Configuration(configDir, LibMisc.MOD_ID);
-        config.load();
+    public static void init() {
+        generateFolder(new File(LibMisc.MOD_ID));
+        mainConfig = new Configuration(configDir, LibMisc.MOD_ID);
+
+        mainConfig.load();
         loadData();
-        config.save();
-        cachedConfigs.put(LibMisc.MOD_ID, config);
+
+        cachedConfigs.put(LibMisc.MOD_ID, mainConfig);
+
         MinecraftForge.EVENT_BUS.register(ConfigListener.class);
     }
 
     public static void loadData() {
-        disableSheepWool = loadPropBool(config, "Disable Sheep Dropping Wool on Death", "", disableSheepWool);
-        enforceFakePlayers = loadPropBool(config, "Enforce requirements on Fake Players", "", true);
-        enableTabs = loadPropBool(config, "Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
-        enableLevelUp = loadPropBool(config, "Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
-        hideRequirements = loadPropBool(config, "Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
+        disableSheepWool = loadPropBool(mainConfig, "Disable Sheep Dropping Wool on Death", "", disableSheepWool);
+        enforceFakePlayers = loadPropBool(mainConfig, "Enforce requirements on Fake Players", "", true);
+        enableTabs = loadPropBool(mainConfig, "Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
+        enableLevelUp = loadPropBool(mainConfig, "Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
+        hideRequirements = loadPropBool(mainConfig, "Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
+
+        if (mainConfig.hasChanged()) {
+            mainConfig.save();
+        }
     }
 
     public static void generateFolder(File cfgDir) {

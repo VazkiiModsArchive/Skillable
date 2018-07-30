@@ -23,7 +23,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(LevelLockHandler.class);
         MinecraftForge.EVENT_BUS.register(RequirementCache.class);
         MinecraftForge.EVENT_BUS.register(ToolTipHandler.class);
-        codersafterdark.reskillable.base.configs.ConfigHandler.init(new File(LibMisc.MOD_ID));
+        codersafterdark.reskillable.base.configs.ConfigHandler.init();
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         PacketHandler.preInit();
     }
