@@ -3,6 +3,7 @@ package codersafterdark.reskillable.base.configs;
 import codersafterdark.reskillable.base.LevelLockHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -13,11 +14,25 @@ import java.util.Map;
 import static codersafterdark.reskillable.base.configs.ConfigUtilities.loadPropBool;
 
 public class ConfigHandler {
-    public static Configuration mainConfig;
+
+    /////////////////
+    // Directories //
+    /////////////////
     private static File configDir;
+    private static File jsonDir;
 
-    private static Gson gson = new Gson();
 
+    /////////////
+    // Configs //
+    /////////////
+    public static Configuration mainConfig;
+    public static Gson locks;
+
+    ////////////////////
+    // Default Values //
+    ////////////////////
+
+    /// Main Config ///
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
     public static boolean enableTabs = true;
@@ -31,6 +46,7 @@ public class ConfigHandler {
         mainConfig = new Configuration(new File(configDir.getPath(), "reskillable.cfg"));
         mainConfig.load();
         loadData();
+        loadJSONLocks();
         cachedConfigs.put(LibMisc.MOD_ID, mainConfig);
         MinecraftForge.EVENT_BUS.register(ConfigListener.class);
     }
@@ -65,11 +81,24 @@ public class ConfigHandler {
         }
     }
 
+    public static void loadJSONLocks(){
+        File mainLocks = new File(jsonDir, "defaultLocks.json");
+        String json = locks.toJson(LevelLockHandler.DEFAULT_SKILL_LOCKS);
+        ConfigUtilities.writeStringToFile(json, mainLocks);
+    }
+
+
     public static void generateFolder(File file) {
-        File dir = new File(file, LibMisc.MOD_ID);
+        File dir = new File(file, "codersafterdark");
+        File dir2 = new File(dir, "locks");
         if (!dir.exists()) {
             dir.mkdirs();
+            if (!dir2.exists()) {
+                dir2.mkdirs();
+            }
         }
         configDir = dir;
+        jsonDir = dir2;
+        locks = new GsonBuilder().setPrettyPrinting().create();
     }
 }
