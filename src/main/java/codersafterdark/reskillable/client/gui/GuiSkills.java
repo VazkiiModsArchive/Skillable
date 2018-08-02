@@ -83,6 +83,12 @@ public class GuiSkills extends GuiScreen {
             if (this.mc.currentScreen != null) {
                 this.mc.setIngameFocus();
             }
+        } else if (keyCode == 18) {
+            this.mc.displayGuiScreen(null);
+
+            if (this.mc.currentScreen != null) {
+                this.mc.setIngameFocus();
+            }
         }
     }
 
