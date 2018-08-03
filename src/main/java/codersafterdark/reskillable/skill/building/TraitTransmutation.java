@@ -4,8 +4,9 @@ import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.transmutations.TransmutationRegistry;
 import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.lib.LibMisc;
+
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -21,8 +22,8 @@ public class TraitTransmutation extends Trait {
     public TraitTransmutation() {
         super(new ResourceLocation(LibMisc.MOD_ID, "transmutation"), 3, 2, new ResourceLocation(LibMisc.MOD_ID, "building"), 8, "reskillable:building|16", "reskillable:magic|16");
         TransmutationRegistry.initDefaultMap();
-        for (ItemStack stack : TransmutationRegistry.getReagentStateMap().keySet()) {
-            Reskillable.logger.error(stack.getDisplayName());
+        for (Item stack : TransmutationRegistry.getReagentStateMap().keySet()) {
+            Reskillable.logger.error(stack.getRegistryName());
         }
     }
 
@@ -31,9 +32,9 @@ public class TraitTransmutation extends Trait {
         if (event.isCanceled()) {
             return;
         }
-        ItemStack stack = event.getItemStack();
-        if (TransmutationRegistry.doesStateMapContainReagentItemStack(stack)) {
-            Map<IBlockState, IBlockState> stateMap = TransmutationRegistry.getStateMapByReagent(stack);
+        Item item = event.getItemStack().getItem();
+        if (TransmutationRegistry.doesStateMapContainReagentItemStack(item)) {
+            Map<IBlockState, IBlockState> stateMap = TransmutationRegistry.getStateMapByReagent(item);
             IBlockState state = event.getWorld().getBlockState(event.getPos());
             if (stateMap.containsKey(state)) {
                 IBlockState placeState = stateMap.get(state);
@@ -45,7 +46,7 @@ public class TraitTransmutation extends Trait {
                     event.getEntityPlayer().swingArm(event.getHand());
                     IntStream.range(0, 20).forEach(i -> event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(), pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0));
                 }
-                stack.shrink(1);
+                event.getItemStack().shrink(1);
             }
         }
     }
