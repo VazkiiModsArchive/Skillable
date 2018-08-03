@@ -22,9 +22,6 @@ public class TraitTransmutation extends Trait {
     public TraitTransmutation() {
         super(new ResourceLocation(LibMisc.MOD_ID, "transmutation"), 3, 2, new ResourceLocation(LibMisc.MOD_ID, "building"), 8, "reskillable:building|16", "reskillable:magic|16");
         TransmutationRegistry.initDefaultMap();
-        for (Item stack : TransmutationRegistry.getReagentStateMap().keySet()) {
-            Reskillable.logger.error(stack.getRegistryName());
-        }
     }
 
     @Override
