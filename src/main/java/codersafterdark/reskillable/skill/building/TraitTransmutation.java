@@ -1,6 +1,9 @@
 package codersafterdark.reskillable.skill.building;
 
+import codersafterdark.reskillable.Reskillable;
+import codersafterdark.reskillable.api.transmutations.TransmutationRegistry;
 import codersafterdark.reskillable.api.unlockable.Trait;
+import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
@@ -8,28 +11,29 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public abstract class TraitTransmutation extends Trait {
-    private final ItemStack reagent;
-    private final Map<IBlockState, IBlockState> stateMap;
+public class TraitTransmutation extends Trait {
 
-    public TraitTransmutation(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, ItemStack reagent, Map<IBlockState, IBlockState> stateMap, String... requirements) {
-        super(name, x, y, skillName, cost, requirements);
-        this.reagent = reagent;
-        this.stateMap = stateMap;
+    public TraitTransmutation() {
+        super(new ResourceLocation(LibMisc.MOD_ID, "transmutation"), 3, 2, new ResourceLocation(LibMisc.MOD_ID, "building"), 8, "reskillable:building|16", "reskillable:magic|16");
+        TransmutationRegistry.initDefaultMap();
+        for (ItemStack stack : TransmutationRegistry.getReagentStateMap().keySet()) {
+            Reskillable.logger.error(stack.getDisplayName());
+        }
     }
 
     @Override
-    public void onRightClickBlock(RightClickBlock event) {
+    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.isCanceled()) {
             return;
         }
         ItemStack stack = event.getItemStack();
-        if (ItemStack.areItemsEqual(stack, reagent)) {
+        if (TransmutationRegistry.doesStateMapContainReagentItemStack(stack)) {
+            Map<IBlockState, IBlockState> stateMap = TransmutationRegistry.getStateMapByReagent(stack);
             IBlockState state = event.getWorld().getBlockState(event.getPos());
             if (stateMap.containsKey(state)) {
                 IBlockState placeState = stateMap.get(state);

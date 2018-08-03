@@ -8,7 +8,7 @@ import codersafterdark.reskillable.skill.agility.TraitRoadWalk;
 import codersafterdark.reskillable.skill.agility.TraitSidestep;
 import codersafterdark.reskillable.skill.attack.TraitBattleSpirit;
 import codersafterdark.reskillable.skill.attack.TraitNeutralissse;
-import codersafterdark.reskillable.skill.building.TraitChorusTransmutation;
+import codersafterdark.reskillable.skill.building.TraitTransmutation;
 import codersafterdark.reskillable.skill.building.TraitPerfectRecover;
 import codersafterdark.reskillable.skill.defense.TraitEffectTwist;
 import codersafterdark.reskillable.skill.defense.TraitUndershirt;
@@ -58,7 +58,7 @@ public class ReskillableRegistryHandler {
                 new TraitSidestep(),
                 new TraitNeutralissse(),
                 new TraitBattleSpirit(),
-                new TraitChorusTransmutation(),
+                new TraitTransmutation(),
                 new TraitPerfectRecover(),
                 new TraitUndershirt(),
                 new TraitEffectTwist(),
