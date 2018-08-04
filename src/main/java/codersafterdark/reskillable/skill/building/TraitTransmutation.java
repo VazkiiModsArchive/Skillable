@@ -1,13 +1,11 @@
 package codersafterdark.reskillable.skill.building;
 
-import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.transmutations.TransmutationRegistry;
 import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.lib.LibMisc;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;

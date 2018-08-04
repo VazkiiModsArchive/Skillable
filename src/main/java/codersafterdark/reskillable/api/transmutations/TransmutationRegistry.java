@@ -26,13 +26,21 @@ public class TransmutationRegistry {
 
     public static void initDefaultMap() {
         Item item = Items.CHORUS_FRUIT;
-        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.MAGMA, Blocks.ICE);
-        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.STONE, Blocks.END_STONE);
+
         TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.MELON_BLOCK, Blocks.PUMPKIN);
+
+        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.MAGMA, Blocks.ICE);
+        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.ICE, Blocks.MAGMA);
+        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.STONE, Blocks.END_STONE);
+        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.END_STONE, Blocks.STONE);
+        TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.CLAY, Blocks.HARDENED_CLAY);
         TransmutationRegistry.addEntryToReagentByBlockDefaultState(item, Blocks.HARDENED_CLAY, Blocks.CLAY);
 
         TransmutationRegistry.addEntryToReagent(item, Blocks.SPONGE.getDefaultState().withProperty(BlockSponge.WET, true), Blocks.SPONGE.getDefaultState());
-        TransmutationRegistry.addEntryToReagent(item, Blocks.PRISMARINE.getDefaultState(), Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.DARK));
+        TransmutationRegistry.addEntryToReagent(item, Blocks.SPONGE.getDefaultState(), Blocks.SPONGE.getDefaultState().withProperty(BlockSponge.WET, true));
+        TransmutationRegistry.addEntryToReagent(item, Blocks.PRISMARINE.getDefaultState(), Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.BRICKS));
+        TransmutationRegistry.addEntryToReagent(item, Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.BRICKS), Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.DARK));
+        TransmutationRegistry.addEntryToReagent(item, Blocks.PRISMARINE.getDefaultState().withProperty(BlockPrismarine.VARIANT, BlockPrismarine.EnumType.DARK), Blocks.PRISMARINE.getDefaultState());
 
         for (EnumFacing face : EnumFacing.HORIZONTALS) {
             TransmutationRegistry.addEntryToReagent(item, Blocks.PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, face), Blocks.MELON_BLOCK.getDefaultState());
