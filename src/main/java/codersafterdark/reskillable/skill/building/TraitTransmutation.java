@@ -29,7 +29,7 @@ public class TraitTransmutation extends Trait {
             return;
         }
         Item item = event.getItemStack().getItem();
-        if (TransmutationRegistry.doesStateMapContainReagentItemStack(item)) {
+        if (TransmutationRegistry.doesReagentStateMapContainReagentItem(item)) {
             Map<IBlockState, IBlockState> stateMap = TransmutationRegistry.getStateMapByReagent(item);
             IBlockState state = event.getWorld().getBlockState(event.getPos());
             if (stateMap.containsKey(state)) {
