@@ -58,7 +58,11 @@ public class TransmutationRegistry {
         }
     }
 
-    public static boolean doesStateMapContainReagentItemStack(Item item) {
+    public static boolean doesStateMapContainKeyState(IBlockState state, Map<IBlockState, IBlockState> stateMap) {
+       return stateMap.containsKey(state);
+    }
+
+    public static boolean doesReagentStateMapContainReagentItem(Item item) {
         return reagentStateMap.containsKey(item);
     }
 
