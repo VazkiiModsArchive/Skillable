@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.0
+- Changed chorus transmutation trait to a more generic transmutation trait. It is now possible to edit what things get transmuted and add your own via the API. (CompatSkills exposes this so that scripts can modify the transmutation map.)
+- The Skill GUIs are now also closeable with the inventory key. 
+
+
+
 ## 1.8.3
 - Fixed Skill icon for rank 1 not being found if it is not set but one is set for rank 0.
 - Fixed a bug with Logic Requirements not being properly invalidated
@@ -15,7 +21,6 @@
 
 
 ## 1.8.0
-
 - Made it so that the skill gui can be closed with the same key that opens it.
 - Fixed a desync with requirement cache not invalidating properly on servers.
 - Lots of internal API additions
@@ -32,7 +37,6 @@
 
 
 ## 1.7.0
-
 - Added "none" as a requirement type that basically removes all locks from an item. This allows for locking an entire mod and then unlocking specific items. The config previously stated that this would work and now it works again.
 - Some minor performance improvements and code cleanup.
 - Fixed the scroll buttons in the skills gui being slightly off center.
@@ -45,7 +49,6 @@
 
 
 ## 1.6.0
-
 - Added ru_RU localization
   - Thanks goes out to: Pirog17000
 - Implemented an Unobtainable Requirement
@@ -77,12 +80,10 @@
 
 
 ## 1.5.1
-
 - Fixed a crash on servers
 
 
 ## 1.5.0
-
 - Implemented better support for Negative-Stagger Values
 - Implemented Commands for the following things:
   - Incrementing a Skill Level by 1
@@ -108,7 +109,6 @@
 
 
 ## 1.4.0
-
 - Added zh_cn.lang
   - Thanks goes out to SihenZhang on Github for the PR
   - Please do not since the PR has happened we've done some updates internally and will poke him about it.
@@ -131,7 +131,6 @@
 
 
 ## 1.3.0
-
 - Large Improvements to the NBT-Handling Internally
 - Large Improvements to the Lock System
   - Made it overall more Generic
@@ -139,17 +138,14 @@
 
 
 ## 1.2.2
-
 - Added mcmod.info file
 
 
 ## 1.2.1
-
 - Fix being able to place blocks that are locked
 
 
 ## 1.2.0
-
 - Added Mod-Based Gating
   - This only works in Configs
   - This is implemented as:
@@ -178,7 +174,6 @@
 
 
 ## 1.1.0
-
 - Added Config Option for X-Y Position for Traits in the GUI
 - Added Better NBT Handling (Credit to pupnewfster for the PR) 
     - [Requires: CompatSkills's CrT Support]
@@ -196,7 +191,6 @@
 
 
 ## 1.0.0
-
 General:
 - Removed reliance on AutoRegLib
 

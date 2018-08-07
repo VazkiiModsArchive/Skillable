@@ -77,7 +77,7 @@ public class GuiSkills extends GuiScreen {
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();
             }
-        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
+        } else if (keyCode == KeyBindings.openGUI.getKeyCode() || keyCode == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen != null) {

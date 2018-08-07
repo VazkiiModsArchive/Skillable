@@ -13,6 +13,7 @@ import codersafterdark.reskillable.lib.LibMisc;
 import codersafterdark.reskillable.network.MessageLevelUp;
 import codersafterdark.reskillable.network.MessageUnlockUnlockable;
 import codersafterdark.reskillable.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,28 +39,27 @@ public class GuiSkillInfo extends GuiScreen {
 
     private final Skill skill;
 
-    int guiWidth, guiHeight;
-    ResourceLocation sprite;
+    private int guiWidth, guiHeight;
+    private ResourceLocation sprite;
 
-    GuiButtonLevelUp levelUpButton;
-    Unlockable hoveredUnlockable;
-    boolean canPurchase;
+    private GuiButtonLevelUp levelUpButton;
+    private Unlockable hoveredUnlockable;
+    private boolean canPurchase;
 
     public GuiSkillInfo(Skill skill) {
         this.skill = skill;
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
-            this.mc.displayGuiScreen((GuiSkills) null);
+            this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();
             }
-        } else if (keyCode == KeyBindings.openGUI.getKeyCode()) {
-            this.mc.displayGuiScreen((GuiSkills) null);
-
+        } else if (keyCode == KeyBindings.openGUI.getKeyCode() || keyCode == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()) {
+            this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen != null) {
                 this.mc.setIngameFocus();
             }
