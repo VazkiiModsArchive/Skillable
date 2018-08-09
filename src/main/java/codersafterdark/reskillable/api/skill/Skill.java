@@ -122,4 +122,8 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
+
+    public int getRank(int level) {
+        return 8 * level / getCap();
+    }
 }

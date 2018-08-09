@@ -74,7 +74,7 @@ public class PlayerSkillInfo {
     }
 
     public int getRank() {
-        return 8 * level / skill.getCap();
+        return skill.getRank(level);
     }
 
     public int getSkillPoints() {
