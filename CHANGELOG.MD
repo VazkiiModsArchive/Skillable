@@ -3,6 +3,8 @@
 ## 1.9.0
 - Changed chorus transmutation trait to a more generic transmutation trait. It is now possible to edit what things get transmuted and add your own via the API. (CompatSkills exposes this so that scripts can modify the transmutation map.)
 - The Skill GUIs are now also closeable with the inventory key. 
+- Added an API method and system to allow for easy addition/displaying of toast notifications.
+- Display a toast notification when a trait is auto unlocked.
 
 
 
