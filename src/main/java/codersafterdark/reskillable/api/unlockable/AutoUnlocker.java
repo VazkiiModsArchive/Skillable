@@ -6,7 +6,6 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.toast.ToastHelper;
-import codersafterdark.reskillable.api.toast.UnlockableToast;
 import codersafterdark.reskillable.base.LevelLockHandler;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -55,7 +54,7 @@ public class AutoUnlocker {
                 if (holder.equals(LevelLockHandler.EMPTY_LOCK) || data.matchStats(holder)) {
                     skillInfo.unlock(u, player);
                     if (!player.world.isRemote) {
-                        ToastHelper.sendToast(new UnlockableToast(u));
+                        ToastHelper.sendUnlockableToast(u);
                     }
                     anyUnlocked = true;
                 }
