@@ -16,5 +16,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(MessageUnlockUnlockable.class, MessageUnlockUnlockable.class, ID++, Side.SERVER);
         INSTANCE.registerMessage(InvalidateRequirementPacket.class, InvalidateRequirementPacket.class, ID++, Side.CLIENT);
         INSTANCE.registerMessage(InvalidateRequirementPacket.class, InvalidateRequirementPacket.class, ID++, Side.SERVER);
+        INSTANCE.registerMessage(UnlockableToastPacket.class, UnlockableToastPacket.class, ID++, Side.CLIENT);
+        INSTANCE.registerMessage(SkillToastPacket.class, SkillToastPacket.class, ID++, Side.CLIENT);
     }
 }

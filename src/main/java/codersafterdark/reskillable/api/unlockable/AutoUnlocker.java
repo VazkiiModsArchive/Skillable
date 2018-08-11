@@ -8,6 +8,7 @@ import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.toast.ToastHelper;
 import codersafterdark.reskillable.base.LevelLockHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -53,8 +54,8 @@ public class AutoUnlocker {
                 RequirementHolder holder = u.getRequirements();
                 if (holder.equals(LevelLockHandler.EMPTY_LOCK) || data.matchStats(holder)) {
                     skillInfo.unlock(u, player);
-                    if (!player.world.isRemote) {
-                        ToastHelper.sendUnlockableToast(u);
+                    if (player.world.isRemote) {
+                        ToastHelper.sendUnlockableToast((EntityPlayerMP) player, u);
                     }
                     anyUnlocked = true;
                 }

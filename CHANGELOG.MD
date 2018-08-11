@@ -2,6 +2,7 @@
 
 ## 1.9.1
 - Fixed crash on server startup
+- Added API methods to send skill and unlockable toasts from server side
 
 
 ## 1.9.0
