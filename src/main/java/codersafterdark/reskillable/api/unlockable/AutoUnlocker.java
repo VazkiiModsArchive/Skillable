@@ -54,7 +54,7 @@ public class AutoUnlocker {
                 RequirementHolder holder = u.getRequirements();
                 if (holder.equals(LevelLockHandler.EMPTY_LOCK) || data.matchStats(holder)) {
                     skillInfo.unlock(u, player);
-                    if (player.world.isRemote) {
+                    if (player instanceof EntityPlayerMP) {
                         ToastHelper.sendUnlockableToast((EntityPlayerMP) player, u);
                     }
                     anyUnlocked = true;

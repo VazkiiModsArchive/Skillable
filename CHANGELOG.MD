@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.2
+- Fixed an exception being thrown to clients when things get auto unlocked on a server.
+
+
 ## 1.9.1
 - Fixed crash on server startup
 - Added API methods to send skill and unlockable toasts from server side
