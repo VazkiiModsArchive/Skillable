@@ -58,12 +58,12 @@ public class CmdResetSkill extends CommandBase {
         if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, 1, oldLevel))) {
             skillInfo.setLevel(1);
             skillInfo.respec();
+            data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, 1, oldLevel));
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.resetskill", skillName, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.resetskill", skillName, player.getDisplayName()));
         }
-        data.saveAndSync();
     }
 
     @Nonnull

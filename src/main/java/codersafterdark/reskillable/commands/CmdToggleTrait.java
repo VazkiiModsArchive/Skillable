@@ -58,6 +58,7 @@ public class CmdToggleTrait extends CommandBase {
         if (skillInfo.isUnlocked(trait)) {
             if (!MinecraftForge.EVENT_BUS.post(new LockUnlockableEvent.Pre(player, trait))) {
                 skillInfo.lock(trait, player);
+                data.saveAndSync();
                 MinecraftForge.EVENT_BUS.post(new LockUnlockableEvent.Post(player, trait));
                 sender.sendMessage(new TextComponentTranslation("reskillable.command.success.locktrait", traitName, player.getDisplayName()));
             } else {
@@ -65,12 +66,12 @@ public class CmdToggleTrait extends CommandBase {
             }
         } else if (!MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Pre(player, trait))) {
             skillInfo.unlock(trait, player);
+            data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Post(player, trait));
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.unlocktrait", traitName, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.unlocktrait", traitName, player.getDisplayName()));
         }
-        data.saveAndSync();
     }
 
     @Nonnull

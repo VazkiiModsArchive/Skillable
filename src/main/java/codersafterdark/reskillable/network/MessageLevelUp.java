@@ -57,9 +57,9 @@ public class MessageLevelUp implements IMessage, IMessageHandler<MessageLevelUp,
                         ExperienceHelper.drainPlayerXP(player, ExperienceHelper.getExperienceForLevel(cost));
                     }
                     info.levelUp();
+                    data.saveAndSync();
                     MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, info.getLevel(), oldLevel));
                 }
-                data.saveAndSync();
             }
         }
         return null;

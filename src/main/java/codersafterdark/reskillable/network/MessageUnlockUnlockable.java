@@ -59,9 +59,9 @@ public class MessageUnlockUnlockable implements IMessage, IMessageHandler<Messag
         if (!info.isUnlocked(unlockable) && info.getSkillPoints() >= unlockable.getCost() && data.matchStats(unlockable.getRequirements())
                 && !MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Pre(player, unlockable))) {
             info.unlock(unlockable, player);
+            data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Post(player, unlockable));
         }
-        data.saveAndSync();
         return null;
     }
 }

@@ -73,12 +73,12 @@ public class CmdSetSkillLevel extends CommandBase {
         int oldLevel = skillInfo.getLevel();
         if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, level, oldLevel))) {
             skillInfo.setLevel(level);
+            data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, level, oldLevel));
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.setskilllevel", skillName, level, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.setskilllevel", skillName, level, player.getDisplayName()));
         }
-        data.saveAndSync();
     }
 
     @Nonnull

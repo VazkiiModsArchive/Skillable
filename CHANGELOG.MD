@@ -3,7 +3,9 @@
 ## 1.9.2
 - Fixed an exception being thrown to clients when things get auto unlocked on a server.
 - Increased event priority to `HIGH` to ensure our checks are called before other default level listeners.
-  - This fixes some items/blocks being able to open gui's even if the requirements for the item is not met. 
+  - This fixes some items/blocks being able to open gui's even if the requirements for the item is not met.
+- Moved things around slightly to hopefully fix the rare cases where the RequirementCache does not invalidate properly.
+  - Unfortunately this is hard to test for as there is no easy way to reproduce it. 
 
 
 ## 1.9.1

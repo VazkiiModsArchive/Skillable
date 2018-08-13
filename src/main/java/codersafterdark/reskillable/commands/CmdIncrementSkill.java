@@ -57,12 +57,12 @@ public class CmdIncrementSkill extends CommandBase {
         int oldLevel = skillInfo.getLevel();
         if (!MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Pre(player, skill, oldLevel + 1, oldLevel))) {
             skillInfo.levelUp();
+            data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, skillInfo.getLevel(), oldLevel));
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.skillup", skillName, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.skillup", skillName, player.getDisplayName()));
         }
-        data.saveAndSync();
     }
 
     @Nonnull
