@@ -6,6 +6,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.toast.ToastHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -60,6 +61,7 @@ public class CmdIncrementSkill extends CommandBase {
             data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, skillInfo.getLevel(), oldLevel));
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.skillup", skillName, player.getDisplayName()));
+            ToastHelper.sendSkillToast(player, skill, skillInfo.getLevel());
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.skillup", skillName, player.getDisplayName()));
         }

@@ -6,6 +6,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.skill.Skill;
+import codersafterdark.reskillable.api.toast.ToastHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -75,6 +76,7 @@ public class CmdSetSkillLevel extends CommandBase {
             skillInfo.setLevel(level);
             data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skill, level, oldLevel));
+            ToastHelper.sendSkillToast(player, skill, level);
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.setskilllevel", skillName, level, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.setskilllevel", skillName, level, player.getDisplayName()));

@@ -6,6 +6,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.event.LockUnlockableEvent;
 import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
+import codersafterdark.reskillable.api.toast.ToastHelper;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -68,6 +69,7 @@ public class CmdToggleTrait extends CommandBase {
             skillInfo.unlock(trait, player);
             data.saveAndSync();
             MinecraftForge.EVENT_BUS.post(new UnlockUnlockableEvent.Post(player, trait));
+            ToastHelper.sendUnlockableToast(player, trait);
             sender.sendMessage(new TextComponentTranslation("reskillable.command.success.unlocktrait", traitName, player.getDisplayName()));
         } else {
             sender.sendMessage(new TextComponentTranslation("reskillable.command.fail.unlocktrait", traitName, player.getDisplayName()));

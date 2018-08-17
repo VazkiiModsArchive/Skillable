@@ -4,6 +4,7 @@ import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
+import codersafterdark.reskillable.api.toast.ToastHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -50,6 +51,7 @@ public class CmdResetAll extends CommandBase {
                 skillInfo.respec();
                 //TODO: If moving the saveAndSync does fix the requirement caching problem figure out a decent way to move this up here without having to call it so much
                 MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post(player, skillInfo.skill, 1, oldLevel));
+                ToastHelper.sendSkillToast(player, skillInfo.skill, 1);
             } else {
                 failedSkills.append(skillInfo.skill.getName()).append(", ");
             }
