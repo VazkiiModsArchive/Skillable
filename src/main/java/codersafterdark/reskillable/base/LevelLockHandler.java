@@ -2,7 +2,6 @@ package codersafterdark.reskillable.base;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.api.data.*;
-import codersafterdark.reskillable.base.configs.ConfigHandler;
 import codersafterdark.reskillable.network.MessageLockedItem;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.block.Block;
@@ -379,7 +378,7 @@ public class LevelLockHandler {
 
     @SubscribeEvent(priority = HIGH)
     public static void onEntityDrops(LivingDropsEvent event) {
-        if (!event.isCanceled() && codersafterdark.reskillable.base.configs.ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep) {
+        if (!event.isCanceled() && ConfigHandler.disableSheepWool && event.getEntity() instanceof EntitySheep) {
             event.getDrops().removeIf(e -> e.getItem().getItem() == Item.getItemFromBlock(Blocks.WOOL));
         }
     }

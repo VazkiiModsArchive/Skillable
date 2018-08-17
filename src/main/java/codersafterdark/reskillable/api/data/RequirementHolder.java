@@ -5,6 +5,7 @@ import codersafterdark.reskillable.api.requirement.NoneRequirement;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
 import codersafterdark.reskillable.api.requirement.logic.TrueRequirement;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.lib.LibObfuscation;
 import com.google.common.collect.Lists;
 import net.minecraft.advancements.AdvancementList;
@@ -125,7 +126,7 @@ public class RequirementHolder {
         if (!isRealLock()) {
             return;
         }
-        if (!codersafterdark.reskillable.base.configs.ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
+        if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
             tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
             addRequirementsIgnoreShift(data, tooltip);
         } else {

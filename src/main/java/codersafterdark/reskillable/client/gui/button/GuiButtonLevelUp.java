@@ -1,6 +1,6 @@
 package codersafterdark.reskillable.client.gui.button;
 
-import codersafterdark.reskillable.base.configs.ConfigHandler;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.client.gui.GuiSkillInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

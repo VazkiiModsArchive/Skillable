@@ -5,7 +5,7 @@ import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.api.skill.SkillConfig;
 import codersafterdark.reskillable.api.unlockable.UnlockableConfig;
-import codersafterdark.reskillable.base.configs.ConfigHandler;
+import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.network.MessageDataSync;
 import codersafterdark.reskillable.network.PacketHandler;
 import com.google.common.collect.Maps;
@@ -28,11 +28,11 @@ public class ReskillableModAccess implements IModAccess {
     public SkillConfig getSkillConfig(ResourceLocation name) {
         SkillConfig skillConfig = new SkillConfig();
         String categoryName = "skill." + name.toString();
-        skillConfig.setEnabled(ConfigHandler.mainConfig.get(categoryName, "Enabled", skillConfig.isEnabled()).getBoolean());
-        skillConfig.setLevelCap(ConfigHandler.mainConfig.get(categoryName, "Level Cap", skillConfig.getLevelCap()).getInt());
-        skillConfig.setBaseLevelCost(ConfigHandler.mainConfig.get(categoryName, "Base Level Cost", skillConfig.getBaseLevelCost()).getInt());
-        skillConfig.setSkillPointInterval(ConfigHandler.mainConfig.get(categoryName, "Skill Point Interval", skillConfig.getSkillPointInterval()).getInt());
-        String[] levelMapping = ConfigHandler.mainConfig.get(categoryName, "Level Staggering", new String[]{"1|1"}).getStringList();
+        skillConfig.setEnabled(ConfigHandler.config.get(categoryName, "Enabled", skillConfig.isEnabled()).getBoolean());
+        skillConfig.setLevelCap(ConfigHandler.config.get(categoryName, "Level Cap", skillConfig.getLevelCap()).getInt());
+        skillConfig.setBaseLevelCost(ConfigHandler.config.get(categoryName, "Base Level Cost", skillConfig.getBaseLevelCost()).getInt());
+        skillConfig.setSkillPointInterval(ConfigHandler.config.get(categoryName, "Skill Point Interval", skillConfig.getSkillPointInterval()).getInt());
+        String[] levelMapping = ConfigHandler.config.get(categoryName, "Level Staggering", new String[]{"1|1"}).getStringList();
         Map<Integer, Integer> configLevelStaggering = Arrays.stream(levelMapping)
                 .map(string -> string.split("\\|"))
                 .filter(array -> array.length == 2)
@@ -59,11 +59,11 @@ public class ReskillableModAccess implements IModAccess {
     public UnlockableConfig getUnlockableConfig(ResourceLocation name, int x, int y, int cost, String[] defaultRequirements) {
         UnlockableConfig unlockableConfig = new UnlockableConfig();
         String categoryName = "trait." + name.toString();
-        unlockableConfig.setEnabled(ConfigHandler.mainConfig.get(categoryName, "Enabled", unlockableConfig.isEnabled()).getBoolean());
-        unlockableConfig.setX(ConfigHandler.mainConfig.get(categoryName, "X-Pos [0-4]:", x).getInt());
-        unlockableConfig.setY(ConfigHandler.mainConfig.get(categoryName, "Y-Pos [0-3]:", y).getInt());
-        unlockableConfig.setCost(ConfigHandler.mainConfig.get(categoryName, "Skill Point Cost", cost).getInt());
-        unlockableConfig.setRequirementHolder(RequirementHolder.fromStringList(ConfigHandler.mainConfig.get(categoryName, "Requirements", defaultRequirements).getStringList()));
+        unlockableConfig.setEnabled(ConfigHandler.config.get(categoryName, "Enabled", unlockableConfig.isEnabled()).getBoolean());
+        unlockableConfig.setX(ConfigHandler.config.get(categoryName, "X-Pos [0-4]:", x).getInt());
+        unlockableConfig.setY(ConfigHandler.config.get(categoryName, "Y-Pos [0-3]:", y).getInt());
+        unlockableConfig.setCost(ConfigHandler.config.get(categoryName, "Skill Point Cost", cost).getInt());
+        unlockableConfig.setRequirementHolder(RequirementHolder.fromStringList(ConfigHandler.config.get(categoryName, "Requirements", defaultRequirements).getStringList()));
         return unlockableConfig;
     }
 
