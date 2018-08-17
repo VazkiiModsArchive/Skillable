@@ -175,5 +175,4 @@ public class TransmutationRegistry {
     public static void clearReagentMap() {
         reagentStateMap.clear();
     }
-    
 }
