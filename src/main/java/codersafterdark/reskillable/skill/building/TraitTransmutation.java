@@ -41,7 +41,9 @@ public class TraitTransmutation extends Trait {
                     event.getEntityPlayer().swingArm(event.getHand());
                     IntStream.range(0, 20).forEach(i -> event.getWorld().spawnParticle(EnumParticleTypes.PORTAL, pos.getX() + Math.random(), pos.getY() + Math.random(), pos.getZ() + Math.random(), 0, 0, 0));
                 }
-                event.getItemStack().shrink(1);
+                if (!event.getEntityPlayer().isCreative()) {
+                    event.getItemStack().shrink(1);
+                }
             }
         }
     }
