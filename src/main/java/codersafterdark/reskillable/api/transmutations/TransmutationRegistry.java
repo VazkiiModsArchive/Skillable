@@ -16,7 +16,7 @@ import java.util.Map;
 public class TransmutationRegistry {
     private static Map<Item, Map<IBlockState, IBlockState>> reagentStateMap = new HashMap<>();
 
-    public static Map<Item, Map<IBlockState, IBlockState>> getReagentStateMap(){
+    public static Map<Item, Map<IBlockState, IBlockState>> getReagentStateMap() {
         return reagentStateMap;
     }
 
@@ -59,7 +59,7 @@ public class TransmutationRegistry {
     }
 
     public static boolean doesStateMapContainKeyState(IBlockState state, Map<IBlockState, IBlockState> stateMap) {
-       return stateMap.containsKey(state);
+        return stateMap.containsKey(state);
     }
 
     public static boolean doesReagentStateMapContainReagentItem(Item item) {
@@ -124,7 +124,6 @@ public class TransmutationRegistry {
     }
 
 
-
     ///////////////////////
     /// Removal Methods ///
     ///////////////////////
@@ -156,7 +155,6 @@ public class TransmutationRegistry {
             }
         }
     }
-
 
 
     /////////////////////
