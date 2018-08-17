@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.3
+- Fixed missing lang and image path for Transmutation trait
+- Commands now show toast notifications to the player when the levels get changed.
+
+
 ## 1.9.2
 - Fixed an exception being thrown to clients when things get auto unlocked on a server.
 - Increased event priority to `HIGH` to ensure our checks are called before other default level listeners.
