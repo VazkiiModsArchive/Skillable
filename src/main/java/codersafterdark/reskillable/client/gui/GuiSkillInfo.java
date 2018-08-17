@@ -5,7 +5,7 @@ import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.PlayerSkillInfo;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
-import codersafterdark.reskillable.base.ConfigHandler;
+import codersafterdark.reskillable.base.configs.ConfigHandler;
 import codersafterdark.reskillable.client.gui.button.GuiButtonLevelUp;
 import codersafterdark.reskillable.client.gui.handler.InventoryTabHandler;
 import codersafterdark.reskillable.client.gui.handler.KeyBindings;
@@ -60,6 +60,12 @@ public class GuiSkillInfo extends GuiScreen {
             }
         } else if (keyCode == KeyBindings.openGUI.getKeyCode() || keyCode == Minecraft.getMinecraft().gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.displayGuiScreen(null);
+            if (this.mc.currentScreen != null) {
+                this.mc.setIngameFocus();
+            }
+        } else if (keyCode == 18){
+            this.mc.displayGuiScreen((GuiSkills) null);
+
             if (this.mc.currentScreen != null) {
                 this.mc.setIngameFocus();
             }
