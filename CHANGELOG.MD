@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0
+- Added an option to enforce Requirements on Creative Players.
+- API added a way to have Requirements that never get cached.
+
+
 ## 1.9.3
 - Fixed missing lang and image path for Transmutation trait
 - Commands now show toast notifications to the player when the levels get changed.

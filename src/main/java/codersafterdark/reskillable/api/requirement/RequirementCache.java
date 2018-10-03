@@ -116,6 +116,11 @@ public class RequirementCache {
         if (requirement == null) {
             return false;
         }
+
+        if (requirement instanceof UncacheableRequirement) {
+            return requirement.achievedByPlayer(player);
+        }
+
         Class<? extends Requirement> clazz = requirement.getClass();
         Map<Requirement, Boolean> cache;
         if (requirementCache.containsKey(clazz)) {

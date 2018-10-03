@@ -360,7 +360,7 @@ public class LevelLockHandler {
     public static void onArmorEquip(LivingEquipmentChangeEvent event) {
         if (event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            if (!player.isCreative() && !isFake(player)) {
+            if ((ConfigHandler.enforceOnCreative || !player.isCreative()) && !isFake(player)) {
                 EntityEquipmentSlot slot = event.getSlot();
                 if (slot.getSlotType().equals(EntityEquipmentSlot.Type.ARMOR)) {
                     ItemStack stack = player.inventory.armorInventory.get(slot.getIndex());
@@ -392,7 +392,7 @@ public class LevelLockHandler {
     }
 
     public static void genericEnforce(Event event, EntityPlayer player, ItemStack stack, String lockMessage) {
-        if (!event.isCancelable() || event.isCanceled() || player == null || stack == null || stack.isEmpty() || player.isCreative()) {
+        if (!event.isCancelable() || event.isCanceled() || player == null || stack == null || stack.isEmpty() || (!ConfigHandler.enforceOnCreative && player.isCreative())) {
             return;
         }
         if (ConfigHandler.enforceFakePlayers) {

@@ -14,6 +14,7 @@ public class ConfigHandler {
 
     public static boolean disableSheepWool = true;
     public static boolean enforceFakePlayers = true;
+    public static boolean enforceOnCreative = false;
     public static boolean enableTabs = true;
     public static boolean enableLevelUp = true;
     public static boolean hideRequirements = true;
@@ -28,6 +29,7 @@ public class ConfigHandler {
     public static void load() {
         disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
         enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
+        enforceOnCreative = loadPropBool("Enforce requirements on Creative Players", "", false);
         enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
         enableLevelUp = loadPropBool("Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
         hideRequirements = loadPropBool("Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
