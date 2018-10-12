@@ -3,6 +3,7 @@ package codersafterdark.reskillable.api.requirement.logic;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementCache;
+import codersafterdark.reskillable.api.requirement.UncacheableRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
@@ -93,5 +94,18 @@ public abstract class DoubleRequirement extends Requirement implements OuterRequ
             types.add(rReq.getClass());
         }
         return types;
+    }
+
+    @Override
+    public boolean uncacheable() {
+        return leftUncacheable() || rightUncacheable();
+    }
+
+    private boolean leftUncacheable() {
+        return getLeft() instanceof UncacheableRequirement || getLeft() instanceof OuterRequirement && ((OuterRequirement) getLeft()).uncacheable();
+    }
+
+    private boolean rightUncacheable() {
+        return getRight() instanceof UncacheableRequirement || getRight() instanceof OuterRequirement && ((OuterRequirement) getRight()).uncacheable();
     }
 }
