@@ -5,6 +5,8 @@ import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.base.ConfigHandler;
 import codersafterdark.reskillable.commands.ReskillableCmd;
 import codersafterdark.reskillable.lib.LibMisc;
+import codersafterdark.reskillable.loot.LootConditionRequirement;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -31,6 +33,7 @@ public class Reskillable {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         proxy.preInit(event);
+        LootConditionManager.registerCondition(new LootConditionRequirement.Serializer());
     }
 
     @EventHandler
