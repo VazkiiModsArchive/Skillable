@@ -297,9 +297,7 @@ public class LevelLockHandler {
         if (block.hasTileEntity(state)) {
             TileEntity te = event.getWorld().getTileEntity(event.getPos());
             if (te != null && !te.isInvalid()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                te.writeToNBT(tag);
-                stack.setTagCompound(tag);
+                stack.setTagCompound(te.writeToNBT(new NBTTagCompound()));
             }
         }
         genericEnforce(event, event.getEntityPlayer(), stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
@@ -325,9 +323,7 @@ public class LevelLockHandler {
         if (block.hasTileEntity(state)) {
             TileEntity te = event.getWorld().getTileEntity(event.getPos());
             if (te != null && !te.isInvalid()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                te.writeToNBT(tag);
-                stack.setTagCompound(tag);
+                stack.setTagCompound(te.writeToNBT(new NBTTagCompound()));
             }
         }
         genericEnforce(event, event.getEntityPlayer(), stack, MessageLockedItem.MSG_BLOCK_USE_LOCKED);
@@ -343,9 +339,7 @@ public class LevelLockHandler {
         if (state.getBlock().hasTileEntity(state)) {
             TileEntity te = event.getWorld().getTileEntity(event.getPos());
             if (te != null && !te.isInvalid()) {
-                NBTTagCompound tag = new NBTTagCompound();
-                te.writeToNBT(tag);
-                stack.setTagCompound(tag);
+                stack.setTagCompound(te.writeToNBT(new NBTTagCompound()));
             }
         }
         genericEnforce(event, event.getPlayer(), stack, MessageLockedItem.MSG_BLOCK_BREAK_LOCKED);
