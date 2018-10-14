@@ -117,7 +117,7 @@ public class RequirementCache {
             return false;
         }
 
-        if (requirement instanceof UncacheableRequirement || requirement instanceof OuterRequirement && ((OuterRequirement) requirement).uncacheable()) {
+        if (!requirement.isCacheable()) {
             return requirement.achievedByPlayer(player);
         }
 

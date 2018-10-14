@@ -3,7 +3,6 @@ package codersafterdark.reskillable.api.requirement.logic.impl;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.requirement.Requirement;
 import codersafterdark.reskillable.api.requirement.RequirementComparision;
-import codersafterdark.reskillable.api.requirement.UncacheableRequirement;
 import codersafterdark.reskillable.api.requirement.logic.OuterRequirement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
@@ -116,7 +115,7 @@ public class NOTRequirement extends Requirement implements OuterRequirement {
     }
 
     @Override
-    public boolean uncacheable() {
-        return requirement instanceof UncacheableRequirement || requirement instanceof OuterRequirement && ((OuterRequirement) requirement).uncacheable();
+    public boolean isCacheable() {
+        return requirement.isCacheable();
     }
 }

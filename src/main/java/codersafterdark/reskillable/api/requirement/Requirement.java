@@ -30,4 +30,8 @@ public abstract class Requirement {
     public final String internalToolTip() {
         return tooltip;
     }
+
+    public boolean isCacheable() {
+        return true;
+    }
 }

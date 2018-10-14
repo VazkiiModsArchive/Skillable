@@ -8,6 +8,4 @@ import java.util.List;
 public interface OuterRequirement {
     @Nonnull
     List<Class<? extends Requirement>> getInternalTypes();
-
-    boolean uncacheable();
 }
