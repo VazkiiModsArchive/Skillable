@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.loot;
 
+import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -68,6 +69,9 @@ public class LootConditionRequirement implements LootCondition {
                             .toArray(String[]::new);
                 } else if (requirementsJson.isJsonPrimitive() && requirementsJson.getAsJsonPrimitive().isString()) {
                     requirements = new String[] {requirementsJson.getAsJsonPrimitive().getAsString()};
+                } else {
+                    Reskillable.logger.error("Failed to Find Requirements for LootCondition");
+                    requirements = new String[0];
                 }
             }
             return new LootConditionRequirement(requiresPlayer, requirements);
