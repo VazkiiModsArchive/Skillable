@@ -1,5 +1,7 @@
 package codersafterdark.reskillable;
 
+import codersafterdark.reskillable.advancement.ReskillableAdvancements;
+import codersafterdark.reskillable.api.event.LevelUpEvent;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
@@ -20,6 +22,7 @@ import codersafterdark.reskillable.skill.magic.TraitGoldenOsmosis;
 import codersafterdark.reskillable.skill.magic.TraitSafePort;
 import codersafterdark.reskillable.skill.mining.TraitFossilDigger;
 import codersafterdark.reskillable.skill.mining.TraitObsidianSmasher;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -71,5 +74,13 @@ public class ReskillableRegistryHandler {
                 new TraitFossilDigger(),
                 new TraitObsidianSmasher()
         );
+    }
+
+    @SubscribeEvent
+    public static void advancementHandling(LevelUpEvent.Post postEvent) {
+        if (postEvent.getEntityPlayer() instanceof EntityPlayerMP) {
+            ReskillableAdvancements.SKILL_LEVEL.trigger((EntityPlayerMP) postEvent.getEntityPlayer(),
+                    postEvent.getSkill(), postEvent.getLevel());
+        }
     }
 }

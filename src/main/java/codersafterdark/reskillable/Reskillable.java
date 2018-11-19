@@ -1,5 +1,6 @@
 package codersafterdark.reskillable;
 
+import codersafterdark.reskillable.advancement.ReskillableAdvancements;
 import codersafterdark.reskillable.api.ReskillableAPI;
 import codersafterdark.reskillable.base.CommonProxy;
 import codersafterdark.reskillable.base.ConfigHandler;
@@ -34,6 +35,7 @@ public class Reskillable {
         logger = event.getModLog();
         proxy.preInit(event);
         LootConditionManager.registerCondition(new LootConditionRequirement.Serializer());
+        ReskillableAdvancements.preInit();
     }
 
     @EventHandler

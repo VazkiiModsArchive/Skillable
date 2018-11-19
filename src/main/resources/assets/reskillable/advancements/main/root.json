@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "reskillable.advancement.first_level.title"
+    },
+    "description": {
+      "translate": "reskillable.advancement.first_level.desc"
+    },
+    "background": "minecraft:textures/blocks/stone.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "level_up": {
+      "trigger": "reskillable:skill_level",
+      "conditions": {
+        "level": 2
+      }
+    }
+  }
+}
