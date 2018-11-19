@@ -70,8 +70,7 @@ public class LootConditionRequirement implements LootCondition {
                 } else if (requirementsJson.isJsonPrimitive() && requirementsJson.getAsJsonPrimitive().isString()) {
                     requirements = new String[] {requirementsJson.getAsJsonPrimitive().getAsString()};
                 } else {
-                    Reskillable.logger.error("Failed to Find Requirements for LootCondition");
-                    requirements = new String[0];
+                    throw new JsonParseException("Failed to find Requirements");
                 }
             }
             return new LootConditionRequirement(requiresPlayer, requirements);
