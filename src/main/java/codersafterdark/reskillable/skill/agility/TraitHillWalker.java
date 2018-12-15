@@ -23,8 +23,12 @@ public class TraitHillWalker extends Trait {
     @SubscribeEvent
     public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
-        PlayerData data = PlayerDataHandler.get(player);
-        if (data.getSkillInfo(getParentSkill()).isUnlocked(this)) {
+        PlayerData data = null;
+        if (player != null) {
+            data = PlayerDataHandler.get(player);
+        }
+
+        if (data != null && data.getSkillInfo(getParentSkill()).isUnlocked(this)) {
             if (player.isSneaking()) {
                 player.stepHeight = 0.9F;
             } else {
