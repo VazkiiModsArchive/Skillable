@@ -5,7 +5,6 @@ import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 
-import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
 

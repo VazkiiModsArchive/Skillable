@@ -7,6 +7,7 @@ import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.lib.LibMisc;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.JsonUtils;
@@ -37,7 +38,7 @@ public class SkillLevelTrigger extends CriterionTrigger<SkillLevelListeners, Ski
             if (skill != null) {
                 return new SkillLevelCriterionInstance(skill, level);
             }
-            Reskillable.logger.error("Failed to find Matching Skill for Name: " + skillName);
+            throw new JsonParseException("Failed to find Matching Skill for Name: " + skillName);
         }
         return new SkillLevelCriterionInstance(null, level);
     }

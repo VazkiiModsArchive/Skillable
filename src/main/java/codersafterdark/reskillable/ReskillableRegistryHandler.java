@@ -2,6 +2,7 @@ package codersafterdark.reskillable;
 
 import codersafterdark.reskillable.advancement.ReskillableAdvancements;
 import codersafterdark.reskillable.api.event.LevelUpEvent;
+import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.skill.Skill;
 import codersafterdark.reskillable.api.unlockable.Unlockable;
 import codersafterdark.reskillable.skill.*;
@@ -77,10 +78,17 @@ public class ReskillableRegistryHandler {
     }
 
     @SubscribeEvent
-    public static void advancementHandling(LevelUpEvent.Post postEvent) {
+    public static void skillAdvancementHandling(LevelUpEvent.Post postEvent) {
         if (postEvent.getEntityPlayer() instanceof EntityPlayerMP) {
             ReskillableAdvancements.SKILL_LEVEL.trigger((EntityPlayerMP) postEvent.getEntityPlayer(),
                     postEvent.getSkill(), postEvent.getLevel());
+        }
+    }
+
+    @SubscribeEvent
+    public static void unlockableAdvancementHandling(UnlockUnlockableEvent event) {
+        if (event.getEntityPlayer() instanceof EntityPlayerMP) {
+            ReskillableAdvancements.UNLOCK_UNLOCKABLE.trigger((EntityPlayerMP) event.getEntityPlayer(), event.getUnlockable());
         }
     }
 }
