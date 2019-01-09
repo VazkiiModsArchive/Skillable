@@ -5,6 +5,8 @@ import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -29,10 +31,12 @@ public class CriterionListeners<T extends ICriterionInstance> {
     }
 
     public void trigger(Predicate<T> test) {
+        List<ICriterionTrigger.Listener<T>> toGrant = new ArrayList<>();
         for (ICriterionTrigger.Listener<T> listener : this.listeners) {
             if (test.test(listener.getCriterionInstance())) {
-                listener.grantCriterion(this.playerAdvancements);
+                toGrant.add(listener);
             }
         }
+        toGrant.forEach(listener -> listener.grantCriterion(this.playerAdvancements));
     }
 }
