@@ -1,6 +1,5 @@
 package codersafterdark.reskillable.loot;
 
-import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.RequirementHolder;
 import codersafterdark.reskillable.lib.LibMisc;
@@ -13,8 +12,9 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.stream.StreamSupport;
 
 public class LootConditionRequirement implements LootCondition {
     private final RequirementHolder requirementHolder;
@@ -65,8 +65,9 @@ public class LootConditionRequirement implements LootCondition {
             JsonElement requirementsJson = json.get("requirements");
             if (requirementsJson != null) {
                 if (requirementsJson.isJsonArray()) {
-                    requirements = StreamSupport.stream(requirementsJson.getAsJsonArray().spliterator(), false)
-                            .toArray(String[]::new);
+                    List<String> reqs = new ArrayList<>();
+                    requirementsJson.getAsJsonArray().forEach(req -> reqs.add(req.getAsString()));
+                    requirements = reqs.toArray(new String[0]);
                 } else if (requirementsJson.isJsonPrimitive() && requirementsJson.getAsJsonPrimitive().isString()) {
                     requirements = new String[] {requirementsJson.getAsJsonPrimitive().getAsString()};
                 } else {
