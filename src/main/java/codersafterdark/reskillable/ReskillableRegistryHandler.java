@@ -86,7 +86,7 @@ public class ReskillableRegistryHandler {
     }
 
     @SubscribeEvent
-    public static void unlockableAdvancementHandling(UnlockUnlockableEvent event) {
+    public static void unlockableAdvancementHandling(UnlockUnlockableEvent.Post event) {
         if (event.getEntityPlayer() instanceof EntityPlayerMP) {
             ReskillableAdvancements.UNLOCK_UNLOCKABLE.trigger((EntityPlayerMP) event.getEntityPlayer(), event.getUnlockable());
         }

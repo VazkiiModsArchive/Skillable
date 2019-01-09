@@ -17,7 +17,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class UnlockUnlockableTrigger extends CriterionTrigger<UnlockUnlockableListeners, UnlockUnlockableCriterionInstance> {
     public UnlockUnlockableTrigger() {
-        super(new ResourceLocation(LibMisc.MOD_ID, "trait"), UnlockUnlockableListeners::new);
+        super(new ResourceLocation(LibMisc.MOD_ID, "unlockable"), UnlockUnlockableListeners::new);
     }
 
     public void trigger(EntityPlayerMP entityPlayer, Unlockable unlockable) {
