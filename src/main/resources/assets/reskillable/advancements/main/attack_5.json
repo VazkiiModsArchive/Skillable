@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "reskillable.advancement.attack_5.title"
+    },
+    "description": {
+      "translate": "reskillable.advancement.attack_5.desc"
+    }
+  },
+  "parent": "reskillable:main/root",
+  "criteria": {
+    "level_up": {
+      "trigger": "reskillable:skill_level",
+      "conditions": {
+        "skill": "reskillable:attack",
+        "level": 5
+      }
+    }
+  }
+}

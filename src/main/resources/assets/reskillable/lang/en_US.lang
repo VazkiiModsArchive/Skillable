@@ -130,3 +130,10 @@ reskillable.command.invalid.missing.playerskill=You must enter the name of both 
 reskillable.command.invalid.missing.playertrait=You must enter the name of both a player and a trait.
 reskillable.command.invalid.missing.playerskilllevel=You must enter the name of both a player and a skill, and a level for the skill.
 reskillable.command.invalid.missing.skilllevel=You must enter the name of a skill, and a level for the skill.
+
+# ADVANCMENTS
+reskillable.advancement.first_level.title=First Level Up!
+reskillable.advancement.first_level.desc=You've Leveled your First Skill
+
+reskillable.advancement.attack_5.title=Attack!
+reskillable.advancement.attack_5.desc=You've Leveled Attack to 5
