@@ -77,7 +77,7 @@ public class RequirementHolder {
     //TODO Cont: This would make sure that there are no issues storing things like ItemRequirements if they have NBT data with commas in it
     public static RequirementHolder fromString(String s) {
         RequirementHolder requirementHolder;
-        if (s.matches("(?i)^(none|null|nil)$")) {
+        if (s.matches("(?i)^(null|nil)$")) {
             requirementHolder = RequirementHolder.realEmpty();
         } else {
             requirementHolder = fromStringList(s.split(","));
