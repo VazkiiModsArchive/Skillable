@@ -30,7 +30,7 @@ public class GuiButtonInventoryTab extends GuiButton {
         enabled = type.shouldRender() && !mc.player.getRecipeBook().isGuiOpen();
 
         GuiScreen curr = mc.currentScreen;
-        if (curr instanceof GuiContainerCreative && ((GuiContainerCreative) curr).getSelectedTabIndex() != CreativeTabs.INVENTORY.getTabIndex()) {
+        if (curr instanceof GuiContainerCreative && ((GuiContainerCreative) curr).getSelectedTabIndex() != CreativeTabs.INVENTORY.getIndex()) {
             enabled = false;
         }
 

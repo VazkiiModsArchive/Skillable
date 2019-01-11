@@ -41,7 +41,7 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             case Constants.NBT.TAG_LIST:
                 NBTTagList fTagList = (NBTTagList) full;
                 NBTTagList pTagList = (NBTTagList) partial;
-                if (fTagList.hasNoTags() && !pTagList.hasNoTags() || fTagList.getTagType() != pTagList.getTagType()) {
+                if (fTagList.isEmpty() && !pTagList.isEmpty() || fTagList.getTagType() != pTagList.getTagType()) {
                     return false;
                 }
                 for (int i = 0; i < pTagList.tagCount(); i++) {

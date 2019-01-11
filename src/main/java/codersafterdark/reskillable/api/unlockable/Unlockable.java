@@ -23,7 +23,7 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     public Unlockable(ResourceLocation name, int x, int y, ResourceLocation skillName, int cost, String... defaultRequirements) {
         this.name = name.toString().replace(":", ".");
         setRegistryName(name);
-        setIcon(new ResourceLocation(name.getResourceDomain(), "textures/unlockables/" + name.getResourcePath() + ".png"));
+        setIcon(new ResourceLocation(name.getNamespace(), "textures/unlockables/" + name.getPath() + ".png"));
         this.unlockableConfig = ReskillableAPI.getInstance().getTraitConfig(name, x, y, cost, defaultRequirements);
         setParentSkill(skillName);
     }

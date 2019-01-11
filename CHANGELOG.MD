@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0
+- Added support for using unlockables and skill levels as advancement criteria.
+- Added support for using requirements as conditions in loot tables.
+- HillWalker should no longer crash if the player from PlayerTickEvent is null. [#88](https://github.com/Coders-After-Dark/Reskillable/issues/88)
+
+
+
 ## 1.10.0
 - Added an option to enforce Requirements on Creative Players.
 - API added a way to have Requirements that never get cached.

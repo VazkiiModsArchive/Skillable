@@ -21,7 +21,7 @@ public class ModLockKey extends NBTLockKey {
     public ModLockKey(ItemStack stack) {
         super(stack.getTagCompound());
         ResourceLocation registryName = stack.getItem().getRegistryName();
-        this.modName = registryName == null ? "" : registryName.getResourceDomain();
+        this.modName = registryName == null ? "" : registryName.getNamespace();
     }
 
     @Override
