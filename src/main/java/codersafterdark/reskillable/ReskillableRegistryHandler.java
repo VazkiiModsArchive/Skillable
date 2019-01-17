@@ -16,6 +16,7 @@ import codersafterdark.reskillable.skill.building.TraitTransmutation;
 import codersafterdark.reskillable.skill.defense.TraitEffectTwist;
 import codersafterdark.reskillable.skill.defense.TraitUndershirt;
 import codersafterdark.reskillable.skill.farming.TraitGreenThumb;
+import codersafterdark.reskillable.skill.farming.TraitHungryFarmer;
 import codersafterdark.reskillable.skill.farming.TraitMoreWheat;
 import codersafterdark.reskillable.skill.gathering.TraitDropGuarantee;
 import codersafterdark.reskillable.skill.gathering.TraitLuckyFisherman;
@@ -60,16 +61,17 @@ public class ReskillableRegistryHandler {
                 new TraitHillWalker(),
                 new TraitRoadWalk(),
                 new TraitSidestep(),
-                new TraitNeutralissse(),
                 new TraitBattleSpirit(),
-                new TraitTransmutation(),
+                new TraitNeutralissse(),
                 new TraitPerfectRecover(),
-                new TraitUndershirt(),
+                new TraitTransmutation(),
                 new TraitEffectTwist(),
-                new TraitMoreWheat(),
+                new TraitUndershirt(),
                 new TraitGreenThumb(),
-                new TraitLuckyFisherman(),
+                new TraitHungryFarmer(),
+                new TraitMoreWheat(),
                 new TraitDropGuarantee(),
+                new TraitLuckyFisherman(),
                 new TraitGoldenOsmosis(),
                 new TraitSafePort(),
                 new TraitFossilDigger(),
