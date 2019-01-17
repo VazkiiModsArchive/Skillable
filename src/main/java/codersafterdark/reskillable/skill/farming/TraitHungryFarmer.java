@@ -3,6 +3,7 @@ package codersafterdark.reskillable.skill.farming;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.unlockable.Trait;
+import codersafterdark.reskillable.base.LevelLockHandler;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
@@ -49,8 +50,10 @@ public class TraitHungryFarmer extends Trait {
                 NonNullList<ItemStack> inventoryList = entityPlayer.inventoryContainer.getInventory();
 
                 for (ItemStack stack : inventoryList) {
-                    if (stack.getItem() instanceof ItemFood) {
-                        list.add(stack);
+                    if (LevelLockHandler.canPlayerUseItem(entityPlayer, stack)) {
+                        if (stack.getItem() instanceof ItemFood) {
+                            list.add(stack);
+                        }
                     }
                 }
 
