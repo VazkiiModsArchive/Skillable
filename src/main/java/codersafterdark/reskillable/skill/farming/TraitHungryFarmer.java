@@ -50,8 +50,8 @@ public class TraitHungryFarmer extends Trait {
                 NonNullList<ItemStack> inventoryList = entityPlayer.inventoryContainer.getInventory();
 
                 for (ItemStack stack : inventoryList) {
-                    if (LevelLockHandler.canPlayerUseItem(entityPlayer, stack)) {
-                        if (stack.getItem() instanceof ItemFood) {
+                    if (stack.getItem() instanceof ItemFood) {
+                        if (LevelLockHandler.canPlayerUseItem(entityPlayer, stack)) {
                             list.add(stack);
                         }
                     }
