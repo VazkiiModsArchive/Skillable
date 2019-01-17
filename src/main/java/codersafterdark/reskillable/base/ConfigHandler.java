@@ -27,12 +27,12 @@ public class ConfigHandler {
     }
 
     public static void load() {
-        disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "", disableSheepWool);
-        enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "", true);
-        enforceOnCreative = loadPropBool("Enforce requirements on Creative Players", "", false);
-        enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", true);
-        enableLevelUp = loadPropBool("Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", true);
-        hideRequirements = loadPropBool("Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", true);
+        disableSheepWool = loadPropBool("Disable Sheep Dropping Wool on Death", "Set this to true to disable sheep dropping wool upon death", disableSheepWool);
+        enforceFakePlayers = loadPropBool("Enforce requirements on Fake Players", "Set this to true to enforce requirement checks on Fake Players", enforceFakePlayers);
+        enforceOnCreative = loadPropBool("Enforce requirements on Creative Players", "Set this to true to enforce requirement checks on players in creative mode", enforceOnCreative);
+        enableTabs = loadPropBool("Enable Reskillable Tabs", "Set this to false if you don't want to use skills, just the advancement locks", enableTabs);
+        enableLevelUp = loadPropBool("Enable Level-Up Button", "Set this to false to remove the level-up button if you don't want to use another means to leveling-up skills!", enableLevelUp);
+        hideRequirements = loadPropBool("Hide Requirements", "Set this to false to not require holding down the shift key to view requirements!", hideRequirements);
 
         String desc = "Set requirements for items in this list. Each entry is composed of the item key and the requirements\n"
                 + "The item key is in the simple mod:item_id format. Optionally, it can be in mod:item_id:metadata, if you want to match metadata.\n"
