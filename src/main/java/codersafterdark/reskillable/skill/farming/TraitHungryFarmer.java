@@ -1,15 +1,15 @@
 package codersafterdark.reskillable.skill.farming;
 
-import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.unlockable.Trait;
 import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.FoodStats;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -28,19 +28,14 @@ public class TraitHungryFarmer extends Trait {
 
     @Override
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        EntityPlayer entityPlayer;
-        FoodStats foodStats;
-        PlayerData data;
-        World world;
-
-        if (event.player != null) {
-            world = event.player.getEntityWorld();
-            entityPlayer = event.player;
-            data = PlayerDataHandler.get(entityPlayer);
-            foodStats = entityPlayer.getFoodStats();
-        } else {
+        if (event.player == null) {
             return;
         }
+
+        EntityPlayer entityPlayer = event.player;
+        World world = entityPlayer.getEntityWorld();
+        PlayerData data = PlayerDataHandler.get(entityPlayer);
+        FoodStats foodStats = entityPlayer.getFoodStats();
 
         ItemStack currentStack = ItemStack.EMPTY;
         ItemFood food = null;
