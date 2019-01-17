@@ -5,6 +5,8 @@
 - Added support for using requirements as conditions in loot tables.
 - HillWalker should no longer crash if the player from PlayerTickEvent is null. [#141](https://github.com/Coders-After-Dark/Reskillable/issues/141)
 - Fixed "none" as an option in the config not working. [#139](https://github.com/Coders-After-Dark/Reskillable/issues/139)
+- Added Hungry Farmer Trait, auto feeds from food in inventory, including any potion effects that food would give.
+- Added config descriptions of some options missing descriptions.
 
 
 
