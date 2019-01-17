@@ -20,8 +20,8 @@ public class TraitHillWalker extends Trait {
         }
     }
 
-    @SubscribeEvent
-    public void onPlayerUpdate(TickEvent.PlayerTickEvent event) {
+    @Override
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
         PlayerData data = null;
         if (player != null) {
