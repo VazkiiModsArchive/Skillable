@@ -3,9 +3,9 @@ package codersafterdark.reskillable.api.data;
 import net.minecraft.nbt.*;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 public abstract class NBTLockKey implements FuzzyLockKey {
     protected NBTTagCompound tag;
@@ -62,10 +62,12 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             case Constants.NBT.TAG_BYTE_ARRAY:
                 byte[] fByteArray = ((NBTTagByteArray) full).getByteArray();
                 byte[] pByteArray = ((NBTTagByteArray) partial).getByteArray();
+                List<Integer> hits = new ArrayList<>();
                 for (byte pByte : pByteArray) {
                     boolean hasMatch = false;
-                    for (byte fByte : fByteArray) {
-                        if (pByte == fByte) {
+                    for (int i = 0; i < fByteArray.length; i++) {
+                        if (!hits.contains(i) && pByte == fByteArray[i]) {
+                            hits.add(i);
                             hasMatch = true;
                             break;
                         }
@@ -78,8 +80,17 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             case Constants.NBT.TAG_INT_ARRAY:
                 int[] fIntArray = ((NBTTagIntArray) full).getIntArray();
                 int[] pIntArray = ((NBTTagIntArray) partial).getIntArray();
+                hits = new ArrayList<>();
                 for (int pInt : pIntArray) {
-                    if (IntStream.of(fIntArray).noneMatch(i -> i == pInt)) {
+                    boolean hasMatch = false;
+                    for (int i = 0; i < fIntArray.length; i++) {
+                        if (!hits.contains(i) && pInt == fIntArray[i]) {
+                            hits.add(i);
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                    if (!hasMatch) {
                         return false;
                     }
                 }
@@ -87,8 +98,17 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             case Constants.NBT.TAG_LONG_ARRAY:
                 long[] fLongArray = getLongArray((NBTTagLongArray) full);
                 long[] pLongArray = getLongArray((NBTTagLongArray) partial);
+                hits = new ArrayList<>();
                 for (long pLong : pLongArray) {
-                    if (LongStream.of(fLongArray).noneMatch(i -> i == pLong)) {
+                    boolean hasMatch = false;
+                    for (int i = 0; i < fLongArray.length; i++) {
+                        if (!hits.contains(i) && pLong == fLongArray[i]) {
+                            hits.add(i);
+                            hasMatch = true;
+                            break;
+                        }
+                    }
+                    if (!hasMatch) {
                         return false;
                     }
                 }
