@@ -1,7 +1,8 @@
 # Changelog
 
 # 1.12.0
-
+- Don't count same entry multiple times when looking for duplicate entries in a partial NBT match for numbered lists.
+- Support for partial matching of NBTTagLongLists
 
 
 
