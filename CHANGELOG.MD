@@ -1,5 +1,10 @@
 # Changelog
 
+# 1.12.0
+
+
+
+
 ## 1.11.0
 - Added support for using unlockables and skill levels as advancement criteria.
 - Added support for using requirements as conditions in loot tables.
