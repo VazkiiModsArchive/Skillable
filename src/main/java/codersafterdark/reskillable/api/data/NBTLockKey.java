@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.Set;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public abstract class NBTLockKey implements FuzzyLockKey {
     protected NBTTagCompound tag;
@@ -77,18 +78,37 @@ public abstract class NBTLockKey implements FuzzyLockKey {
             case Constants.NBT.TAG_INT_ARRAY:
                 int[] fIntArray = ((NBTTagIntArray) full).getIntArray();
                 int[] pIntArray = ((NBTTagIntArray) partial).getIntArray();
-                for (int pint : pIntArray) {
-                    if (IntStream.of(fIntArray).noneMatch(i -> i == pint)) {
+                for (int pInt : pIntArray) {
+                    if (IntStream.of(fIntArray).noneMatch(i -> i == pInt)) {
                         return false;
                     }
                 }
                 return true;
             case Constants.NBT.TAG_LONG_ARRAY:
-                //Not sure how to get the long array object from this to actually compare them
-                return false;
+                long[] fLongArray = getLongArray((NBTTagLongArray) full);
+                long[] pLongArray = getLongArray((NBTTagLongArray) partial);
+                for (long pLong : pLongArray) {
+                    if (LongStream.of(fLongArray).noneMatch(i -> i == pLong)) {
+                        return false;
+                    }
+                }
+                return true;
             default:
                 return false;
         }
+    }
+
+    private static long[] getLongArray(NBTTagLongArray tag) {
+        String t = tag.toString();
+        String[] entries = t.substring(3, t.length() - 1).split(",");//Trim the closing bracket and the [L; at the start
+        long[] data = new long[entries.length];
+        for (int i = 0; i < entries.length; i++) {
+            try {
+                data[i] = Long.parseLong(entries[i].substring(0, entries[i].length() - 1));//Trim the L
+            } catch (Exception ignored) {
+            }
+        }
+        return data;
     }
 
     public NBTTagCompound getTag() {
