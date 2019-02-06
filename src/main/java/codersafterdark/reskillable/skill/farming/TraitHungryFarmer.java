@@ -43,6 +43,10 @@ public class TraitHungryFarmer extends Trait {
                             //The current piece won't fill you and this piece will fill you more
                             currentStack = stack;
                             bestHungerPoints = hungerPoints;
+                            if (bestHungerPoints == hungerNeeded) {
+                                //Fills you up entirely, with no hunger wasted. Best item given we don't use saturation yet
+                                break;
+                            }
                         }
                     }
                 }
