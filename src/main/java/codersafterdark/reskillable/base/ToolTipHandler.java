@@ -3,6 +3,7 @@ package codersafterdark.reskillable.base;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
 import codersafterdark.reskillable.api.data.RequirementHolder;
+import codersafterdark.reskillable.api.event.CacheInvalidatedEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static net.minecraftforge.fml.common.eventhandler.EventPriority.LOW;
 
 public class ToolTipHandler { //TODO: Convert this from being basically all static to being an object (Low priority)
     private static Map<Class<? extends GuiScreen>, Function<ToolTipInfo, List<String>>> tooltipInjectors = new HashMap<>();
@@ -92,6 +95,14 @@ public class ToolTipHandler { //TODO: Convert this from being basically all stat
     @SubscribeEvent
     public static void disconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         enabled = false;
+    }
+
+    @SubscribeEvent(priority = LOW)
+    public static void onCacheInvalidated(CacheInvalidatedEvent event) {
+        if (event.anyModified()) {
+            //If nothing was invalidated the tooltip is still valid, as if the tooltip contained information it would have had data invalidated
+            resetLast();
+        }
     }
 
     public static void addTooltipInjector(Class<? extends GuiScreen> gui, Function<ToolTipInfo, List<String>> creator) {

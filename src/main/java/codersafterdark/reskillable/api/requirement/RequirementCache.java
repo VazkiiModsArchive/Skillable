@@ -7,8 +7,6 @@ import codersafterdark.reskillable.api.event.UnlockUnlockableEvent;
 import codersafterdark.reskillable.api.requirement.logic.DoubleRequirement;
 import codersafterdark.reskillable.api.requirement.logic.OuterRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
-import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
-import codersafterdark.reskillable.base.ToolTipHandler;
 import codersafterdark.reskillable.network.InvalidateRequirementPacket;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -160,11 +158,13 @@ public class RequirementCache {
             }
             if (dirtyTypes.size() == dirtyCacheTypes.size()) {
                 //Nothing changed so the dirty types are not actually dirty and they aren't being directly invalidated because cacheType is not null
+                MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player, false));
                 return;
             }
         }
 
         if (dirtyTypes.isEmpty()) {
+            MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player, false));
             return;
         }
 
@@ -180,14 +180,6 @@ public class RequirementCache {
         }
         toRemove.forEach(requirement -> requirementCache.remove(requirement));
 
-        if (!toRemove.isEmpty()) { //There was actually a change
-            MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player));
-
-            //Hijacks this method so that it does not have to check on a timer and can instead only recheck on state change
-            //Make sure to do it after it finished clearing the cache
-            AutoUnlocker.recheck(player);
-
-            ToolTipHandler.resetLast(); //Fix tooltips sometimes not updating (mainly for when things are synced through Together Forever)
-        }
+        MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player, !toRemove.isEmpty()));
     }
 }

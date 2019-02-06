@@ -5,6 +5,14 @@
 - Support for partial matching of NBTTagLongLists
 - Fix Hungry Farmer causing a crash if you are still hungry after it ate your last piece of food.
 - Fixed a few other miscellaneous bugs in the Hungry Farmer Trait.
+- Fixed crash with Galacticraft
+- (Internal) Move some stuff around to not have listeners registered for as long when they are not needed.
+- (Internal) Use the cache invalidated event for auto unlockables and tooltip cache instead of having code directly after it.
+- Throw CacheInvalidatedEvent whenever the cache is requested to be cleared, instead of only when part gets cleared. Given in places we use it as a "something changed". Added an extra boolean to the event saying if it was modified or not.
+  - This fixes auto unlockables sometimes not working.
+  - For CompatSkills this will fix better questing support and skill hiding sometimes not working. 
+- Auto Unlockables now support uncacheable requirements
+- Custom Unlockables of cost zero now reliably get found by the auto unlocker.
 
 
 
