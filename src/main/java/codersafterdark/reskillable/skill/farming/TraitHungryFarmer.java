@@ -8,87 +8,47 @@ import codersafterdark.reskillable.lib.LibMisc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.FoodStats;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class TraitHungryFarmer extends Trait {
-    private List<ItemStack> list = new ArrayList<>();
-    private Map<ItemStack, Integer> hungerSaturationMap = new HashMap<>();
-
     public TraitHungryFarmer() {
         super(new ResourceLocation(LibMisc.MOD_NAME, "hungry_farmer"), 2, 3, new ResourceLocation(LibMisc.MOD_ID, "farming"), 8, "reskillable:farming|32");
     }
 
     @Override
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player == null) {
+        EntityPlayer player = event.player;
+        if (player == null || player.isCreative() || player.isSpectator()) {
+            //If it is somehow null or they are not in a mode they can eat from don't do anything
             return;
         }
-
-        EntityPlayer entityPlayer = event.player;
-        World world = entityPlayer.getEntityWorld();
-        PlayerData data = PlayerDataHandler.get(entityPlayer);
-        FoodStats foodStats = entityPlayer.getFoodStats();
-
-        ItemStack currentStack = ItemStack.EMPTY;
-        ItemFood food = null;
-
-        int hungDif;
-        int playerHunger = foodStats.getFoodLevel();
-
+        PlayerData data = PlayerDataHandler.get(player);
         if (data != null && data.getSkillInfo(getParentSkill()).isUnlocked(this)) {
+            int playerHunger = player.getFoodStats().getFoodLevel();
             if (playerHunger < 20) {
-                hungDif = 20 - playerHunger;
-                NonNullList<ItemStack> inventoryList = entityPlayer.inventoryContainer.getInventory();
+                NonNullList<ItemStack> inventoryList = player.inventoryContainer.getInventory();
+                ItemStack currentStack = ItemStack.EMPTY;
+                int hungerNeeded = 20 - playerHunger;
+                int bestHungerPoints = 0;
 
                 for (ItemStack stack : inventoryList) {
-                    if (stack.getItem() instanceof ItemFood) {
-                        if (LevelLockHandler.canPlayerUseItem(entityPlayer, stack)) {
-                            list.add(stack);
+                    if (!stack.isEmpty() && stack.getItem() instanceof ItemFood && LevelLockHandler.canPlayerUseItem(player, stack)) {
+                        int hungerPoints = ((ItemFood) stack.getItem()).getHealAmount(stack);
+                        if (currentStack.isEmpty() || hungerPoints < bestHungerPoints && hungerPoints >= hungerNeeded ||
+                                hungerPoints > bestHungerPoints && bestHungerPoints < hungerNeeded) {
+                            //No food item yet OR
+                            //The food is less filling but will still make you full OR
+                            //The current piece won't fill you and this piece will fill you more
+                            currentStack = stack;
+                            bestHungerPoints = hungerPoints;
                         }
                     }
                 }
 
-                for (ItemStack stack : list) {
-                    if (stack.getItem() instanceof  ItemFood) {
-                        ItemFood internalFood = (ItemFood) stack.getItem();
-                        int hunger = internalFood.getHealAmount(stack);
-                        hungerSaturationMap.put(stack, hunger);
-                    }
-                }
-
-                for (ItemStack stack : list) {
-                    if (currentStack == ItemStack.EMPTY) {
-                        currentStack = stack;
-                    } else {
-                        int hungerVal = hungerSaturationMap.get(stack);
-                        int currentHungerVal = hungerSaturationMap.get(currentStack);
-
-                        int trueVal = hungerVal - hungDif;
-                        int trueBest = currentHungerVal - hungDif;
-
-                        if (trueVal >= 0 && trueBest >= 0) {
-                            if (trueVal < trueBest) {
-                                currentStack = stack;
-                            }
-                        }
-                    }
-                }
-                
-                if (currentStack != ItemStack.EMPTY) {
-                    food = (ItemFood) currentStack.getItem();
-                }
-
-                if (food != null) {
-                    food.onItemUseFinish(currentStack, world, entityPlayer);
+                if (!currentStack.isEmpty()) {
+                    currentStack.getItem().onItemUseFinish(currentStack, player.getEntityWorld(), player);
                 }
             }
         }

@@ -3,6 +3,8 @@
 # 1.12.0
 - Don't count same entry multiple times when looking for duplicate entries in a partial NBT match for numbered lists.
 - Support for partial matching of NBTTagLongLists
+- Fix Hungry Farmer causing a crash if you are still hungry after it ate your last piece of food.
+- Fixed a few other miscellaneous bugs in the Hungry Farmer Trait.
 
 
 
