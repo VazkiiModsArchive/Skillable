@@ -107,7 +107,11 @@ public class RequirementCache {
 
     @SubscribeEvent
     public static void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        cacheMap.remove(event.player.getUniqueID());
+        removeCache(event.player.getUniqueID());
+    }
+
+    public static void removeCache(UUID uuid) {
+        cacheMap.remove(uuid);
     }
 
     public boolean requirementAchieved(Requirement requirement) {

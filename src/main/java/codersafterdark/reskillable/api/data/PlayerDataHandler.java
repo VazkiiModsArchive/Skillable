@@ -1,5 +1,6 @@
 package codersafterdark.reskillable.api.data;
 
+import codersafterdark.reskillable.api.requirement.RequirementCache;
 import codersafterdark.reskillable.api.unlockable.AutoUnlocker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +40,7 @@ public class PlayerDataHandler {
         if (data.playerWR.get() != player) {
             NBTTagCompound cmp = new NBTTagCompound();
             data.saveToNBT(cmp);
+            RequirementCache.removeCache(player.getUniqueID());
             playerData.remove(key);
             data = get(player);
             data.loadFromNBT(cmp);

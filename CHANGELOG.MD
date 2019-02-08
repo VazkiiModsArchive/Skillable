@@ -1,6 +1,10 @@
 # Changelog
 
-# 1.12.0
+## 1.12.1
+- Fix crashes caused post death due to an invalid state in the Requirement Cache.
+
+
+## 1.12.0
 - Don't count same entry multiple times when looking for duplicate entries in a partial NBT match for numbered lists.
 - Support for partial matching of NBTTagLongLists
 - Fix Hungry Farmer causing a crash if you are still hungry after it ate your last piece of food.
