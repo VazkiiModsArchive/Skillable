@@ -62,7 +62,7 @@ public class InvalidateRequirementPacket implements IMessage, IMessageHandler<In
     }
 
     public IMessage handleMessage(InvalidateRequirementPacket message, MessageContext ctx) {
-        RequirementCache.invalidateCacheNoPacket(message.uuid, message.cacheTypes);
+        RequirementCache.invalidateCacheNoPacket(message.uuid, ctx.side.isClient(), message.cacheTypes);
         return null;
     }
 }

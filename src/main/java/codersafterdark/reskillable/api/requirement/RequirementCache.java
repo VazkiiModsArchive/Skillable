@@ -9,29 +9,68 @@ import codersafterdark.reskillable.api.requirement.logic.OuterRequirement;
 import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.network.InvalidateRequirementPacket;
 import codersafterdark.reskillable.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class RequirementCache {
     private static Set<Class<? extends Requirement>> dirtyCacheTypes = new HashSet<>();
-    private static Map<UUID, ArrayList<RequirementCache>> cacheMap = new HashMap<>();
+    private static Map<SidedUUID, RequirementCache> cacheMap = new HashMap<>();
 
     private Map<Class<? extends Requirement>, Map<Requirement, Boolean>> requirementCache = new HashMap<>();
     private Set<Class<? extends Requirement>> recentlyInvalidated = new HashSet<>();
-    private EntityPlayer player;
+    private boolean valid = true;
+    private boolean isRemote;//true if client
     private boolean dirtyCache;
+    private UUID uuid;
 
+    /**
+     * @deprecated I don't believe this is used by any external addons, but just in case only deprecating it for now.
+     * Switch to using RequirementCache#getCache
+     */
+    @Deprecated
     public RequirementCache(@Nonnull EntityPlayer player) {
-        this.player = player;
-        cacheMap.computeIfAbsent(player.getUniqueID(), k -> new ArrayList<>()).add(this);
+        this(player.getUniqueID(), player.getEntityWorld().isRemote);
+        cacheMap.put(new SidedUUID(uuid, isRemote), this);
+    }
+
+    private RequirementCache(UUID uuid, boolean isClientPlayer) {
+        this.uuid = uuid;
+        this.isRemote = isClientPlayer;
+    }
+
+    public static RequirementCache getCache(@Nonnull EntityPlayer player) {
+        return getCache(player.getUniqueID(), player.getEntityWorld().isRemote);
+    }
+
+    public static RequirementCache getCache(UUID uuid, boolean isRemote) {
+        SidedUUID sidedUUID = new SidedUUID(uuid, isRemote);
+        if (cacheMap.containsKey(sidedUUID)) {
+            return cacheMap.get(sidedUUID);
+        }
+        RequirementCache cache = new RequirementCache(uuid, isRemote);
+        cacheMap.put(sidedUUID, cache);
+        return cache;
+    }
+
+    public static boolean hasCache(@Nonnull EntityPlayer player) {
+        return hasCache(player.getUniqueID(), player.getEntityWorld().isRemote);
+    }
+
+    public static boolean hasCache(UUID uuid, boolean isRemote) {
+        return cacheMap.containsKey(new SidedUUID(uuid, isRemote));
     }
 
     public static void registerDirtyTypes() {
@@ -50,38 +89,61 @@ public class RequirementCache {
         }
     }
 
-    private static ArrayList<RequirementCache> getCache(UUID uuid) {
-        if (cacheMap.containsKey(uuid)) {
-            return (ArrayList<RequirementCache>) cacheMap.get(uuid).clone();
-        }
-        return new ArrayList<>();
-    }
-
+    //This method signature cannot be changed or it would cause crashes with some addons
+    //TODO: Maybe make a method that allows for the sidedness to be stated that you want the cache invalidated for?
+    //TODO Cont: invalidateCacheNoPacket may cover that already
     public static void invalidateCache(UUID uuid, Class<? extends Requirement>... cacheTypes) {
-        ArrayList<RequirementCache> requirementCaches = getCache(uuid);
-        if (requirementCaches.size() == 1) {
-            //Only send sync packets if they are not in single player, otherwise it already syncs
-            InvalidateRequirementPacket invalidatePacket = new InvalidateRequirementPacket(uuid, cacheTypes);
-            EntityPlayer player = requirementCaches.get(0).player;
-            if (player instanceof EntityPlayerMP) {
-                PacketHandler.INSTANCE.sendTo(invalidatePacket, (EntityPlayerMP) player);
-            } else {
-                PacketHandler.INSTANCE.sendToServer(invalidatePacket);
+        boolean hasServer = hasCache(uuid, false);
+        boolean hasClient = hasCache(uuid, true);
+        if (hasServer) {
+            invalidateCacheNoPacket(uuid, false, cacheTypes);
+            if (!hasClient) {
+                //Send packet to client
+                RequirementCache cache = getCache(uuid, false);
+                if (cache != null) {
+                    EntityPlayer player = cache.getPlayer();
+                    if (player != null) {
+                        PacketHandler.INSTANCE.sendTo(new InvalidateRequirementPacket(uuid, cacheTypes), (EntityPlayerMP) player);
+                    }
+                }
             }
         }
-        requirementCaches.forEach(cache -> cache.invalidateCache(cacheTypes));
+        if (hasClient) {
+            invalidateCacheNoPacket(uuid, true, cacheTypes);
+            if (!hasServer) {
+                //Send packet to server
+                PacketHandler.INSTANCE.sendToServer(new InvalidateRequirementPacket(uuid, cacheTypes));
+            }
+        }
     }
 
+    /**
+     * @deprecated I don't believe this is used by any external addons, but just in case only deprecating it for now.
+     */
+    @Deprecated
     public static void invalidateCacheNoPacket(UUID uuid, Class<? extends Requirement>... cacheTypes) {
-        getCache(uuid).forEach(cache -> cache.invalidateCache(cacheTypes));
+        invalidateCacheNoPacket(uuid, true, cacheTypes);
+        invalidateCacheNoPacket(uuid, false, cacheTypes);
+    }
+
+    public static void invalidateCacheNoPacket(UUID uuid, boolean isRemote, Class<? extends Requirement>... cacheTypes) {
+        getCache(uuid, isRemote).invalidateCache(cacheTypes);
     }
 
     public static boolean requirementAchieved(EntityPlayer player, Requirement requirement) {
-        return player != null && requirementAchieved(player.getUniqueID(), requirement);
+        return player != null && requirementAchieved(player.getUniqueID(), player.getEntityWorld().isRemote, requirement);
     }
 
+    /**
+     * @deprecated I don't believe this is used by any external addons, but just in case only deprecating it for now.
+     */
+    @Deprecated
     public static boolean requirementAchieved(UUID uuid, Requirement requirement) {
-        return getCache(uuid).stream().anyMatch(cache -> cache.requirementAchieved(requirement));
+        return requirementAchieved(uuid, true, requirement) || requirementAchieved(uuid, false, requirement);
+    }
+
+    public static boolean requirementAchieved(UUID uuid, boolean isRemote, Requirement requirement) {
+        return getCache(uuid, isRemote).requirementAchieved(requirement);
     }
 
     @SubscribeEvent
@@ -107,15 +169,53 @@ public class RequirementCache {
 
     @SubscribeEvent
     public static void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        removeCache(event.player.getUniqueID());
+        removeCache(event.player.getUniqueID(), true);
+        removeCache(event.player.getUniqueID(), false);
     }
 
-    public static void removeCache(UUID uuid) {
-        cacheMap.remove(uuid);
+    public static void removeCache(EntityPlayer player) {
+        removeCache(player.getUniqueID(), player.getEntityWorld().isRemote);
+    }
+
+    public static void removeCache(UUID uuid, boolean isRemote) {
+        SidedUUID sidedUUID = new SidedUUID(uuid, isRemote);
+        if (cacheMap.containsKey(sidedUUID)) {
+            cacheMap.get(sidedUUID).valid = false;
+            cacheMap.remove(sidedUUID);
+        }
+    }
+
+    @Nullable
+    private EntityPlayer getPlayer() {
+        if (isRemote) {
+            return Minecraft.getMinecraft().world.getPlayerEntityByUUID(uuid);
+        }
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        //Server should only be able to be null when isRemote is true, but just in case have this statement
+        if (server != null) {
+            for (WorldServer world : server.worlds) {
+                EntityPlayer player = world.getPlayerEntityByUUID(uuid);
+                if (player != null) {
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
+    //TODO: Use this in places to ensure that a new RequirementCache is not required.
+    //TODO Cont: In places that use this they should probably throw an exception that says the state is invalid
+    //TODO Cont: For example requirementAchieved
+    public boolean isValid() {
+        return this.valid;
     }
 
     public boolean requirementAchieved(Requirement requirement) {
-        if (requirement == null) {
+        if (requirement == null || !isValid()) {
+            return false;
+        }
+        EntityPlayer player = getPlayer();
+        if (player == null) {
             return false;
         }
 
@@ -149,6 +249,13 @@ public class RequirementCache {
     }
 
     public void invalidateCache(Class<? extends Requirement>... cacheType) {
+        EntityPlayer player = getPlayer();
+        if (player == null) {
+            //Do not fire off a cache invalidated event, as we do not know what player to fire it with
+            //TODO: At some point maybe make it so that the CacheInvalidatedEvent can be fired via uuid instead of with a player
+            return;
+        }
+
         List<Class<? extends Requirement>> dirtyTypes = dirtyCache ? new ArrayList<>(dirtyCacheTypes) : new ArrayList<>();
         //Clear all types that are supposed to be invalidated each time if dirtyCache is true
 
@@ -185,5 +292,32 @@ public class RequirementCache {
         toRemove.forEach(requirement -> requirementCache.remove(requirement));
 
         MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player, !toRemove.isEmpty()));
+    }
+
+    private static class SidedUUID {
+        private final UUID uuid;
+        private final boolean isRemote; //true if client
+
+        private SidedUUID(UUID uuid, boolean isRemote) {
+            this.uuid = uuid;
+            this.isRemote = isRemote;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj instanceof SidedUUID) {
+                SidedUUID other = (SidedUUID) obj;
+                return isRemote == other.isRemote && uuid.equals(other.uuid);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(isRemote, uuid);
+        }
     }
 }

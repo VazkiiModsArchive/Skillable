@@ -40,7 +40,7 @@ public class PlayerDataHandler {
         if (data.playerWR.get() != player) {
             NBTTagCompound cmp = new NBTTagCompound();
             data.saveToNBT(cmp);
-            RequirementCache.removeCache(player.getUniqueID());
+            RequirementCache.removeCache(player.getUniqueID(), player.getEntityWorld().isRemote);
             playerData.remove(key);
             data = get(player);
             data.loadFromNBT(cmp);

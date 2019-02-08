@@ -2,6 +2,7 @@
 
 ## 1.12.1
 - Fix crashes caused post death due to an invalid state in the Requirement Cache.
+- Rewrote the internal handling of requirement caches so that there should be less sync issues, and have better memory management.
 
 
 ## 1.12.0

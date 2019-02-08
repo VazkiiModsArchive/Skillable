@@ -32,7 +32,7 @@ public class PlayerData {
     public PlayerData(EntityPlayer player) {
         playerWR = new WeakReference<>(player);
         client = player.getEntityWorld().isRemote;
-        requirementCache = new RequirementCache(player);
+        requirementCache = RequirementCache.getCache(player);
 
         ReskillableRegistries.SKILLS.getValuesCollection().forEach(s -> skillInfo.put(s, new PlayerSkillInfo(s)));
 
