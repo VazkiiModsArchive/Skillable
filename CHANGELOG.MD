@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.2
+- Fixed syncing from server to client not invalidating the client's requirement cache on first join.
+
+
 ## 1.12.1
 - Fix crashes caused post death due to an invalid state in the Requirement Cache.
 - Rewrote the internal handling of requirement caches so that there should be less sync issues, and have better memory management.

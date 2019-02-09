@@ -3,6 +3,8 @@ package codersafterdark.reskillable.network;
 import codersafterdark.reskillable.Reskillable;
 import codersafterdark.reskillable.api.data.PlayerData;
 import codersafterdark.reskillable.api.data.PlayerDataHandler;
+import codersafterdark.reskillable.api.requirement.SkillRequirement;
+import codersafterdark.reskillable.api.requirement.TraitRequirement;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,5 +46,6 @@ public class MessageDataSync implements IMessage, IMessageHandler<MessageDataSyn
     public void handleMessage(MessageDataSync message) {
         PlayerData data = PlayerDataHandler.get(Reskillable.proxy.getClientPlayer());
         data.loadFromNBT(message.cmp);
+        data.getRequirementCache().invalidateCache(SkillRequirement.class, TraitRequirement.class);
     }
 }
