@@ -127,10 +127,10 @@ public class RequirementHolder {
             return;
         }
         if (!ConfigHandler.hideRequirements || GuiScreen.isShiftKeyDown()) {
-            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
+            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("reskillable.misc.skillLock").getUnformattedComponentText());
             addRequirementsIgnoreShift(data, tooltip);
         } else {
-            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
+            tooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("reskillable.misc.skillLockShift").getUnformattedComponentText());
         }
     }
 

@@ -10,10 +10,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MessageLockedItem implements IMessage, IMessageHandler<MessageLockedItem, IMessage> {
-    public static final String MSG_ITEM_LOCKED = "skillable.misc.itemLocked";
-    public static final String MSG_BLOCK_BREAK_LOCKED = "skillable.misc.blockBreakLocked";
-    public static final String MSG_BLOCK_USE_LOCKED = "skillable.misc.blockUseLocked";
-    public static final String MSG_ARMOR_EQUIP_LOCKED = "skillable.misc.armorEquipLocked";
+    public static final String MSG_ITEM_LOCKED = "reskillable.misc.itemLocked";
+    public static final String MSG_BLOCK_BREAK_LOCKED = "reskillable.misc.blockBreakLocked";
+    public static final String MSG_BLOCK_USE_LOCKED = "reskillable.misc.blockUseLocked";
+    public static final String MSG_ARMOR_EQUIP_LOCKED = "reskillable.misc.armorEquipLocked";
 
     public ItemStack stack;
     public String msg;

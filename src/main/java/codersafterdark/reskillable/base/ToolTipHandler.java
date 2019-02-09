@@ -68,10 +68,10 @@ public class ToolTipHandler { //TODO: Convert this from being basically all stat
         if (!toolTip.isEmpty() || !extraToolTips.isEmpty()) {
             List<String> curTooltip = event.getToolTip();
             if (showDetails) {
-                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLock").getUnformattedComponentText());
+                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("reskillable.misc.skillLock").getUnformattedComponentText());
                 curTooltip.addAll(toolTip);
             } else {
-                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("skillable.misc.skillLockShift").getUnformattedComponentText());
+                curTooltip.add(TextFormatting.DARK_PURPLE + new TextComponentTranslation("reskillable.misc.skillLockShift").getUnformattedComponentText());
             }
             curTooltip.addAll(extraToolTips);
         }

@@ -54,7 +54,7 @@ public class GuiButtonInventoryTab extends GuiButton {
             drawTexturedModalRect(this.x + 12, y + 6, 176 + type.iconIndex * 16, 28, 16, 16);
 
             if (mouseX > this.x && mouseY > this.y && mouseX < this.x + width && mouseY < this.y + height) {
-                InventoryTabHandler.tooltip = new TextComponentTranslation("skillable.tab." + type.name().toLowerCase()).getUnformattedComponentText();
+                InventoryTabHandler.tooltip = new TextComponentTranslation("reskillable.tab." + type.name().toLowerCase()).getUnformattedComponentText();
                 InventoryTabHandler.mx = mouseX;
                 InventoryTabHandler.my = mouseY;
             }

@@ -2,6 +2,8 @@
 
 ## 1.12.2
 - Fixed syncing from server to client not invalidating the client's requirement cache on first join.
+- Changed lang file format to resource pack format 3
+- Lang files now use `reskillable` in all locations instead of still using `skillable` in some
 
 
 ## 1.12.1

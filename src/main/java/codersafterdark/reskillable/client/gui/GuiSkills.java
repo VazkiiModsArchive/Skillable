@@ -147,7 +147,7 @@ public class GuiSkills extends GuiScreen {
         drawScrollButtonsTop(left + 49, top + 14);
         drawScrollButtonsBottom(left + 49, lastY + 32);
 
-        String skillsStr = new TextComponentTranslation("skillable.misc.skills").getUnformattedComponentText();
+        String skillsStr = new TextComponentTranslation("reskillable.misc.skills").getUnformattedComponentText();
         fontRenderer.drawString(skillsStr, width / 2 - fontRenderer.getStringWidth(skillsStr) / 2, top + 5, 4210752);
 
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -62,11 +62,11 @@ public abstract class Unlockable extends IForgeRegistryEntry.Impl<Unlockable> im
     }
 
     public String getName() {
-        return new TextComponentTranslation("skillable.unlock." + getKey()).getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.unlock." + getKey()).getUnformattedComponentText();
     }
 
     public String getDescription() {
-        return new TextComponentTranslation("skillable.unlock." + getKey() + ".desc").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.unlock." + getKey() + ".desc").getUnformattedComponentText();
     }
 
     public ResourceLocation getIcon() {

@@ -8,7 +8,7 @@ import net.minecraft.util.text.TextFormatting;
 //This has the same body as a TrueRequirement, except that it should not simplify out
 public final class NoneRequirement extends Requirement {
     public NoneRequirement() {
-        this.tooltip = TextFormatting.GREEN + new TextComponentTranslation("skillable.misc.unobtainableFormat").getUnformattedComponentText();
+        this.tooltip = TextFormatting.GREEN + new TextComponentTranslation("reskillable.misc.unobtainableFormat").getUnformattedComponentText();
     }
 
     @Override

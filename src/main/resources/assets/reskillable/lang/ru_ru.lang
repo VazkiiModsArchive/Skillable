@@ -1,0 +1,121 @@
+# MISC
+reskillable.misc.capped=Макс
+reskillable.misc.skills=Навыки
+reskillable.misc.skillLock=Требования:
+reskillable.misc.skillLockShift=SHIFT для отображения требований
+reskillable.misc.skillPoints=%d Очки Навыка
+reskillable.misc.holdShift=SHIFT для описания
+reskillable.misc.unlocked=Открыто!
+reskillable.misc.itemLocked=Недостаточно опыта для использования этого предмета!
+reskillable.misc.blockBreakLocked=Недостаточно опыта для разрушения этого блока!
+reskillable.misc.blockUseLocked=Недостаточно опыта для использования этого блока!
+reskillable.misc.armorEquipLocked=Недостаточно опыта для ношения этой брони!
+
+# FORMATS
+reskillable.misc.skillFormat=%s%s: %s%d
+reskillable.misc.achievementFormat=Прогресс: %s%s
+reskillable.misc.traitFormat=Trait: %s%s
+
+# SKILL NAMES
+reskillable.skill.reskillable.mining=Горное Дело
+reskillable.skill.reskillable.gathering=Собирательство
+reskillable.skill.reskillable.attack=Атака
+reskillable.skill.reskillable.defense=Защита
+reskillable.skill.reskillable.building=Строительство
+reskillable.skill.reskillable.farming=Земледелие
+reskillable.skill.reskillable.agility=Выносливость
+reskillable.skill.reskillable.magic=Магия
+
+# UNLOCKABLE NAMES
+reskillable.unlock.reskillable.obsidian_smasher=Разрушитель Обсидиана
+reskillable.unlock.reskillable.obsidian_smasher.desc=Сильно увеличивает скорость добычи Обсидиана при использовании Алмазной Кирки
+reskillable.unlock.reskillable.fossil_digger=Старатель
+reskillable.unlock.reskillable.fossil_digger.desc=Добавляет небольшой шанс добыть 2 Угля вместо одного используя Железную Кирку и выше (без Шелкового Касания)
+reskillable.unlock.reskillable.ore_cascade=Каскад Руд
+reskillable.unlock.reskillable.ore_cascade.desc=Включенное Умение: Добыча Блока Руды спровоцирует добычу всей жилы. Кирка понесёт двойной износ
+reskillable.unlock.reskillable.lucky_fisherman=Удачливый Рыболов
+reskillable.unlock.reskillable.lucky_fisherman.desc=Удача увеличена для ловли
+reskillable.unlock.reskillable.drop_guarantee=Гарантированный Дроп
+reskillable.unlock.reskillable.drop_guarantee.desc=Вражеские мобы всегда будут дропать хотя бы один предмет (если применимо)
+reskillable.unlock.reskillable.neutralissse=ОбезвреШШивание
+reskillable.unlock.reskillable.neutralissse.desc=Удар по криперу сразу же, как только он начнёт шипеть, нейтрализует его на несколько секунд
+reskillable.unlock.reskillable.undershirt=Мифриловая Кольчуга
+reskillable.unlock.reskillable.undershirt.desc=Каждые 10 секунд, получая фатальные повреждения, когда здоровье больше 3 сердец, нанесённый урон будет лишь полсердца вместо смерти
+reskillable.unlock.reskillable.transmutation=Корусовая Трансмутация
+reskillable.unlock.reskillable.transmutation.desc=Открывает способность для Плода Коруса быть использованным как блок Трансмутационного агента, который трансформирует лишь некоторые блоки в другие
+reskillable.unlock.reskillable.perfect_recover=Полное Восстановление
+reskillable.unlock.reskillable.perfect_recover.desc=Блоки, из которых выпадают их компоненты, такие как Светопыль, всегда будут дропать достаточно, чтобы восстановить блок
+reskillable.unlock.reskillable.more_wheat=Спелые Хлеба
+reskillable.unlock.reskillable.more_wheat.desc=Добавляет небольшой шанс собрать две пшеницы вместо одной с полностью созревшего посева
+reskillable.unlock.reskillable.green_thumb=Зеленый Росток
+reskillable.unlock.reskillable.green_thumb.desc=С этой способностью растения вокруг Игрока растут быстрей
+reskillable.unlock.reskillable.roadwalk=Прогулка
+reskillable.unlock.reskillable.roadwalk.desc=Увеличивает скорость передвижения при ходьбе по дорожке
+reskillable.unlock.reskillable.golden_osmosis=Золотой Осмос
+reskillable.unlock.reskillable.golden_osmosis.desc=Золотые инструменты, когда в руке, будут черпать Опыт у игрока, чтобы быстро восстановиться
+reskillable.unlock.reskillable.sidestep=Рывок в сторону
+reskillable.unlock.reskillable.sidestep.desc=Двойное нажатие "Шаг влево" или "Шаг вправо" при движении назад и удерживании кнопки бега сделает рывок в сторону с небольшим откатом
+reskillable.unlock.reskillable.safe_port=Безопасный Порт
+reskillable.unlock.reskillable.safe_port.desc=Телепортация с Жемчужиной Края больше не наносит повреждения
+reskillable.unlock.reskillable.battle_spirit=Боевой Дух
+reskillable.unlock.reskillable.battle_spirit.desc=Убийство монстра даст вам кратковременный Эффект Силы
+reskillable.unlock.reskillable.effect_twist=Зеркало
+reskillable.unlock.reskillable.effect_twist.desc=При получении урона от монстра, находясь под положительными чарами, есть шанс нанесения плохой версии чар на атакующего
+reskillable.unlock.reskillable.hillwalker=Скалолаз
+reskillable.unlock.reskillable.hillwalker.desc=После длительных путешествий и отвесных подъемов, ты достиг состояния вечного взбирания в любой ситуации. Теперь ты бегаешь ВПРИПРЫЖЕЧКУ
+
+# RANK NAMES
+reskillable.rank.0=Новичок
+reskillable.rank.1=Знающий
+reskillable.rank.2=Ученик
+reskillable.rank.3=Ремесленник
+reskillable.rank.4=Адепт
+reskillable.rank.5=Опытный
+reskillable.rank.6=Эксперт
+reskillable.rank.7=Мастер
+reskillable.rank.8=Абсолют
+
+# TAB NAMES
+reskillable.tab.inventory=Инвентарь
+reskillable.tab.skills=Навыки
+reskillable.tab.abilities=Способности
+
+# KEY-BINDINGS
+key.controls.reskillable=Reskillable - Навыки
+key.openGUI=Открыть Интерфейс Навыков
+
+# COMMANDS
+reskillable.command.usage=/reskillable команда
+reskillable.command.resetskill.usage=/reskillable resetskill <игрок> <навык>
+reskillable.command.setskilllevel.usage=/reskillable setskilllevel <игрок> <навык> <уровень>
+reskillable.command.incrementskill.usage=/reskillable incrementskill <игрок> <навык>
+reskillable.command.resetall.usage=/reskillable resetall <игрок>
+reskillable.command.toggletrait.usage=/reskillable toggletrait <игрок> <награда>
+
+reskillable.command.success.unlocktrait=Успешно разблокирована '%s' для игрока '%s'.
+reskillable.command.success.locktrait=Успешно заблокирована '%s' для игрока '%s'.
+reskillable.command.success.resetskill=Успешно сброшен Навык: '%s' для игрока '%s'.
+reskillable.command.success.setskilllevel=Успешно задан уровень Навыка: '%s' to '%s' для игрока '%s'.
+reskillable.command.success.skillup=Успешно повышен уровень Навыка: '%s' для игрока '%s'.
+reskillable.command.success.resetall=Успешно сброшены все Навыки для игрока '%s'.
+
+reskillable.command.fail.unlocktrait=Не удалось разблокировать '%s' для игрока '%s'.
+reskillable.command.fail.locktrait=Не удалось заблокировать '%s' для игрока '%s'.
+reskillable.command.fail.resetskill=Не удалось сбросить Навык: '%s' для игрока '%s'.
+reskillable.command.fail.setskilllevel=Не удалось задать уровень Навыка: '%s' to '%s' для игрока '%s'.
+reskillable.command.fail.skillup=Не удалось повысить уровень Навыка: '%s' для игрока '%s'.
+reskillable.command.fail.resetall=Не удалось сбросить Навыки '%s' для игрока '%s'.
+
+reskillable.command.invalid.skill=Навык '%s' является неверным.
+reskillable.command.invalid.trait=Награда '%s' является неверной.
+reskillable.command.invalid.pastcap=Уровень '%s' больше, чем предел '%s' для этого навыка.
+reskillable.command.invalid.belowmin=Уровень '%s' ниже минимального '1'.
+
+reskillable.command.invalid.missing.skill=Необходимо ввести название Навыка.
+reskillable.command.invalid.missing.trait=Необходимо ввести название Награды.
+reskillable.command.invalid.missing.player=Необходимо ввести название Игрока.
+reskillable.command.invalid.missing.level=Необходимо ввести уровень числом, чтобы задать его для Навыка.
+reskillable.command.invalid.missing.playerskill=Необходимо ввести Никнейм и название Навыка.
+reskillable.command.invalid.missing.playertrait=Необходимо ввести Никнейм и название Награды.
+reskillable.command.invalid.missing.playerskilllevel=Необходимо ввести Никнейм, название Навыка и уровень для этого навыка.
+reskillable.command.invalid.missing.skilllevel=Необходимо название Навыка и уровень для этого навыка.

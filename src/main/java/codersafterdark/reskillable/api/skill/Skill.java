@@ -44,7 +44,7 @@ public abstract class Skill extends IForgeRegistryEntry.Impl<Skill> implements C
     }
 
     public String getName() {
-        return new TextComponentTranslation("skillable.skill." + getKey()).getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.skill." + getKey()).getUnformattedComponentText();
     }
 
     public ResourceLocation getBackground() {
