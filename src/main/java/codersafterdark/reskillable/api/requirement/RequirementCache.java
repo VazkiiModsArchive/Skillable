@@ -210,6 +210,26 @@ public class RequirementCache {
         return this.valid;
     }
 
+    /**
+     * Force clears a cache, should not be used in most situations.
+     *
+     * Currently is only used when a client joins as the cache does not realize it is dirty.
+     */
+    public void forceClear() {
+        if (isValid()) {
+            EntityPlayer player = getPlayer();
+            if (player != null) {
+                requirementCache.clear();
+                recentlyInvalidated.clear();
+                dirtyCache = false;
+                MinecraftForge.EVENT_BUS.post(new CacheInvalidatedEvent(player, true));
+                if (!isRemote) {
+                    PacketHandler.INSTANCE.sendTo(new InvalidateRequirementPacket(uuid), (EntityPlayerMP) player);
+                }
+            }
+        }
+    }
+
     public boolean requirementAchieved(Requirement requirement) {
         if (requirement == null || !isValid()) {
             return false;
