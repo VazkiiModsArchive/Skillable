@@ -32,7 +32,7 @@ public class AdvancementRequirement extends Requirement {
     public String getToolTip(PlayerData data) {
         if (tooltip.isEmpty()) {
             Advancement adv = getAdvancement();
-            this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("reskillable.misc.achievementFormat",
+            this.tooltip = TextFormatting.GRAY + " - " + TextFormatting.GOLD + new TextComponentTranslation("reskillable.requirements.format.advancement",
                     "%S", adv == null ? "" : adv.getDisplayText().getUnformattedText().replaceAll("[\\[\\]]", "")).getUnformattedComponentText();
         }
         return super.getToolTip(data);

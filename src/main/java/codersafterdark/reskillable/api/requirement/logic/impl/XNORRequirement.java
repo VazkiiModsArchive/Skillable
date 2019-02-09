@@ -18,7 +18,7 @@ public class XNORRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.xnorFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.xnor").getUnformattedComponentText();
     }
 
     @Override

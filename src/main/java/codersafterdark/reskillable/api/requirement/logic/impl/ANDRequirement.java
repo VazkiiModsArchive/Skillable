@@ -18,7 +18,7 @@ public class ANDRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.andFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.and").getUnformattedComponentText();
     }
 
     //TODO: Figure out how to implement this in the other logic requirements for if the elements are not just the same

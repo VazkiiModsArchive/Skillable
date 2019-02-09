@@ -18,7 +18,7 @@ public class NORRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.norFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.nor").getUnformattedComponentText();
     }
 
     @Override

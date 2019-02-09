@@ -9,7 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class FalseRequirement extends Requirement {
     public FalseRequirement() {
-        this.tooltip = TextFormatting.RED + new TextComponentTranslation("reskillable.misc.unobtainableFormat").getUnformattedComponentText();
+        this.tooltip = TextFormatting.RED + new TextComponentTranslation("reskillable.requirements.format.unobtainable").getUnformattedComponentText();
     }
 
     @Override

@@ -18,7 +18,7 @@ public class XORRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.xorFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.xor").getUnformattedComponentText();
     }
 
     @Override

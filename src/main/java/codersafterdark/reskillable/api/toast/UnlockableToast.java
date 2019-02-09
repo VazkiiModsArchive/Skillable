@@ -12,7 +12,7 @@ public class UnlockableToast extends AbstractToast {
     private final Unlockable unlockable;
 
     public UnlockableToast(Unlockable unlockable) {
-        super(unlockable.getName(), new TextComponentTranslation("reskillable.toast.unlockableDesc").getUnformattedComponentText());
+        super(unlockable.getName(), new TextComponentTranslation("reskillable.toast.unlockable_desc").getUnformattedComponentText());
         this.unlockable = unlockable;
     }
 

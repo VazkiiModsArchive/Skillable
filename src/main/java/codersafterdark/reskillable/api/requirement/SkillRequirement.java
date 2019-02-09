@@ -15,7 +15,7 @@ public class SkillRequirement extends Requirement {
     public SkillRequirement(Skill skill, int level) {
         this.skill = skill;
         this.level = level;
-        this.tooltip = TextFormatting.GRAY + " - " + new TextComponentTranslation("reskillable.misc.skillFormat", TextFormatting.DARK_AQUA, skill.getName(),
+        this.tooltip = TextFormatting.GRAY + " - " + new TextComponentTranslation("reskillable.requirements.format.skill", TextFormatting.DARK_AQUA, skill.getName(),
                 "%s", level).getUnformattedComponentText();
     }
 

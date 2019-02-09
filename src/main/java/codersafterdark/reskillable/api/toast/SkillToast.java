@@ -16,7 +16,7 @@ public class SkillToast extends AbstractToast {
     private final int rank;
 
     public SkillToast(Skill skill, int level) {
-        super(skill.getName(), new TextComponentTranslation("reskillable.toast.skillDesc", level).getUnformattedComponentText());
+        super(skill.getName(), new TextComponentTranslation("reskillable.toast.skill_desc", level).getUnformattedComponentText());
         this.skill = skill;
         this.rank = this.skill.getRank(level);
     }

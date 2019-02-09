@@ -18,7 +18,7 @@ public class ORRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.orFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.or").getUnformattedComponentText();
     }
 
     @Override

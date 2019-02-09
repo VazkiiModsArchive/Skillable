@@ -18,7 +18,7 @@ public class NANDRequirement extends DoubleRequirement {
 
     @Override
     protected String getFormat() {
-        return new TextComponentTranslation("reskillable.misc.nandFormat").getUnformattedComponentText();
+        return new TextComponentTranslation("reskillable.requirements.format.nand").getUnformattedComponentText();
     }
 
     @Override

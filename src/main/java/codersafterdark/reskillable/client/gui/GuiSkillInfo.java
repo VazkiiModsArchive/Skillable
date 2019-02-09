@@ -117,7 +117,7 @@ public class GuiSkillInfo extends GuiScreen {
         mc.fontRenderer.drawString(TextFormatting.BOLD + skill.getName(), left + 22, top + 8, 4210752);
         mc.fontRenderer.drawString(levelStr, left + 22, top + 18, 4210752);
 
-        mc.fontRenderer.drawString(new TextComponentTranslation("reskillable.misc.skillPoints", skillInfo.getSkillPoints()).getUnformattedComponentText(), left + 15, top + 154, 4210752);
+        mc.fontRenderer.drawString(new TextComponentTranslation("reskillable.misc.skill_points", skillInfo.getSkillPoints()).getUnformattedComponentText(), left + 15, top + 154, 4210752);
 
         int cost = skillInfo.getLevelUpCost();
         String costStr = Integer.toString(cost);
@@ -186,7 +186,7 @@ public class GuiSkillInfo extends GuiScreen {
         if (isShiftKeyDown()) {
             addLongStringToTooltip(tooltip, hoveredUnlockable.getDescription(), guiWidth);
         } else {
-            tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("reskillable.misc.holdShift").getUnformattedComponentText());
+            tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("reskillable.misc.shift").getUnformattedComponentText());
             tooltip.add("");
         }
 
@@ -196,7 +196,7 @@ public class GuiSkillInfo extends GuiScreen {
             tooltip.add(TextFormatting.GREEN + new TextComponentTranslation("reskillable.misc.unlocked").getUnformattedComponentText());
         }
 
-        tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("reskillable.misc.skillPoints", hoveredUnlockable.getCost()).getUnformattedComponentText());
+        tooltip.add(TextFormatting.GRAY + new TextComponentTranslation("reskillable.misc.skill_points", hoveredUnlockable.getCost()).getUnformattedComponentText());
 
         renderTooltip(mouseX, mouseY, tooltip);
     }

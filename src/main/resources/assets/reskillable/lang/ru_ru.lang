@@ -1,20 +1,21 @@
 # MISC
 reskillable.misc.capped=Макс
 reskillable.misc.skills=Навыки
-reskillable.misc.skillLock=Требования:
-reskillable.misc.skillLockShift=SHIFT для отображения требований
-reskillable.misc.skillPoints=%d Очки Навыка
-reskillable.misc.holdShift=SHIFT для описания
+reskillable.misc.requirements=Требования:
+reskillable.misc.requirements_shift=SHIFT для отображения требований
+reskillable.misc.skill_points=%d Очки Навыка
+reskillable.misc.shift=SHIFT для описания
 reskillable.misc.unlocked=Открыто!
-reskillable.misc.itemLocked=Недостаточно опыта для использования этого предмета!
-reskillable.misc.blockBreakLocked=Недостаточно опыта для разрушения этого блока!
-reskillable.misc.blockUseLocked=Недостаточно опыта для использования этого блока!
-reskillable.misc.armorEquipLocked=Недостаточно опыта для ношения этой брони!
+
+reskillable.misc.locked.item=Недостаточно опыта для использования этого предмета!
+reskillable.misc.locked.block_break=Недостаточно опыта для разрушения этого блока!
+reskillable.misc.locked.block_use=Недостаточно опыта для использования этого блока!
+reskillable.misc.locked.armor_equip=Недостаточно опыта для ношения этой брони!
 
 # FORMATS
-reskillable.misc.skillFormat=%s%s: %s%d
-reskillable.misc.achievementFormat=Прогресс: %s%s
-reskillable.misc.traitFormat=Trait: %s%s
+reskillable.requirements.format.skill=%s%s: %s%d
+reskillable.requirements.format.advancement=Прогресс: %s%s
+reskillable.requirements.format.trait=Trait: %s%s
 
 # SKILL NAMES
 reskillable.skill.reskillable.mining=Горное Дело
@@ -82,7 +83,7 @@ reskillable.tab.abilities=Способности
 
 # KEY-BINDINGS
 key.controls.reskillable=Reskillable - Навыки
-key.openGUI=Открыть Интерфейс Навыков
+key.open_gui=Открыть Интерфейс Навыков
 
 # COMMANDS
 reskillable.command.usage=/reskillable команда

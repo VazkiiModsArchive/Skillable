@@ -1,27 +1,28 @@
 # MISC
 reskillable.misc.capped=MAX
 reskillable.misc.skills=Skills
-reskillable.misc.skillLock=Requirements:
-reskillable.misc.skillLockShift=Hold SHIFT for requirements
-reskillable.misc.skillPoints=%d Skill Points
-reskillable.misc.holdShift=Hold SHIFT for description
+reskillable.misc.requirements=Requirements:
+reskillable.misc.requirements_shift=Hold SHIFT for requirements
+reskillable.misc.skill_points=%d Skill Points
+reskillable.misc.shift=Hold SHIFT for description
 reskillable.misc.unlocked=Unlocked!
-reskillable.misc.itemLocked=You don't meet the requirements to use this item
-reskillable.misc.blockBreakLocked=You don't meet the requirements to break this block
-reskillable.misc.blockUseLocked=You don't meet the requirements to use this block
-reskillable.misc.armorEquipLocked=You don't meet the requirements to wear this armor
+
+reskillable.misc.locked.item=You don't meet the requirements to use this item
+reskillable.misc.locked.block_break=You don't meet the requirements to break this block
+reskillable.misc.locked.block_use=You don't meet the requirements to use this block
+reskillable.misc.locked.armor_equip=You don't meet the requirements to wear this armor
 
 # FORMATS
-reskillable.misc.skillFormat=%s%s: %s%d
-reskillable.misc.achievementFormat=Advancement: %s%s
-reskillable.misc.traitFormat=Trait: %s%s
-reskillable.misc.unobtainableFormat=Unobtainable
-reskillable.misc.andFormat=AND
-reskillable.misc.nandFormat=NAND
-reskillable.misc.orFormat=OR
-reskillable.misc.norFormat=NOR
-reskillable.misc.xorFormat=XOR
-reskillable.misc.xnorFormat=XNOR
+reskillable.requirements.format.skill=%s%s: %s%d
+reskillable.requirements.format.advancement=Advancement: %s%s
+reskillable.requirements.format.trait=Trait: %s%s
+reskillable.requirements.format.unobtainable=Unobtainable
+reskillable.requirements.format.and=AND
+reskillable.requirements.format.nand=NAND
+reskillable.requirements.format.or=OR
+reskillable.requirements.format.nor=NOR
+reskillable.requirements.format.xor=XOR
+reskillable.requirements.format.xnor=XNOR
 
 # SKILL NAMES
 reskillable.skill.reskillable.mining=Mining
@@ -91,11 +92,11 @@ reskillable.tab.abilities=Abilities
 
 # KEY-BINDINGS
 key.controls.reskillable=Reskillable
-key.openGUI=Open Skill GUI
+key.open_gui=Open Skill GUI
 
 # TOAST MESSAGES
-reskillable.toast.skillDesc=Reached level: %s
-reskillable.toast.unlockableDesc=Unlocked!
+reskillable.toast.skill_desc=Reached level: %s
+reskillable.toast.unlockable_desc=Unlocked!
 
 # COMMANDS
 reskillable.command.usage=/reskillable subcommand
