@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.3
+- Treat empty NBT tags as not existing when creating locks. This way it doesn't need to do extra fuzzy lock checking.
+
+
 ## 1.12.2
 - Fixed syncing from server to client not invalidating the client's requirement cache on first join.
 - Changed lang file format to resource pack format 3

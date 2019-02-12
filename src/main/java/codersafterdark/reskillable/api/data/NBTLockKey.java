@@ -11,7 +11,7 @@ public abstract class NBTLockKey implements FuzzyLockKey {
     protected NBTTagCompound tag;
 
     protected NBTLockKey(NBTTagCompound tag) {
-        this.tag = tag;
+        this.tag = tag == null || tag.isEmpty() ? null : tag;
     }
 
     protected static boolean similarNBT(NBTBase full, NBTBase partial) {
