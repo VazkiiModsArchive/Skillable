@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.4
+- Fixed Unobtainable requirements being stripped out of OR based Logic Requirements.
+
+
 ## 1.12.3
 - Treat empty NBT tags as not existing when creating locks. This way it doesn't need to do extra fuzzy lock checking.
 

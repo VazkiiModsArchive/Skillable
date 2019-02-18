@@ -1,10 +1,7 @@
 package codersafterdark.reskillable.api.requirement.logic;
 
 import codersafterdark.reskillable.api.ReskillableAPI;
-import codersafterdark.reskillable.api.requirement.Requirement;
-import codersafterdark.reskillable.api.requirement.RequirementComparision;
-import codersafterdark.reskillable.api.requirement.RequirementException;
-import codersafterdark.reskillable.api.requirement.RequirementRegistry;
+import codersafterdark.reskillable.api.requirement.*;
 import codersafterdark.reskillable.api.requirement.logic.impl.*;
 
 //TODO: Make it so that if a requirement is simplified it logs what the new string is so that pack makers can know the simpler string
@@ -29,7 +26,7 @@ public class LogicParser {
             return null;
         }
 
-        if (requirement instanceof FalseRequirement) {
+        if (requirement instanceof FalseRequirement || requirement instanceof UnobtainableRequirement) {
             return TRUE;
         } else if (requirement instanceof TrueRequirement) {
             return FALSE;
@@ -65,6 +62,8 @@ public class LogicParser {
 
         if (left instanceof FalseRequirement || right instanceof FalseRequirement) {
             return FALSE;
+        } else if (left instanceof UnobtainableRequirement || right instanceof UnobtainableRequirement) {
+            return new UnobtainableRequirement();
         } else if (left instanceof TrueRequirement) {
             return right;
         } else if (right instanceof TrueRequirement) {
@@ -86,7 +85,7 @@ public class LogicParser {
         Requirement left = subRequirements.getLeft();
         Requirement right = subRequirements.getRight();
 
-        if (left instanceof FalseRequirement || right instanceof FalseRequirement) {
+        if (left instanceof FalseRequirement || right instanceof FalseRequirement || left instanceof UnobtainableRequirement || right instanceof UnobtainableRequirement) {
             return TRUE;
         } else if (left instanceof TrueRequirement) {
             return parseNOT(right);

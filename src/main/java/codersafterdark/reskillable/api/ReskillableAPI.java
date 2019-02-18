@@ -30,7 +30,7 @@ public class ReskillableAPI {
             }
             return new TraitRequirement(unlockable);
         });
-        requirementRegistry.addRequirementHandler("unobtainable", input -> LogicParser.FALSE);
+        requirementRegistry.addRequirementHandler("unobtainable", input -> new UnobtainableRequirement());
         requirementRegistry.addRequirementHandler("none", input -> new NoneRequirement()); //Makes it so other requirements are ignored
 
         //Logic Requirements
