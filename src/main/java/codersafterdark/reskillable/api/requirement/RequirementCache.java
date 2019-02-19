@@ -10,6 +10,7 @@ import codersafterdark.reskillable.api.requirement.logic.impl.NOTRequirement;
 import codersafterdark.reskillable.network.InvalidateRequirementPacket;
 import codersafterdark.reskillable.network.PacketHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -188,7 +189,8 @@ public class RequirementCache {
     @Nullable
     private EntityPlayer getPlayer() {
         if (isRemote) {
-            return Minecraft.getMinecraft().world.getPlayerEntityByUUID(uuid);
+            WorldClient world = Minecraft.getMinecraft().world;
+            return world == null ? null : world.getPlayerEntityByUUID(uuid);
         }
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         //Server should only be able to be null when isRemote is true, but just in case have this statement

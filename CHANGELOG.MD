@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.5
+- Fixed a crash caused when switching from server to single player.
+
+
 ## 1.12.4
 - Fixed Unobtainable requirements being stripped out of OR based Logic Requirements.
 
