@@ -2,6 +2,7 @@
 
 ## 1.12.5
 - Fixed a crash caused when switching from server to single player.
+- Fixed doors and some other things still activating, even if you are holding an item that you cannot use.
 
 
 ## 1.12.4

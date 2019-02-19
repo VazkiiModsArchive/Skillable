@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -313,6 +314,13 @@ public class LevelLockHandler {
         enforce(event);
         if (event.isCanceled()) {
             return;
+        } else if (event.getItemStack().isEmpty()) {
+            //Don't let the block get activated just because this hand is empty
+            EntityPlayer player = event.getEntityPlayer();
+            genericEnforce(event, player, event.getHand().equals(EnumHand.MAIN_HAND) ? player.getHeldItemOffhand() : player.getHeldItemMainhand(), MessageLockedItem.MSG_ITEM_LOCKED);
+            if (event.isCanceled()) {
+                return;
+            }
         }
         IBlockState state = event.getWorld().getBlockState(event.getPos());
         Block block = state.getBlock();
